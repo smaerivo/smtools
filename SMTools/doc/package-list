@@ -1,0 +1,10 @@
+smtools.application
+smtools.application.registry
+smtools.application.util
+smtools.exceptions
+smtools.math
+smtools.math.lslr
+smtools.math.quadmapping
+smtools.miscellaneous
+smtools.swing.dialogs
+smtools.swing.util

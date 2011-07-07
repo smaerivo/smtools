@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SMTools" default="build" basedir=".">
+	<property name="srcDir" location="src" />
+	<property name="binDir" location="bin" />
+	<property name="docDir" location="doc" />
+
+	<target name="clean">
+		<delete dir="${binDir}" />
+		<delete dir="${docDir}" />
+		<delete file="smtools.jar" />
+		<delete file="application-resources.zip" />
+	</target>
+
+	<target name="initialise">
+		<mkdir dir="${binDir}" />
+		<mkdir dir="${docDir}" />
+	</target>
+
+	<target name="compile" depends="initialise">
+		<javac srcdir="${srcDir}" destdir="${binDir}">
+			<classpath>
+	    	<pathelement location="../../Software Development/Log4j/log4j-all-1.3alpha-8.jar" />
+	    	<pathelement location="../../Software Development/JLayer/jl1.0.1.jar" />
+			</classpath>
+			<compilerarg value="-Xlint:deprecation" />
+			<compilerarg value="-Xlint:unchecked" />
+			<compilerarg value="-deprecation" />
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="smtools.jar" basedir="${binDir}">
+			<fileset dir="smtools-resources" />
+			<fileset file="${srcDir}/LICENSE.txt" />
+			<fileset file="${srcDir}/NOTICE.txt" />
+			<manifest>
+			  <attribute name="Built-By" value="Sven Maerivoet" />
+	      <attribute name="Implementation-Title" value="SMTools" />
+	      <attribute name="Implementation-Version" value="1.3" />
+				<attribute name="Main-Class" value="smtools.application.JStandardGUIApplication" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="javadoc" depends="initialise">
+		<javadoc
+			sourcepath="${srcDir}"
+			destdir="${docDir}"
+			doctitle="SMTools v1.3 API Documentation"
+			header="&lt;B&gt;SMTools&lt;/B&gt;&lt;BR&gt;&lt;I&gt;Sven Maerivoet&lt;/I&gt;"
+			windowtitle="Sven Maerivoet - Java Tools"
+			splitindex="true"
+			nodeprecated="true"
+			package="true"
+			author="true"
+			version="true"
+			overview="${srcDir}/smtools/overview.html"
+			stylesheetfile="${srcDir}/doc-stylesheet.css">
+			<group title="Application GUI development" packages="smtools.application:smtools.application.registry:smtools.application.util" />
+			<group title="Exception handling" packages="smtools.exceptions" />
+			<group title="Mathematical utilities" packages="smtools.math:smtools.math.lslr:smtools.math.quadmapping" />
+			<group title="Miscellaneous" packages="smtools.miscellaneous" />
+			<group title="Swing related" packages="smtools.swing.dialogs:smtools.swing.util" />
+		</javadoc>
+		<delete file="${docDir}/index.html" />
+		<copy file="${srcDir}/doc-index.html" tofile="${docDir}/index.html" />
+	</target>
+
+	<target name="zip">
+		<delete file="application-resources.zip" />
+		<zip destfile="application-resources.zip">
+			<fileset dir="application-resources" />
+		</zip>
+	</target>
+
+	<target name="build">
+		<antcall target="clean" />
+		<antcall target="initialise" />
+		<antcall target="compile" />
+		<antcall target="jar" />
+		<antcall target="zip" />
+		<antcall target="javadoc" />
+	</target>
+</project>
