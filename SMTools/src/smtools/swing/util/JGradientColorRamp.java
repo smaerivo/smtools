@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JGradientColorRamp.java
 // Author        : Sven Maerivoet
-// Last modified : 04/07/2011
+// Last modified : 11/07/2011
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
@@ -26,6 +26,7 @@ package smtools.swing.util;
 import java.awt.*;
 import javax.swing.*;
 import smtools.math.*;
+import smtools.miscellaneous.*;
 
 /**
  * The <CODE>JGradientColorRamp</CODE> class provides a gradient color ramp.
@@ -59,10 +60,12 @@ import smtools.math.*;
  *   <IMG src="doc-files/gradient-color-ramp-interpolated.png">
  * </UL>
  * <P>
+ * The value can also be indicated on the color ramp itself.
+ * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 03/06/2011
+ * @version 11/06/2011
  */
 public final class JGradientColorRamp extends JPanel
 {
@@ -92,7 +95,7 @@ public final class JGradientColorRamp extends JPanel
 	private String fTickValuePrefix;
 	private String fTickValueSuffix;
 	private int fNrOfTickMarks;
-	private boolean fRoundedTickValues;
+	private int fTickValueNrOfDecimals;
 	private boolean fValueIndicationEnabled;
 	private double fValueToIndicate;
 
@@ -147,9 +150,9 @@ public final class JGradientColorRamp extends JPanel
 	 * @param tickValuePrefix the prefix label for each value
 	 * @param tickValueSuffix the suffix label for each value
 	 * @param nrOfTickMarks the number of tick marks to produce
-	 * @param roundedTickValues a flag to select between <CODE>int</CODE>s or <CODE>double</CODE>s to show as values beneath the tick marks
+	 * @param nrOfDecimals the number of decimals to retain in the values beneath the tick marks
 	 */
-	public void setTickMarks(double lowerTickValue, String lowerTickValuePrefix, double upperTickValue, String upperTickValuePrefix, String tickValuePrefix, String tickValueSuffix, int nrOfTickMarks, boolean roundedTickValues)
+	public void setTickMarks(double lowerTickValue, String lowerTickValuePrefix, double upperTickValue, String upperTickValuePrefix, String tickValuePrefix, String tickValueSuffix, int nrOfTickMarks, int nrOfDecimals)
 	{
 		fAnnotated = true;
 		fLowerTickValue = lowerTickValue;
@@ -159,7 +162,7 @@ public final class JGradientColorRamp extends JPanel
 		fTickValuePrefix = tickValuePrefix;
 		fTickValueSuffix = tickValueSuffix;
 		fNrOfTickMarks = nrOfTickMarks;
-		fRoundedTickValues = roundedTickValues;
+		fTickValueNrOfDecimals = nrOfDecimals;
 	}
 
 	/**
@@ -170,13 +173,7 @@ public final class JGradientColorRamp extends JPanel
 		enableValueIndication();
 
 		if (fAnnotated && ((fOrientation == EOrientation.kHorizontalLeftToRight) || (fOrientation == EOrientation.kHorizontalRightToLeft))) {
-
-			String tickValueStr = String.valueOf(fValueToIndicate);
-			if (fRoundedTickValues) {
-				tickValueStr = String.valueOf(Math.round(fValueToIndicate));
-			}
-
-			setToolTipText(fTickValuePrefix + tickValueStr + fTickValueSuffix);
+			setToolTipText(fTickValuePrefix + StringTools.convertDoubleToString(fValueToIndicate,fTickValueNrOfDecimals) + fTickValueSuffix);
 		}
 
 		repaint();
@@ -319,15 +316,7 @@ public final class JGradientColorRamp extends JPanel
 				int textYPos = (trueHeight - (trueHeight - fHeight)) + (fontMetrics.getAscent() + fontMetrics.getHeight());
 				double tickValue = fLowerTickValue + ((fUpperTickValue - fLowerTickValue) / (fNrOfTickMarks - 1)) * tickMarkIndex;
 
-				String tickValueStr = "";
-				if (fRoundedTickValues) {
-					tickValueStr = String.valueOf(Math.round(tickValue));
-				}
-				else {
-					tickValueStr = String.valueOf(tickValue);
-				}
-
-				tickValueStr = fTickValuePrefix + tickValueStr + fTickValueSuffix;
+				String tickValueStr = fTickValuePrefix + StringTools.convertDoubleToString(tickValue,fTickValueNrOfDecimals) + fTickValueSuffix;
 				if (tickMarkIndex == 0) {
 					tickValueStr = fLowerTickValuePrefix + tickValueStr;
 				}

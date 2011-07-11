@@ -19,8 +19,8 @@
 	<target name="compile" depends="initialise">
 		<javac srcdir="${srcDir}" destdir="${binDir}">
 			<classpath>
-	    	<pathelement location="../../Software Development/Log4j/log4j-all-1.3alpha-8.jar" />
-	    	<pathelement location="../../Software Development/JLayer/jl1.0.1.jar" />
+	    	<pathelement location="D:/Eclipse Workspace/Software Development/Log4j/log4j-all-1.3alpha-8.jar" />
+	    	<pathelement location="D:/Eclipse Workspace/Software Development/JLayer/jl1.0.1.jar" />
 			</classpath>
 			<compilerarg value="-Xlint:deprecation" />
 			<compilerarg value="-Xlint:unchecked" />
@@ -44,6 +44,7 @@
 
 	<target name="javadoc" depends="initialise">
 		<javadoc
+			classpath="${classPath};D:/Eclipse Workspace/Software Development/Log4j/log4j-all-1.3alpha-8.jar;D:/Eclipse Workspace/Software Development/JLayer/jl1.0.1.jar"
 			sourcepath="${srcDir}"
 			destdir="${docDir}"
 			doctitle="SMTools v1.3 API Documentation"
