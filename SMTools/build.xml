@@ -44,7 +44,6 @@
 
 	<target name="javadoc" depends="initialise">
 		<javadoc
-			classpath="${classPath};D:/Eclipse Workspace/Software Development/Log4j/log4j-all-1.3alpha-8.jar;D:/Eclipse Workspace/Software Development/JLayer/jl1.0.1.jar"
 			sourcepath="${srcDir}"
 			destdir="${docDir}"
 			doctitle="SMTools v1.3 API Documentation"
@@ -62,6 +61,15 @@
 			<group title="Mathematical utilities" packages="smtools.math:smtools.math.lslr:smtools.math.quadmapping" />
 			<group title="Miscellaneous" packages="smtools.miscellaneous" />
 			<group title="Swing related" packages="smtools.swing.dialogs:smtools.swing.util" />
+		  <classpath>
+		    <pathelement path="${classpath}"/>
+		    <pathelement location="D:/Eclipse Workspace/Software Development/SMTools/smtools.jar" />
+		    <pathelement location="D:/Eclipse Workspace/Software Development/Log4j/log4j-all-1.3alpha-8.jar" />
+		    <pathelement location="D:/Eclipse Workspace/Software Development/JUnit 3.8.1/junit.jar" />
+		    <pathelement location="D:/Eclipse Workspace/Software Development/JFreeChart-1.0.13/lib/jcommon-1.0.16.jar" />
+		    <pathelement location="D:/Eclipse Workspace/Software Development/JFreeChart-1.0.13/lib/jfreechart-1.0.13.jar" />
+		    <pathelement location="D:/Eclipse Workspace/Software Development/JLayer/jl1.0.1.jar" />
+		  </classpath>
 		</javadoc>
 		<delete file="${docDir}/index.html" />
 		<copy file="${srcDir}/doc-index.html" tofile="${docDir}/index.html" />

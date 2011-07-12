@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : JARResources.java
 // Author        : Sven Maerivoet
-// Last modified : 05/04/2011
+// Last modified : 13/07/2011
 // Target        : Java VM (1.6)
 // ---------------------------------
 
@@ -28,6 +28,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.zip.*;
+import javax.swing.*;
 import smtools.exceptions.*;
 
 /**
@@ -38,7 +39,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 05/04/2011
+ * @version 13/07/2011
  */
 public final class JARResources
 {
@@ -173,6 +174,9 @@ public final class JARResources
 	 */
 	public Image getImage(String name) throws FileDoesNotExistException
 	{
-		return Toolkit.getDefaultToolkit().createImage(getRawResource(name));
+		// use ImageIcon as a MediaTracker to completely load the image
+		ImageIcon imageIcon = new ImageIcon(getRawResource(name));
+
+		return imageIcon.getImage();
 	}
 }
