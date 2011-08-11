@@ -119,7 +119,7 @@ public final class JImagePanel extends JPanel
 		Dimension panelDimension = getSize();
 
 		if (fRetainAspectRatio) {
-	
+
 			int imageWidth = fBackgroundImage.getWidth(this);
 			int imageHeight = fBackgroundImage.getHeight(this);
 

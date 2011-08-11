@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : TimeStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 16/05/2011
+// Last modified : 11/08/2011
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -35,7 +35,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 16/05/2011
+ * @version 11/08/2011
  */
 public final class TimeStamp implements Comparable<TimeStamp>
 {
@@ -291,6 +291,16 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	}
 
 	/**
+	 * Returns this <CODE>TimeStamp</CODE>'s second-of-day (since 00:00:00.000).
+	 *
+	 * @return the number of seconds (since 00:00:00:000) corresponding to this <CODE>TimeStamp</CODE> object
+	 */
+	public int getSecondOfDay()
+	{
+		return (getSecond() + (60 * getMinute()) + (getHour() * 3600));
+	}
+
+	/**
 	 * Returns this <CODE>TimeStamp</CODE>'s millisecond-of-day (since 00:00:00.000).
 	 *
 	 * @return the number of milliseconds (since 00:00:00:000) corresponding to this <CODE>TimeStamp</CODE> object
@@ -346,6 +356,86 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	public String getHMString()
 	{
 		return (new SimpleDateFormat("HH:mm")).format(fTimeStamp.getTime());
+	}
+
+	/**
+	 * Converts this <CODE>TimeStamp</CODE> object from one time zone to another.
+	 * Note that daylight savings are taken into account when applicable.
+	 * 
+	 * Time zones can be obtained via, e.g., <CODE>TimeZone.getTimeZone("Europe/Brussels")</CODE>.
+	 * 
+	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * @param fromTimeZone the <CODE>TimeZone</CODE> to convert from
+	 * @param toTimeZone the <CODE>TimeZone</CODE> to convert to
+	 * 
+	 */
+	public void convertBetweenTimeZones(DateStamp date, TimeZone fromTimeZone, TimeZone toTimeZone)
+	{
+		Calendar fromCalendar = Calendar.getInstance(fromTimeZone);
+		Calendar toCalendar = Calendar.getInstance(toTimeZone);
+
+		// perform conversion via the total milliseconds timestamp
+		fromCalendar.set(Calendar.DAY_OF_MONTH,date.getDay());
+		fromCalendar.set(Calendar.MONTH,date.getMonth() - fromCalendar.getMinimum(Calendar.MONTH) - 1);
+		fromCalendar.set(Calendar.YEAR,date.getYear());
+		fromCalendar.set(Calendar.HOUR_OF_DAY,getHour());
+		fromCalendar.set(Calendar.MINUTE,getMinute());
+		fromCalendar.set(Calendar.SECOND,getSecond());
+		fromCalendar.set(Calendar.MILLISECOND,getMillisecond());
+		long utcMilliseconds = fromCalendar.getTimeInMillis();
+
+		toCalendar.setTimeInMillis(utcMilliseconds);
+		set(toCalendar.get(Calendar.HOUR_OF_DAY),toCalendar.get(Calendar.MINUTE),toCalendar.get(Calendar.SECOND),toCalendar.get(Calendar.MILLISECOND));
+	}
+
+	/**
+	 * Converts this <CODE>TimeStamp</CODE> object from a time zone to UTC.
+	 * Note that daylight savings are taken into account when applicable.
+	 * 
+	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * @param fromTimeZone the <CODE>TimeZone</CODE> to convert from
+	 * 
+	 */
+	public void convertFromTimeZoneToUTC(DateStamp date, TimeZone fromTimeZone)
+	{
+		convertBetweenTimeZones(date,fromTimeZone,TimeZone.getTimeZone("UTC"));
+	}
+
+	/**
+	 * Converts this <CODE>TimeStamp</CODE> object from UTC to a time zone.
+	 * Note that daylight savings are taken into account when applicable.
+	 * 
+	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * @param toTimeZone the <CODE>TimeZone</CODE> to convert to
+	 * 
+	 */
+	public void convertFromUTCToTimeZone(DateStamp date, TimeZone toTimeZone)
+	{
+		convertBetweenTimeZones(date,TimeZone.getTimeZone("UTC"),toTimeZone);
+	}
+
+	/**
+	 * Converts this <CODE>TimeStamp</CODE> object from the user's local time zone to UTC.
+	 * Note that daylight savings are taken into account when applicable.
+	 * 
+	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * 
+	 */
+	public void convertFromLocalTimeZoneToUTC(DateStamp date)
+	{
+		convertFromTimeZoneToUTC(date,TimeZone.getDefault());
+	}
+
+	/**
+	 * Converts this <CODE>TimeStamp</CODE> object from UTC to the user's local time zone.
+	 * Note that daylight savings are taken into account when applicable.
+	 * 
+	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * 
+	 */
+	public void convertFromUTCToLocalTimeZone(DateStamp date)
+	{
+		convertFromUTCToTimeZone(date,TimeZone.getDefault());
 	}
 
 	/**

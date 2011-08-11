@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 25/05/2011
+// Last modified : 09/08/2011
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -38,7 +38,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 25/05/2011
+ * @version 09/08/2011
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
@@ -244,6 +244,42 @@ public final class DateStamp implements Comparable<DateStamp>
 	}
 
 	/**
+	 * Returns the number of days in this <CODE>DateStamp</CODE>'s month.
+	 *
+	 * @return the number of days in this <CODE>DateStamp</CODE>'s month
+	 */
+	public int getNumberOfDaysInMonth()
+	{
+		return getNumberOfDaysInMonth(getMonth(),getYear());
+	}
+
+	/**
+	 * Returns the number of days in a specified month [1-12] and a given year.
+	 *
+	 * @param month the specified month [1-12]
+	 * @param year the year for the month
+	 * @return the number of days in the specified month
+	 */
+	public static int getNumberOfDaysInMonth(int month, int year)
+	{
+		final int[] kDaysInMonth = {31,28,31,30,31,30,31,31,30,31,30,31};
+
+		if (month < 1) {
+			month = 1;
+		}
+		else if (month > 12) {
+			month = 12;
+		}
+
+		int daysInMonth = kDaysInMonth[month + 1];
+		if ((month == 2) && isLeapYear(year)) {
+			++daysInMonth;
+		}
+
+		return daysInMonth;
+	}
+
+	/**
 	 * Returns this <CODE>DateStamp</CODE>'s day-of-year.
 	 *
 	 * @return the day of year corresponding to this <CODE>DateStamp</CODE> object
@@ -286,8 +322,16 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public boolean isLeapYear()
 	{
-		int year = getYear();
-
+		return isLeapYear(getYear());
+	}
+	
+	/**
+	 * Checks whether or not a specified year is a leap year (assuming a Gregorian calendar).
+	 *
+	 * @return <CODE>true</CODE> if the specified year is leap year, <CODE>false</CODE> otherwise
+	 */
+	public static boolean isLeapYear(int year)
+	{
 		// check if the year is divisible by 4
 		if ((year % 4) == 0) {
 
