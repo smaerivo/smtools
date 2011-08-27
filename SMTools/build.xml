@@ -58,7 +58,7 @@
 			stylesheetfile="${srcDir}/doc-stylesheet.css">
 			<group title="Application GUI development" packages="smtools.application:smtools.application.registry:smtools.application.util" />
 			<group title="Exception handling" packages="smtools.exceptions" />
-			<group title="Mathematical utilities" packages="smtools.math:smtools.math.lslr:smtools.math.quadmapping" />
+			<group title="Mathematical utilities" packages="smtools.math:smtools.math.lslr:smtools.math.quadmapping:smtools.math.statistics" />
 			<group title="Miscellaneous" packages="smtools.miscellaneous" />
 			<group title="Swing related" packages="smtools.swing.dialogs:smtools.swing.util" />
 		  <classpath>

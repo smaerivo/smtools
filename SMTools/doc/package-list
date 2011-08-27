@@ -5,6 +5,7 @@ smtools.exceptions
 smtools.math
 smtools.math.lslr
 smtools.math.quadmapping
+smtools.math.statistics
 smtools.miscellaneous
 smtools.swing.dialogs
 smtools.swing.util
