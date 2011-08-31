@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : TextFileParser.java
 // Author        : Sven Maerivoet
-// Last modified : 22/04/2011
+// Last modified : 31/08/2011
 // Target        : Java VM (1.6)
 // -----------------------------------
 
@@ -49,7 +49,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 22/04/2011
+ * @version 31/08/2011
  */
 public final class TextFileParser
 {
@@ -289,7 +289,8 @@ public final class TextFileParser
 		// match quoted, unquoted and null fields
 		String kCSVPattern = "\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\",?|([^,]+),?|,";
 		Pattern csvRegEx = Pattern.compile(kCSVPattern);
-		Matcher csvMatcher = csvRegEx.matcher(getNextString());
+		String source = getNextString();
+		Matcher csvMatcher = csvRegEx.matcher(source);
 
 		// extract all fields
 		ArrayList<String> list = new ArrayList<String>();
@@ -308,7 +309,12 @@ public final class TextFileParser
 			}
 			list.add(match);
 		}
-		
+
+		// check if there was a trailing comma
+		if (source.charAt(source.length() - 1) == ',') {
+			list.add("");
+		}
+
 		// convert to an array of strings
 		String[] csvValues = new String[list.size()];
 		list.toArray(csvValues);
