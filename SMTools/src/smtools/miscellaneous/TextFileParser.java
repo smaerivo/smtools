@@ -397,7 +397,7 @@ public final class TextFileParser
 	private void initialise(InputStream inputStream, String encoding)
 	{
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-		if (encoding != null) {
+		if (encoding == null) {
 			fContentScanner = new Scanner(bufferedInputStream);
 		}
 		else {

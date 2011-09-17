@@ -25,7 +25,6 @@ package smtools.math.statistics;
 
 import java.util.*;
 import smtools.math.*;
-import smtools.miscellaneous.*;
 
 /**
  * The <CODE>EmpiricalDistribution</CODE> class offers a means to calculate the empirical cumulative distribution (CDF) and probability density (PDF) functions, including percentiles.
