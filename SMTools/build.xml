@@ -43,6 +43,8 @@
 	</target>
 
 	<target name="javadoc" depends="initialise">
+		<delete dir="${docDir}" />
+		<mkdir dir="${docDir}" />
 		<javadoc
 			sourcepath="${srcDir}"
 			destdir="${docDir}"
