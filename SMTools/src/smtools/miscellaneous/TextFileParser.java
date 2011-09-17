@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : TextFileParser.java
 // Author        : Sven Maerivoet
-// Last modified : 31/08/2011
+// Last modified : 17/09/2011
 // Target        : Java VM (1.6)
 // -----------------------------------
 
@@ -49,7 +49,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 31/08/2011
+ * @version 17/09/2011
  */
 public final class TextFileParser
 {
@@ -72,7 +72,26 @@ public final class TextFileParser
 		try {
 			// try to open the file
 			FileInputStream fileInputStream = new FileInputStream(filename);
-			initialise(fileInputStream);
+			initialise(fileInputStream,null);
+		}
+		catch (FileNotFoundException exc) {
+			throw (new FileDoesNotExistException(filename));
+		}
+	}
+
+	/**
+	 * Sets up a text file parser for the specified file.
+	 *
+	 * @param  filename the name of the file to parse
+	 * @param  encoding the encoding used (e.g., UTF-8)
+	 * @throws FileDoesNotExistException if the file is not found
+	 */
+	public TextFileParser(String filename, String encoding) throws FileDoesNotExistException
+	{
+		try {
+			// try to open the file
+			FileInputStream fileInputStream = new FileInputStream(filename);
+			initialise(fileInputStream,encoding);
 		}
 		catch (FileNotFoundException exc) {
 			throw (new FileDoesNotExistException(filename));
@@ -88,7 +107,20 @@ public final class TextFileParser
 	 */
 	public TextFileParser(InputStream inputStream)
 	{
-		initialise(inputStream);
+		initialise(inputStream,null);
+	}
+
+	/**
+	 * Sets up a text file parser for the specified <CODE>InputStream</CODE>.
+	 * <P>
+	 * Note that a buffer is automatically wrapped around the specified <CODE>InputStream</CODE>.
+	 *
+	 * @param  encoding the encoding used (e.g., UTF-8)
+	 * @param  inputStream the <CODE>InputStream</CODE> containing the contents to parse
+	 */
+	public TextFileParser(InputStream inputStream, String encoding)
+	{
+		initialise(inputStream,encoding);
 	}
 
 	/******************
@@ -362,10 +394,15 @@ public final class TextFileParser
 	 * PRIVATE METHODS *
 	 *******************/
 
-	private void initialise(InputStream inputStream)
+	private void initialise(InputStream inputStream, String encoding)
 	{
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-		fContentScanner = new Scanner(bufferedInputStream);
+		if (encoding != null) {
+			fContentScanner = new Scanner(bufferedInputStream);
+		}
+		else {
+			fContentScanner = new Scanner(bufferedInputStream,encoding);
+		}
 		fLineNr = 0;
 	}
 }

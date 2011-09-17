@@ -147,7 +147,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	// internal datastructures
 	private String fWindowTitle;
 	private JUnfocusableButton fDefaultDateButton;
-	private JComboBox fMonthChooser;
+	private JComboBox<String> fMonthChooser;
 	private JSpinner fYearChooser;
 	private JUnfocusableTriggeredButton[] fDayButtons;
 	private JLabel fSelectedDateLabel;
@@ -333,7 +333,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		for (int monthNr = 0; monthNr < 12; ++monthNr) {
 			monthNames[monthNr] = kMonths[monthNr].substring(0,1).toUpperCase() + kMonths[monthNr].substring(1);
 		}		
-		fMonthChooser = new JComboBox(monthNames);
+		fMonthChooser = new JComboBox<String>(monthNames);
 		fMonthChooser.setEditable(false);
 		fMonthChooser.addActionListener(this);
 		fMonthChooser.setToolTipText(Messages.lookup("tooltipCalendarMonth"));

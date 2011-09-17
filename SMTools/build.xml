@@ -17,7 +17,7 @@
 	</target>
 
 	<target name="compile" depends="initialise">
-		<javac srcdir="${srcDir}" destdir="${binDir}">
+		<javac srcdir="${srcDir}" destdir="${binDir}" includeantruntime="false">
 			<classpath>
 	    	<pathelement location="D:/Eclipse Workspace/Software Development/Log4j/log4j-all-1.3alpha-8.jar" />
 	    	<pathelement location="D:/Eclipse Workspace/Software Development/JLayer/jl1.0.1.jar" />
@@ -54,8 +54,7 @@
 			package="true"
 			author="true"
 			version="true"
-			overview="${srcDir}/smtools/overview.html"
-			stylesheetfile="${srcDir}/doc-stylesheet.css">
+			overview="${srcDir}/smtools/overview.html" >
 			<group title="Application GUI development" packages="smtools.application:smtools.application.registry:smtools.application.util" />
 			<group title="Exception handling" packages="smtools.exceptions" />
 			<group title="Mathematical utilities" packages="smtools.math:smtools.math.lslr:smtools.math.quadmapping:smtools.math.statistics" />
