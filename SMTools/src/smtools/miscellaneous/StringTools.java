@@ -1,7 +1,7 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 29/05/2011
+// Last modified : 27/09/2011
 // Target        : Java VM (1.6)
 // --------------------------------
 
@@ -44,7 +44,7 @@ import java.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 29/05/2011
+ * @version 27/09/2011
  */
 public final class StringTools
 {
@@ -229,6 +229,16 @@ public final class StringTools
 	public static String aggressiveAlignCenter(String stringToCenter, int nrOfCharacters, char padCharacter)
 	{
 		return truncate(alignCenter(stringToCenter,nrOfCharacters,padCharacter),nrOfCharacters);
+	}
+
+	/**
+	 * Capitalises the first letter in a string.
+	 * 
+	 * @param text the text to capitalise the first letter of
+	 */
+	public static String capitaliseFirstLetter(String text)
+	{
+		return (text.substring(0,1).toUpperCase() + text.substring(1));
 	}
 
 	/**

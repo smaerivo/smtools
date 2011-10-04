@@ -1,7 +1,7 @@
 // ------------------------------------------
 // Filename      : EmpiricalDistribution.java
 // Author        : Sven Maerivoet
-// Last modified : 27/08/2011
+// Last modified : 27/09/2011
 // Target        : Java VM (1.6)
 // ------------------------------------------
 
@@ -24,6 +24,7 @@
 package smtools.math.statistics;
 
 import java.util.*;
+import smtools.application.util.*;
 import smtools.math.*;
 
 /**
@@ -33,10 +34,12 @@ import smtools.math.*;
  * <P>
  * The distribution can only contain <CODE>Integer.MAX_VALUE</CODE> samples.
  * <P>
+ * Note that a valid {@link Messages} database must be available!
+ * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 27/08/2011
+ * @version 27/09/2011
  */
 public final class EmpiricalDistribution
 {
@@ -48,7 +51,7 @@ public final class EmpiricalDistribution
 	private double[] fCDF;
 	private double[] fPercentiles;
 	private double fMedian;
-	private double fInterQuartileRange;
+	private double fInterquartileRange;
 	private boolean fUseOptimalNrOfHistogramBins;
 	private int fNrOfHistogramBins;
 	private double[] fHistogramBinFrequencies;
@@ -58,7 +61,10 @@ public final class EmpiricalDistribution
 	private double fVariance;
 	private double fStandardDeviation;
 	private double fSkewness;
+	private double fSkewnessConfidenceBounds;
+	private double fSkewnessZStatistic;
 	private double fKurtosis;
+	private double fKurtosisZStatistic;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -75,7 +81,11 @@ public final class EmpiricalDistribution
 	/**
 	 * Constructs an <CODE>EmpiricalDistribution</CODE> object for a given array of values.
 	 * <P>
-	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins.
+	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
+	 * <P>
+	 * <UL>
+	 *   bin width = 2 * IQR / n^1/3
+	 * </UL>
 	 * 
 	 * @param x the array of values to estimate the empirical distribution for
 	 */
@@ -110,7 +120,11 @@ public final class EmpiricalDistribution
 	/**
 	 * Estimates the empirical distribution for a given array of values.
 	 * <P>
-	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins.
+	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
+	 * <P>
+	 * <UL>
+	 *   bin width = 2 * IQR / n^1/3
+	 * </UL>
 	 * 
 	 * @param x the array of values to estimate the empirical distribution for
 	 */
@@ -190,15 +204,19 @@ public final class EmpiricalDistribution
 	 * 
 	 * @return the interquartile range (IQR)
 	 */
-	public double getInterQuartileRange()
+	public double getInterquartileRange()
 	{
-		return fInterQuartileRange;
+		return fInterquartileRange;
 	}
 
 	/**
 	 * Estimates the probability density function (PDF).
 	 * <P>
-	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins.
+	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
+	 * <P>
+	 * <UL>
+	 *   bin width = 2 * IQR / n^1/3
+	 * </UL>
 	 */
 	public void adjustPDF()
 	{
@@ -332,6 +350,16 @@ public final class EmpiricalDistribution
 	}
 
 	/**
+	 * Returns the sample size.
+	 * 
+	 * @return the sample size
+	 */
+	public double getN()
+	{
+		return fN;
+	}
+
+	/**
 	 * Returns the expected value.
 	 * 
 	 * @return the expected value
@@ -342,9 +370,9 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Returns the variance (using an unbiased estimator of the population variance).
+	 * Returns the sample variance (using an unbiased estimator of the population variance).
 	 * 
-	 * @return the variance (using an unbiased estimator of the population variance)
+	 * @return the sample variance (using an unbiased estimator of the population variance)
 	 */
 	public double getVariance()
 	{
@@ -362,15 +390,24 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Returns the skewness (using an unbiased estimator).
+	 * Returns the sample skewness (using an unbiased estimator).
 	 * <P>
 	 * Skewness implies:
+	 * <P>
 	 * <UL>
 	 *   <LI><B>Positive skew</B>: longer right tail, density mass constrained to the left.</LI>
 	 *   <LI><B>Negative skew</B>: longer left tail, density mass constrained to the right.</LI>
 	 * </UL>
+	 * <P>
+	 * Note that the amount of skewness is determined as follows:
+	 * <P>
+	 * <UL>
+	 *   <LI>-0.5 <= skewness <= +0.5: approximately symmetric distribution.</LI> 
+	 *   <LI>-1 <= skewness < -0.5, or +0.5 < skewness <= +1: moderately skewed distribution.</LI> 
+	 *   <LI>skewness < -1, or skewness > +1: highly skewed distribution.</LI> 
+	 * </UL>
 	 * 
-	 * @return the skewness (using an unbiased estimator)
+	 * @return the sample skewness (using an unbiased estimator)
 	 */
 	public double getSkewness()
 	{
@@ -378,20 +415,207 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Returns the kurtosis (using an unbiased estimator).
+	 * Returns the symmetrical skewness' confidence bounds for a 95% confidence interval, defined as twice the standard error of skewness (SES).
+	 * 
+	 * @return the symmetrical skewness' confidence bounds for a 95% confidence interval
+	 */
+	public double getSkewnessConfidenceBounds()
+	{
+		return fSkewnessConfidenceBounds;
+	}
+
+	/**
+	 * Returns a two-tailed test statistic <I>Z</I> of skewness (different from zero) with a 5% significance level.
 	 * <P>
-	 * The value returned is the <I>excess kurtosis</I>, such that it is zero for a normal distribution. Kurtosis implies:
+	 * <UL>
+	 *   <LI><B><I>Z</I> > +2</B>: population is very likely positively skewed.</LI>
+	 *   <LI><B><I>Z</I> < -2</B>: population is very likely negatively skewed.</LI>
+	 *   <LI><B>-2 <= <I>Z</I> <= +2</B>: inconclusive (might be symmetric, might be skewed).</LI>
+	 * </UL>
+	 * <P>
+	 * The larger <I>Z</I>, the higher the probability.
+	 * 
+	 * @return the skewness <I>Z</I>-statistic
+	 */
+	public double getSkewnessZStatistic()
+	{
+		return fSkewnessZStatistic;
+	}
+
+	/**
+	 * Returns the sample kurtosis (using an unbiased estimator).
+	 * <P>
+	 * The value returned is the <I>excess kurtosis</I>, such that it is zero for a normal distribution:
+	 * <P>
 	 * <UL>
 	 *   <LI><B>Mesokurtic</B>: has zero excess (e.g., normal distribution).</LI>
-	 *   <LI><B>Leptokurtic</B>: has positive excess, with a flatter peak and fatter tails (i.e., more extreme values).</LI>
-	 *   <LI><B>Platykurtic</B>: has negative excess, with a lower, wider peak and thinner tails (i.e., less extreme values).</LI>
+	 *   <LI><B>Leptokurtic</B>: has positive excess, higher and sharper central peak, with longer and fatter tails (i.e., more extreme values).</LI>
+	 *   <LI><B>Platykurtic</B>: has negative excess, lower and broader central peak, with shorter and thinner tails (i.e., less extreme values).</LI>
 	 * </UL>
+	 * <P>
+	 * As the kurtosis increases, more probability mass is transferred from the distribution's shoulders to the centre and tails.
 	 * 
-	 * @return the kurtosis (using an unbiased estimator)
+	 * @return the sample kurtosis (using an unbiased estimator)
 	 */
 	public double getKurtosis()
 	{
 		return fKurtosis;
+	}
+
+	/**
+	 * Returns a two-tailed test statistic <I>Z</I> of kurtosis (different from zero) with a 5% significance level.
+	 * <P>
+	 * <UL>
+	 *   <LI><B><I>Z</I> > +2</B>: population has very likely positive kurtosis (leptokurtic).</LI>
+	 *   <LI><B><I>Z</I> < -2</B>: population has very likely negative kurtosis (platykurtic).</LI>
+	 *   <LI><B>-2 <= <I>Z</I> <= +2</B>: inconclusive (might be negative, zero, or positive kurtosis).</LI>
+	 * </UL>
+	 * <P>
+	 * The larger <I>Z</I>, the higher the probability.
+	 * 
+	 * @return the kurtosis <I>Z</I>-statistic
+	 */
+	public double getKurtosisZStatistic()
+	{
+		return fKurtosisZStatistic;
+	}
+
+	/**
+	 * Returns a descriptive label of the mean (expected value).
+	 *
+	 * @return a descriptive label of the mean
+	 */
+	public static String getMeanDescription()
+	{
+		return Messages.lookup("textStatisticsMean");
+	}
+
+	/**
+	 * Returns a descriptive label of the standard deviation.
+	 *
+	 * @return a descriptive label of the standard deviation
+	 */
+	public static String getStandardDeviationDescription()
+	{
+		return Messages.lookup("textStatisticsStandardDeviation");
+	}
+
+	/**
+	 * Returns a descriptive label of the variance.
+	 *
+	 * @return a descriptive label of the variance
+	 */
+	public static String getVarianceDescription()
+	{
+		return Messages.lookup("textStatisticsVariance");
+	}
+
+	/**
+	 * Returns a descriptive label of the median.
+	 *
+	 * @return a descriptive label of the median
+	 */
+	public static String getMedianDescription()
+	{
+		return Messages.lookup("textStatisticsMedian");
+	}
+
+	/**
+	 * Returns a descriptive label of the interquartile range (IQR).
+	 *
+	 * @return a descriptive label of the interquartile range (IQR)
+	 */
+	public static String getInterquartileRangeDescription()
+	{
+		return Messages.lookup("textStatisticsInterquartileRange");
+	}
+
+	/**
+	 * Returns a descriptive label of a percentile.
+	 *
+	 * @return a descriptive label of a percentile
+	 */
+	public static String getPercentileDescription()
+	{
+		return Messages.lookup("textStatisticsPercentile");
+	}
+
+	/**
+	 * Returns a descriptive label of the skewness.
+	 *
+	 * @return a descriptive label of the skewness
+	 */
+	public static String getSkewnessDescription()
+	{
+		return Messages.lookup("textStatisticsSkewness");
+	}
+
+	/**
+	 * Returns a descriptive label of the kurtosis.
+	 *
+	 * @return a descriptive label of the kurtosis
+	 */
+	public static String getKurtosisDescription()
+	{
+		return Messages.lookup("textStatisticsKurtosis");
+	}
+
+	/**
+	 * Returns a qualitative description of the skewness based on its test statistic.
+	 *
+	 * @return a qualitative description of the skewness
+	 */
+	public String getSkewnessInterpretation()
+	{
+		String skewnessInterpretation = "";
+		if ((fSkewnessZStatistic >= -2.0) && (fSkewnessZStatistic <= +2.0)) {
+			skewnessInterpretation = Messages.lookup("textStatisticsSkewnessInconclusive");
+		}
+		else {
+			if (Math.abs(fSkewness) <= +0.5) {
+				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessSymmetric");
+			}
+			else if (fSkewness > +1.0) {
+				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessHighlyRightTailed");
+			}
+			else if (fSkewness > +0.5) {
+				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessModeratelyRightTailed");
+			}
+			else if (fSkewness < -1.0) {
+				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessHighlyLefttTailed");
+			}
+			else if (fSkewness < -0.5) {
+				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessModeratelyLeftTailed");
+			}
+		}
+
+		return skewnessInterpretation;
+	}
+
+	/**
+	 * Returns a qualitative description of the kurtosis based on its test statistic.
+	 *
+	 * @return a qualitative description of the kurtosis
+	 */
+	public String getKurtosisInterpretation()
+	{
+		String kurtosisInterpretation = "";
+		if ((fKurtosisZStatistic >= -2.0) && (fKurtosisZStatistic <= +2.0)) {
+			kurtosisInterpretation = Messages.lookup("textStatisticsKurtosisInconclusive");
+		}
+		else {
+			if (Math.abs(fKurtosis) < 1.0) {
+				kurtosisInterpretation = Messages.lookup("textStatisticsKurtosisMesokurtic");
+			}
+			else if (fKurtosisZStatistic > +2.0) {
+				kurtosisInterpretation = Messages.lookup("textStatisticsKurtosisLeptokurtic");
+			}
+			else if (fKurtosisZStatistic < -2.0) {
+				kurtosisInterpretation = Messages.lookup("textStatisticsKurtosisPlatykurtic");
+			}
+		}
+
+		return kurtosisInterpretation;
 	}
 
 	/*******************
@@ -506,7 +730,7 @@ public final class EmpiricalDistribution
 		}
 
 		fMedian = getPercentile(50);
-		fInterQuartileRange = getPercentile(75) - getPercentile(25);
+		fInterquartileRange = getPercentile(75) - getPercentile(25);
 
 		// *****************************************************
 		// estimate empirical probability density function (PDF)
@@ -544,19 +768,25 @@ public final class EmpiricalDistribution
 		// Skewness[X] = sum((Xi - E[X])^3) / std^3
 		// Kurtosis[X] = sum((Xi - E[X])^4) / std^4
 		double n = fN;
-		double s2 = 0.0;
-		double m3 = 0.0;
-		double m4 = 0.0;
+		double s2 = 0.0; // 2nd moment
+		double m3 = 0.0; // 3rd moment
+		double m4 = 0.0; // 4th moment
 		for (int i = 0; i < fN; ++i) {
 			s2 += MathTools.sqr(fX[i] - fExpectedValue); // biased variance estimator
 			m3 += MathTools.cube(fX[i] - fExpectedValue);
 			m4 += MathTools.quadr(fX[i] - fExpectedValue);
 		}
-		fSkewness = (m3 / n) / Math.pow(s2 / n,1.5);
-		fSkewness *= Math.sqrt((n - 1.0) / n) * (n / (n - 2.0));
-		fKurtosis = (m4 / n) / MathTools.sqr(s2 / n);
-		fKurtosis = ((fKurtosis * (n + 1.0)) - (3.0 * (n - 1.0))) * ((n - 1.0) / ((n - 2.0) * (n - 3.0))) + 3.0;
+		fSkewness = (m3 / n) / Math.pow(s2 / n,1.5); // population skewness
+		fSkewness *= (Math.sqrt(n * (n - 1.0)) / (n - 2.0)); // sample skewness
+		double standardErrorOfSkewness = Math.sqrt((6.0 * n * (n - 1.0)) / ((n - 2.0) * (n + 1.0) * (n + 3.0)));
+		fSkewnessConfidenceBounds = 2.0 * standardErrorOfSkewness; // symmetric bounds for a 95% confidence interval
+		fSkewnessZStatistic = fSkewness / standardErrorOfSkewness; // two-tailed test of skewness != 0 with 5% significance level
+
+		fKurtosis = (m4 / n) / MathTools.sqr(s2 / n); // population kurtosis
+		fKurtosis = ((fKurtosis * (n + 1.0)) - (3.0 * (n - 1.0))) * ((n - 1.0) / ((n - 2.0) * (n - 3.0))) + 3.0; // sample kurtosis
 		fKurtosis -= 3.0; // leading to zero kurtosis for a normal distribution
+		double standardErrorOfKurtosis = 2.0 * standardErrorOfSkewness * Math.sqrt((MathTools.sqr(n) - 1.0) / ((n - 3.0) * (n + 5.0)));
+		fKurtosisZStatistic = fKurtosis / standardErrorOfKurtosis; // two-tailed test of kurtosis != 0 with 5% significance level
 	}
 
 	/**
@@ -567,7 +797,7 @@ public final class EmpiricalDistribution
 		// define bin edges and centres
 		if (fUseOptimalNrOfHistogramBins) {
 			// apply the Freedman-Diaconis rule for finding the optimal histogram bin width
-			double optimalBinWidth = (2.0 * fInterQuartileRange) / MathTools.cubicRoot(fN);
+			double optimalBinWidth = (2.0 * fInterquartileRange) / MathTools.cubicRoot(fN);
 			fNrOfHistogramBins = ((int) Math.round((fXMax - fXMin) / optimalBinWidth));
 		}
 		fHistogramBinWidth = (fXMax - fXMin) / fNrOfHistogramBins;
