@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 09/08/2011
+// Last modified : 21/11/2011
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -38,7 +38,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 09/08/2011
+ * @version 21/11/2011
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
@@ -190,9 +190,9 @@ public final class DateStamp implements Comparable<DateStamp>
 	{
 		fDateStamp = Calendar.getInstance();
 		try {
-			fDateStamp.setTime((new SimpleDateFormat("dd/MM/yyyy")).parse(dateString));
+			set(Integer.parseInt(dateString.substring(0,2)),Integer.parseInt(dateString.substring(3,5)),Integer.parseInt(dateString.substring(6,10)));
 		}
-		catch (ParseException exc) {
+		catch (NumberFormatException exc) {
 			throw (new DateTimeFormatException(dateString));
 		}
 	}
