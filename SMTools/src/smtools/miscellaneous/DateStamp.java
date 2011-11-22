@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 21/11/2011
+// Last modified : 22/11/2011
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -38,7 +38,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 21/11/2011
+ * @version 22/11/2011
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
@@ -189,6 +189,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	public void set(String dateString) throws DateTimeFormatException
 	{
 		fDateStamp = Calendar.getInstance();
+
 		try {
 			set(Integer.parseInt(dateString.substring(0,2)),Integer.parseInt(dateString.substring(3,5)),Integer.parseInt(dateString.substring(6,10)));
 		}
@@ -544,12 +545,31 @@ public final class DateStamp implements Comparable<DateStamp>
 	@Override
 	public int compareTo(DateStamp otherDateStamp)
 	{
-		Calendar otherCalendar = Calendar.getInstance();
-		otherCalendar.set(Calendar.DAY_OF_MONTH,otherDateStamp.getDay());
-		otherCalendar.set(Calendar.MONTH,otherDateStamp.getMonth() - fDateStamp.getMinimum(Calendar.MONTH) - 1);
-		otherCalendar.set(Calendar.YEAR,otherDateStamp.getYear());
-
-		return fDateStamp.compareTo(otherCalendar);
+		if (getYear() < otherDateStamp.getYear()) {
+			return -1;
+		}
+		else if (getYear() > otherDateStamp.getYear()) {
+			return +1;
+		}
+		else {
+			if (getMonth() < otherDateStamp.getMonth()) {
+				return -1;
+			}
+			else if (getMonth() > otherDateStamp.getMonth()) {
+				return +1;
+			}
+			else {
+				if (getDay() < otherDateStamp.getDay()) {
+					return -1;
+				}
+				else if (getDay() > otherDateStamp.getDay()) {
+					return +1;
+				}
+				else {
+					return 0;
+				}
+			}
+		}
 	}
 	 
 	/**

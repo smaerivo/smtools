@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : TimeStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 11/08/2011
+// Last modified : 22/11/2011
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -35,7 +35,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 11/08/2011
+ * @version 22/11/2011
  */
 public final class TimeStamp implements Comparable<TimeStamp>
 {
@@ -227,16 +227,27 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	public void set(String timeString) throws DateTimeFormatException
 	{
 		fTimeStamp = Calendar.getInstance();
-		try {
-			fTimeStamp.setTime((new SimpleDateFormat("HH:mm:ss")).parse(timeString));
-		}
-		catch (ParseException excType1) {
+
+		if (timeString.length() == 8) {
+			// HH:mm:ss
 			try {
-				fTimeStamp.setTime((new SimpleDateFormat("HH:mm:ss.SSS")).parse(timeString));
+				set(Integer.parseInt(timeString.substring(0,2)),Integer.parseInt(timeString.substring(3,5)),Integer.parseInt(timeString.substring(6,8)),0);
 			}
-			catch (ParseException excType2) {
+			catch (NumberFormatException exc) {
 				throw (new DateTimeFormatException(timeString));
 			}
+		}
+		else if (timeString.length() == 12) {
+			// HH:mm:ss.mls
+			try {
+				set(Integer.parseInt(timeString.substring(0,2)),Integer.parseInt(timeString.substring(3,5)),Integer.parseInt(timeString.substring(6,8)),Integer.parseInt(timeString.substring(9,12)));
+			}
+			catch (NumberFormatException exc) {
+				throw (new DateTimeFormatException(timeString));
+			}
+		}
+		else {
+			throw (new DateTimeFormatException(timeString));
 		}
 	}
 
@@ -444,13 +455,39 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	@Override
 	public int compareTo(TimeStamp otherTimeStamp)
 	{
-		Calendar otherCalendar = Calendar.getInstance();
-		otherCalendar.set(Calendar.HOUR_OF_DAY,otherTimeStamp.getHour());
-		otherCalendar.set(Calendar.MINUTE,otherTimeStamp.getMinute());
-		otherCalendar.set(Calendar.SECOND,otherTimeStamp.getSecond());
-		otherCalendar.set(Calendar.MILLISECOND,otherTimeStamp.getMillisecond());
-
-		return fTimeStamp.compareTo(otherCalendar);
+		if (getHour() < otherTimeStamp.getHour()) {
+			return -1;
+		}
+		else if (getHour() > otherTimeStamp.getHour()) {
+			return +1;
+		}
+		else {
+			if (getMinute() < otherTimeStamp.getMinute()) {
+				return -1;
+			}
+			else if (getMinute() > otherTimeStamp.getMinute()) {
+				return +1;
+			}
+			else {
+				if (getSecond() < otherTimeStamp.getSecond()) {
+					return -1;
+				}
+				else if (getSecond() > otherTimeStamp.getSecond()) {
+					return +1;
+				}
+				else {
+					if (getMillisecond() < otherTimeStamp.getMillisecond()) {
+						return -1;
+					}
+					else if (getMillisecond() > otherTimeStamp.getMillisecond()) {
+						return +1;
+					}
+					else {
+						return 0;
+					}
+				}
+			}
+		}
 	}
 
 	/**
