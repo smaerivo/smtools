@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : JDateChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 28/05/2011
+// Last modified : 05/12/2011
 // Target        : Java VM (1.6)
 // ---------------------------------
 
@@ -91,7 +91,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 28/05/2011
+ * @version 05/12/2011
  */
 public final class JDateChooser extends JDefaultDialog implements ChangeListener
 {
@@ -332,7 +332,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		String[] monthNames = new String[12];
 		for (int monthNr = 0; monthNr < 12; ++monthNr) {
 			monthNames[monthNr] = kMonths[monthNr].substring(0,1).toUpperCase() + kMonths[monthNr].substring(1);
-		}		
+		}
 		fMonthChooser = new JComboBox<String>(monthNames);
 		fMonthChooser.setEditable(false);
 		fMonthChooser.addActionListener(this);
@@ -502,7 +502,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	private int preventDateOverlow(int selectedDay)
 	{
 		// find the last day of the current month
-		int lastDayOfMonth = kDaysInMonth[fSelectedDate.getMonth()];
+		int lastDayOfMonth = kDaysInMonth[fSelectedDate.getMonth() - 1];
 		if ((fSelectedDate.getMonth() == 1) &&
 				(fSelectedDate.isLeapYear())) {
 			lastDayOfMonth = 29;
