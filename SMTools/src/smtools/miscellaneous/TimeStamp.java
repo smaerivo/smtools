@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : TimeStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 22/11/2011
+// Last modified : 06/12/2011
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -35,7 +35,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 22/11/2011
+ * @version 06/12/2011
  */
 public final class TimeStamp implements Comparable<TimeStamp>
 {
@@ -228,25 +228,26 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	{
 		fTimeStamp = Calendar.getInstance();
 
-		if (timeString.length() == 8) {
-			// HH:mm:ss
-			try {
-				set(Integer.parseInt(timeString.substring(0,2)),Integer.parseInt(timeString.substring(3,5)),Integer.parseInt(timeString.substring(6,8)),0);
+		String[] timeStampParts = timeString.split(":");
+		try {
+			int hour = Integer.parseInt(timeStampParts[0]);
+			int minute = Integer.parseInt(timeStampParts[1]);
+			int second = 0;
+			int millisecond = 0;
+			if (timeStampParts[2].indexOf(".") > -1) {
+				String[] secondParts = timeStampParts[2].split(".");
+				second = Integer.parseInt(secondParts[0]);
+				millisecond = Integer.parseInt(secondParts[1]);
 			}
-			catch (NumberFormatException exc) {
-				throw (new DateTimeFormatException(timeString));
+			else {
+				second = Integer.parseInt(timeStampParts[2]);
 			}
+			set(hour,minute,second,millisecond);
 		}
-		else if (timeString.length() == 12) {
-			// HH:mm:ss.mls
-			try {
-				set(Integer.parseInt(timeString.substring(0,2)),Integer.parseInt(timeString.substring(3,5)),Integer.parseInt(timeString.substring(6,8)),Integer.parseInt(timeString.substring(9,12)));
-			}
-			catch (NumberFormatException exc) {
-				throw (new DateTimeFormatException(timeString));
-			}
+		catch (ArrayIndexOutOfBoundsException exc) {
+			throw (new DateTimeFormatException(timeString));
 		}
-		else {
+		catch (NumberFormatException exc) {
 			throw (new DateTimeFormatException(timeString));
 		}
 	}
