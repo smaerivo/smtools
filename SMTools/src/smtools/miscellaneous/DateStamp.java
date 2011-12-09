@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 06/12/2011
+// Last modified : 09/12/2011
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -38,13 +38,13 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 06/12/2011
+ * @version 09/12/2011
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
 	// container holding the current date
 	private Calendar fDateStamp;
-	
+
 	/****************
 	 * CONSTRUCTORS *
 	 ****************/
@@ -203,6 +203,66 @@ public final class DateStamp implements Comparable<DateStamp>
 		catch (NumberFormatException exc) {
 			throw (new DateTimeFormatException(dateString));
 		}
+	}
+
+	/**
+	 * Sets this <CODE>DateStamp</CODE> to the next day.
+	 * 
+	 * @param nrOfNextDays the number of days in the future
+	 */
+	public void setToNextDay(int nrOfNextDays)
+	{
+		fDateStamp.add(Calendar.DAY_OF_MONTH,nrOfNextDays);
+	}
+
+	/**
+	 * Sets this <CODE>DateStamp</CODE> to the previous day.
+	 * 
+	 * @param nrOfPreviousDays the number of days in the past
+	 */
+	public void setToPreviousDay(int nrOfPreviousDays)
+	{
+		fDateStamp.add(Calendar.DAY_OF_MONTH,-nrOfPreviousDays);
+	}
+
+	/**
+	 * Sets this <CODE>DateStamp</CODE> to the next month.
+	 * 
+	 * @param nrOfNextMonths the number of months in the future
+	 */
+	public void setToNextMonth(int nrOfNextMonths)
+	{
+		fDateStamp.add(Calendar.MONTH,nrOfNextMonths);
+	}
+
+	/**
+	 * Sets this <CODE>DateStamp</CODE> to the previous month.
+	 * 
+	 * @param nrOfPreviousMonths the number of months in the past
+	 */
+	public void setToPreviousMonth(int nrOfPreviousMonths)
+	{
+		fDateStamp.add(Calendar.MONTH,-nrOfPreviousMonths);
+	}
+
+	/**
+	 * Sets this <CODE>DateStamp</CODE> to the next year.
+	 * 
+	 * @param nrOfNextYears the number of years in the future
+	 */
+	public void setToNextYear(int nrOfNextYears)
+	{
+		fDateStamp.add(Calendar.YEAR,nrOfNextYears);
+	}
+
+	/**
+	 * Sets this <CODE>DateStamp</CODE> to the previous year.
+	 * 
+	 * @param nrOfPreviousYears the number of years in the past
+	 */
+	public void setToPreviousYear(int nrOfPreviousYears)
+	{
+		fDateStamp.add(Calendar.YEAR,-nrOfPreviousYears);
 	}
 
 	/**
