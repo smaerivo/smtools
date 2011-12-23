@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : JDateChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 05/12/2011
+// Last modified : 18/12/2011
 // Target        : Java VM (1.6)
 // ---------------------------------
 
@@ -91,7 +91,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 05/12/2011
+ * @version 18/12/2011
  */
 public final class JDateChooser extends JDefaultDialog implements ChangeListener
 {
@@ -323,117 +323,116 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.setBorder(new EmptyBorder(10,0,10,0));
 
-		panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+			panel = new JPanel();
+			panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
 
-		subPanel = new JPanel();
-		subPanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+				subPanel = new JPanel();
+				subPanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
 
-		String[] monthNames = new String[12];
-		for (int monthNr = 0; monthNr < 12; ++monthNr) {
-			monthNames[monthNr] = kMonths[monthNr].substring(0,1).toUpperCase() + kMonths[monthNr].substring(1);
-		}
-		fMonthChooser = new JComboBox<String>(monthNames);
-		fMonthChooser.setEditable(false);
-		fMonthChooser.addActionListener(this);
-		fMonthChooser.setToolTipText(Messages.lookup("tooltipCalendarMonth"));
-		subPanel.add(fMonthChooser);
-
-		// create a small gap
-		subPanel.add(Box.createRigidArea(new Dimension(20,0)));
-
-		SpinnerNumberModel yearSpinnerNumberModel = new SpinnerNumberModel(1900,1900,2100,1);
-		fYearChooser = new JSpinner(yearSpinnerNumberModel);	
-		// format number as an integer
-		JSpinner.NumberEditor yearSpinnerNumberEditor = new JSpinner.NumberEditor(fYearChooser,"0");
-		fYearChooser.setEditor(yearSpinnerNumberEditor);
-		fYearChooser.addChangeListener(this);
-		fYearChooser.setToolTipText(Messages.lookup("tooltipCalendarYear"));
-		subPanel.add(fYearChooser);
-
-		// create a small gap
-		subPanel.add(Box.createRigidArea(new Dimension(20,0)));
-
-		if (fUseDefaultDate == EUseDefaultDate.kEnabled) {
-			try {
-				Image undoIcon = JARResources.fSystemResources.getImage(kUndoIconFilename);
-				Image undoRolloverIcon = JARResources.fSystemResources.getImage(kUndoRolloverIconFilename);
-
-				fDefaultDateButton = new JUnfocusableButton(new ImageIcon(undoIcon));
-				fDefaultDateButton.setBorder(new EmptyBorder(0,0,0,0));
-				fDefaultDateButton.setFocusPainted(false);
-				fDefaultDateButton.setRolloverIcon(new ImageIcon(undoRolloverIcon));
-				fDefaultDateButton.setRolloverEnabled(true);
-				fDefaultDateButton.setToolTipText(Messages.lookup("tooltipCalendarCurrentDate",fDefaultDate.getDMYString()));
-				fDefaultDateButton.setActionCommand(kDefaultDate);
-				fDefaultDateButton.addActionListener(this);
-				subPanel.add(fDefaultDateButton);
+				String[] monthNames = new String[12];
+				for (int monthNr = 0; monthNr < 12; ++monthNr) {
+					monthNames[monthNr] = kMonths[monthNr].substring(0,1).toUpperCase() + kMonths[monthNr].substring(1);
+				}
+				fMonthChooser = new JComboBox<String>(monthNames);
+				fMonthChooser.setEditable(false);
+				fMonthChooser.addActionListener(this);
+				fMonthChooser.setToolTipText(Messages.lookup("tooltipCalendarMonth"));
+				subPanel.add(fMonthChooser);
 
 				// create a small gap
-				subPanel.add(Box.createRigidArea(new Dimension(15,0)));
-			}
-			catch (FileDoesNotExistException exc) {
-				JWarningDialog.warn(this,Messages.lookup("errorGUIComponentImageNotFound"));
-			}
-		}
+				subPanel.add(Box.createRigidArea(new Dimension(20,0)));
 
-		try {
-			Image exclamationIcon = JARResources.fSystemResources.getImage(kExclamationIconFilename);
-			Image exclamationRolloverIcon = JARResources.fSystemResources.getImage(kExclamationRolloverIconFilename);
+				SpinnerNumberModel yearSpinnerNumberModel = new SpinnerNumberModel(1900,1900,2100,1);
+				fYearChooser = new JSpinner(yearSpinnerNumberModel);	
+				// format number as an integer
+				JSpinner.NumberEditor yearSpinnerNumberEditor = new JSpinner.NumberEditor(fYearChooser,"0");
+				fYearChooser.setEditor(yearSpinnerNumberEditor);
+				fYearChooser.addChangeListener(this);
+				fYearChooser.setToolTipText(Messages.lookup("tooltipCalendarYear"));
+				subPanel.add(fYearChooser);
 
-			navButton = new JUnfocusableButton(new ImageIcon(exclamationIcon));
-			navButton.setBorder(new EmptyBorder(0,0,0,0));
-			navButton.setFocusPainted(false);
-			navButton.setRolloverIcon(new ImageIcon(exclamationRolloverIcon));
-			navButton.setRolloverEnabled(true);
-			navButton.setToolTipText(Messages.lookup("tooltipCalendarExclamation",(new DateStamp()).getDMYString()));
-			navButton.setActionCommand(kCurrentDate);
-			navButton.addActionListener(this);
-			subPanel.add(navButton);
-		}
-		catch (FileDoesNotExistException exc) {
-			JWarningDialog.warn(this,Messages.lookup("errorGUIComponentImageNotFound"));
-		}
+				// create a small gap
+				subPanel.add(Box.createRigidArea(new Dimension(20,0)));
 
-		panel.add(subPanel);
-		panel.add(new JEtchedLine());
+				if (fUseDefaultDate == EUseDefaultDate.kEnabled) {
+					try {
+						Image undoIcon = JARResources.fSystemResources.getImage(kUndoIconFilename);
+						Image undoRolloverIcon = JARResources.fSystemResources.getImage(kUndoRolloverIconFilename);
+
+						fDefaultDateButton = new JUnfocusableButton(new ImageIcon(undoIcon));
+						fDefaultDateButton.setBorder(new EmptyBorder(0,0,0,0));
+						fDefaultDateButton.setFocusPainted(false);
+						fDefaultDateButton.setRolloverIcon(new ImageIcon(undoRolloverIcon));
+						fDefaultDateButton.setRolloverEnabled(true);
+						fDefaultDateButton.setToolTipText(Messages.lookup("tooltipCalendarCurrentDate",fDefaultDate.getDMYString()));
+						fDefaultDateButton.setActionCommand(kDefaultDate);
+						fDefaultDateButton.addActionListener(this);
+						subPanel.add(fDefaultDateButton);
+
+						// create a small gap
+						subPanel.add(Box.createRigidArea(new Dimension(15,0)));
+					}
+					catch (FileDoesNotExistException exc) {
+						JWarningDialog.warn(this,Messages.lookup("errorGUIComponentImageNotFound"));
+					}
+				}
+
+				try {
+					Image exclamationIcon = JARResources.fSystemResources.getImage(kExclamationIconFilename);
+					Image exclamationRolloverIcon = JARResources.fSystemResources.getImage(kExclamationRolloverIconFilename);
+		
+					navButton = new JUnfocusableButton(new ImageIcon(exclamationIcon));
+					navButton.setBorder(new EmptyBorder(0,0,0,0));
+					navButton.setFocusPainted(false);
+					navButton.setRolloverIcon(new ImageIcon(exclamationRolloverIcon));
+					navButton.setRolloverEnabled(true);
+					navButton.setToolTipText(Messages.lookup("tooltipCalendarExclamation",(new DateStamp()).getDMYString()));
+					navButton.setActionCommand(kCurrentDate);
+					navButton.addActionListener(this);
+					subPanel.add(navButton);
+				}
+				catch (FileDoesNotExistException exc) {
+					JWarningDialog.warn(this,Messages.lookup("errorGUIComponentImageNotFound"));
+				}
+			panel.add(subPanel);
+			panel.add(new JEtchedLine());
 
 		mainPanel.add(panel,BorderLayout.NORTH);
 
-		// show the first letters of the weekdays
-		panel = new JPanel();
-		panel.setLayout(new GridLayout(0,7));
-		panel.setBorder(new EmptyBorder(10,10,10,9));
-		for (int i = 0; i < 7; ++i) {
-			label = new JLabel(kWeekDaysAbbreviated[i],JLabel.CENTER);
-			label.setFont(label.getFont().deriveFont(Font.ITALIC).deriveFont(12.0f));
-			label.setForeground(Color.BLUE);
-			panel.add(label);
-		}
+			// show the first letters of the weekdays
+			panel = new JPanel();
+			panel.setLayout(new GridLayout(0,7));
+			panel.setBorder(new EmptyBorder(10,10,10,9));
+			for (int i = 0; i < 7; ++i) {
+				label = new JLabel(kWeekDaysAbbreviated[i],JLabel.CENTER);
+				label.setFont(label.getFont().deriveFont(Font.ITALIC).deriveFont(12.0f));
+				label.setForeground(Color.BLUE);
+				panel.add(label);
+			}
 
-		// show the days' buttons
-		int nrOfDayButtons = 7 * 6;
-		fDayButtons = new JUnfocusableTriggeredButton[nrOfDayButtons];
-		for (int i = 0; i < nrOfDayButtons; i++) {
-			dayButton = new JUnfocusableTriggeredButton(String.valueOf(i));
-			dayButton.setPreferredSize(new Dimension(kDayButtonSize,kDayButtonSize));
-			dayButton.setActionCommand(kDaySelected);
-			dayButton.addActionListener(this);
-			fDayButtons[i] = dayButton;
-			fDayButtons[i].setHighlightColor(Color.ORANGE.darker());
-			fDayButtons[i].setSelectedColor(Color.GREEN);
-			panel.add(fDayButtons[i]);
-		}
+			// show the days' buttons
+			int nrOfDayButtons = 7 * 6;
+			fDayButtons = new JUnfocusableTriggeredButton[nrOfDayButtons];
+			for (int i = 0; i < nrOfDayButtons; i++) {
+				dayButton = new JUnfocusableTriggeredButton(String.valueOf(i));
+				dayButton.setPreferredSize(new Dimension(kDayButtonSize,kDayButtonSize));
+				dayButton.setActionCommand(kDaySelected);
+				dayButton.addActionListener(this);
+				fDayButtons[i] = dayButton;
+				fDayButtons[i].setHighlightColor(Color.ORANGE.darker());
+				fDayButtons[i].setSelectedColor(Color.GREEN);
+				panel.add(fDayButtons[i]);
+			}
 		mainPanel.add(panel,BorderLayout.CENTER);
 
-		// show the label with the selected date
-		panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-		fSelectedDateLabel = new JLabel(fDefaultDate.getFullDateString(),JLabel.CENTER);
-		Border emptyBorder = new EmptyBorder(10,10,10,9);
-		Border etchedBorder = new EtchedBorder();
-		fSelectedDateLabel.setBorder(new CompoundBorder(etchedBorder,emptyBorder));
-		panel.add(fSelectedDateLabel);
+			// show the label with the selected date
+			panel = new JPanel();
+			panel.setLayout(new FlowLayout());
+			fSelectedDateLabel = new JLabel(fDefaultDate.getFullDateString(),JLabel.CENTER);
+			Border emptyBorder = new EmptyBorder(10,10,10,9);
+			Border etchedBorder = new EtchedBorder();
+			fSelectedDateLabel.setBorder(new CompoundBorder(etchedBorder,emptyBorder));
+			panel.add(fSelectedDateLabel);
 		mainPanel.add(panel,BorderLayout.SOUTH);
 
 		fMonthChooser.setSelectedIndex(fSelectedDate.getMonth() - 1);
@@ -497,6 +496,9 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		fSelectedDateLabel.setText(fSelectedDate.getFullDateString());
 		fSelectedDateLabel.setFont(fSelectedDateLabel.getFont().deriveFont(Font.BOLD).deriveFont(12.0f));
 		fSelectedDateLabel.setPreferredSize(new Dimension(kSelectedLabelWidth,30));
+
+		// update the window title by appending it with the current selected week
+		setTitle(getWindowTitle() + " (" + Messages.lookup("textWeek") + " " + String.valueOf(fSelectedDate.getWeekOfYear()) + ")");
 	}
 
 	private int preventDateOverlow(int selectedDay)
