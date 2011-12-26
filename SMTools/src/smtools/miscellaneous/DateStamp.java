@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 09/12/2011
+// Last modified : 26/12/2011
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -38,7 +38,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 09/12/2011
+ * @version 26/12/2011
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
@@ -195,6 +195,38 @@ public final class DateStamp implements Comparable<DateStamp>
 			int day = Integer.parseInt(dateStampParts[0]);
 			int month = Integer.parseInt(dateStampParts[1]);
 			int year = Integer.parseInt(dateStampParts[2]);
+			set(day,month,year);
+		}
+		catch (ArrayIndexOutOfBoundsException exc) {
+			throw (new DateTimeFormatException(dateString));
+		}
+		catch (NumberFormatException exc) {
+			throw (new DateTimeFormatException(dateString));
+		}
+	}
+
+	/**
+	 * Sets this <CODE>DateStamp</CODE> object corresponding to another string representation.
+	 * <P>
+	 * The string has to have the following specific format:
+	 * <P>
+	 * <UL>
+	 *   <B>yyyy-MM-dd</B>, e.g., 1976-04-11
+	 * </UL>
+	 *
+	 * @param  dateString the string representation of the date stamp (in the format yyyy-MM-dd)
+	 * @throws DateTimeFormatException if an error occurred during conversion
+	 * @see    java.text.SimpleDateFormat
+	 */
+	public void setAdjusted(String dateString) throws DateTimeFormatException
+	{
+		fDateStamp = Calendar.getInstance();
+
+		String[] dateStampParts = dateString.split("-");
+		try {
+			int year = Integer.parseInt(dateStampParts[0]);
+			int month = Integer.parseInt(dateStampParts[1]);
+			int day = Integer.parseInt(dateStampParts[2]);
 			set(day,month,year);
 		}
 		catch (ArrayIndexOutOfBoundsException exc) {
