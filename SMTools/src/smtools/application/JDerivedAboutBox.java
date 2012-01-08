@@ -1,12 +1,12 @@
 // -------------------------------------
 // Filename      : JDerivedAboutBox.java
 // Author        : Sven Maerivoet
-// Last modified : 27/04/2011
+// Last modified : 08/01/2012
 // Target        : Java VM (1.6)
 // -------------------------------------
 
 /**
- * Copyright 2003-2011 Sven Maerivoet
+ * Copyright 2003-2012 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import smtools.swing.dialogs.*;
  * This class contains an example about box.
  * 
  * @author  Sven Maerivoet
- * @version 27/04/2011
+ * @version 08/01/2012
  * @see     smtools.swing.dialogs.JAboutBox
  */
 public final class JDerivedAboutBox extends JAboutBox
@@ -56,7 +56,7 @@ public final class JDerivedAboutBox extends JAboutBox
 	protected JLabel getLogo()
 	{
 		try {
-			return (new JLabel(new ImageIcon(fResources.getImage("application-resources/images/about.png"))));
+			return (new JLabel(new ImageIcon(fResources.getImage("application-resources/images/smtools-splash-banner.png"))));
 		}
 		catch (FileDoesNotExistException exc) {
 			return null;
@@ -74,7 +74,7 @@ public final class JDerivedAboutBox extends JAboutBox
 	{
 		return
 		("<B>JDerivedGUIApplication v1.1</B><BR /><BR />" +
-			"Copyright 2003-2011 Sven Maerivoet<BR />");
+			"Copyright 2003-2012 Sven Maerivoet<BR />");
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public final class JDerivedAboutBox extends JAboutBox
 
 		affiliationsLabels[0] = new JLabel("",SwingConstants.CENTER);
 		try {
-			affiliationsLabels[0].setIcon(new ImageIcon(fResources.getImage("application-resources/images/tmleuven-logo-slogan.png")));
+			affiliationsLabels[0].setIcon(new ImageIcon(fResources.getImage("application-resources/images/smtools-splash-banner.png")));
 		}
 		catch (FileDoesNotExistException exc) {
 		}
@@ -114,24 +114,18 @@ public final class JDerivedAboutBox extends JAboutBox
 
 		affiliationsLabels[1] = new JLabel(
 			"<html>" +
-				"<b>Transport &amp; Mobility Leuven</b>" +
-				"<p>Diestsesteenweg 57" +
-				"<p>3010 Kessel-Lo (Leuven)" +
-				"<p>Belgium" +
-				"<p>" +
-				"<p>Telephone: +32 (16) 31 77 30" +
-				"<p>Fax: +32 (16) 31 77 39" +
+				"<b>Sven Maerivoet</b>" +
 			"</html>");
 
 		affiliationsLabels[2] = new JLabel(
 			"<html>" +
-				"E-mail: info@tmleuven.be" +
+				"E-mail: sven.maerivoet@gmail.com" +
 			"</html>");
 		affiliationsLabels[2].setToolTipText(Messages.lookup("tooltipAboutBoxClickForEmailClient"));
 
 		affiliationsLabels[3] = new JLabel(
 			"<html>" +
-				"Website: http://www.tmleuven.be/" +
+				"Website: http://www.maerivoet.org/" +
 			"</html>");
 		affiliationsLabels[3].setToolTipText(Messages.lookup("tooltipAboutBoxClickForBrowser"));
 
@@ -148,7 +142,7 @@ public final class JDerivedAboutBox extends JAboutBox
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				JDesktopAccess.executeBrowseApplication("http://www.tmleuven.be/");
+				JDesktopAccess.executeBrowseApplication("http://www.maerivoet.org/");
 			} 
 			@Override
 			public void mouseEntered(MouseEvent e)
@@ -171,7 +165,7 @@ public final class JDerivedAboutBox extends JAboutBox
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				JDesktopAccess.executeMailApplication("sven.maerivoet@tmleuven.be","Request for information on JDerivedGUIApplication");
+				JDesktopAccess.executeMailApplication("sven.maerivoet@gmail.com","Request for information on JDerivedGUIApplication");
 			}
 			@Override
 			public void mouseEntered(MouseEvent e)
