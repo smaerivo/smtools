@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 20/04/2011
+// Last modified : 08/01/2012
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2011 Sven Maerivoet
+ * Copyright 2003-2012 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 20/04/2011
+ * @version 08/01/2012
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -309,7 +309,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	{
 		contentPane.setLayout(new BorderLayout());
 
-		String backgroundImageFilename = "application-resources/images/tmleuven.jpg";
+		String backgroundImageFilename = "application-resources/images/clouds.jpg";
 
 		JImagePanel jip = null;
 		try {
