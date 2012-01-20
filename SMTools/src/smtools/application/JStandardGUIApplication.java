@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 02/06/2011
+// Last modified : 20/01/2012
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -142,7 +142,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 02/06/2011
+ * @version 20/01/2012
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, WindowListener
 {
@@ -178,7 +178,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 	/**
 	 * Useful constant for specifying Java's Nimbus look-and-feel.
 	 */
-	protected static final String klafNimbus = "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel";
+	protected static final String klafNimbus = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
 
 	/**
 	 * Useful constant for specifying the Microsoft Windows look-and-feel.
