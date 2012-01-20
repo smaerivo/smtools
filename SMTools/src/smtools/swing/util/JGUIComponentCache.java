@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JGUIComponentCache.java
 // Author        : Sven Maerivoet
-// Last modified : 26/10/2004
+// Last modified : 20/01/2012
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
@@ -50,7 +50,7 @@ import javax.swing.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 26/10/2004
+ * @version 20/01/2012
  */
 public final class JGUIComponentCache
 {
@@ -127,7 +127,7 @@ public final class JGUIComponentCache
 	{
 		// initialise GUI component cache (with an initial capacity of 10 components)
 		// a HashMap is used because we need the capability to store null values
-		fGUIComponentCache = new HashMap<Integer,Component>(10);
+		fGUIComponentCache = new HashMap<>(10);
 		fLastComponentID = -1;
 	}
 }

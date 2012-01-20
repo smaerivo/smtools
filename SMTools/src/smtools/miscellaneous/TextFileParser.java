@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : TextFileParser.java
 // Author        : Sven Maerivoet
-// Last modified : 17/09/2011
+// Last modified : 20/01/2012
 // Target        : Java VM (1.6)
 // -----------------------------------
 
@@ -49,7 +49,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 17/09/2011
+ * @version 20/01/2012
  */
 public final class TextFileParser
 {
@@ -325,7 +325,7 @@ public final class TextFileParser
 		Matcher csvMatcher = csvRegEx.matcher(source);
 
 		// extract all fields
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		while (csvMatcher.find()) {
 			String match = csvMatcher.group();
 			if (match == null) {

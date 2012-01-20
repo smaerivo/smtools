@@ -53,7 +53,7 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	 */
 	public JFileFilter()
 	{
-		fExtensions = new Hashtable<String,JFileFilter>();
+		fExtensions = new Hashtable<>();
 	}
 
 	/**
@@ -182,7 +182,7 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	{
 		if (fExtensions == null) {
 			// create extension table
-			fExtensions = new Hashtable<String,JFileFilter>(5);
+			fExtensions = new Hashtable<>(5);
 		}
 
 		fExtensions.put(extension.toLowerCase(),this);

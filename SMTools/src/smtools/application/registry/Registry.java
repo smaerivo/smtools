@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : Registry.java
 // Author        : Sven Maerivoet
-// Last modified : 06/05/2011
+// Last modified : 20/01/2012
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -60,7 +60,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 06/05/2011
+ * @version 20/01/2012
  */
 public final class Registry
 {
@@ -74,7 +74,7 @@ public final class Registry
 	// prevent arbitrary instantiation (we only allow a singleton instance) 
 	private Registry()
 	{
-		fHives = new Hashtable<String,Hive>();
+		fHives = new Hashtable<>();
 	}
 
 	/******************
@@ -309,10 +309,10 @@ public final class Registry
 			// load the number of hives
 			int nrOfHives = in.readInt();
 
-			fHives = new Hashtable<String,Hive>();
+			fHives = new Hashtable<>();
 
 			// deserialise the hives' names
-			Vector<String> hiveNames = new Vector<String>();
+			Vector<String> hiveNames = new Vector<>();
 			for (int hiveNr = 0; hiveNr < nrOfHives; ++hiveNr) {
 				hiveNames.add(in.readUTF());
 			}

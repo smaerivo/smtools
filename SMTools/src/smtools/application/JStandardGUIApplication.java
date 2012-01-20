@@ -1525,7 +1525,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 				Registry registry = Registry.getInstance();
 
 				SystemHive systemHive = new SystemHive();
-				systemHive.fContents = new Hashtable<String,Object>();
+				systemHive.fContents = new Hashtable<>();
 
 				// update contents of the system hive
 				// ...
