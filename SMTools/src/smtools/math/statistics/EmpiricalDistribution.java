@@ -1,7 +1,7 @@
 // ------------------------------------------
 // Filename      : EmpiricalDistribution.java
 // Author        : Sven Maerivoet
-// Last modified : 27/09/2011
+// Last modified : 20/01/2012
 // Target        : Java VM (1.6)
 // ------------------------------------------
 
@@ -39,7 +39,7 @@ import smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 27/09/2011
+ * @version 20/01/2012
  */
 public final class EmpiricalDistribution
 {
@@ -658,7 +658,7 @@ public final class EmpiricalDistribution
 		// *********************************************************
 
 		// sort all samples in ascending order
-		ArrayList<Double> sortedX = new ArrayList<Double>();
+		ArrayList<Double> sortedX = new ArrayList<>();
 		for (int i = 0; i < fN; ++i) {
 			sortedX.add(fX[i]);
 		}

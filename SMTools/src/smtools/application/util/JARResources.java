@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : JARResources.java
 // Author        : Sven Maerivoet
-// Last modified : 13/07/2011
+// Last modified : 20/01/2012
 // Target        : Java VM (1.6)
 // ---------------------------------
 
@@ -39,7 +39,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 13/07/2011
+ * @version 20/01/2012
  */
 public final class JARResources
 {
@@ -67,7 +67,7 @@ public final class JARResources
 	 */
 	public JARResources(String jarFilename) throws FileDoesNotExistException, FileReadException
 	{
-		fhtJARContents = new Hashtable<String,byte[]>();
+		fhtJARContents = new Hashtable<>();
 
 		try {
 			FileInputStream fis = new FileInputStream(jarFilename);

@@ -222,8 +222,7 @@ public final class Quadrilateral
 	 */
 	public boolean isConvex()
 	{
-		if (!isLeftOn(fP1,fP2,fP3) || !isLeftOn(fP2,fP3,fP4) || !isLeftOn(fP3,fP4,fP1)
-				|| !isLeftOn(fP4,fP1,fP2)) {
+		if (!isLeftOn(fP1,fP2,fP3) || !isLeftOn(fP2,fP3,fP4) || !isLeftOn(fP3,fP4,fP1) || !isLeftOn(fP4,fP1,fP2)) {
 			return false;
 		}
 		else {
@@ -241,8 +240,7 @@ public final class Quadrilateral
 	 */
 	public boolean isScreenConvex()
 	{
-		if (isLeftOn(fP1,fP2,fP3) || isLeftOn(fP2,fP3,fP4) || isLeftOn(fP3,fP4,fP1)
-				|| isLeftOn(fP4,fP1,fP2)) {
+		if (isLeftOn(fP1,fP2,fP3) || isLeftOn(fP2,fP3,fP4) || isLeftOn(fP3,fP4,fP1) || isLeftOn(fP4,fP1,fP2)) {
 			return false;
 		}
 		else {
