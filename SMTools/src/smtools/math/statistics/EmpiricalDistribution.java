@@ -1,7 +1,7 @@
 // ------------------------------------------
 // Filename      : EmpiricalDistribution.java
 // Author        : Sven Maerivoet
-// Last modified : 20/01/2012
+// Last modified : 12/11/2012
 // Target        : Java VM (1.6)
 // ------------------------------------------
 
@@ -39,7 +39,7 @@ import smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 20/01/2012
+ * @version 12/11/2012
  */
 public final class EmpiricalDistribution
 {
@@ -48,6 +48,10 @@ public final class EmpiricalDistribution
 	private double[] fX;
 	private double fXMin;
 	private double fXMax;
+	private double fXRange;
+	private double fKDEXMin;
+	private double fKDEXMax;
+	private double fKDEXRange;
 	private double[] fCDF;
 	private double[] fPercentiles;
 	private double fMedian;
@@ -57,7 +61,9 @@ public final class EmpiricalDistribution
 	private double[] fHistogramBinFrequencies;
 	private double[] fHistogramBinCentres;
 	private double fHistogramBinWidth;
+	private FunctionLookupTable fKDEPDF;
 	private double fExpectedValue;
+	private FunctionLookupTable fKDEPDFExtrema;
 	private double fVariance;
 	private double fStandardDeviation;
 	private double fSkewness;
@@ -106,16 +112,26 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Private constructor that is actually invoked.
+	 * Private constructor that is actually invoked when using histograms.
 	 */
 	private EmpiricalDistribution(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins)
 	{
-		load(x,useOptimalNrOfHistogramBins,nrOfHistogramBins);
+		setData(x,useOptimalNrOfHistogramBins,nrOfHistogramBins);
 	}
-	
+
 	/******************
 	 * PUBLIC METHODS *
 	 ******************/
+
+	/**
+	 * Retrieves the raw data for this empirical distribution.
+	 * 
+	 * @return the raw data for this empirical distribution
+	 */
+	public double[] getData()
+	{
+		return fX;
+	}
 
 	/**
 	 * Estimates the empirical distribution for a given array of values.
@@ -128,9 +144,9 @@ public final class EmpiricalDistribution
 	 * 
 	 * @param x the array of values to estimate the empirical distribution for
 	 */
-	public void load(double[] x)
+	public void setData(double[] x)
 	{
-		load(x,true,0);
+		setData(x,true,0);
 	}
 
 	/**
@@ -139,9 +155,9 @@ public final class EmpiricalDistribution
 	 * @param x the array of values to estimate the empirical distribution for
 	 * @param nrOfHistogramBins the user-specified number of histogram bins
 	 */
-	public void load(double[] x, int nrOfHistogramBins)
+	public void setData(double[] x, int nrOfHistogramBins)
 	{
-		load(x,false,nrOfHistogramBins);
+		setData(x,false,nrOfHistogramBins);
 	}
 
 	/**
@@ -190,6 +206,66 @@ public final class EmpiricalDistribution
 	}
 
 	/**
+	 * Returns the minimum of the input values.
+	 *
+	 * @return the minimum of the input values
+	 */
+	public double getXMinimum()
+	{
+		return fXMin;
+	}
+
+	/**
+	 * Returns the maximum of the input values.
+	 *
+	 * @return the maximum of the input values
+	 */
+	public double getXMaximum()
+	{
+		return fXMax;
+	}
+
+	/**
+	 * Returns the range of the input values.
+	 *
+	 * @return the range of the input values
+	 */
+	public double getXRange()
+	{
+		return fXRange;
+	}
+
+	/**
+	 * Returns the minimum of the values for a kernel density estimation (KDE) of the probability distribution function (PDF).
+	 *
+	 * @return the minimum of the values for a kernel density estimation (KDE) of the probability distribution function (PDF)
+	 */
+	public double getKDEXMinimum()
+	{
+		return fKDEXMin;
+	}
+
+	/**
+	 * Returns the maximum of the values for a kernel density estimation (KDE) of the probability distribution function (PDF).
+	 *
+	 * @return the maximum of the values for a kernel density estimation (KDE) of the probability distribution function (PDF)
+	 */
+	public double getKDEXMaximum()
+	{
+		return fKDEXMax;
+	}
+
+	/**
+	 * Returns the range of the values for a kernel density estimation (KDE) of the probability distribution function (PDF).
+	 *
+	 * @return the range of the values for a kernel density estimation (KDE) of the probability distribution function (PDF)
+	 */
+	public double getKDEXRange()
+	{
+		return fKDEXRange;
+	}
+
+	/**
 	 * Returns the median (i.e., the 50th percentile).
 	 * 
 	 * @return the median
@@ -210,7 +286,7 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Estimates the probability density function (PDF).
+	 * Adjusts the probability density function (PDF).
 	 * <P>
 	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
 	 * <P>
@@ -225,7 +301,7 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Estimates the probability density function (PDF) using a user-specified number of histogram bins.
+	 * Adjusts the probability density function (PDF) using a user-specified number of histogram bins.
 	 *
 	 * @param nrOfHistogramBins the user-specified number of histogram bins
 	 */
@@ -234,6 +310,92 @@ public final class EmpiricalDistribution
 		fUseOptimalNrOfHistogramBins = false;
 		fNrOfHistogramBins = nrOfHistogramBins;
 		estimatePDF();
+	}
+
+	/**
+	 * Calculates the bandwidth for kernel density estimation (KDE) based on Silverman's Rule-of-Thumb.
+	 *
+	 * @param  kernelType the type of kernel function to use in the calculation
+	 * @return an estimation of the bandwidth
+	 */
+	public double calculateKDEPDFBandwidth(MathTools.EKernelType kernelType)
+	{
+		// apply Silverman Rule-of-Thumb to calculate the bandwidth
+		double hConst = 0.0;
+		switch (kernelType) {
+			case kRectangular:
+				hConst = 1;
+				break;
+			case kTriangular:
+				hConst = 1;
+				break;
+			case kEpanechnikov:
+				hConst = 2.34;
+				break;
+			case kQuartic:
+				hConst = 2.78;
+				break;
+			case kGaussian:
+				hConst = 1.06;
+				break;
+		}
+
+		return (getStandardDeviation() * hConst * Math.pow(getN(),-1.0 / 5.0));
+	}
+
+	/**
+	 * Estimates the probability distribution function (PDF) using a specified kernel function.
+	 *
+	 * @param  kernelType the type of kernel function to use
+	 * @param  bandwidth the bandwidth of the kernel function
+	 * @param  nrOfSupportPoints the number of (X,Y) values to use for the smoothened 1D function
+	 * @param  minSupport the minimum value for the support
+	 * @param  maxSupport the maximum value for the support
+	 */
+	public void estimateKDEPDF(MathTools.EKernelType kernelType, double bandwidth, int nrOfSupportPoints, double minSupport, double maxSupport)
+	{
+		// prepare new support
+		double xRange = maxSupport - minSupport;
+		double delta = xRange / (nrOfSupportPoints - 1);
+		double[] xSupport = new double[nrOfSupportPoints];
+		for (int i = 0; i < nrOfSupportPoints; ++i) {
+			xSupport[i] = minSupport + (i * delta);
+		}
+
+		double[] xk = new double[nrOfSupportPoints];
+		double[] yk = new double[nrOfSupportPoints];
+
+		// apply kernel density estimator to all points in the new support
+		for (int k = 0; k < nrOfSupportPoints; ++k) {
+			xk[k] = xSupport[k];
+
+			// apply kernel function to all points
+			yk[k] = 0.0;
+			for (int i = 0; i < getN(); ++i) {
+				double u = (xk[k] - fX[i]) / bandwidth;
+				double uk = MathTools.getKernel(u,kernelType);
+				yk[k] += uk;
+			}
+			yk[k] /= (getN() * bandwidth);
+		}
+
+		fKDEXMin = minSupport;
+		fKDEXMax = maxSupport;
+		fKDEXRange = xRange;
+		fKDEPDF = new FunctionLookupTable(xk,yk);
+
+		// find all modes
+		Extrema extrema = MathTools.findExtrema(fKDEPDF.fY);
+
+		double[] x = new double[extrema.getNrOfLocalMaxima()];
+		double[] y = new double[extrema.getNrOfLocalMaxima()];
+		for (int i = 0; i < extrema.getNrOfLocalMaxima(); ++i) {
+			Extremum maximum = extrema.getLocalMaximum(i);
+			x[i] = fKDEPDF.fX[maximum.getIndex()];
+			y[i] = maximum.getValue();
+		}
+
+		fKDEPDFExtrema = new FunctionLookupTable(x,y);
 	}
 
 	/**
@@ -299,7 +461,7 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Returns the value of the probability density function (PDF) evaluated at <CODE>x</CODE>.
+	 * Returns the value of the probability density function (PDF) evaluated at <CODE>x</CODE> (based on a histogram).
 	 *
 	 * @param x the value to evaluate the probability density function at
 	 * @return the value of the probability density function evaluated at <CODE>x</CODE>
@@ -319,7 +481,7 @@ public final class EmpiricalDistribution
 			double y2 = 0.0;
 			if (x <= fHistogramBinCentres[0]) {
 				// interpolate from (0,0) to the bin centre
-				x1 = fHistogramBinCentres[0];
+				x2 = fHistogramBinCentres[0];
 				y2 = fHistogramBinFrequencies[0];
 			}
 			else if (x >= fHistogramBinCentres[fNrOfHistogramBins - 1]) {
@@ -350,11 +512,56 @@ public final class EmpiricalDistribution
 	}
 
 	/**
+	 * Returns the value of the probability density function (PDF) evaluated at <CODE>x</CODE> (based on kernel density estimation, KDE).
+	 *
+	 * @param x the value to evaluate the probability density function at
+	 * @return the value of the probability density function evaluated at <CODE>x</CODE>
+	 */
+	public double getKDEPDF(double x)
+	{
+		if ((fX == null) || (fKDEPDF == null)) {
+			return 0.0;
+		}
+
+		double pdf = 0.0;
+		if ((x >= fKDEXMin) && (x <= fKDEXMax)) {
+
+			ArraySearchBounds bounds = MathTools.searchArrayBounds(fKDEPDF.fX,x);
+			double x1 = fKDEPDF.fX[bounds.getLowerBound()];
+			double y1 = fKDEPDF.fY[bounds.getLowerBound()];
+			double x2 = fKDEPDF.fX[bounds.getUpperBound()];
+			double y2 = fKDEPDF.fY[bounds.getUpperBound()];
+
+			// do a linear interpolation
+			if (x1 != x2) {
+				pdf = y1 + ((x - x1) * ((y2 - y1) / (x2 - x1)));
+			}
+		}
+
+		// fail-safe for negative probabilities
+		if (pdf < 0.0) {
+			pdf = 0.0;
+		}
+
+		return pdf;
+	}
+
+	/**
+	 * Returns the previously complete calculated kernel density estimation (KDE) of the probability distribution function (PDF).
+	 *
+	 * @return the lookup table with <I>X</I> and <I>Y</I> values for the KDE PDF
+	 */
+	public FunctionLookupTable getFullKDEPDF()
+	{
+		return fKDEPDF;
+	}
+
+	/**
 	 * Returns the sample size.
 	 * 
 	 * @return the sample size
 	 */
-	public double getN()
+	public int getN()
 	{
 		return fN;
 	}
@@ -367,6 +574,26 @@ public final class EmpiricalDistribution
 	public double getExpectedValue()
 	{
 		return fExpectedValue;
+	}
+
+	/**
+	 * Alias for the expected value.
+	 * 
+	 * @return the expected value
+	 */
+	public double getMean()
+	{
+		return getExpectedValue();
+	}
+
+	/**
+	 * Returns all modes (i.e., local maxima) for the calculated kernel density estimation (KDE) of the probability density function (PDF).
+	 *
+	 * @return all modes of the specified PDF
+	 */
+	public FunctionLookupTable getKDEPDFModes()
+	{
+		return fKDEPDFExtrema;
 	}
 
 	/**
@@ -624,7 +851,7 @@ public final class EmpiricalDistribution
 
 	/**
 	 */
-	private void load(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins)
+	private void setData(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins)
 	{
 		if (x != null) {
 			fN = x.length;
@@ -675,6 +902,7 @@ public final class EmpiricalDistribution
 				fXMax = fX[i];
 			}
 		}
+		fXRange = fXMax - fXMin;
 
 		// use the product-limit (Kaplan-Meier) estimate of the survivor function and transform to the CDF
 		double[] D = new double[fN];
@@ -729,18 +957,25 @@ public final class EmpiricalDistribution
 			}
 		}
 
-		fMedian = getPercentile(50);
-		fInterquartileRange = getPercentile(75) - getPercentile(25);
+		// *******************************
+		// estimate statistical quantities
+		// *******************************
+
+		estimateStatisticalQuantities();
 
 		// *****************************************************
 		// estimate empirical probability density function (PDF)
 		// *****************************************************
 
 		estimatePDF();
+	}
 
-		// *******************************
-		// estimate statistical quantities
-		// *******************************
+	/**
+	 */
+	private void estimateStatisticalQuantities()
+	{
+		fMedian = getPercentile(50);
+		fInterquartileRange = getPercentile(75) - getPercentile(25);
 
 		// E[X] = sum(Xi * fi)
 		double frequency = 1.0 / (double) fN;

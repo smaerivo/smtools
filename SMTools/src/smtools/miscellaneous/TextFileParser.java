@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : TextFileParser.java
 // Author        : Sven Maerivoet
-// Last modified : 20/01/2012
+// Last modified : 11/11/2012
 // Target        : Java VM (1.6)
 // -----------------------------------
 
@@ -49,7 +49,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 20/01/2012
+ * @version 11/11/2012
  */
 public final class TextFileParser
 {
@@ -388,6 +388,100 @@ public final class TextFileParser
 	public String[] getAllLinesAsStringArray()
 	{
 		return getAllLines().toString().split(StringTools.kEOLCharacterSequence);
+	}
+
+	/******************
+	 * STATIC METHODS *
+	 ******************/
+
+	/**
+	 * Loads a file containing comma-separated values.
+	 *
+	 * @param  filename the name of the CSV file to load
+	 * @return a sequence of CSV values, <CODE>null</CODE> is a problem occurred
+	 */
+	public static ArrayList<String[]> loadGeneralCSVFile(String filename)
+	{
+		try {
+			TextFileParser tfp = new TextFileParser(filename);
+
+			// sequentially load file
+			ArrayList<String[]> result = new ArrayList<String[]>();
+			while (!tfp.endOfFileReached()) {
+				result.add(tfp.getNextCSV());
+			}
+
+			return result;
+		}
+		catch (Exception exc) {
+			return null;
+		}
+	}
+
+	/**
+	 * Loads a file containing a single column of <CODE>double</CODE>s.
+	 *
+	 * @param  filename the name of the file to load
+	 * @return a sequence of <CODE>double</CODE>s, <CODE>null</CODE> is a problem occurred
+	 */
+	public static double[] loadDoubleFile(String filename)
+	{
+		try {
+			TextFileParser tfp = new TextFileParser(filename);
+
+			// sequentially load file
+			ArrayList<Double> data = new ArrayList<Double>();
+			while (!tfp.endOfFileReached()) {
+				data.add(tfp.getNextDouble());
+			}
+
+			int nrOfValues = data.size();
+			double[] result = new double[nrOfValues];
+			for (int i = 0; i < nrOfValues; ++i) {
+				result[i] = data.get(i);
+			}
+
+			return result;
+		}
+		catch (Exception exc) {
+			return null;
+		}
+	}
+
+	/**
+	 * Loads a file containing a table with comma-separated <CODE>double</CODE>s.
+	 *
+	 * @param  filename the name of the file to load
+	 * @return a sequence of <CODE>double</CODE>s, <CODE>null</CODE> is a problem occurred
+	 */
+	public static double[][] loadDoubleCSVFile(String filename)
+	{
+		ArrayList<String[]> data = loadGeneralCSVFile(filename);
+		if (data != null) {
+			int nrOfValues = data.size(); 
+			if (nrOfValues > 0) {
+				int nrOfColumns = data.get(1).length;
+				double[][] result = new double[nrOfValues][nrOfColumns];
+				try {
+					for (int i = 0; i < nrOfValues; ++i) {
+						for (int j = 0; j < nrOfColumns; ++j) {
+							result[i][j] = Double.parseDouble(data.get(i)[j]);
+						}
+					}
+
+					return result;
+				}
+				catch (Exception exc) {
+					return null;
+				}
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
 	}
 
 	/*******************

@@ -27,7 +27,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
-//import org.apache.log4j.*;
 import smtools.application.util.*;
 import smtools.exceptions.*;
 import smtools.miscellaneous.*;

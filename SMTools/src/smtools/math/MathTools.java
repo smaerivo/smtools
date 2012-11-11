@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 26/08/2011
+// Last modified : 11/11/2012
 // Target        : Java VM (1.6)
 // -------------------------------
 
@@ -35,10 +35,15 @@ package smtools.math;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 26/08/2011
+ * @version 11/11/2012
  */
 public final class MathTools
 {
+	/**
+	 * The different kernel types.
+	 */
+	public static enum EKernelType {kRectangular, kTriangular, kEpanechnikov, kQuartic, kGaussian};
+
 	/****************
 	 * CONSTRUCTORS *
 	 ****************/
@@ -320,5 +325,283 @@ public final class MathTools
 		}
 
 		return (new ArraySearchBounds(lowerBound,upperBound));
+	}
+
+	/**
+	 * Checks whether or not a number is even.
+	 *
+	 * @param  n the number to check
+	 * @return   <CODE>true</CODE> when <I>n</I> is even, <CODE>false</CODE> if it's odd
+	 */
+	public static boolean isEven(int n)
+	{
+		return ((n & 1) == 0);
+	}
+
+	/**
+	 * Checks whether or not a number is odd.
+	 *
+	 * @param  n the number to check
+	 * @return   <CODE>true</CODE> when <I>n</I> is odd, <CODE>false</CODE> if it's even
+	 */
+	public static boolean isOdd(int n)
+	{
+		return !isEven(n);
+	}
+
+	/**
+	 * Converts a number of bytes to kilobytes (1 kB = 1000 B).
+	 *
+	 * @param  nrOfBytes the number of bytes to convert
+	 * @return           the number of kilobytes corresponding to the number of bytes
+	 */
+	public static double convertBTokB(long nrOfBytes)
+	{
+		return ((double) nrOfBytes / 1000.0);
+	}
+
+	/**
+	 * Converts a number of bytes to kibibytes (1 KiB = 1024 B).
+	 *
+	 * @param  nrOfBytes the number of bytes to convert
+	 * @return           the number of kibibytes corresponding to the number of bytes
+	 */
+	public static double convertBToKiB(long nrOfBytes)
+	{
+		return ((double) nrOfBytes / 1024.0);
+	}
+
+	/**
+	 * Converts a number of bytes to megabytes (1 MB = 1000^2 B).
+	 *
+	 * @param  nrOfBytes the number of bytes to convert
+	 * @return           the number of megabytes corresponding to the number of bytes
+	 */
+	public static double convertBToMB(long nrOfBytes)
+	{
+		return ((double) nrOfBytes / (1000.0 * 1000.0));
+	}
+
+	/**
+	 * Converts a number of bytes to mebibytes (1 MiB = 1024^2 B).
+	 *
+	 * @param  nrOfBytes the number of bytes to convert
+	 * @return           the number of mebibytes corresponding to the number of bytes
+	 */
+	public static double convertBToMiB(long nrOfBytes)
+	{
+		return ((double) nrOfBytes / (1024.0 * 1024.0));
+	}
+
+	/**
+	 * Converts a number of bytes to gigabytes (1 GB = 1000^3 B).
+	 *
+	 * @param  nrOfBytes the number of bytes to convert
+	 * @return           the number of gigabytes corresponding to the number of bytes
+	 */
+	public static double convertBToGB(long nrOfBytes)
+	{
+		return ((double) nrOfBytes / (1000.0 * 1000.0 * 1000.0));
+	}
+
+	/**
+	 * Converts a number of bytes to gibibytes (1 GiB = 1024^3 B).
+	 *
+	 * @param  nrOfBytes the number of bytes to convert
+	 * @return           the number of gibibytes corresponding to the number of bytes
+	 */
+	public static double convertBToGiB(long nrOfBytes)
+	{
+		return ((double) nrOfBytes / (1024.0 * 1024.0 * 1024.0));
+	}
+
+	/**
+	 * Converts a number of bytes to terabytes (1 GB = 1000^4 B).
+	 *
+	 * @param  nrOfBytes the number of bytes to convert
+	 * @return           the number of terabytes corresponding to the number of bytes
+	 */
+	public static double convertBToTB(long nrOfBytes)
+	{
+		return ((double) nrOfBytes / (1000.0 * 1000.0 * 1000.0 * 1000.0));
+	}
+
+	/**
+	 * Converts a number of bytes to tebibytes (1 TiB = 1024^4 B).
+	 *
+	 * @param  nrOfBytes the number of bytes to convert
+	 * @return           the number of tebibytes corresponding to the number of bytes
+	 */
+	public static double convertBToTiB(long nrOfBytes)
+	{
+		return ((double) nrOfBytes / (1024.0 * 1024.0 * 1024.0 * 1024.0));
+	}
+
+	/**
+	 * Rounds a <CODE>double</CODE> to a <CODE>long</CODE>.
+	 *
+	 * @param  x the <CODE>double</CODE> to round
+	 * @return   a <CODE>long</CODE> representing the rounded <CODE>double</CODE>
+	 */
+	public static long round(double x)
+	{
+		return (long) Math.round(x);
+	}
+
+	/**
+	 * Finds all local extreme values (and their indices) in an array.
+	 *
+	 * @param  x the sequence to find all local extreme values for
+	 * @return all encountered local extreme values
+	 */
+	public static Extrema findExtrema(double[] x)
+	{
+		Extrema extrema = new Extrema();
+
+		if (x.length >= 3) {
+			// determine initial direction
+			double left = x[0];
+			double middle = x[1];
+			double right = 0;
+			int direction = 0;
+			if (middle > left) {
+				direction = +1;
+			}
+			else if (middle < left) {
+				direction = -1;
+			}
+
+			// process all elements
+			for (int i = 1; i < (x.length - 1); ++i) {
+				left = x[i - 1];
+				middle = x[i];
+				right = x[i + 1];
+	
+				if (right == middle) {
+					// direction remains unchanged
+				}
+				else if (right > middle) {
+					if (middle < left) {
+						extrema.addLocalMinimum(i,middle);
+						direction = +1;
+					}
+					else if (middle > left) {
+						direction = +1;
+					}
+					else if ((middle == left) && (direction == -1)) {
+						extrema.addLocalMinimum(i,middle);
+						direction = +1;
+					}
+					else if ((middle == left) && ((direction == +1) || (direction == 0))) {
+						direction = +1;
+					}
+				}
+				else if (right < middle) {
+					if (middle > left) {
+						extrema.addLocalMaximum(i,middle);
+						direction = -1;
+					}
+					else if (middle < left) {
+						direction = -1;
+					}
+					else if ((middle == left) && (direction == +1)) {
+						extrema.addLocalMaximum(i,middle);
+						direction = -1;
+					}
+					else if ((middle == left) && ((direction == -1) || (direction == 0))) {
+						direction = -1;
+					}
+				}
+			} // for i
+		} // if N >= 3
+
+		return extrema;
+	}
+
+	/**
+	 * Provides a quartic kernel.
+	 *
+	 * @param u the point where the kernel is to be evaluated
+	 * @param kernelType the type of kernel to use in the evaluation
+	 * @return the kernel evaluated in <I>u</I>
+	 */
+	public static double getKernel(double u, EKernelType kernelType)
+	{
+		double indicatorFunction = 1.0;
+		if (Math.abs(u) > 1.0) {
+			indicatorFunction = 0.0;
+		}
+
+		double result = 0.0;
+		switch (kernelType) {
+			case kRectangular:
+				result = (1.0 / 2.0) * indicatorFunction;
+				break;
+			case kTriangular:
+				result = (1.0 - Math.abs(u)) * indicatorFunction;
+				break;
+			case kEpanechnikov:
+				result = ((3.0 / 4.0) * (1.0 - MathTools.sqr(u))) * indicatorFunction;
+				break;
+			case kQuartic:
+				result = ((15.0 / 16.0) * MathTools.sqr(1.0 - MathTools.sqr(u))) * indicatorFunction;
+				break;
+			case kGaussian:
+				result = (1.0 / Math.sqrt(2.0 * Math.PI)) * Math.exp((-1.0 / 2.0) * MathTools.sqr(u));
+				break;
+		}
+		return result;
+	}
+
+	/**
+	 * Performs kernel smoothing on a 1D function specified by lookup tables for in the (X,Y) plane.
+	 * 
+	 * @param  functionLookupTable the lookup table for the specified 1D function
+	 * @param  kernelType the type of kernel to use
+	 * @param  bandwidth the bandwidth of the kernel
+	 * @param  nrOfSupportPoints the number of (X,Y) values to use for the smoothened 1D function
+	 * @return the smoothed data in a new lookup table
+	 */
+	public static FunctionLookupTable getKernelSmoother(FunctionLookupTable functionLookupTable, EKernelType kernelType, double bandwidth, int nrOfSupportPoints)
+	{
+		double[] x = functionLookupTable.fX;
+		double[] y = functionLookupTable.fY;
+		if (x.length != y.length) {
+			return null;
+		}
+
+		// prepare new support
+		double minX = MathTools.findMinimum(x);
+		double maxX = MathTools.findMaximum(x);
+		double xRange = maxX - minX;
+		double delta = xRange / (nrOfSupportPoints - 1);
+		double[] xSupport = new double[nrOfSupportPoints];
+		for (int i = 0; i < nrOfSupportPoints; ++i) {
+			xSupport[i] = minX + (i * delta);
+		}
+
+		double[] xk = new double[nrOfSupportPoints];
+		double[] yk = new double[nrOfSupportPoints];
+
+		// apply kernel smoother to all points in the new support
+		for (int k = 0; k < nrOfSupportPoints; ++k) {
+			xk[k] = xSupport[k];
+
+			// apply kernel to all points
+			yk[k] = 0.0;
+			double denominator = 0;
+			for (int i = 0; i < x.length; ++i) {
+				double u = (xk[k] - x[i]) / bandwidth;
+				double uk = getKernel(u,kernelType);
+				yk[k] += (uk * y[i]);
+				denominator += uk;
+			}
+
+			if (denominator != 0.0) {
+				yk[k] /= denominator;
+			}
+		}
+
+		return (new FunctionLookupTable(xk,yk));
 	}
 }

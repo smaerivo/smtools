@@ -1,7 +1,7 @@
 // -------------------------------------
 // Filename      : JDerivedAboutBox.java
 // Author        : Sven Maerivoet
-// Last modified : 08/01/2012
+// Last modified : 03/11/2012
 // Target        : Java VM (1.6)
 // -------------------------------------
 
@@ -34,7 +34,7 @@ import smtools.swing.dialogs.*;
  * This class contains an example about box.
  * 
  * @author  Sven Maerivoet
- * @version 08/01/2012
+ * @version 03/11/2012
  * @see     smtools.swing.dialogs.JAboutBox
  */
 public final class JDerivedAboutBox extends JAboutBox
@@ -73,8 +73,8 @@ public final class JDerivedAboutBox extends JAboutBox
 	protected String getAboutText()
 	{
 		return
-		("<B>JDerivedGUIApplication v1.1</B><BR /><BR />" +
-			"Copyright 2003-2012 Sven Maerivoet<BR />");
+		("<B>JDerivedGUIApplication v1.1</B><BR />" +
+			"Copyright 2003-2012 Sven Maerivoet");
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : JAboutBox.java
 // Author        : Sven Maerivoet
-// Last modified : 27/04/2011
+// Last modified : 03/11/2012
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -28,6 +28,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import smtools.application.util.*;
 import smtools.exceptions.*;
+import smtools.math.*;
 import smtools.miscellaneous.*;
 
 /**
@@ -79,7 +80,7 @@ import smtools.miscellaneous.*;
  * tab is <B>not</B> shown.
  * 
  * @author  Sven Maerivoet
- * @version 27/04/2011
+ * @version 03/11/2012
  */
 public class JAboutBox extends JDefaultDialog
 {
@@ -503,20 +504,34 @@ public class JAboutBox extends JDefaultDialog
 
 	private void updateAboutTextLabel()
 	{
-		// update the available memory in the about text
+		// incorporate a custom about text
 		String aboutText = "<HTML>";
 		if (getAboutText() != null) {
-			aboutText += getAboutText();
+			aboutText += getAboutText() + "<BR />";
+			aboutText += "<BR />";
 		}
-		double freeMemory = Runtime.getRuntime().freeMemory() / (1024.0 * 1024.0);
-		aboutText += "<BR /><BR />" + Messages.lookup("textFreeMemory") + ": " + StringTools.convertDoubleToString(freeMemory,2) + " MB<BR />";
-		aboutText += "Java VM " + System.getProperty("java.version") + "<BR />";
-		aboutText += System.getProperty("java.vendor") + "<BR />";
-		aboutText += System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<BR />";
+
+		// update the JVM, OS, and machine specifics
+		aboutText += "Java VM " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ")<BR />";
+		aboutText += Messages.lookup("textOperatingSystem") + ": " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<BR />";
+		int nrOfProcessors = JMemoryStatistics.getNrOfProcessors();
+		aboutText += Messages.lookup("textNrOfProcessors") + ": " + String.valueOf(nrOfProcessors) + "<BR />";		
+
+		// update the available memory
+		long totalMemory = MathTools.round(MathTools.convertBToMiB(JMemoryStatistics.getTotalMemory()));
+		long usedMemory = MathTools.round(MathTools.convertBToMiB(JMemoryStatistics.getUsedMemory()));
+		long freeMemory = MathTools.round(MathTools.convertBToMiB(JMemoryStatistics.getFreeMemory()));
+		aboutText += Messages.lookup("textMemoryTotal") + ": " + String.valueOf(totalMemory) + " MiB<BR />";		
+		aboutText += Messages.lookup("textMemoryUsed") + ": " + String.valueOf(usedMemory) + " MiB<BR />";		
+		aboutText += Messages.lookup("textMemoryFree") + ": " + String.valueOf(freeMemory) + " MiB<BR />";		
+
+		// update the used libraries
+		aboutText += "<BR />";
 		aboutText += Messages.lookup("textUsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8";
 		if (getUsedLibrariesDescriptions() != null) {
 			aboutText += ", " + getUsedLibrariesDescriptions();
 		}
+
 		aboutText += "</HTML>";
 
 		fAboutTextLabel.setText(aboutText);
