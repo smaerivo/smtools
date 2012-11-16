@@ -1,7 +1,7 @@
 // ------------------------------------------
 // Filename      : EmpiricalDistribution.java
 // Author        : Sven Maerivoet
-// Last modified : 12/11/2012
+// Last modified : 16/11/2012
 // Target        : Java VM (1.6)
 // ------------------------------------------
 
@@ -39,7 +39,7 @@ import smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 12/11/2012
+ * @version 16/11/2012
  */
 public final class EmpiricalDistribution
 {
@@ -58,7 +58,9 @@ public final class EmpiricalDistribution
 	private double fInterquartileRange;
 	private boolean fUseOptimalNrOfHistogramBins;
 	private int fNrOfHistogramBins;
+	private double[] fHistogramBinCounts;
 	private double[] fHistogramBinFrequencies;
+	private double[] fHistogramBinRightEdges;
 	private double[] fHistogramBinCentres;
 	private double fHistogramBinWidth;
 	private FunctionLookupTable fKDEPDF;
@@ -112,11 +114,22 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Private constructor that is actually invoked when using histograms.
+	 * Constructs an <CODE>EmpiricalDistribution</CODE> object for a given array of values and user-specified histogram bin right edges.
+	 * 
+	 * @param x the array of values to estimate the empirical distribution for
+	 * @param histogramBinRightEdges the array of values containing the histogram bin right edges
+	 */
+	public EmpiricalDistribution(double[] x, double[] histogramBinRightEdges)
+	{
+		setData(x,false,0,histogramBinRightEdges);
+	}
+
+	/**
+	 * Private constructor that is invoked in case of a number of histograms was specified or requested.
 	 */
 	private EmpiricalDistribution(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins)
 	{
-		setData(x,useOptimalNrOfHistogramBins,nrOfHistogramBins);
+		setData(x,useOptimalNrOfHistogramBins,nrOfHistogramBins,null);
 	}
 
 	/******************
@@ -146,7 +159,7 @@ public final class EmpiricalDistribution
 	 */
 	public void setData(double[] x)
 	{
-		setData(x,true,0);
+		setData(x,true,0,null);
 	}
 
 	/**
@@ -157,7 +170,7 @@ public final class EmpiricalDistribution
 	 */
 	public void setData(double[] x, int nrOfHistogramBins)
 	{
-		setData(x,false,nrOfHistogramBins);
+		setData(x,false,nrOfHistogramBins,null);
 	}
 
 	/**
@@ -406,6 +419,27 @@ public final class EmpiricalDistribution
 	public int getNrOfHistogramBins()
 	{
 		return fNrOfHistogramBins;
+	}
+
+	/**
+	 * Returns the count associated with a specified histogram bin.
+	 *
+	 * @param histogramBin the histogram bin to lookup the count for
+	 * @return the count associated with the specified histogram bin
+	 */
+	public double getHistogramBinCount(int histogramBin)
+	{
+		return fHistogramBinCounts[histogramBin];
+	}
+
+	/**
+	 * Returns the counts for all the histogram bins.
+	 *
+	 * @return an array containing the counts for all the histogram bins
+	 */
+	public double[] getHistogramBinCounts()
+	{
+		return fHistogramBinCounts;
 	}
 
 	/**
@@ -851,7 +885,7 @@ public final class EmpiricalDistribution
 
 	/**
 	 */
-	private void setData(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins)
+	private void setData(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins, double histogramBinRightEdges[])
 	{
 		if (x != null) {
 			fN = x.length;
@@ -867,6 +901,7 @@ public final class EmpiricalDistribution
 
     fUseOptimalNrOfHistogramBins = useOptimalNrOfHistogramBins;
 		fNrOfHistogramBins = nrOfHistogramBins;
+		fHistogramBinRightEdges = histogramBinRightEdges;
 
     estimateDistributions();
 	}
@@ -961,7 +996,7 @@ public final class EmpiricalDistribution
 		// estimate statistical quantities
 		// *******************************
 
-		estimateStatisticalQuantities();
+		estimateStatistics();
 
 		// *****************************************************
 		// estimate empirical probability density function (PDF)
@@ -972,7 +1007,7 @@ public final class EmpiricalDistribution
 
 	/**
 	 */
-	private void estimateStatisticalQuantities()
+	private void estimateStatistics()
 	{
 		fMedian = getPercentile(50);
 		fInterquartileRange = getPercentile(75) - getPercentile(25);
@@ -1029,40 +1064,53 @@ public final class EmpiricalDistribution
 	private void estimatePDF()
 	{
 		// construct histogram
+
 		// define bin edges and centres
-		if (fUseOptimalNrOfHistogramBins) {
-			// apply the Freedman-Diaconis rule for finding the optimal histogram bin width
-			double optimalBinWidth = (2.0 * fInterquartileRange) / MathTools.cubicRoot(fN);
-			fNrOfHistogramBins = ((int) Math.round((fXMax - fXMin) / optimalBinWidth));
+		if (fHistogramBinRightEdges == null) {
+			if (fUseOptimalNrOfHistogramBins) {
+				// apply the Freedman-Diaconis rule for finding the optimal histogram bin width
+				double optimalBinWidth = (2.0 * fInterquartileRange) / MathTools.cubicRoot(fN);
+				fNrOfHistogramBins = ((int) Math.round((fXMax - fXMin) / optimalBinWidth));
+			}
+
+			fHistogramBinWidth = (fXMax - fXMin) / fNrOfHistogramBins;
+			fHistogramBinRightEdges = new double[fNrOfHistogramBins];
+			for (int i = 0; i < fNrOfHistogramBins; ++i) {
+				fHistogramBinRightEdges[i] = fXMin + ((i + 1) * fHistogramBinWidth);
+			}
+			fHistogramBinCentres = new double[fNrOfHistogramBins];
+			for (int i = 0; i < fNrOfHistogramBins; ++i) {
+				fHistogramBinCentres[i] = fHistogramBinRightEdges[i] - (fHistogramBinWidth / 2.0);
+			}
 		}
-		fHistogramBinWidth = (fXMax - fXMin) / fNrOfHistogramBins;
-		double[] histogramBinRightEdges = new double[fNrOfHistogramBins];
-		fHistogramBinCentres = new double[fNrOfHistogramBins];
-		for (int i = 0; i < fNrOfHistogramBins; ++i) {
-			histogramBinRightEdges[i] = fXMin + ((i + 1) * fHistogramBinWidth);
-		}
-		for (int i = 0; i < fNrOfHistogramBins; ++i) {
-			fHistogramBinCentres[i] = histogramBinRightEdges[i] - (fHistogramBinWidth / 2.0);
+		else {
+			fNrOfHistogramBins = fHistogramBinRightEdges.length;
+			fHistogramBinCentres = new double[fNrOfHistogramBins];
+			fHistogramBinCentres[0] = Double.NEGATIVE_INFINITY;
+			for (int i = 1; i < fNrOfHistogramBins; ++i) {
+				fHistogramBinCentres[i] = (fHistogramBinRightEdges[i - 1] + fHistogramBinRightEdges[i]) / 2.0;
+			}
 		}
 
 		// calculate bin counts
-		fHistogramBinFrequencies = new double[fNrOfHistogramBins];
+		fHistogramBinCounts = new double[fNrOfHistogramBins];
 		int currentBinIndex = 0;
 		for (int i = 0; i < fN; ++i) {
-			if (fX[i] < histogramBinRightEdges[currentBinIndex]) {
-				++fHistogramBinFrequencies[currentBinIndex];
+			if (fX[i] < fHistogramBinRightEdges[currentBinIndex]) {
+				++fHistogramBinCounts[currentBinIndex];
 			}
 			else {
-				while ((currentBinIndex < (fNrOfHistogramBins - 1)) && (fX[i] >= histogramBinRightEdges[currentBinIndex])) {
+				while ((currentBinIndex < (fNrOfHistogramBins - 1)) && (fX[i] >= fHistogramBinRightEdges[currentBinIndex])) {
 					++currentBinIndex;
 				}
-				++fHistogramBinFrequencies[currentBinIndex];
+				++fHistogramBinCounts[currentBinIndex];
 			}
 		}
 
 		// convert bin counts to frequencies
+		fHistogramBinFrequencies = new double[fNrOfHistogramBins];
 		for (int i = 0; i < fNrOfHistogramBins; ++i) {
-			fHistogramBinFrequencies[i] /= (double) fN;
+			fHistogramBinFrequencies[i] = fHistogramBinCounts[i] / (double) fN;
 		}
 	}
 }
