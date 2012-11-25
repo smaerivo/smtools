@@ -34,7 +34,7 @@ import smtools.swing.util.*;
 /**
  * The <CODE>JDefaultDialog</CODE> class is a baseclass for creating arbitrary dialog boxes.
  * <P>
- * Note that a valid {@link Messages} database must be available!
+ * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * There are three types of dialog boxes available:
  * <P>
@@ -251,12 +251,12 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	{
 		String command = e.getActionCommand();
 
-		if (command.equalsIgnoreCase(Messages.lookup("buttonOk"))) {
+		if (command.equalsIgnoreCase(I18NL10N.translate("buttonOk"))) {
 			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
 			fCancelled = false;
 			windowClosing(null);
 		}
-		else if (command.equalsIgnoreCase(Messages.lookup("buttonCancel"))) {
+		else if (command.equalsIgnoreCase(I18NL10N.translate("buttonCancel"))) {
 			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
 			windowClosing(null);
 		}
@@ -534,16 +534,16 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 			subPanel = new JPanel();
 			subPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-			button = new JButton(Messages.lookup("buttonOk"));
-			button.setActionCommand(Messages.lookup("buttonOk"));
+			button = new JButton(I18NL10N.translate("buttonOk"));
+			button.setActionCommand(I18NL10N.translate("buttonOk"));
 			button.addActionListener(this);
 			subPanel.add(button);
 			button.requestFocusInWindow();
 
 			if (fType == EType.kOkCancel) {
 
-				button = new JButton(Messages.lookup("buttonCancel"));
-				button.setActionCommand(Messages.lookup("buttonCancel"));
+				button = new JButton(I18NL10N.translate("buttonCancel"));
+				button.setActionCommand(I18NL10N.translate("buttonCancel"));
 				button.addActionListener(this);
 				subPanel.add(button);
 				button.requestFocusInWindow();

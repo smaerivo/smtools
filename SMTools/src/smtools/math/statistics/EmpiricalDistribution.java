@@ -34,7 +34,7 @@ import smtools.math.*;
  * <P>
  * The distribution can only contain <CODE>Integer.MAX_VALUE</CODE> samples.
  * <P>
- * Note that a valid {@link Messages} database must be available!
+ * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
@@ -748,7 +748,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getMeanDescription()
 	{
-		return Messages.lookup("textStatisticsMean");
+		return I18NL10N.translate("textStatisticsMean");
 	}
 
 	/**
@@ -758,7 +758,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getStandardDeviationDescription()
 	{
-		return Messages.lookup("textStatisticsStandardDeviation");
+		return I18NL10N.translate("textStatisticsStandardDeviation");
 	}
 
 	/**
@@ -768,7 +768,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getVarianceDescription()
 	{
-		return Messages.lookup("textStatisticsVariance");
+		return I18NL10N.translate("textStatisticsVariance");
 	}
 
 	/**
@@ -778,7 +778,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getMedianDescription()
 	{
-		return Messages.lookup("textStatisticsMedian");
+		return I18NL10N.translate("textStatisticsMedian");
 	}
 
 	/**
@@ -788,7 +788,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getInterquartileRangeDescription()
 	{
-		return Messages.lookup("textStatisticsInterquartileRange");
+		return I18NL10N.translate("textStatisticsInterquartileRange");
 	}
 
 	/**
@@ -798,7 +798,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getPercentileDescription()
 	{
-		return Messages.lookup("textStatisticsPercentile");
+		return I18NL10N.translate("textStatisticsPercentile");
 	}
 
 	/**
@@ -808,7 +808,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getSkewnessDescription()
 	{
-		return Messages.lookup("textStatisticsSkewness");
+		return I18NL10N.translate("textStatisticsSkewness");
 	}
 
 	/**
@@ -818,7 +818,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getKurtosisDescription()
 	{
-		return Messages.lookup("textStatisticsKurtosis");
+		return I18NL10N.translate("textStatisticsKurtosis");
 	}
 
 	/**
@@ -830,23 +830,23 @@ public final class EmpiricalDistribution
 	{
 		String skewnessInterpretation = "";
 		if ((fSkewnessZStatistic >= -2.0) && (fSkewnessZStatistic <= +2.0)) {
-			skewnessInterpretation = Messages.lookup("textStatisticsSkewnessInconclusive");
+			skewnessInterpretation = I18NL10N.translate("textStatisticsSkewnessInconclusive");
 		}
 		else {
 			if (Math.abs(fSkewness) <= +0.5) {
-				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessSymmetric");
+				skewnessInterpretation = I18NL10N.translate("textStatisticsSkewnessSymmetric");
 			}
 			else if (fSkewness > +1.0) {
-				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessHighlyRightTailed");
+				skewnessInterpretation = I18NL10N.translate("textStatisticsSkewnessHighlyRightTailed");
 			}
 			else if (fSkewness > +0.5) {
-				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessModeratelyRightTailed");
+				skewnessInterpretation = I18NL10N.translate("textStatisticsSkewnessModeratelyRightTailed");
 			}
 			else if (fSkewness < -1.0) {
-				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessHighlyLefttTailed");
+				skewnessInterpretation = I18NL10N.translate("textStatisticsSkewnessHighlyLefttTailed");
 			}
 			else if (fSkewness < -0.5) {
-				skewnessInterpretation = Messages.lookup("textStatisticsSkewnessModeratelyLeftTailed");
+				skewnessInterpretation = I18NL10N.translate("textStatisticsSkewnessModeratelyLeftTailed");
 			}
 		}
 
@@ -862,17 +862,17 @@ public final class EmpiricalDistribution
 	{
 		String kurtosisInterpretation = "";
 		if ((fKurtosisZStatistic >= -2.0) && (fKurtosisZStatistic <= +2.0)) {
-			kurtosisInterpretation = Messages.lookup("textStatisticsKurtosisInconclusive");
+			kurtosisInterpretation = I18NL10N.translate("textStatisticsKurtosisInconclusive");
 		}
 		else {
 			if (Math.abs(fKurtosis) < 1.0) {
-				kurtosisInterpretation = Messages.lookup("textStatisticsKurtosisMesokurtic");
+				kurtosisInterpretation = I18NL10N.translate("textStatisticsKurtosisMesokurtic");
 			}
 			else if (fKurtosisZStatistic > +2.0) {
-				kurtosisInterpretation = Messages.lookup("textStatisticsKurtosisLeptokurtic");
+				kurtosisInterpretation = I18NL10N.translate("textStatisticsKurtosisLeptokurtic");
 			}
 			else if (fKurtosisZStatistic < -2.0) {
-				kurtosisInterpretation = Messages.lookup("textStatisticsKurtosisPlatykurtic");
+				kurtosisInterpretation = I18NL10N.translate("textStatisticsKurtosisPlatykurtic");
 			}
 		}
 

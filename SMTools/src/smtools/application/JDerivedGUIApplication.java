@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 08/01/2012
+// Last modified : 24/11/2012
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
@@ -43,14 +43,12 @@ import smtools.swing.util.*;
  *   <IMG src="doc-files/derived-gui.png">
  * </UL>
  * <P>
- * The building shown is the <I>Department of Electrical Engineering</I> (ESAT), at the Katholieke Universiteit Leuven, Belgium. 
- * <P>
  * Refer to the {@link JStandardGUIApplication} class for further information.
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 08/01/2012
+ * @version 24/11/2012
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -62,7 +60,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	private static final String kResourceArchiveFilename = "application-resources.zip";
 
 	// the location of the message-databasse
-	private static final String kApplicationMessageDatabasesPath = "application-resources/languages/";
+	private static final String kApplicationLocalePrefix = "application-resources/locales/locale-";
 
 	// the location of the splash screen's MP3 sound
 	private static final String kSplashScreenSoundFilename = "application-resources/sounds/thx-intro.mp3";
@@ -133,10 +131,10 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			dateChooser.activate();
 
 			if (dateChooser.cancelled()) {
-				JWarningDialog.warn(this,Messages.lookup("textChoiceCancelled"));
+				JWarningDialog.warn(this,I18NL10N.translate("textChoiceCancelled"));
 			}
 			else {
-				JMessageDialog.show(this,Messages.lookup("textSelectedDate",dateChooser.getSelectedDate().getFullDateString()));
+				JMessageDialog.show(this,I18NL10N.translate("textSelectedDate",dateChooser.getSelectedDate().getFullDateString()));
 			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTimeChooser)) {
@@ -145,10 +143,10 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			timeChooser.activate();
 
 			if (timeChooser.cancelled()) {
-				JWarningDialog.warn(this,Messages.lookup("textChoiceCancelled"));
+				JWarningDialog.warn(this,I18NL10N.translate("textChoiceCancelled"));
 			}
 			else {
-				JMessageDialog.show(this,Messages.lookup("textSelectedTime",timeChooser.getSelectedTime().getHMSString()));
+				JMessageDialog.show(this,I18NL10N.translate("textSelectedTime",timeChooser.getSelectedTime().getHMSString()));
 			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemIndex)) {
@@ -173,9 +171,9 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected String getApplicationMessageDatabasePath()
+	protected String getApplicationLocalePrefix()
 	{
-		return kApplicationMessageDatabasesPath;
+		return kApplicationLocalePrefix;
 	}
 
 	/**
@@ -186,12 +184,12 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	{
 		getSplashScreen().setStatusMessageWaitTime(kSplashScreenStatusMessageWaitTime);
 
-		getSplashScreen().setStatusMessage(Messages.lookup("textCachingCustomGUIComponents"));
+		getSplashScreen().setStatusMessage(I18NL10N.translate("textCachingCustomGUIComponents"));
 
 		// cache custom GUI components
 		JDateChooser dateChooser = new JDateChooser(
 				this,
-				Messages.lookup("textChooseDateDialogTitle"),
+				I18NL10N.translate("textChooseDateDialogTitle"),
 				JDefaultDialog.EType.kOkCancel,
 				new DateStamp(),
 				JDateChooser.EUseDefaultDate.kEnabled,
@@ -200,7 +198,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 		JTimeChooser timeChooser = new JTimeChooser(
 				this,
-				Messages.lookup("textChooseTimeDialogTitle"),
+				I18NL10N.translate("textChooseTimeDialogTitle"),
 				JDefaultDialog.EType.kOkCancel,
 				new TimeStamp(),
 				JTimeChooser.EType.kHourMinuteSecondMillisecond,
@@ -330,17 +328,17 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		JMenu[] menus = new JMenu[1];
 		JMenuItem menuItem = null;
 
-		menus[0] = new JMenu(Messages.lookup("menuDemonstration"));
-		menus[0].setMnemonic(Messages.translateMnemonic(Messages.lookup("menuDemonstrationMnemonic")));
+		menus[0] = new JMenu(I18NL10N.translate("menuDemonstration"));
+		menus[0].setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menuDemonstrationMnemonic")));
 
-			menuItem = new JMenuItem(Messages.lookup(kActionCommandMenuItemDateChooser),
-				Messages.translateMnemonic(Messages.lookup(kActionCommandMenuItemDateChooser + "Mnemonic")));
+			menuItem = new JMenuItem(I18NL10N.translate(kActionCommandMenuItemDateChooser),
+				I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemDateChooser + "Mnemonic")));
 			menuItem.setActionCommand(kActionCommandMenuItemDateChooser);
 			menuItem.addActionListener(this);
 		menus[0].add(menuItem);
 
-			menuItem = new JMenuItem(Messages.lookup(kActionCommandMenuItemTimeChooser),
-				Messages.translateMnemonic(Messages.lookup(kActionCommandMenuItemTimeChooser + "Mnemonic")));
+			menuItem = new JMenuItem(I18NL10N.translate(kActionCommandMenuItemTimeChooser),
+				I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemTimeChooser + "Mnemonic")));
 			menuItem.setActionCommand(kActionCommandMenuItemTimeChooser);
 			menuItem.addActionListener(this);
 		menus[0].add(menuItem);
@@ -357,11 +355,11 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		JMenu rightHandMenu = null;
 		JMenuItem menuItem = null;
 
-		rightHandMenu = new JMenu(Messages.lookup("menuHelp"));
-		rightHandMenu.setMnemonic(Messages.translateMnemonic(Messages.lookup("menuHelpMnemonic")));
+		rightHandMenu = new JMenu(I18NL10N.translate("menuHelp"));
+		rightHandMenu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menuHelpMnemonic")));
 
-		menuItem = new JMenuItem(Messages.lookup(kActionCommandMenuItemIndex),
-				Messages.translateMnemonic(Messages.lookup(kActionCommandMenuItemIndex + "Mnemonic")));
+		menuItem = new JMenuItem(I18NL10N.translate(kActionCommandMenuItemIndex),
+				I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemIndex + "Mnemonic")));
 		menuItem.setActionCommand(kActionCommandMenuItemIndex);
 		menuItem.addActionListener(this);
 		rightHandMenu.add(menuItem);

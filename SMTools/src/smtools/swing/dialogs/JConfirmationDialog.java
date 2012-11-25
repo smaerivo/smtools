@@ -32,7 +32,7 @@ import smtools.miscellaneous.*;
  * The <CODE>JMessageDialog</CODE> class pops up a standard "Ok/Cancel" dialog box containing a question.
  * <P>
  * Note that this class cannot be instantiated, nor can it be subclassed; use the static
- * {@link JConfirmationDialog#confirm} method instead. A valid {@link Messages} database must
+ * {@link JConfirmationDialog#confirm} method instead. A valid {@link I18NL10N} database must
  * be available!
  * <P>
  * Depending on the application's current <I>look-and-feel</I>, the dialog box
@@ -85,7 +85,7 @@ public final class JConfirmationDialog
 	 *   <CODE>boolean ok = JConfirmationDialog.confirm(parent,message);</CODE>
 	 * </UL>
 	 * <P>
-	 * Note that a valid {@link Messages} database must be available!
+	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
 	 * @param  parentComponent the frame in which this dialog is to be displayed
 	 * @param  question        a string containing a specified question
@@ -94,10 +94,10 @@ public final class JConfirmationDialog
 	public static boolean confirm(Component parentComponent, String question)
 	{
 		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSMessageDialog);
-		Object[] options = {Messages.lookup("buttonYes"), Messages.lookup("buttonNo")};
+		Object[] options = {I18NL10N.translate("buttonYes"), I18NL10N.translate("buttonNo")};
 
 		int n = JOptionPane.showOptionDialog(parentComponent,question,
-				Messages.lookup("textPleaseConfirm"),JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,
+				I18NL10N.translate("textPleaseConfirm"),JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,
 				options,options[1]);
 
 		return (n == JOptionPane.YES_OPTION);

@@ -55,7 +55,7 @@ import smtools.exceptions.*;
  * <P>
  * When consecutively loading multiple registries, they are joined together in memory.
  * <P>
- * Note that a valid {@link Messages} database must be available!
+ * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
@@ -141,7 +141,7 @@ public final class Registry
 		Hive removedHive = fHives.remove(hiveName);
 
 		if (removedHive == null) {
-			throw new RegistryException(Messages.lookup("errorHiveNotFoundInRegistry",hiveName));
+			throw new RegistryException(I18NL10N.translate("errorHiveNotFoundInRegistry",hiveName));
 		}
 	}
 
@@ -171,13 +171,13 @@ public final class Registry
 			return hive;
 		}
 		catch (InvalidClassException exc) {
-			throw new RegistryException(Messages.lookup("errorDeserialisingHive",filename));
+			throw new RegistryException(I18NL10N.translate("errorDeserialisingHive",filename));
 		}
 		catch (IOException exc) {
-			throw new RegistryException(Messages.lookup("errorLoadingHive",filename));
+			throw new RegistryException(I18NL10N.translate("errorLoadingHive",filename));
 		}
 		catch (ClassNotFoundException exc) {
-			throw new RegistryException(Messages.lookup("errorCastingHiveWhenLoading",filename));
+			throw new RegistryException(I18NL10N.translate("errorCastingHiveWhenLoading",filename));
 		}
 	}
 
@@ -207,7 +207,7 @@ public final class Registry
 			fileOutputStream.close();
 		}
 		catch (IOException exc) {
-			throw new RegistryException(Messages.lookup("errorSavingHive",filename));
+			throw new RegistryException(I18NL10N.translate("errorSavingHive",filename));
 		}
 	}
 
@@ -236,13 +236,13 @@ public final class Registry
 			fileInputStream.close();
 		}
 		catch (InvalidClassException exc) {
-			throw new RegistryException(Messages.lookup("errorDeserialisingRegistry",filename));
+			throw new RegistryException(I18NL10N.translate("errorDeserialisingRegistry",filename));
 		}
 		catch (IOException exc) {
-			throw new RegistryException(Messages.lookup("errorLoadingRegistry",filename));
+			throw new RegistryException(I18NL10N.translate("errorLoadingRegistry",filename));
 		}
 		catch (ClassNotFoundException exc) {
-			throw new RegistryException(Messages.lookup("errorCastingRegistryHivesWhenLoading",filename));
+			throw new RegistryException(I18NL10N.translate("errorCastingRegistryHivesWhenLoading",filename));
 		}
 	}
 
@@ -270,7 +270,7 @@ public final class Registry
 			fileOutputStream.close();
 		}
 		catch (IOException exc) {
-			throw new RegistryException(Messages.lookup("errorSavingRegistry",filename));
+			throw new RegistryException(I18NL10N.translate("errorSavingRegistry",filename));
 		}
 	}
 

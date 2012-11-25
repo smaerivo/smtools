@@ -33,7 +33,7 @@ import smtools.exceptions.*;
  * <P>
  * A date stamp is defined by its year, month and day.
  * <P>
- * Note that a valid {@link Messages} database must be available!
+ * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
@@ -496,10 +496,10 @@ public final class DateStamp implements Comparable<DateStamp>
 	 *   <B>day-of-week dd month yyyy</B>, e.g., Sunday 11 April 1976
 	 * </UL>
 	 * <P>
-	 * Note that a valid {@link Messages} database must be available!
+	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
 	 * @return a <CODE>String</CODE> representation of this <CODE>DateStamp</CODE> object as a fully formatted string
-	 * @see    Messages
+	 * @see    I18NL10N
 	 */
 	public String getFullDateString()
 	{
@@ -518,29 +518,29 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Helper method to convert a day-of-week index [1 (Monday) - 7 (Sunday)] to a weekday name.
 	 * <P>
-	 * Note that a valid {@link Messages} database must be available!
+	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
 	 * @param  dayOfWeek the day-of-week index to convert [1-7]
 	 * @return a string corresponding to the weekday name
-	 * @see    Messages
+	 * @see    I18NL10N
 	 */
 	public static String getDayOfWeekString(int dayOfWeek)
 	{
 		switch (dayOfWeek) {
 			case 1:
-				return Messages.lookup("textDayMonday");
+				return I18NL10N.translate("textDayMonday");
 			case 2:
-				return Messages.lookup("textDayTuesday");
+				return I18NL10N.translate("textDayTuesday");
 			case 3:
-				return Messages.lookup("textDayWednesday");
+				return I18NL10N.translate("textDayWednesday");
 			case 4:
-				return Messages.lookup("textDayThursday");
+				return I18NL10N.translate("textDayThursday");
 			case 5:
-				return Messages.lookup("textDayFriday");
+				return I18NL10N.translate("textDayFriday");
 			case 6:
-				return Messages.lookup("textDaySaturday");
+				return I18NL10N.translate("textDaySaturday");
 			case 7:
-				return Messages.lookup("textDaySunday");
+				return I18NL10N.translate("textDaySunday");
 		}
 
 		return "";
@@ -549,39 +549,39 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Helper method to convert a month index [1-12] to a month name.
 	 * <P>
-	 * Note that a valid {@link Messages} database must be available!
+	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
 	 * @param  month the month index to convert
 	 * @return a string corresponding to the month name
-	 * @see    Messages
+	 * @see    I18NL10N
 	 */
 	public static String getMonthString(int month)
 	{
 		switch (month) {
 			case 1:
-				return Messages.lookup("textMonthJanuary");
+				return I18NL10N.translate("textMonthJanuary");
 			case 2:
-				return Messages.lookup("textMonthFebruary");
+				return I18NL10N.translate("textMonthFebruary");
 			case 3:
-				return Messages.lookup("textMonthMarch");
+				return I18NL10N.translate("textMonthMarch");
 			case 4:
-				return Messages.lookup("textMonthApril");
+				return I18NL10N.translate("textMonthApril");
 			case 5:
-				return Messages.lookup("textMonthMay");
+				return I18NL10N.translate("textMonthMay");
 			case 6:
-				return Messages.lookup("textMonthJune");
+				return I18NL10N.translate("textMonthJune");
 			case 7:
-				return Messages.lookup("textMonthJuly");
+				return I18NL10N.translate("textMonthJuly");
 			case 8:
-				return Messages.lookup("textMonthAugust");
+				return I18NL10N.translate("textMonthAugust");
 			case 9:
-				return Messages.lookup("textMonthSeptember");
+				return I18NL10N.translate("textMonthSeptember");
 			case 10:
-				return Messages.lookup("textMonthOctober");
+				return I18NL10N.translate("textMonthOctober");
 			case 11:
-				return Messages.lookup("textMonthNovember");
+				return I18NL10N.translate("textMonthNovember");
 			case 12:
-				return Messages.lookup("textMonthDecember");
+				return I18NL10N.translate("textMonthDecember");
 		}
 
 		return "";
@@ -590,48 +590,48 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Helper method to convert a month name to a month index [1-12].
 	 * <P>
-	 * Note that a valid {@link Messages} database must be available!
+	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
 	 * @param  month the month name to convert
 	 * @return a number corresponding to the month index
-	 * @see    Messages
+	 * @see    I18NL10N
 	 */
 	public static int getMonth(String month)
 	{
-		if (month.equalsIgnoreCase(Messages.lookup("textMonthJanuary"))) {
+		if (month.equalsIgnoreCase(I18NL10N.translate("textMonthJanuary"))) {
 			return 1;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthFebruary"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthFebruary"))) {
 			return 2;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthMarch"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthMarch"))) {
 			return 3;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthApril"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthApril"))) {
 			return 4;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthMay"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthMay"))) {
 			return 5;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthJune"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthJune"))) {
 			return 6;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthJuly"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthJuly"))) {
 			return 7;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthAugust"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthAugust"))) {
 			return 8;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthSeptember"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthSeptember"))) {
 			return 9;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthOctober"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthOctober"))) {
 			return 10;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthNovember"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthNovember"))) {
 			return 11;
 		}
-		else if (month.equalsIgnoreCase(Messages.lookup("textMonthDecember"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.translate("textMonthDecember"))) {
 			return 12;
 		}
 

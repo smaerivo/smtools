@@ -35,7 +35,7 @@ import smtools.exceptions.*;
  * <P>
  * When playing a sound file or stream, the application's execution can be blocked, or it the playing can be delegated to a non-blocking thread.
  * <P>
- * Note that a valid {@link Messages} database must be available!
+ * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
@@ -232,7 +232,7 @@ public final class MP3Player extends Thread
 				// ignore
 			}
 			catch (SoundPlayingException exc) {
-				kLogger.error(Messages.lookup("errorPlayingSound"));
+				kLogger.error(I18NL10N.translate("errorPlayingSound"));
 			}
 		}
 	}
@@ -249,7 +249,7 @@ public final class MP3Player extends Thread
 			createPlayer(bufferedInputStream);
 		}
 		catch (FileNotFoundException exc) {
-			kLogger.error(Messages.lookup("errorSoundFileNotFound",soundFilename));
+			kLogger.error(I18NL10N.translate("errorSoundFileNotFound",soundFilename));
 			throw (new FileDoesNotExistException(soundFilename));
 		}		
 	}
@@ -261,7 +261,7 @@ public final class MP3Player extends Thread
 			fPlayer = new Player(soundInputStream,audioDevice);
 		}
 		catch (JavaLayerException exc) {
-			kLogger.error(Messages.lookup("errorPlayingSound"));
+			kLogger.error(I18NL10N.translate("errorPlayingSound"));
 			throw (new SoundPlayingException());
 		}
 	}

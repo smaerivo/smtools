@@ -34,7 +34,7 @@ import smtools.miscellaneous.*;
 /**
  * The <CODE>JSplashScreen</CODE> class provides a splash screen for Swing-based GUIs.
  * <P>
- * Note that a valid {@link Messages} database must be available!
+ * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * When visible, the splash screen looks as follows:
  * <P>
@@ -161,7 +161,7 @@ public final class JSplashScreen extends JWindow
 
 			panel.add(Box.createRigidArea(new Dimension(0,20)));
 
-			fStatusLabel = new JLabel(Messages.lookup("textSplashScreenMessage"),JLabel.LEFT);
+			fStatusLabel = new JLabel(I18NL10N.translate("textSplashScreenMessage"),JLabel.LEFT);
 			fStatusLabel.setForeground(Color.white);
 			fStatusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 			panel.add(fStatusLabel);

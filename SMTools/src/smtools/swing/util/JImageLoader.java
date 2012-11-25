@@ -32,7 +32,7 @@ import smtools.exceptions.*;
 /**
  * The <CODE>JImageLoader</CODE> helper class provides functionality for loading images.
  * <P>
- * Note that a valid {@link Messages} database must be available!
+ * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
@@ -76,13 +76,13 @@ public final class JImageLoader
 			mediaTracker.waitForID(0);
 		}
 		catch (InterruptedException exception) {
-			kLogger.error(Messages.lookup("errorImageNotFound",filename));
+			kLogger.error(I18NL10N.translate("errorImageNotFound",filename));
 			throw (new FileReadException(filename));
 		}
 
 		// check if the image loaded correctly
 		if ((mediaTracker.statusAll(false) & MediaTracker.ERRORED) != 0) {
-			kLogger.error(Messages.lookup("errorImageNotFound",filename));
+			kLogger.error(I18NL10N.translate("errorImageNotFound",filename));
 			throw (new FileReadException(filename));
 		}
 
