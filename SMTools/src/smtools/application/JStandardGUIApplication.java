@@ -593,7 +593,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		}
 
 		setVisible(true);
-	
+
 		// restore the cursor
 		setCursor(Cursor.getDefaultCursor());
 
@@ -1173,6 +1173,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 	protected JMenu constructRightHandMenu()
 	{
 		return null;
+	}
+
+	/**
+	 * Getter method for the status bar.
+	 */
+	protected JStatusBar getStatusBar()
+	{
+		return fStatusBar;
 	}
 
 	/**

@@ -126,9 +126,11 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		String command = e.getActionCommand();
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemDateChooser)) {
+			getStatusBar().setStatusText(I18NL10N.translate("textChooseDateDialogTitle"));
 			JDateChooser dateChooser = (JDateChooser) getGUIComponentCache().retrieveComponent(fDateChooserID);
 			dateChooser.setDefaultDate(new DateStamp(11,4,1976));
 			dateChooser.activate();
+			getStatusBar().clearStatusText();
 
 			if (dateChooser.cancelled()) {
 				JWarningDialog.warn(this,I18NL10N.translate("textChoiceCancelled"));
@@ -138,10 +140,12 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTimeChooser)) {
+			getStatusBar().setStatusText(I18NL10N.translate("textChooseTimeDialogTitle"));
 			JTimeChooser timeChooser = (JTimeChooser) getGUIComponentCache().retrieveComponent(fTimeChooserID);
 			timeChooser.setDefaultTime(new TimeStamp(12,25,20,10));
 			timeChooser.activate();
 
+			getStatusBar().clearStatusText();
 			if (timeChooser.cancelled()) {
 				JWarningDialog.warn(this,I18NL10N.translate("textChoiceCancelled"));
 			}

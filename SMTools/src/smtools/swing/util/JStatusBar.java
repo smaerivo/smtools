@@ -25,7 +25,6 @@ package smtools.swing.util;
 
 import java.awt.*;
 import javax.swing.*;
-import smtools.exceptions.*;
 
 /**
  * The <CODE>JStatusBar</CODE> class provides a <CODE>JPanel</CODE> that provides an application with a status bar.
