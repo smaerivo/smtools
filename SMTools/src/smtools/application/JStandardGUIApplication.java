@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 24/11/2012
+// Last modified : 28/11/2012
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -32,6 +32,7 @@ import org.apache.log4j.*;
 import smtools.application.registry.*;
 import smtools.application.util.*;
 import smtools.exceptions.*;
+import smtools.math.*;
 import smtools.miscellaneous.*;
 import smtools.swing.dialogs.*;
 import smtools.swing.util.*;
@@ -110,7 +111,8 @@ import smtools.swing.util.*;
  *     <LI>{@link JStandardGUIApplication#constructContentPane(JPanel)}</LI>
  *     <LI>{@link JStandardGUIApplication#constructMenus()}</LI>
  *     <LI>{@link JStandardGUIApplication#constructRightHandMenu()}</LI>
- *     <LI>{@link JStandardGUIApplication#isClockShownInMenuBar()}</LI>
+ *     <LI>{@link JStandardGUIApplication#isStatusBarEnabled()}</LI>
+ *     <LI>{@link JStandardGUIApplication#isClockEnabled()}</LI>
  *     <LI>{@link JStandardGUIApplication#getAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
  *   </UL>
  *   <P>
@@ -142,7 +144,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 24/11/2012
+ * @version 28/11/2012
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, WindowListener
 {
@@ -247,8 +249,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 	private static final String kActionCommandMenuItemSystemLAF = "menuItemSystemLAF";
 	private static final String kActionCommandMenuItemWindowsLAF = "menuItemWindowsLAF";
 
+	// set the status bar miscellaneous text's update period to ten seconds
+	private static final int kStatusBarUpdatePeriod = 10000;
+
 	// set the clock's update period to half a second
-	private static final int kClockUpdatePeriod = 500 * 1;
+	private static final int kClockUpdatePeriod = 500;
 
 	// switch for first-time initialisation of the system registry
 	private static final boolean kSaveSystemRegistry = false;
@@ -263,6 +268,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 	private JRadioButtonMenuItem frbMotif;
 	private JRadioButtonMenuItem frbNimbus;
 	private JRadioButtonMenuItem frbWindows;
+	private JStatusBar fStatusBar;
+	private String fStatusBarText;
 	private JLabel fClockLabel;
 	private String fLocale;
 	private JSplashScreen fSplashScreen;
@@ -494,12 +501,36 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		setResizable(isGUIResizable());
 
 		// setup content pane
- 		JPanel contentPane = new JPanel();
-		constructContentPane(contentPane);
+		JPanel contentPane = new JPanel();
+		contentPane.setLayout(new BorderLayout());
+			JPanel embeddedContentPane = new JPanel();
+			constructContentPane(embeddedContentPane);
+		contentPane.add(embeddedContentPane,BorderLayout.CENTER);
+
+		// if necessary, add the status bar
+		if (isStatusBarEnabled()) {
+			fStatusBarText = "";
+			fStatusBar = new JStatusBar();
+			contentPane.add(fStatusBar,BorderLayout.SOUTH);
+
+			// create a Swing timer to periodically update the status bar miscellaneous text
+			Action updateStatusBarAction = new AbstractAction()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					updateStatusBarMiscellaneousText();
+				}
+			};
+			new javax.swing.Timer(kStatusBarUpdatePeriod,updateStatusBarAction).start();
+
+			// perform the first update when the GUI is displayed
+			updateStatusBarMiscellaneousText();
+		}
+
 		setContentPane(contentPane);
 
 		// if necessary, add the clock
-		if (isClockShownInMenuBar()) {
+		if (isClockEnabled()) {
 
 			fClockLabel = new JLabel("",SwingConstants.RIGHT);
 
@@ -1145,13 +1176,25 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 	}
 
 	/**
+	 * Returns whether or not the status bar should be shown at the bottom of the application's window.
+	 * <P>
+	 * Note that this method returns <CODE>true</CODE> by default.
+	 *
+	 * @return whether or not the status bar should be shown at the bottom of the application's window
+	 */
+	protected boolean isStatusBarEnabled()
+	{
+		return true;
+	}
+
+	/**
 	 * Returns whether or not a clock (HH:MM:SS) should be shown at the right of the menubar.
 	 * <P>
 	 * Note that this method returns <CODE>true</CODE> by default.
 	 *
 	 * @return whether or not a clock (HH:MM:SS) should be shown at the right of the menubar
 	 */
-	protected boolean isClockShownInMenuBar()
+	protected boolean isClockEnabled()
 	{
 		return true;
 	}
@@ -1194,6 +1237,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 	 * PRIVATE METHODS *
 	 *******************/
 
+	/**
+	 */
 	private void setLookAndFeel(String lookAndFeel, boolean silent)
 	{
 		String previousLookAndFeel = fCurrentLAF;
@@ -1226,6 +1271,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		setLookAndFeelMenuItems();
 	}
 
+	/**
+	 */
 	private void setLookAndFeelMenuItems()
 	{
 		frbMac.setSelected(false);
@@ -1251,6 +1298,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		}
 	}
 
+	/**
+	 */
 	private void setInitialLookAndFeel(String lookAndFeel)
 	{
 		try {
@@ -1261,6 +1310,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		}
 	}
 
+	/**
+	 */
 	private String translateLookAndFeelName(String lookAndFeel)
 	{
 		// if no look-and-feel was specified then the platform's look-and-feel is used
@@ -1272,6 +1323,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		}
 	}
 
+	/**
+	 */
 	private void constructMenuBar(JMenuBar menuBar)
 	{
 		JMenu menu = null;
@@ -1387,7 +1440,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		}
 
 		// if necessary, add the clock
-		if (isClockShownInMenuBar()) {
+		if (isClockEnabled()) {
 			if (!menuBarGlued) {
 				menuBar.add(Box.createHorizontalGlue());
 			}
@@ -1395,6 +1448,20 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		}
 	}
 
+	/**
+	 */
+	private void updateStatusBarMiscellaneousText()
+	{
+		double percentageFree = ((double) JMemoryStatistics.getFreeMemory() / (double) JMemoryStatistics.getTotalMemory()) * 100;
+
+		fStatusBar.setMiscellaneousText(
+			I18NL10N.translate("textMemoryFree") + ": " +
+			StringTools.convertDoubleToString(MathTools.convertBToMiB(JMemoryStatistics.getFreeMemory()),0) + " " +
+			I18NL10N.translate("textMiBAbbreviation") + " (" + StringTools.convertDoubleToString(percentageFree,0) + "%)");
+	}
+
+	/**
+	 */
 	private void updateCurrentTimeLabel()
 	{
  		DateStamp currentDate = new DateStamp();
@@ -1402,6 +1469,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		fClockLabel.setText("[ " + currentDate.getDMYString() + " " + currentTime.getHMSString() + " ] "); // provide right-side padding
 	}
 
+	/**
+	 */
 	private void parseCommandLine(String[] argv)
 	{
 		if (argv.length > 0) {
@@ -1506,6 +1575,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		}
 	}
 
+	/**
+	 */
 	private void saveRegistry()
 	{
 		try {
@@ -1516,6 +1587,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 		}
 	}
 
+	/**
+	 */
 	private static void saveSystemRegistry()
 	{
 		if (kSaveSystemRegistry) {

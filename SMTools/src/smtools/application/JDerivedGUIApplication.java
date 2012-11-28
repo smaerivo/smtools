@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 24/11/2012
+// Last modified : 28/11/2012
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
@@ -48,7 +48,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 24/11/2012
+ * @version 28/11/2012
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -371,7 +371,16 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected boolean isClockShownInMenuBar()
+	protected boolean isStatusBarEnabled()
+	{
+		return true;
+	}
+
+	/**
+	 * See {@link JStandardGUIApplication}.
+	 */
+	@Override
+	protected boolean isClockEnabled()
 	{
 		return true;
 	}
