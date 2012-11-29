@@ -87,6 +87,7 @@ public final class JImagePanel extends JPanel
 	 ******************/
 
 	/**
+	 * Makes sure that the aspect ratio is maintained when the image is shown. 
 	 */
 	public void retainAspectRatio()
 	{

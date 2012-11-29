@@ -37,7 +37,7 @@ import smtools.swing.util.*;
 /**
  * The <CODE>JTimeChooser</CODE> class provides a dialog box for choosing a time.
  * <P>
- * Note that a valid {@link Messages} database must be available!
+ * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * The dialog box is <I>modal</I>, <I>non-resizable</I> and contains <I>"Ok"</I> and <I>"Cancel" buttons</I>
  * to close it. Here's an example of a time chooser (Microsoft Windows L&F):
@@ -339,7 +339,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 
 		// add the clock panel
 		fClockPanel = new ClockPanel(fUpdating,fDigitalClock);
-		fClockPanel.setToolTipText(Messages.lookup("tooltipClockPanel"));
+		fClockPanel.setToolTipText(I18NL10N.translate("tooltipClockPanel"));
 		mainPanel.add(fClockPanel);
 
 		mainPanel.add(new JEtchedLine(JEtchedLine.EOrientation.kHorizontal));
@@ -356,13 +356,13 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 			unfocusableButton.setFocusPainted(false);
 			unfocusableButton.setRolloverIcon(new ImageIcon(exclamationRolloverIcon));
 			unfocusableButton.setRolloverEnabled(true);
-			unfocusableButton.setToolTipText(Messages.lookup("tooltipGetCurrentTime"));
+			unfocusableButton.setToolTipText(I18NL10N.translate("tooltipGetCurrentTime"));
 			unfocusableButton.setActionCommand(kCurrentTime);
 			unfocusableButton.addActionListener(this);
 			panel.add(unfocusableButton);
 		}
 		catch (FileDoesNotExistException exc) {
-			JWarningDialog.warn(this,Messages.lookup("errorGUIComponentImageNotFound"));
+			JWarningDialog.warn(this,I18NL10N.translate("errorGUIComponentImageNotFound"));
 		}
 
 		SpinnerNumberModel hourSpinnerNumberModel = new SpinnerNumberModel(fTimeStamp.getHour(),0,23,1);
@@ -371,7 +371,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		JSpinner.NumberEditor hourSpinnerNumberEditor = new JSpinner.NumberEditor(fHourChooser,"0");
 		fHourChooser.setEditor(hourSpinnerNumberEditor);
 		fHourChooser.addChangeListener(this);
-		fHourChooser.setToolTipText(Messages.lookup("tooltipSetHour"));
+		fHourChooser.setToolTipText(I18NL10N.translate("tooltipSetHour"));
 		panel.add(fHourChooser);
 		panel.add(new JLabel("<HTML><B>:</B></HTML>"));
 
@@ -381,7 +381,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		JSpinner.NumberEditor minuteSpinnerNumberEditor = new JSpinner.NumberEditor(fMinuteChooser,"0");
 		fMinuteChooser.setEditor(minuteSpinnerNumberEditor);
 		fMinuteChooser.addChangeListener(this);
-		fMinuteChooser.setToolTipText(Messages.lookup("tooltipSetMinute"));
+		fMinuteChooser.setToolTipText(I18NL10N.translate("tooltipSetMinute"));
 		panel.add(fMinuteChooser);
 		panel.add(new JLabel("<HTML><B>:</B></HTML>"));
 
@@ -391,7 +391,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		JSpinner.NumberEditor secondSpinnerNumberEditor = new JSpinner.NumberEditor(fSecondChooser,"0");
 		fSecondChooser.setEditor(secondSpinnerNumberEditor);
 		fSecondChooser.addChangeListener(this);
-		fSecondChooser.setToolTipText(Messages.lookup("tooltipSetSecond"));
+		fSecondChooser.setToolTipText(I18NL10N.translate("tooltipSetSecond"));
 		if (fType == EType.kHourMinute) {
 			fSecondChooser.setEnabled(false);
 		}
@@ -406,7 +406,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		JSpinner.NumberEditor millisecondSpinnerNumberEditor = new JSpinner.NumberEditor(fMillisecondChooser,"0");
 		fMillisecondChooser.setEditor(millisecondSpinnerNumberEditor);
 		fMillisecondChooser.addChangeListener(this);
-		fMillisecondChooser.setToolTipText(Messages.lookup("tooltipSetMillisecond"));
+		fMillisecondChooser.setToolTipText(I18NL10N.translate("tooltipSetMillisecond"));
 		if ((fType == EType.kHourMinute) || (fType == EType.kHourMinuteSecond)) {
 			fMillisecondChooser.setEnabled(false);
 			fMillisecondChooser.setVisible(false);

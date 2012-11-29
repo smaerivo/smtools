@@ -155,7 +155,7 @@ public final class JARResources
 	 * Retrieves a resource as a <CODE>StringBuilder</CODE> from the archive.
 	 * 
 	 * @param  name                      the name of the resource to retrieve from the archive
-	 * @return                           an <CODE>StringBuilder</CODE> representing the resource
+	 * @return                           a <CODE>StringBuilder</CODE> representing the resource
 	 * @throws FileDoesNotExistException if the resource was not found
 	 * @see                              JARResources#getRawResource(String name)
 	 */

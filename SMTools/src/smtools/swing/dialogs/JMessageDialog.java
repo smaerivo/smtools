@@ -32,7 +32,7 @@ import smtools.miscellaneous.*;
  * The <CODE>JMessageDialog</CODE> class pops up a standard dialog box containing a message.
  * <P>
  * Note that this class cannot be instantiated, nor can it be subclassed; use the static
- * {@link JMessageDialog#show} method instead. A valid {@link Messages} database must
+ * {@link JMessageDialog#show} method instead. A valid {@link I18NL10N} database must
  * be available!
  * <P>
  * Depending on the application's current <I>look-and-feel</I>, the dialog box
@@ -85,7 +85,7 @@ public final class JMessageDialog
 	 *   <CODE>JMessageDialog.show(parent,message);</CODE>
 	 * </UL>
 	 * <P>
-	 * Note that a valid {@link Messages} database must be available!
+	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
 	 * @param parentComponent the frame in which this dialog is to be displayed
 	 * @param message         a string containing a specified message
@@ -93,9 +93,9 @@ public final class JMessageDialog
 	public static void show(Component parentComponent, String message)
 	{
 		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSMessageDialog);
-		Object[] options = {Messages.lookup("buttonOk")};
+		Object[] options = {I18NL10N.translate("buttonOk")};
 
-		JOptionPane.showOptionDialog(parentComponent,message,Messages.lookup("textAttention"),
+		JOptionPane.showOptionDialog(parentComponent,message,I18NL10N.translate("textAttention"),
 				JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options,options[0]);
 	}
 }

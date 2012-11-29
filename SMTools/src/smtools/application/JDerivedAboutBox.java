@@ -110,7 +110,7 @@ public final class JDerivedAboutBox extends JAboutBox
 		}
 		catch (FileDoesNotExistException exc) {
 		}
-		affiliationsLabels[0].setToolTipText(Messages.lookup("tooltipAboutBoxClickForBrowser"));
+		affiliationsLabels[0].setToolTipText(I18NL10N.translate("tooltipAboutBoxClickForBrowser"));
 
 		affiliationsLabels[1] = new JLabel(
 			"<html>" +
@@ -121,13 +121,13 @@ public final class JDerivedAboutBox extends JAboutBox
 			"<html>" +
 				"E-mail: sven.maerivoet@gmail.com" +
 			"</html>");
-		affiliationsLabels[2].setToolTipText(Messages.lookup("tooltipAboutBoxClickForEmailClient"));
+		affiliationsLabels[2].setToolTipText(I18NL10N.translate("tooltipAboutBoxClickForEmailClient"));
 
 		affiliationsLabels[3] = new JLabel(
 			"<html>" +
 				"Website: http://www.maerivoet.org/" +
 			"</html>");
-		affiliationsLabels[3].setToolTipText(Messages.lookup("tooltipAboutBoxClickForBrowser"));
+		affiliationsLabels[3].setToolTipText(I18NL10N.translate("tooltipAboutBoxClickForBrowser"));
 
 		for (JLabel affiliationLabel : affiliationsLabels) { 
 			affiliationLabel.setHorizontalTextPosition(SwingConstants.CENTER);

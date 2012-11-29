@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JGradientColorRamp.java
 // Author        : Sven Maerivoet
-// Last modified : 11/07/2011
+// Last modified : 19/11/2012
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
@@ -29,16 +29,51 @@ import smtools.math.*;
 import smtools.miscellaneous.*;
 
 /**
- * The <CODE>JGradientColorRamp</CODE> class provides a gradient color ramp.
+ * The <CODE>JGradientColorRamp</CODE> class provides a gradient colour ramp.
  * <P>
- * A gradient color ramp provides a visual display of a bar with a spectrum ranging
- * from blue to green to yellow to red:
+ * A gradient colour ramp provides a visual display of a bar with a certain specified spectrum:
  * <P>
  * <UL>
- *   <IMG src="doc-files/gradient-color-ramp.png">
+ *   <B>Gray scale:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-gray.png">
  * </UL>
  * <P>
- * A gradient color ramp can have four orientations (see {@link JGradientColorRamp.EOrientation}):
+ * <UL>
+ *   <B>Jet:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-jet.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Copper:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-copper.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Bone:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-bone.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Green-red diverging:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-greenreddiverging.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Hot:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-hot.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Discontinuous blue-white-green:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-discontinuousbluewhitegreen.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Discontinuous dark-red-yellow:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-discontinuousdarkredyellow.png">
+ * </UL>
+ * <P>
+ * A gradient colour ramp can have four orientations (see {@link JGradientColorRamp.EOrientation}):
  * <P>
  * <UL>
  *   <LI>horizontal left to right (tick marks are supported),</LI>
@@ -47,36 +82,50 @@ import smtools.miscellaneous.*;
  *   <LI>and vertical top to bottom.</LI>
  * </UL>
  * <P>
- * This class has also one static method, which can be used to derive a <CODE>Color</CODE> that
- * is linearly interpolated across the shown spectrum:
+ * This class has also one method that can be used to derive a <CODE>Color</CODE> that
+ * is linearly interpolated across the specified spectrum:
  * <P>
  * <UL>
- *  <CODE>Color interpolatedColor = JGradientColorRamp.interpolate(0.6);</CODE>
+ *  <CODE>Color interpolatedColor = myGradientColorRamp.interpolate(0.6);</CODE>
  * </UL>
  * <P>
- * which corresponds to the following interpolation scheme:
+ * or via a static method:
+ * <P>
+ * <UL>
+ *  <CODE>Color interpolatedColor = JGradientColorRamp.interpolate(0.6,EColorMap.kJet);</CODE>
+ * </UL>
+ * <P>
+ * both, e.g. corresponds to the following interpolation scheme:
  * <P>
  * <UL>
  *   <IMG src="doc-files/gradient-color-ramp-interpolated.png">
  * </UL>
  * <P>
- * The value can also be indicated on the color ramp itself.
+ * The value can also be indicated on the colour ramp itself.
+ * <P>
+ * <I>All documentation is written in British English, except for the API-code, which was kept in American English for compatability
+ * with the Java API interface.</I>
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 11/06/2011
+ * @version 19/11/2012
  */
 public final class JGradientColorRamp extends JPanel
 {
 	/**
-	 * Useful constants to specify a horizontally or vertically oriented gradient color ramp.
+	 * The supported horizontal and vertical orientations for the gradient colour ramp.
 	 */
 	public static enum EOrientation {kHorizontalLeftToRight, kHorizontalRightToLeft, kVerticalBottomToTop, kVerticalTopToBottom};
 
-	// color-ramp preferences
-	private static final float kLowerTreshold = 0.35f;
-	private static final float kUpperTreshold = 0.65f;
+	/**
+	 * The various supported colour maps.
+	 */
+	public static enum EColorMap {kGrayScale, kJet, kCopper, kBone, kGreenRedDiverging, kHot, kDiscontinuousBlueWhiteGreen, kDiscontinuousDarkRedYellow};
+
+	// colour ramp preferences
+	private static final float kLowerTreshold = 0.33f;
+	private static final float kUpperTreshold = 0.66f;
 	private static final float kDifference = kUpperTreshold - kLowerTreshold;
 	private static final int kDefaultWidth = 100;
 	private static final int kDefaultHeight = 20;
@@ -85,6 +134,7 @@ public final class JGradientColorRamp extends JPanel
 
 	// internal datastructures
 	private EOrientation fOrientation;
+	private EColorMap fColorMap;
 	private int fWidth;
 	private int fHeight;
 	private boolean fAnnotated;
@@ -106,8 +156,8 @@ public final class JGradientColorRamp extends JPanel
 	/**
 	 * Constructs a <CODE>JGradientColorRamp</CODE> object.
 	 * <P>
-	 * The gradient color ramp has by default a horizontal orientation (going from left
-	 * to right) with a width of 100 pixels and a height of 20 pixels.
+	 * The gradient colour ramp has by default a horizontal orientation (going from left
+	 * to right) with a width of 100 pixels and a height of 20 pixels; the jet colour map is used by default.
 	 */
 	public JGradientColorRamp()
 	{
@@ -116,14 +166,41 @@ public final class JGradientColorRamp extends JPanel
 
 	/**
 	 * Constructs a <CODE>JGradientColorRamp</CODE> object with the specified orientation and size.
+	 * <P>
+	 * The jet colour map is used by default.
 	 *
-	 * @param orientation the orientation of the gradient color ramp ({@link JGradientColorRamp.EOrientation})
-	 * @param width       the width of the gradient color ramp (expressed in pixels)
-	 * @param height      the height of the gradient color ramp (expressed in pixels)
+	 * @param orientation the orientation of the gradient colour ramp ({@link JGradientColorRamp.EOrientation})
+	 * @param width       the width of the gradient colour ramp (expressed in pixels)
+	 * @param height      the height of the gradient colour ramp (expressed in pixels)
 	 */
 	public JGradientColorRamp(EOrientation orientation, int width, int height)
 	{
+		this(orientation,EColorMap.kJet,width,height);
+	}
+
+	/**
+	 * Constructs a <CODE>JGradientColorRamp</CODE> object with a specified colour map.
+	 * <P>
+	 * The gradient colour ramp has by default a horizontal orientation (going from left
+	 * to right) with a width of 100 pixels and a height of 20 pixels.
+	 */
+	public JGradientColorRamp(EColorMap colorMap)
+	{
+		this(EOrientation.kHorizontalLeftToRight,colorMap,kDefaultWidth,kDefaultHeight);
+	}
+
+	/**
+	 * Constructs a <CODE>JGradientColorRamp</CODE> object with the specified orientation and size.
+	 *
+	 * @param orientation the orientation of the gradient colour ramp ({@link JGradientColorRamp.EOrientation})
+	 * @param colorMap    the colour map to use
+	 * @param width       the width of the gradient colour ramp (expressed in pixels)
+	 * @param height      the height of the gradient colour ramp (expressed in pixels)
+	 */
+	public JGradientColorRamp(EOrientation orientation, EColorMap colorMap, int width, int height)
+	{
 		fOrientation = orientation;
+		fColorMap = colorMap;
 		fWidth = width;
 		fHeight = height;
 		fAnnotated = false;
@@ -139,9 +216,30 @@ public final class JGradientColorRamp extends JPanel
 	 ******************/
 
 	/**
-	 * Sets the optional tick marks for the gradient color ramp.
+	 * Changes the colour map that is used.
+	 * 
+	 * @param colorMap the colour map to use
+	 */
+	public void setColorMap(EColorMap colorMap)
+	{
+		fColorMap = colorMap;
+		repaint();
+	}
+
+	/**
+	 * Returns the colour map that is used.
+	 * 
+	 * @return the colour map that is used
+	 */
+	public EColorMap getColorMap()
+	{
+		return fColorMap;
+	}
+
+	/**
+	 * Sets the optional tick marks for the gradient colour ramp.
 	 * <P>
-	 * Note that these tick marks only appear on <B>horizontally</B>-oriented gradient color ramps.
+	 * Note that these tick marks only appear on <B>horizontally</B>-oriented gradient colour ramps.
 	 *
 	 * @param lowerTickValue the value associated with the left colour
 	 * @param lowerTickValuePrefix the prefix label for the value associated with the left colour
@@ -267,12 +365,12 @@ public final class JGradientColorRamp extends JPanel
 		g.setColor(Color.black);
 		g.drawRect(0,0,fWidth - 1,fHeight - 1);
 
-		// create gradient color ramp
+		// create gradient colour ramp
 		if (fOrientation == EOrientation.kHorizontalLeftToRight) {
 
 			for (int x = 1; x < (fWidth - 1); ++x) {
 				double interpolationValue = ((double) x - 1.0) / ((double) fWidth - 3.0);
-				g.setColor(JGradientColorRamp.interpolate(interpolationValue));
+				g.setColor(interpolate(interpolationValue));
 				g.drawLine(x,1,x,fHeight - 2);
 			}
 		}
@@ -280,7 +378,7 @@ public final class JGradientColorRamp extends JPanel
 
 			for (int x = 1; x < (fWidth - 1); ++x) {
 				double interpolationValue = 1.0 - (((double) x - 1.0) / ((double) fWidth - 3.0));
-				g.setColor(JGradientColorRamp.interpolate(interpolationValue));
+				g.setColor(interpolate(interpolationValue));
 				g.drawLine(x,1,x,fHeight - 2);
 			}
 		}
@@ -288,7 +386,7 @@ public final class JGradientColorRamp extends JPanel
 
 			for (int y = 1; y < (fHeight - 1); ++y) {
 				double interpolationValue = 1.0 - (((double) y - 1.0) / ((double) fHeight - 3.0));
-				g.setColor(JGradientColorRamp.interpolate(interpolationValue));
+				g.setColor(interpolate(interpolationValue));
 				g.drawLine(1,y,fWidth - 2,y);
 			}
 		}
@@ -296,7 +394,7 @@ public final class JGradientColorRamp extends JPanel
 
 			for (int y = 1; y < (fHeight - 1); ++y) {
 				double interpolationValue = ((double) y - 1.0) / ((double) fHeight - 3.0);
-				g.setColor(JGradientColorRamp.interpolate(interpolationValue));
+				g.setColor(interpolate(interpolationValue));
 				g.drawLine(1,y,fWidth - 2,y);
 			}
 		}
@@ -354,43 +452,159 @@ public final class JGradientColorRamp extends JPanel
 			fHeight = trueHeight;
 		}
 	}
+	
+	/**
+	 * Derives a <CODE>Color</CODE> that is linearly interpolated across a spectrum.
+	 * <P>
+	 * Note that the value of <CODE>u</CODE> is clipped in the interval [0,1].
+	 *
+	 * @param u the value to use when interpolating the spectrum
+	 */
+	public Color interpolate(double u)
+	{
+		return interpolate(u,fColorMap);
+	}
+
+	/******************
+	 * STATIC METHODS *
+	 ******************/
 
 	/**
-	 * Derives a <CODE>Color</CODE> that is linearly interpolated across a spectrum
-	 * going from blue to green to yellow to red.
+	 * Derives a <CODE>Color</CODE> that is linearly interpolated across a spectrum from a specified colour map.
 	 * <P>
-	 * Note that the <CODE>normalisedValue</CODE> is clipped in the interval [0,1].
+	 * Note that the value of <CODE>u</CODE> is clipped in the interval [0,1].
 	 *
-	 * @param normalisedValue the value to use when interpolating the spectrum
+	 * @param u the value to use when interpolating the spectrum
+	 * @param colorMap the colour map to use
 	 */
-	public static Color interpolate(double normalisedValue)
+	public static Color interpolate(double u, EColorMap colorMap)
 	{
-		normalisedValue = MathTools.clip(normalisedValue,0.0,1.0);
+		float t = (float) MathTools.clip(u,0.0,1.0);
 
 		float red = 0.0f;
 		float green = 0.0f;
 		float blue = 0.0f;
 
-		if (normalisedValue <= kLowerTreshold) {
-			// interpolate from blue to green
-			float t = (float) normalisedValue / kLowerTreshold; // t lies in [0,1]
-			red = 0.0f;
-			green = t;
-			blue = 1.0f - t;
-		}
-		else if (normalisedValue <= kUpperTreshold) {
-			// interpolate from green to yellow
-			float t = ((float) normalisedValue - kLowerTreshold) / kDifference; // t lies in [0,1]
+		if (colorMap == EColorMap.kGrayScale) {			
 			red = t;
-			green = 1.0f;
-			blue = 0.0f;
+			green = t;
+			blue = t;
 		}
-		else if (normalisedValue <= 100) {
-			// interpolate from yellow to red
-			float t = ((float) normalisedValue - kUpperTreshold) / (1.0f - kUpperTreshold); // t lies in [0,1]
-			red = 1.0f;
-			green = 1.0f - t;
-			blue = 0.0f;
+		else if (colorMap == EColorMap.kJet) {
+			if (t <= kLowerTreshold) {
+				// interpolate from blue to green
+				t = t / kLowerTreshold;
+				red = 0.0f;
+				green = t;
+				blue = 1.0f - t;
+			}
+			else if (t <= kUpperTreshold) {
+				// interpolate from green to yellow
+				t = (t - kLowerTreshold) / kDifference;
+				red = t;
+				green = 1.0f;
+				blue = 0.0f;
+			}
+			else if (t <= 100) {
+				// interpolate from yellow to red
+				t = (t - kUpperTreshold) / (1.0f - kUpperTreshold);
+				red = 1.0f;
+				green = 1.0f - t;
+				blue = 0.0f;
+			}
+		}
+		else if (colorMap == EColorMap.kCopper) {
+			red = (float) MathTools.clip(t * 1.5f,0.0,1.0);
+			green = t;
+			blue = t / 10.0f;
+		}
+		else if (colorMap == EColorMap.kBone) {
+			float n = 3.0f / 8.0f;
+			if (t < n) {
+				red = 0.0f;
+				green = 0.0f;
+				blue = t * (1.0f / n);
+			}
+			else if (t < (2.0f * n)) {
+				red = 0.0f;
+				green = (t - n) * (1.0f / n);
+				blue = 1.0f;
+			}
+			else {
+				red = (t - (2.0f * n)) * (1.0f / n);
+				green = 1.0f;
+				blue = 1.0f;
+			}
+			red = ((7.0f * t) + red) / 8.0f;
+			green = ((7.0f * t) + green) / 8.0f;
+			blue = ((7.0f * t) + blue) / 8.0f;
+		}
+		else if (colorMap == EColorMap.kGreenRedDiverging) {
+			if (t < 0.5f) {
+				float divergingFactor = t / 0.5f;
+				red = divergingFactor;
+				green = 1.0f;
+				blue = divergingFactor;
+			}
+			else {
+				float divergingFactor = (1.0f - t) / 0.5f;
+				red = 1.0f;
+				green = divergingFactor;
+				blue = divergingFactor;
+			}
+		}
+		else if (colorMap == EColorMap.kHot) {
+			float n = 3.0f / 8.0f;
+			if (t < n) {
+				red = t * (1.0f / n);
+				green = 0.0f;
+				blue = 0.0f;
+			}
+			else if (t < (2.0f * n)) {
+				red = 1.0f;
+				green = (t - n) * (1.0f / n);
+				blue = 0.0f;
+			}
+			else {
+				red = 1.0f;
+				green = 1.0f;
+				blue = (t - (2.0f * n)) * (1.0f / n);
+			}
+		}
+		else if (colorMap == EColorMap.kDiscontinuousBlueWhiteGreen) {
+			if (t < 0.0625f) {
+				red = t * 8.0f;
+				green = t * 8.0f;
+				blue = 0.5f + (t * 4.0f);
+			}
+			else if (t < 0.25f) {
+				red = 0.5f + t - 0.0625f;
+				green = 0.5f + t - 0.0625f;
+				blue = 0.75f + t - 0.0625f;
+			}
+			else {
+				float x = (319.0f / 256.0f) - t;
+				red = x;
+				green = 0.5f + (x / 2.0f);
+				blue = x;
+			}
+		}
+		else if (colorMap == EColorMap.kDiscontinuousDarkRedYellow) {
+			if (t < 0.33f) {
+				red = t;
+				green = 0.0f;
+				blue = 0.0f;
+			}
+			else if (t < 0.66f) {
+				red = 1.0f;
+				green = t;
+				blue = 0.0f;
+			}
+			else {
+				red = 1.0f;
+				green = 1.0f;
+				blue = t;
+			}
 		}
 
 		Color color = new Color(red,green,blue);

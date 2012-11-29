@@ -32,7 +32,7 @@ import smtools.miscellaneous.*;
  * The <CODE>JWarningDialog</CODE> class pops up a standard dialog box containing a warning.
  * <P>
  * Note that this class cannot be instantiated, nor can it be subclassed; use the static
- * {@link JWarningDialog#warn} method instead. A valid {@link Messages} database must
+ * {@link JWarningDialog#warn} method instead. A valid {@link I18NL10N} database must
  * be available!
  * <P>
  * Depending on the application's current <I>look-and-feel</I>, the dialog box
@@ -85,7 +85,7 @@ public final class JWarningDialog
 	 *   <CODE>JWarningDialog.warn(parent,warning);</CODE>
 	 * </UL>
 	 * <P>
-	 * Note that a valid {@link Messages} database must be available!
+	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
 	 * @param parentComponent the frame in which this dialog is to be displayed
 	 * @param warning         a string containing a specified warning message
@@ -93,9 +93,9 @@ public final class JWarningDialog
 	public static void warn(Component parentComponent, String warning)
 	{
 		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSWarningDialog);
-		Object[] options = {Messages.lookup("buttonOk")};
+		Object[] options = {I18NL10N.translate("buttonOk")};
 
-		JOptionPane.showOptionDialog(parentComponent,warning,Messages.lookup("textAttention"),
+		JOptionPane.showOptionDialog(parentComponent,warning,I18NL10N.translate("textAttention"),
 				JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,options,options[0]);
 	}
 }

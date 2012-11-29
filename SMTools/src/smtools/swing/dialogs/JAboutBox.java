@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : JAboutBox.java
 // Author        : Sven Maerivoet
-// Last modified : 03/11/2012
+// Last modified : 25/11/2012
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -35,7 +35,7 @@ import smtools.miscellaneous.*;
  * The <CODE>JAboutBox</CODE> class provides a modal dialog box containing general
  * application information.
  * <P>
- * Note that a valid {@link Messages} database must be available!
+ * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * The dialog box is <I>modal</I>, <I>non-resizable</I> and contains an <I>"Ok" button</I>
  * to close it. Here's an example of a complete about box (Microsoft Windows L&F):
@@ -43,6 +43,7 @@ import smtools.miscellaneous.*;
  * <UL>
  *   <IMG src="doc-files/about-box-about-windows.png">
  * </UL>
+ * <P>
  * As seen in the above image, there can be up to four different tabs: the first tab contains the
  * <B>application's logo and its accompanying about text</B>, the second tab contains a <B>copyright
  * notice</B> (see second image below), the third tab contains the <B>licence information</B> (see third
@@ -80,7 +81,7 @@ import smtools.miscellaneous.*;
  * tab is <B>not</B> shown.
  * 
  * @author  Sven Maerivoet
- * @version 03/11/2012
+ * @version 25/11/2012
  */
 public class JAboutBox extends JDefaultDialog
 {
@@ -297,7 +298,7 @@ public class JAboutBox extends JDefaultDialog
 	@Override
 	protected final String getWindowTitle()
 	{
-		return Messages.lookup("textAboutBoxDialogTitle");
+		return I18NL10N.translate("textAboutBoxDialogTitle");
 	}
 
 	/**
@@ -337,7 +338,7 @@ public class JAboutBox extends JDefaultDialog
 		fAboutTextLabel.setAlignmentY(Component.TOP_ALIGNMENT);
 		updateAboutTextLabel();		
 		aboutPane.add(fAboutTextLabel);
-		fTabbedPane.addTab(Messages.lookup("textAboutBoxAboutPaneTitle"),aboutPane);
+		fTabbedPane.addTab(I18NL10N.translate("textAboutBoxAboutPaneTitle"),aboutPane);
 
 		// create the copyright pane
 		if (getCopyrightContent() != null) {
@@ -362,7 +363,7 @@ public class JAboutBox extends JDefaultDialog
 			JPanel subPanel = new JPanel();
 			subPanel.setLayout(new BoxLayout(subPanel,BoxLayout.Y_AXIS));
 			JLabel label = new JLabel(javaCupImage,JLabel.CENTER);
-			label.setToolTipText(Messages.lookup("tooltipJavaCupImage"));
+			label.setToolTipText(I18NL10N.translate("tooltipJavaCupImage"));
 			if (javaCupImage != null) {
 				label.setBorder(BorderFactory.createEtchedBorder());
 			}
@@ -370,7 +371,7 @@ public class JAboutBox extends JDefaultDialog
 			subPanel.add(label);
 			subPanel.add(Box.createRigidArea(new Dimension(0,10)));
 			label = new JLabel("<HTML><B>Java 2 !</B></HTML>",JLabel.CENTER);
-			label.setToolTipText(Messages.lookup("tooltipJavaCupImage"));
+			label.setToolTipText(I18NL10N.translate("tooltipJavaCupImage"));
 			label.setAlignmentX(Component.CENTER_ALIGNMENT);
 			subPanel.add(label);
 			subPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -382,12 +383,12 @@ public class JAboutBox extends JDefaultDialog
 			subPanel = new JPanel();
 			subPanel.setLayout(new BoxLayout(subPanel,BoxLayout.Y_AXIS));
 			label = new JLabel(swingImage,JLabel.CENTER);
-			label.setToolTipText(Messages.lookup("tooltipSwingImage"));
+			label.setToolTipText(I18NL10N.translate("tooltipSwingImage"));
 			label.setAlignmentX(Component.CENTER_ALIGNMENT);
 			subPanel.add(label);
 			subPanel.add(Box.createRigidArea(new Dimension(0,10)));
 			label = new JLabel("<HTML><B>Swing !</B></HTML>",JLabel.CENTER);
-			label.setToolTipText(Messages.lookup("tooltipSwingImage"));
+			label.setToolTipText(I18NL10N.translate("tooltipSwingImage"));
 			label.setAlignmentX(Component.CENTER_ALIGNMENT);
 			subPanel.add(label);
 			subPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -408,7 +409,7 @@ public class JAboutBox extends JDefaultDialog
 			centerPanel.add(new JLabel(copyrightLabelText.toString()));
 			copyrightPane.add(centerPanel,BorderLayout.CENTER);
 
-			fTabbedPane.addTab(Messages.lookup("textAboutBoxCopyrightPaneTitle"),copyrightPane);
+			fTabbedPane.addTab(I18NL10N.translate("textAboutBoxCopyrightPaneTitle"),copyrightPane);
 		}
 
 		Dimension maximumDimensions = new Dimension(0,0);
@@ -438,7 +439,7 @@ public class JAboutBox extends JDefaultDialog
 			maximumDimensions.width += kTextAreaExcessScrollPaneSpace;
 			fLicenceScrollPane.setPreferredSize(maximumDimensions);
 			licencePane.add(fLicenceScrollPane,BorderLayout.CENTER);
-			fTabbedPane.addTab(Messages.lookup("textAboutBoxLicencePaneTitle"),licencePane);
+			fTabbedPane.addTab(I18NL10N.translate("textAboutBoxLicencePaneTitle"),licencePane);
 		}
 
 		if (getAffiliationsLabels() != null) {
@@ -466,7 +467,7 @@ public class JAboutBox extends JDefaultDialog
 			fAffiliationsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			fAffiliationsScrollPane.setPreferredSize(maximumDimensions);
 
-			fTabbedPane.addTab(Messages.lookup("textAboutBoxAffiliationsPaneTitle"),fAffiliationsScrollPane);
+			fTabbedPane.addTab(I18NL10N.translate("textAboutBoxAffiliationsPaneTitle"),fAffiliationsScrollPane);
 		}
 
 		mainPanel.setLayout(new BorderLayout());
@@ -511,23 +512,24 @@ public class JAboutBox extends JDefaultDialog
 			aboutText += "<BR />";
 		}
 
-		// update the JVM, OS, and machine specifics
+		// update the JVM, OS, current locale and machine specifics
 		aboutText += "Java VM " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ")<BR />";
-		aboutText += Messages.lookup("textOperatingSystem") + ": " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<BR />";
+		aboutText += I18NL10N.translate("textOperatingSystem") + ": " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<BR />";
+		aboutText += I18NL10N.translate("textCurrentLocale") + ": " + I18NL10N.getCurrentLocaleDescription() + "<BR/>";
 		int nrOfProcessors = JMemoryStatistics.getNrOfProcessors();
-		aboutText += Messages.lookup("textNrOfProcessors") + ": " + String.valueOf(nrOfProcessors) + "<BR />";		
+		aboutText += I18NL10N.translate("textNrOfProcessors") + ": " + String.valueOf(nrOfProcessors) + "<BR />";		
 
 		// update the available memory
 		long totalMemory = MathTools.round(MathTools.convertBToMiB(JMemoryStatistics.getTotalMemory()));
 		long usedMemory = MathTools.round(MathTools.convertBToMiB(JMemoryStatistics.getUsedMemory()));
 		long freeMemory = MathTools.round(MathTools.convertBToMiB(JMemoryStatistics.getFreeMemory()));
-		aboutText += Messages.lookup("textMemoryTotal") + ": " + String.valueOf(totalMemory) + " MiB<BR />";		
-		aboutText += Messages.lookup("textMemoryUsed") + ": " + String.valueOf(usedMemory) + " MiB<BR />";		
-		aboutText += Messages.lookup("textMemoryFree") + ": " + String.valueOf(freeMemory) + " MiB<BR />";		
+		aboutText += I18NL10N.translate("textMemoryTotal") + ": " + String.valueOf(totalMemory) + " MiB<BR />";		
+		aboutText += I18NL10N.translate("textMemoryUsed") + ": " + String.valueOf(usedMemory) + " MiB<BR />";		
+		aboutText += I18NL10N.translate("textMemoryFree") + ": " + String.valueOf(freeMemory) + " MiB<BR />";		
 
 		// update the used libraries
 		aboutText += "<BR />";
-		aboutText += Messages.lookup("textUsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8";
+		aboutText += I18NL10N.translate("textUsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8";
 		if (getUsedLibrariesDescriptions() != null) {
 			aboutText += ", " + getUsedLibrariesDescriptions();
 		}
