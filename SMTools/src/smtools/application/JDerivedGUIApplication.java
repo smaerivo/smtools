@@ -207,7 +207,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 				new TimeStamp(),
 				JTimeChooser.EType.kHourMinuteSecondMillisecond,
 				JTimeChooser.EClockDigits.kUse12Hour,
-				JTimeChooser.EUpdating.kContinuous,
+				JTimeChooser.EUpdating.kDiscrete,
 				JTimeChooser.EDigitalClock.kShown,
 				JDefaultDialog.EActivation.kPostponed);
 		fTimeChooserID = getGUIComponentCache().addComponent(timeChooser);
