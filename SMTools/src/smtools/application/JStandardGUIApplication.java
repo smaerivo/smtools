@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 28/11/2012
+// Last modified : 29/11/2012
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -111,6 +111,7 @@ import smtools.swing.util.*;
  *     <LI>{@link JStandardGUIApplication#constructContentPane(JPanel)}</LI>
  *     <LI>{@link JStandardGUIApplication#constructMenus()}</LI>
  *     <LI>{@link JStandardGUIApplication#constructRightHandMenu()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getStatusBar()}</LI>
  *     <LI>{@link JStandardGUIApplication#isStatusBarEnabled()}</LI>
  *     <LI>{@link JStandardGUIApplication#isClockEnabled()}</LI>
  *     <LI>{@link JStandardGUIApplication#getAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
@@ -144,7 +145,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 28/11/2012
+ * @version 29/11/2012
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, WindowListener
 {
@@ -269,7 +270,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 	private JRadioButtonMenuItem frbNimbus;
 	private JRadioButtonMenuItem frbWindows;
 	private JStatusBar fStatusBar;
-	private String fStatusBarText;
 	private JLabel fClockLabel;
 	private String fLocale;
 	private JSplashScreen fSplashScreen;
@@ -509,7 +509,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, W
 
 		// if necessary, add the status bar
 		if (isStatusBarEnabled()) {
-			fStatusBarText = "";
 			fStatusBar = new JStatusBar();
 			contentPane.add(fStatusBar,BorderLayout.SOUTH);
 
