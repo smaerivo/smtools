@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : Registry.java
 // Author        : Sven Maerivoet
-// Last modified : 20/01/2012
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -60,7 +60,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 20/01/2012
+ * @version 04/12/2012
  */
 public final class Registry
 {
@@ -141,7 +141,7 @@ public final class Registry
 		Hive removedHive = fHives.remove(hiveName);
 
 		if (removedHive == null) {
-			throw new RegistryException(I18NL10N.translate("errorHiveNotFoundInRegistry",hiveName));
+			throw new RegistryException(I18NL10N.translate("error.HiveNotFoundInRegistry",hiveName));
 		}
 	}
 
@@ -171,13 +171,13 @@ public final class Registry
 			return hive;
 		}
 		catch (InvalidClassException exc) {
-			throw new RegistryException(I18NL10N.translate("errorDeserialisingHive",filename));
+			throw new RegistryException(I18NL10N.translate("error.DeserialisingHive",filename));
 		}
 		catch (IOException exc) {
-			throw new RegistryException(I18NL10N.translate("errorLoadingHive",filename));
+			throw new RegistryException(I18NL10N.translate("error.LoadingHive",filename));
 		}
 		catch (ClassNotFoundException exc) {
-			throw new RegistryException(I18NL10N.translate("errorCastingHiveWhenLoading",filename));
+			throw new RegistryException(I18NL10N.translate("error.CastingHiveWhenLoading",filename));
 		}
 	}
 
@@ -207,7 +207,7 @@ public final class Registry
 			fileOutputStream.close();
 		}
 		catch (IOException exc) {
-			throw new RegistryException(I18NL10N.translate("errorSavingHive",filename));
+			throw new RegistryException(I18NL10N.translate("error.SavingHive",filename));
 		}
 	}
 
@@ -236,13 +236,13 @@ public final class Registry
 			fileInputStream.close();
 		}
 		catch (InvalidClassException exc) {
-			throw new RegistryException(I18NL10N.translate("errorDeserialisingRegistry",filename));
+			throw new RegistryException(I18NL10N.translate("error.DeserialisingRegistry",filename));
 		}
 		catch (IOException exc) {
-			throw new RegistryException(I18NL10N.translate("errorLoadingRegistry",filename));
+			throw new RegistryException(I18NL10N.translate("error.LoadingRegistry",filename));
 		}
 		catch (ClassNotFoundException exc) {
-			throw new RegistryException(I18NL10N.translate("errorCastingRegistryHivesWhenLoading",filename));
+			throw new RegistryException(I18NL10N.translate("error.CastingRegistryHivesWhenLoading",filename));
 		}
 	}
 
@@ -270,7 +270,7 @@ public final class Registry
 			fileOutputStream.close();
 		}
 		catch (IOException exc) {
-			throw new RegistryException(I18NL10N.translate("errorSavingRegistry",filename));
+			throw new RegistryException(I18NL10N.translate("error.SavingRegistry",filename));
 		}
 	}
 

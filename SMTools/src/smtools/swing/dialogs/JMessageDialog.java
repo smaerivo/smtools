@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : JMessageDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 22/01/2004
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // -----------------------------------
 
@@ -59,7 +59,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 22/01/2004
+ * @version 04/12/2012
  */
 public final class JMessageDialog
 {
@@ -93,9 +93,9 @@ public final class JMessageDialog
 	public static void show(Component parentComponent, String message)
 	{
 		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSMessageDialog);
-		Object[] options = {I18NL10N.translate("buttonOk")};
+		Object[] options = {I18NL10N.translate("button.Ok")};
 
-		JOptionPane.showOptionDialog(parentComponent,message,I18NL10N.translate("textAttention"),
+		JOptionPane.showOptionDialog(parentComponent,message,I18NL10N.translate("text.Attention"),
 				JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,options,options[0]);
 	}
 }

@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : JDefaultDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 16/05/2011
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // -----------------------------------
 
@@ -103,7 +103,7 @@ import smtools.swing.util.*;
  * during the reactivation process, can be performed by overriding the {@link JDefaultDialog#initialiseDuringActivation} method.
  *
  * @author  Sven Maerivoet
- * @version 16/05/2011
+ * @version 04/12/2012
  */
 public class JDefaultDialog extends JDialog implements ActionListener, WindowListener
 {
@@ -251,12 +251,12 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	{
 		String command = e.getActionCommand();
 
-		if (command.equalsIgnoreCase(I18NL10N.translate("buttonOk"))) {
+		if (command.equalsIgnoreCase(I18NL10N.translate("button.Ok"))) {
 			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
 			fCancelled = false;
 			windowClosing(null);
 		}
-		else if (command.equalsIgnoreCase(I18NL10N.translate("buttonCancel"))) {
+		else if (command.equalsIgnoreCase(I18NL10N.translate("button.Cancel"))) {
 			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
 			windowClosing(null);
 		}
@@ -534,16 +534,16 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 			subPanel = new JPanel();
 			subPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-			button = new JButton(I18NL10N.translate("buttonOk"));
-			button.setActionCommand(I18NL10N.translate("buttonOk"));
+			button = new JButton(I18NL10N.translate("button.Ok"));
+			button.setActionCommand(I18NL10N.translate("button.Ok"));
 			button.addActionListener(this);
 			subPanel.add(button);
 			button.requestFocusInWindow();
 
 			if (fType == EType.kOkCancel) {
 
-				button = new JButton(I18NL10N.translate("buttonCancel"));
-				button.setActionCommand(I18NL10N.translate("buttonCancel"));
+				button = new JButton(I18NL10N.translate("button.Cancel"));
+				button.setActionCommand(I18NL10N.translate("button.Cancel"));
 				button.addActionListener(this);
 				subPanel.add(button);
 				button.requestFocusInWindow();

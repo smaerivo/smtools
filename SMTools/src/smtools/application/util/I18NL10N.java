@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : I18NL10N.java
 // Author        : Sven Maerivoet
-// Last modified : 25/11/2012
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -75,17 +75,17 @@ import smtools.miscellaneous.*;
  * <LI>Consider the following database file:</LI>
  * <P>
  * <UL>
- * <CODE>myFirstKey=my first value</CODE><BR />
- * <CODE>mySecondKey=my ^1 value</CODE>
+ * <CODE>my.First.Key=my first value</CODE><BR />
+ * <CODE>my.Second.Key=my ^1 value</CODE>
  * </UL>
  * <P>
  * The following translations demonstrate its usage:
  * <P>
  * <UL>
- * <LI><CODE>I18NL10N.translate("myFirstKey")</CODE> will result in "
+ * <LI><CODE>I18NL10N.translate("my.First.Key")</CODE> will result in "
  * <CODE>my first value</CODE>".</LI>
  * <P>
- * <LI><CODE>I18NL10N.translate("mySecondKey","second")</CODE>
+ * <LI><CODE>I18NL10N.translate("my.Second.Key","second")</CODE>
  * will result in "<CODE>my second value</CODE>".</LI>
  * </UL>
  * <P>
@@ -101,7 +101,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author Sven Maerivoet
- * @version 25/11/2012
+ * @version 04/12/2012
  */
 public final class I18NL10N {
 

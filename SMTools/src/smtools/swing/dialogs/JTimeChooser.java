@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : JTimeChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 16/05/2011
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // ---------------------------------
 
@@ -95,7 +95,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 16/05/2011
+ * @version 04/12/2012
  * @see     TimeStamp
  */
 public final class JTimeChooser extends JDefaultDialog implements ChangeListener
@@ -339,7 +339,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 
 		// add the clock panel
 		fClockPanel = new ClockPanel(fUpdating,fDigitalClock);
-		fClockPanel.setToolTipText(I18NL10N.translate("tooltipClockPanel"));
+		fClockPanel.setToolTipText(I18NL10N.translate("tooltip.ClockPanel"));
 		mainPanel.add(fClockPanel);
 
 		mainPanel.add(new JEtchedLine(JEtchedLine.EOrientation.kHorizontal));
@@ -356,13 +356,13 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 			unfocusableButton.setFocusPainted(false);
 			unfocusableButton.setRolloverIcon(new ImageIcon(exclamationRolloverIcon));
 			unfocusableButton.setRolloverEnabled(true);
-			unfocusableButton.setToolTipText(I18NL10N.translate("tooltipGetCurrentTime"));
+			unfocusableButton.setToolTipText(I18NL10N.translate("tooltip.GetCurrentTime"));
 			unfocusableButton.setActionCommand(kCurrentTime);
 			unfocusableButton.addActionListener(this);
 			panel.add(unfocusableButton);
 		}
 		catch (FileDoesNotExistException exc) {
-			JWarningDialog.warn(this,I18NL10N.translate("errorGUIComponentImageNotFound"));
+			JWarningDialog.warn(this,I18NL10N.translate("error.GUIComponentImageNotFound"));
 		}
 
 		SpinnerNumberModel hourSpinnerNumberModel = new SpinnerNumberModel(fTimeStamp.getHour(),0,23,1);
@@ -371,7 +371,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		JSpinner.NumberEditor hourSpinnerNumberEditor = new JSpinner.NumberEditor(fHourChooser,"0");
 		fHourChooser.setEditor(hourSpinnerNumberEditor);
 		fHourChooser.addChangeListener(this);
-		fHourChooser.setToolTipText(I18NL10N.translate("tooltipSetHour"));
+		fHourChooser.setToolTipText(I18NL10N.translate("tooltip.SetHour"));
 		panel.add(fHourChooser);
 		panel.add(new JLabel("<HTML><B>:</B></HTML>"));
 
@@ -381,7 +381,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		JSpinner.NumberEditor minuteSpinnerNumberEditor = new JSpinner.NumberEditor(fMinuteChooser,"0");
 		fMinuteChooser.setEditor(minuteSpinnerNumberEditor);
 		fMinuteChooser.addChangeListener(this);
-		fMinuteChooser.setToolTipText(I18NL10N.translate("tooltipSetMinute"));
+		fMinuteChooser.setToolTipText(I18NL10N.translate("tooltip.SetMinute"));
 		panel.add(fMinuteChooser);
 		panel.add(new JLabel("<HTML><B>:</B></HTML>"));
 
@@ -391,7 +391,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		JSpinner.NumberEditor secondSpinnerNumberEditor = new JSpinner.NumberEditor(fSecondChooser,"0");
 		fSecondChooser.setEditor(secondSpinnerNumberEditor);
 		fSecondChooser.addChangeListener(this);
-		fSecondChooser.setToolTipText(I18NL10N.translate("tooltipSetSecond"));
+		fSecondChooser.setToolTipText(I18NL10N.translate("tooltip.SetSecond"));
 		if (fType == EType.kHourMinute) {
 			fSecondChooser.setEnabled(false);
 		}
@@ -406,7 +406,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		JSpinner.NumberEditor millisecondSpinnerNumberEditor = new JSpinner.NumberEditor(fMillisecondChooser,"0");
 		fMillisecondChooser.setEditor(millisecondSpinnerNumberEditor);
 		fMillisecondChooser.addChangeListener(this);
-		fMillisecondChooser.setToolTipText(I18NL10N.translate("tooltipSetMillisecond"));
+		fMillisecondChooser.setToolTipText(I18NL10N.translate("tooltip.SetMillisecond"));
 		if ((fType == EType.kHourMinute) || (fType == EType.kHourMinuteSecond)) {
 			fMillisecondChooser.setEnabled(false);
 			fMillisecondChooser.setVisible(false);

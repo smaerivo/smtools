@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : JDateChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 18/12/2011
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // ---------------------------------
 
@@ -91,7 +91,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 18/12/2011
+ * @version 04/12/2012
  */
 public final class JDateChooser extends JDefaultDialog implements ChangeListener
 {
@@ -110,27 +110,27 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 
 	// the names of the months and the days
 	private static final String[] kMonths =
-		{I18NL10N.translate("textMonthJanuary"),
-		I18NL10N.translate("textMonthFebruary"),
-		I18NL10N.translate("textMonthMarch"),
-		I18NL10N.translate("textMonthApril"),
-		I18NL10N.translate("textMonthMay"),
-		I18NL10N.translate("textMonthJune"),
-		I18NL10N.translate("textMonthJuly"),
-		I18NL10N.translate("textMonthAugust"),
-		I18NL10N.translate("textMonthSeptember"),
-		I18NL10N.translate("textMonthOctober"),
-		I18NL10N.translate("textMonthNovember"),
-		I18NL10N.translate("textMonthDecember")};
+		{I18NL10N.translate("text.Month.January"),
+		I18NL10N.translate("text.Month.February"),
+		I18NL10N.translate("text.Month.March"),
+		I18NL10N.translate("text.Month.April"),
+		I18NL10N.translate("text.Month.May"),
+		I18NL10N.translate("text.Month.June"),
+		I18NL10N.translate("text.Month.July"),
+		I18NL10N.translate("text.Month.August"),
+		I18NL10N.translate("text.Month.September"),
+		I18NL10N.translate("text.Month.October"),
+		I18NL10N.translate("text.Month.November"),
+		I18NL10N.translate("text.Month.December")};
 
 	private static final String[] kWeekDaysAbbreviated =
-		{I18NL10N.translate("textDayMondayAbbreviated"),
-		I18NL10N.translate("textDayTuesdayAbbreviated"),
-		I18NL10N.translate("textDayWednesdayAbbreviated"),
-		I18NL10N.translate("textDayThursdayAbbreviated"),
-		I18NL10N.translate("textDayFridayAbbreviated"),
-		I18NL10N.translate("textDaySaturdayAbbreviated"),
-		I18NL10N.translate("textDaySundayAbbreviated")};
+		{I18NL10N.translate("text.Day.MondayAbbreviated"),
+		I18NL10N.translate("text.Day.TuesdayAbbreviated"),
+		I18NL10N.translate("text.Day.WednesdayAbbreviated"),
+		I18NL10N.translate("text.Day.ThursdayAbbreviated"),
+		I18NL10N.translate("text.Day.FridayAbbreviated"),
+		I18NL10N.translate("text.Day.SaturdayAbbreviated"),
+		I18NL10N.translate("text.Day.SundayAbbreviated")};
 
 	// the number of days in each month
 	private static final int[] kDaysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -281,7 +281,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		fDefaultDate.set(defaultDateStamp);
 		fSelectedDate.set(fDefaultDate);
 		if (fDefaultDateButton != null) {
-			fDefaultDateButton.setToolTipText(I18NL10N.translate("tooltipCalendarCurrentDate",fDefaultDate.getDMYString()));
+			fDefaultDateButton.setToolTipText(I18NL10N.translate("tooltip.Calendar.CurrentDate",fDefaultDate.getDMYString()));
 		}
 		setCaptions();
 	}
@@ -336,7 +336,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 				fMonthChooser = new JComboBox<String>(monthNames);
 				fMonthChooser.setEditable(false);
 				fMonthChooser.addActionListener(this);
-				fMonthChooser.setToolTipText(I18NL10N.translate("tooltipCalendarMonth"));
+				fMonthChooser.setToolTipText(I18NL10N.translate("tooltip.Calendar.Month"));
 				subPanel.add(fMonthChooser);
 
 				// create a small gap
@@ -348,7 +348,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 				JSpinner.NumberEditor yearSpinnerNumberEditor = new JSpinner.NumberEditor(fYearChooser,"0");
 				fYearChooser.setEditor(yearSpinnerNumberEditor);
 				fYearChooser.addChangeListener(this);
-				fYearChooser.setToolTipText(I18NL10N.translate("tooltipCalendarYear"));
+				fYearChooser.setToolTipText(I18NL10N.translate("tooltip.Calendar.Year"));
 				subPanel.add(fYearChooser);
 
 				// create a small gap
@@ -364,7 +364,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 						fDefaultDateButton.setFocusPainted(false);
 						fDefaultDateButton.setRolloverIcon(new ImageIcon(undoRolloverIcon));
 						fDefaultDateButton.setRolloverEnabled(true);
-						fDefaultDateButton.setToolTipText(I18NL10N.translate("tooltipCalendarCurrentDate",fDefaultDate.getDMYString()));
+						fDefaultDateButton.setToolTipText(I18NL10N.translate("tooltip.Calendar.CurrentDate",fDefaultDate.getDMYString()));
 						fDefaultDateButton.setActionCommand(kDefaultDate);
 						fDefaultDateButton.addActionListener(this);
 						subPanel.add(fDefaultDateButton);
@@ -373,7 +373,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 						subPanel.add(Box.createRigidArea(new Dimension(15,0)));
 					}
 					catch (FileDoesNotExistException exc) {
-						JWarningDialog.warn(this,I18NL10N.translate("errorGUIComponentImageNotFound"));
+						JWarningDialog.warn(this,I18NL10N.translate("error.GUIComponentImageNotFound"));
 					}
 				}
 
@@ -386,13 +386,13 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 					navButton.setFocusPainted(false);
 					navButton.setRolloverIcon(new ImageIcon(exclamationRolloverIcon));
 					navButton.setRolloverEnabled(true);
-					navButton.setToolTipText(I18NL10N.translate("tooltipCalendarExclamation",(new DateStamp()).getDMYString()));
+					navButton.setToolTipText(I18NL10N.translate("tooltip.Calendar.Exclamation",(new DateStamp()).getDMYString()));
 					navButton.setActionCommand(kCurrentDate);
 					navButton.addActionListener(this);
 					subPanel.add(navButton);
 				}
 				catch (FileDoesNotExistException exc) {
-					JWarningDialog.warn(this,I18NL10N.translate("errorGUIComponentImageNotFound"));
+					JWarningDialog.warn(this,I18NL10N.translate("error.GUIComponentImageNotFound"));
 				}
 			panel.add(subPanel);
 			panel.add(new JEtchedLine());
@@ -498,7 +498,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		fSelectedDateLabel.setPreferredSize(new Dimension(kSelectedLabelWidth,30));
 
 		// update the window title by appending it with the current selected week
-		setTitle(getWindowTitle() + " (" + I18NL10N.translate("textWeek") + " " + String.valueOf(fSelectedDate.getWeekOfYear()) + ")");
+		setTitle(getWindowTitle() + " (" + I18NL10N.translate("text.Week") + " " + String.valueOf(fSelectedDate.getWeekOfYear()) + ")");
 	}
 
 	private int preventDateOverlow(int selectedDay)

@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JGradientColorRamp.java
 // Author        : Sven Maerivoet
-// Last modified : 19/11/2012
+// Last modified : 02/12/2012
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
@@ -35,7 +35,7 @@ import smtools.miscellaneous.*;
  * <P>
  * <UL>
  *   <B>Gray scale:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-gray.png">
+ *   <IMG src="doc-files/gradient-color-ramp-grayscale.png">
  * </UL>
  * <P>
  * <UL>
@@ -71,6 +71,11 @@ import smtools.miscellaneous.*;
  * <UL>
  *   <B>Discontinuous dark-red-yellow:</B><BR />
  *   <IMG src="doc-files/gradient-color-ramp-discontinuousdarkredyellow.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Black and white:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-blackandwhite.png">
  * </UL>
  * <P>
  * A gradient colour ramp can have four orientations (see {@link JGradientColorRamp.EOrientation}):
@@ -109,7 +114,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 19/11/2012
+ * @version 02/12/2012
  */
 public final class JGradientColorRamp extends JPanel
 {
@@ -121,7 +126,7 @@ public final class JGradientColorRamp extends JPanel
 	/**
 	 * The various supported colour maps.
 	 */
-	public static enum EColorMap {kGrayScale, kJet, kCopper, kBone, kGreenRedDiverging, kHot, kDiscontinuousBlueWhiteGreen, kDiscontinuousDarkRedYellow};
+	public static enum EColorMap {kGrayScale, kJet, kCopper, kBone, kGreenRedDiverging, kHot, kDiscontinuousBlueWhiteGreen, kDiscontinuousDarkRedYellow, kBlackAndWhite};
 
 	// colour ramp preferences
 	private static final float kLowerTreshold = 0.33f;
@@ -604,6 +609,18 @@ public final class JGradientColorRamp extends JPanel
 				red = 1.0f;
 				green = 1.0f;
 				blue = t;
+			}
+		}
+		else if (colorMap == EColorMap.kBlackAndWhite) {
+			if (t < 0.5f) {
+				red = 0.0f;
+				green = 0.0f;
+				blue = 0.0f;
+			}
+			else {
+				red = 1.0f;
+				green = 1.0f;
+				blue = 1.0f;
 			}
 		}
 

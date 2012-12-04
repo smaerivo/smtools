@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : JSplashScreen.java
 // Author        : Sven Maerivoet
-// Last modified : 27/04/2011
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // ----------------------------------
 
@@ -68,7 +68,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 27/04/2011
+ * @version 04/12/2012
  * @see     smtools.application.JStandardGUIApplication
  * @see     smtools.miscellaneous.MP3Player
  */
@@ -161,7 +161,7 @@ public final class JSplashScreen extends JWindow
 
 			panel.add(Box.createRigidArea(new Dimension(0,20)));
 
-			fStatusLabel = new JLabel(I18NL10N.translate("textSplashScreenMessage"),JLabel.LEFT);
+			fStatusLabel = new JLabel(I18NL10N.translate("text.SplashScreenMessage"),JLabel.LEFT);
 			fStatusLabel.setForeground(Color.white);
 			fStatusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 			panel.add(fStatusLabel);

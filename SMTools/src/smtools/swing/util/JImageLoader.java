@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : JImageLoader.java
 // Author        : Sven Maerivoet
-// Last modified : 07/04/2011
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // ---------------------------------
 
@@ -37,7 +37,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 07/04/2011
+ * @version 04/12/2012
  */
 public final class JImageLoader
 {
@@ -76,13 +76,13 @@ public final class JImageLoader
 			mediaTracker.waitForID(0);
 		}
 		catch (InterruptedException exception) {
-			kLogger.error(I18NL10N.translate("errorImageNotFound",filename));
+			kLogger.error(I18NL10N.translate("error.ImageNotFound",filename));
 			throw (new FileReadException(filename));
 		}
 
 		// check if the image loaded correctly
 		if ((mediaTracker.statusAll(false) & MediaTracker.ERRORED) != 0) {
-			kLogger.error(I18NL10N.translate("errorImageNotFound",filename));
+			kLogger.error(I18NL10N.translate("error.ImageNotFound",filename));
 			throw (new FileReadException(filename));
 		}
 

@@ -1,7 +1,7 @@
 // ----------------------------------------
 // Filename      : JConfirmationDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 22/01/2004
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // ----------------------------------------
 
@@ -59,7 +59,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 22/01/2004
+ * @version 04/12/2012
  */
 public final class JConfirmationDialog
 {
@@ -94,11 +94,11 @@ public final class JConfirmationDialog
 	public static boolean confirm(Component parentComponent, String question)
 	{
 		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSMessageDialog);
-		Object[] options = {I18NL10N.translate("buttonYes"), I18NL10N.translate("buttonNo")};
+		Object[] options = {I18NL10N.translate("button.Yes"), I18NL10N.translate("button.No")};
 
 		int n = JOptionPane.showOptionDialog(parentComponent,question,
-				I18NL10N.translate("textPleaseConfirm"),JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,
-				options,options[1]);
+			I18NL10N.translate("text.PleaseConfirm"),JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,
+			options,options[1]);
 
 		return (n == JOptionPane.YES_OPTION);
 	}

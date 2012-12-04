@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : JStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 28/11/2012
+// Last modified : 02/12/2012
 // Target        : Java VM (1.6)
 // -------------------------------
 
@@ -32,7 +32,7 @@ import javax.swing.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 28/11/2012
+ * @version 02/12/2012
  */
 public final class JStatusBar extends JPanel
 {
@@ -53,8 +53,20 @@ public final class JStatusBar extends JPanel
 
 	/**
 	 * Constructs a <CODE>JStatusBar</CODE> object.
+	 * <P>
+	 * Note that the resizable-icon is shown.
 	 */
 	public JStatusBar()
+	{
+		this(true);
+	}
+
+	/**
+	 * Constructs a <CODE>JStatusBar</CODE> object.
+	 *
+	 * @param isGUIResizable indicates whether or not the resizable-icon should be shown
+	 */
+	public JStatusBar(boolean isGUIResizable)
 	{
 		setPreferredSize(new Dimension(getWidth(),kHeight));
 		setLayout(new BorderLayout());
@@ -65,7 +77,7 @@ public final class JStatusBar extends JPanel
 			fStatusTextLabel.setOpaque(false);
 		add(fStatusTextLabel,BorderLayout.CENTER);
 
-		// add right panel
+			// add right panel
 			JPanel rightPanel = new JPanel();
 			rightPanel.setLayout(new BorderLayout());
 			rightPanel.setOpaque(false);
@@ -81,7 +93,8 @@ public final class JStatusBar extends JPanel
 				fMiscellaneousTextLabel.setOpaque(false);
 			rightPanel.add(fMiscellaneousTextLabel,BorderLayout.CENTER);
 
-				// add the resize icon
+			// if necessary, add the resize icon
+			if (isGUIResizable) {
 				JPanel resizeIconPanel = new JPanel();
 				resizeIconPanel.setLayout(new BoxLayout(resizeIconPanel,BoxLayout.Y_AXIS));
 				resizeIconPanel.add(Box.createVerticalGlue());
@@ -90,6 +103,7 @@ public final class JStatusBar extends JPanel
 				resizeIconPanel.add(resizeIconLabel);
 				resizeIconPanel.setOpaque(false);
 				rightPanel.add(resizeIconPanel,BorderLayout.EAST);
+			}
 		add(rightPanel,BorderLayout.EAST);
 	}
 

@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : MP3Player.java
 // Author        : Sven Maerivoet
-// Last modified : 05/05/2011
+// Last modified : 04/12/2012
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -40,7 +40,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 05/05/2011
+ * @version 04/12/2012
  */
 public final class MP3Player extends Thread
 {
@@ -232,7 +232,7 @@ public final class MP3Player extends Thread
 				// ignore
 			}
 			catch (SoundPlayingException exc) {
-				kLogger.error(I18NL10N.translate("errorPlayingSound"));
+				kLogger.error(I18NL10N.translate("error.PlayingSound"));
 			}
 		}
 	}
@@ -249,7 +249,7 @@ public final class MP3Player extends Thread
 			createPlayer(bufferedInputStream);
 		}
 		catch (FileNotFoundException exc) {
-			kLogger.error(I18NL10N.translate("errorSoundFileNotFound",soundFilename));
+			kLogger.error(I18NL10N.translate("error.SoundFileNotFound",soundFilename));
 			throw (new FileDoesNotExistException(soundFilename));
 		}		
 	}
@@ -261,7 +261,7 @@ public final class MP3Player extends Thread
 			fPlayer = new Player(soundInputStream,audioDevice);
 		}
 		catch (JavaLayerException exc) {
-			kLogger.error(I18NL10N.translate("errorPlayingSound"));
+			kLogger.error(I18NL10N.translate("error.PlayingSound"));
 			throw (new SoundPlayingException());
 		}
 	}
