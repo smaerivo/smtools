@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : I18NL10N.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 05/12/2012
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -47,14 +47,14 @@ import smtools.miscellaneous.*;
  * {@link I18NL10N#getFilename(String)} and {@link I18NL10N#getFilename(String,String)} methods to
  * specify a file location and an optional locale, for example:
  * <P>
- * <UL
- * <CODE>I18NL10N.load(I18NL10N.getFilename("locales-",I18NL10N.kLocaleBritishEnglish));</CODE>
+ * <UL>
+ *   <CODE>I18NL10N.load(I18NL10N.getFilename("locales-",I18NL10N.kLocaleBritishEnglish));</CODE>
  * </UL>
  * <P>
  * Translations are performed by the following lookup:
  * <P>
  * <UL>
- * <CODE>String translation = I18NL10N.translate(key,parameters);</CODE>
+ *   <CODE>String translation = I18NL10N.translate(key,parameters);</CODE>
  * </UL>
  * <P>
  * The optional parameters are specified in the keys using <CODE>(^i)</CODE>
@@ -67,41 +67,38 @@ import smtools.miscellaneous.*;
  * most one (key,value) pair. They are specified as:
  * <P>
  * <UL>
- * <CODE>key=value</CODE>
+ *   <CODE>key=value</CODE>
  * </UL>
  * <P>
  * Blank lines are allowed; comments are preceeded by a # character.
  * <UL>
- * <LI>Consider the following database file:</LI>
- * <P>
- * <UL>
- * <CODE>my.First.Key=my first value</CODE><BR />
- * <CODE>my.Second.Key=my ^1 value</CODE>
- * </UL>
- * <P>
- * The following translations demonstrate its usage:
- * <P>
- * <UL>
- * <LI><CODE>I18NL10N.translate("my.First.Key")</CODE> will result in "
- * <CODE>my first value</CODE>".</LI>
- * <P>
- * <LI><CODE>I18NL10N.translate("my.Second.Key","second")</CODE>
- * will result in "<CODE>my second value</CODE>".</LI>
- * </UL>
- * <P>
- * <LI>A GUI is typically constructed with statements like the following one:</LI>
- * <P>
- * 
- * <PRE>
- * JLabel label = new JLabel(I18NL10N.translate(&quot;labelKey&quot;,&quot;parameter 1&quot;,...,&quot;parameter N&quot;));
- * </PRE>
- * 
+ *   <LI>Consider the following database file:</LI>
+ *   <P>
+ *   <UL>
+ *     <CODE>my.First.Key=my first value</CODE><BR />
+ *     <CODE>my.Second.Key=my ^1 value</CODE>
+ *   </UL>
+ *   <P>
+ *   The following translations demonstrate its usage:
+ *   <P>
+ *   <UL>
+ *     <LI><CODE>I18NL10N.translate("my.First.Key")</CODE> will result in "
+ *     <CODE>my first value</CODE>".</LI>
+ *     <P>
+ *     <LI><CODE>I18NL10N.translate("my.Second.Key","second")</CODE> will result in "<CODE>my second value</CODE>".</LI>
+ *   </UL>
+ *   <P>
+ *   <LI>A GUI is typically constructed with statements like the following one:</LI>
+ *   <P>
+ *   <PRE>
+ *   JLabel label = new JLabel(I18NL10N.translate(&quot;labelKey&quot;,&quot;parameter 1&quot;,...,&quot;parameter N&quot;));
+ *   </PRE>
  * </UL>
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author Sven Maerivoet
- * @version 04/12/2012
+ * @version 05/12/2012
  */
 public final class I18NL10N {
 
@@ -291,6 +288,26 @@ public final class I18NL10N {
 	public static String getCurrentLocaleDescription()
 	{
 		return Locale.getDefault().getDisplayName();
+	}
+
+	/**
+	 * Returns the short BCP 47 name of the currently used locale.
+	 *
+	 * @return the short BCP 47 name of the currently used locale
+	 */
+	public static String getCurrentLocaleName()
+	{
+		return Locale.getDefault().toString();
+	}
+
+	/**
+	 * Returns the currently used locale.
+	 *
+	 * @return the currently used locale
+	 */
+	public static Locale getCurrentLocale()
+	{
+		return Locale.getDefault();
 	}
 
 	/**

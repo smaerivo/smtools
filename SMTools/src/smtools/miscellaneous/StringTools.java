@@ -1,7 +1,7 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 27/09/2011
+// Last modified : 05/12/2012
 // Target        : Java VM (1.6)
 // --------------------------------
 
@@ -44,7 +44,7 @@ import java.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 27/09/2011
+ * @version 05/12/2012
  */
 public final class StringTools
 {
@@ -285,21 +285,76 @@ public final class StringTools
 
 		if (nrOfDecimals > 0) {
 
-			formatSpecifier += ".";
+			formatSpecifier += "."; // use the locale-specific decimale separator
 			for (int decimal = 0; decimal < nrOfDecimals; ++decimal) {
 				formatSpecifier += "0";
 			}
 		}
-
-		DecimalFormat decimalFormat = new DecimalFormat(formatSpecifier);
+		
 		if (locale.length > 0) {
-			decimalFormat.setDecimalFormatSymbols(new DecimalFormatSymbols());
+			return (new DecimalFormat(formatSpecifier,new DecimalFormatSymbols(locale[0]))).format(number);
 		}
 		else {
-				decimalFormat.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.UK));
+			return (new DecimalFormat(formatSpecifier,new DecimalFormatSymbols(Locale.UK))).format(number);
+		}
+	}
+
+	/**
+	 * Creates a string representation of the specified complex number.
+	 * <P>
+	 * The default locale to be is <CODE>Locale.UK</CODE>; this can be changed by specifying an optional <CODE>locale</CODE> parameter.
+	 * For example, to use the Belgian comma as a separator instead of the dot, specify <CODE>new Locale("be")</CODE> as a parameter.
+	 *
+	 * @param  a            the real part of the complex number to convert to a string
+	 * @param  b            the imaginary part of the complex number to convert to a string
+	 * @param  nrOfDecimals the number of decimals in the resulting string
+	 * @param  locale       an optional parameter specifying the locale to be used (default is <CODE>Local.UK</CODE>)
+	 * @return              a string representation of the specified complex number
+	 */
+	public static String convertComplexToString(double a, double b, int nrOfDecimals, Locale ... locale)
+	{
+		String operator = "+";
+		if (b < 0.0) {
+			operator = "-";
+			b = -b;
+		}
+		return (convertDoubleToString(a,nrOfDecimals,locale) +
+			" " + operator + " " +
+			convertDoubleToString(b,nrOfDecimals,locale) + " i");
+	}
+
+	/**
+	 * Returns the precision of the specified number, based on a leading zero and the number of zero decimals directly following the decimal point.
+	 *
+	 * @param x the number to calculate the precision of
+	 * @return the precision of the specified number
+	 */
+	public static int getDoublePrecision(double x)
+	{
+		final int kMaxConversionLength = 128;
+		String s = StringTools.convertDoubleToString(x,kMaxConversionLength);
+
+		int nrOfDecimals = 0;
+		int zeroPosition = s.indexOf("0");
+		// check if the precision has any decimals
+		if (zeroPosition == 0) {
+			int dotPosition = s.indexOf(".");
+			s = s.substring(dotPosition + 1);
+			nrOfDecimals = 0;
+			while ((nrOfDecimals < s.length()) && (s.charAt(nrOfDecimals) == '0')) {
+				++nrOfDecimals;
+			}
+			if (nrOfDecimals >= kMaxConversionLength) {
+				// fail-safe
+				nrOfDecimals = 1;
+			}
+			else {
+				// the precision starts at the first non-zero digit
+				++nrOfDecimals;			
+			}
 		}
 
-		return String.valueOf(decimalFormat.format(number));
+		return nrOfDecimals;
 	}
 
 	/**
