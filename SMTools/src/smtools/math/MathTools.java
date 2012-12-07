@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 11/11/2012
+// Last modified : 05/12/2012
 // Target        : Java VM (1.6)
 // -------------------------------
 
@@ -23,6 +23,8 @@
 
 package smtools.math;
 
+import java.awt.geom.*;
+
 /**
  * The <CODE>MathTools</CODE> class offers some basic useful mathematical operations.
  * <P>
@@ -35,7 +37,7 @@ package smtools.math;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 11/11/2012
+ * @version 05/12/2012
  */
 public final class MathTools
 {
@@ -222,6 +224,69 @@ public final class MathTools
 		else {
 			return value;
 		}
+	}
+
+	/**
+	 * Determines the minimum of two <CODE>double</CODE>s.
+	 *
+	 * @param a the first <CODE>double</CODE>
+	 * @param b the second <CODE>double</CODE>
+	 * @return the minimum of the two <CODE>double</CODE>s
+	 */
+	public static double min(double a, double b)
+	{
+		if (a < b) {
+			return a;
+		}
+		else {
+			return b;
+		}
+	}
+
+	/**
+	 * Determines the maximum of two <CODE>double</CODE>s.
+	 *
+	 * @param a the first <CODE>double</CODE>
+	 * @param b the second <CODE>double</CODE>
+	 * @return the maximum of the two <CODE>double</CODE>s
+	 */
+	public static double max(double a, double b)
+	{
+		if (a > b) {
+			return a;
+		}
+		else {
+			return b;
+		}
+	}
+
+	/**
+	 * Forces a partial order on the components of two points p1 and p2 such that (x1,y1) <= (x2,y2).
+	 *
+	 * @param p1 the first point
+	 * @param p2 the second point
+	 */	
+	public static void forcePartialOrder(Point2D.Double p1, Point2D.Double p2)
+	{
+		double x1 = p1.getX();
+		double y1 = p1.getY();
+		double x2 = p2.getX();
+		double y2 = p2.getY();
+
+		if (x1 > x2) {
+			double temp = x1;
+			x1 = x2;
+			x2 = temp;
+		}
+
+		if (y1 > y2) {
+			double temp = y1;
+			y1 = y2;
+			y2 = temp;
+		}
+
+		p1.setLocation(x1,y1);
+		p2.setLocation(x2,y2);
 	}
 
 	/**

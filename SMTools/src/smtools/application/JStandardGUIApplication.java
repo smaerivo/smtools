@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 07/12/2012
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -28,6 +28,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
+
 import org.apache.log4j.*;
 import smtools.application.registry.*;
 import smtools.application.util.*;
@@ -114,6 +115,8 @@ import smtools.swing.util.*;
  *     <LI>{@link JStandardGUIApplication#constructRightHandMenu()}</LI>
  *     <LI>{@link JStandardGUIApplication#getStatusBar()}</LI>
  *     <LI>{@link JStandardGUIApplication#isStatusBarEnabled()}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructGlassPane()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGlassPane()}</LI>
  *     <LI>{@link JStandardGUIApplication#isClockEnabled()}</LI>
  *     <LI>{@link JStandardGUIApplication#getAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
  *   </UL>
@@ -147,9 +150,9 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 07/12/2012
  */
-public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
+public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
 	// the different window-sizes
 	/**
@@ -210,7 +213,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	// the location of the JAR archive containing all the resources
 	private static final String kResourceArchiveFilename = "smtools.jar";
 
-	// the location of the system locale databasse
+	// the location of the system locale database
 	private static final String kSystemLocalePrefix = "smtools-resources/locales/locale-";
 
 	// default window title
@@ -280,6 +283,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private int fAboutBoxID;
 	private boolean fMinimiseToSystemTray;
 	private TrayIcon fTrayIcon;
+	private JPanel fGlassPane;
 
 	/*************************
 	 * STATIC INITIALISATION *
@@ -336,7 +340,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *   <P>
 	 *   <LI><I>The about box is shown</I> (see {@link JStandardGUIApplication#getAboutBox()}).</LI>
 	 *   <P>
-	 *   <LI>Post initialisation is performed as the GUI is fully constructed</I> (sse {@link JStandardGUIApplication#postInitialise()}).</LI>
+	 *   <LI>The glass pane is constructed.</I> (see {@link JStandardGUIApplication#constructGlassPane()}).</LI>
+	 *   <P>
+	 *   <LI>Post initialisation is performed as the GUI is fully constructed</I> (see {@link JStandardGUIApplication#postInitialise()}).</LI>
 	 * </UL>
 	 * <P>
 	 * <B>The items in <I>italic</I> can be influenced in a derived subclass.</B>
@@ -560,6 +566,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		// we will handle the window-actions ourselves
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
+		addWindowStateListener(this);
 
 		pack();
 
@@ -619,10 +626,16 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			aboutBox.activate();
 		}
 
+		// setup glass pane
+		fGlassPane = constructGlassPane();
+		if (fGlassPane != null) {
+			setGlassPane(fGlassPane);
+		}
+
 		// allow for custom post initialisation
 		postInitialise();
 	}
-	
+
 	/******************
 	 * PUBLIC METHODS *
 	 ******************/
@@ -804,6 +817,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	public final void windowDeiconified(WindowEvent e)
 	{
 		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSWindowEvent);
+		windowResized();
 	}
 
 	/**
@@ -857,6 +871,18 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	{
 	}
 
+	// the windowstate-listener
+	/**
+	 * Note that this method cannot be overridden!
+	 *
+	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 */
+	@Override
+	public final void windowStateChanged(WindowEvent e)
+	{
+		windowResized();
+	}
+
 	/**
 	 * A callback method for when the GUI's window is resized.
 	 */
@@ -884,6 +910,16 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	{
 		saveSystemRegistry();
 		new JStandardGUIApplication(argv,null);
+	}
+
+	/**
+	 * Returns a reference to the application's glass pane.
+	 *
+	 * @return a reference to the application's glass pane
+	 */
+	public JPanel getGlassPane()
+	{
+		return fGlassPane;
 	}
 
 	/*********************
@@ -1248,6 +1284,18 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	protected boolean isStatusBarEnabled()
 	{
 		return true;
+	}
+
+	/**
+	 * Returns a constructed glass pane.
+	 * <P>
+	 * An application will typically override this method and create its own glass pane object inside it after returning it.
+	 *
+	 * @return a constructed glass pane
+	 */
+	protected JPanel constructGlassPane()
+	{
+		return null;
 	}
 
 	/**
