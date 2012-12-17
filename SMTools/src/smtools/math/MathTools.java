@@ -143,7 +143,7 @@ public final class MathTools
 				angle = Math.PI / 2.0;
 			}
 			else if (y < 0.0) {
-				angle = 3.0 * (Math.PI / 2.0);
+				angle = 3.0 * (Math.PI / 2.0);//-Math.PI / 2.0; 
 			}
 		}
 		else {

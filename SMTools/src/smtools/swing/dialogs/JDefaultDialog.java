@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : JDefaultDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 11/12/2012
 // Target        : Java VM (1.6)
 // -----------------------------------
 
@@ -103,7 +103,7 @@ import smtools.swing.util.*;
  * during the reactivation process, can be performed by overriding the {@link JDefaultDialog#initialiseDuringActivation} method.
  *
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 11/12/2012
  */
 public class JDefaultDialog extends JDialog implements ActionListener, WindowListener
 {
@@ -199,6 +199,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 			setResizable(true);
 		}
 		else if (size == ESize.kFixedSize) {
+			setResizable(false);
 		}
 		if (getInitialDialogSize() != null) {
 			setSize(getInitialDialogSize());

@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 07/12/2012
+// Last modified : 13/12/2012
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -28,7 +28,6 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
-
 import org.apache.log4j.*;
 import smtools.application.registry.*;
 import smtools.application.util.*;
@@ -150,7 +149,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 07/12/2012
+ * @version 13/12/2012
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -581,8 +580,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		// determine the GUI's maximum screensize
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Insets screenInsets = Toolkit.getDefaultToolkit().getScreenInsets(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
+		Dimension screenSize = getScreenSize();
+		Insets screenInsets = getScreenInsets();
 		boolean fullScreenGUISelected = ((fGUIWidth == kFullScreenGUI) || (fGUIHeight == kFullScreenGUI));
 		if (fullScreenGUISelected) {
 			// take into account all the space that a possible OS taskbar tasks
@@ -635,7 +634,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		// allow for custom post initialisation
 		postInitialise();
 	}
-
+	
 	/******************
 	 * PUBLIC METHODS *
 	 ******************/
@@ -920,6 +919,34 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	public JPanel getGlassPane()
 	{
 		return fGlassPane;
+	}
+
+	/**
+	 * Emits an audible beep.
+	 */
+	public final void beep()
+	{
+		Toolkit.getDefaultToolkit().beep();
+	}
+
+	/**
+	 * Returns the screen size.
+	 *
+	 * @return the screen size
+	 */
+	public final Dimension getScreenSize()
+	{
+		return Toolkit.getDefaultToolkit().getScreenSize();
+	}
+
+	/**
+	 * Returns the screen insets.
+	 *
+	 * @return the screen insets
+	 */
+	public final Insets getScreenInsets()
+	{
+		return Toolkit.getDefaultToolkit().getScreenInsets(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
 	}
 
 	/*********************
