@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : Chrono.java
 // Author        : Sven Maerivoet
-// Last modified : 26/01/2004
+// Last modified : 20/12/2012
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -27,22 +27,20 @@ package smtools.miscellaneous;
  * The <CODE>Chrono</CODE> class contains functionality for a simple chronometer.
  * <P>
  * With this class, a single chronometer with an accuracy of milliseconds can be used.
- * As opposed to the behavior of most chronometers, this one runs constantly.
- * Stopping the chronometer is not possible, instead its elapsed time can be queried;
- * to stop-and-start the chronometer a reset can be performed.
  * <P>
- * Note that it also contains a (static) method for suspending application execution for
- * a certain amount of time.
+ * There is also a (static) method for suspending application execution for a certain amount of time.
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 26/01/2004
+ * @version 20/12/2012
  */
 public final class Chrono
 {
 	// internal datastructures
 	private long fStartTimeMs;
+	private long fElapsedTimeMs;
+	private boolean fRunning;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -65,7 +63,25 @@ public final class Chrono
 	 */
 	public void reset()
 	{
+		stop();
 		fStartTimeMs = System.currentTimeMillis();
+		fElapsedTimeMs = 0;
+	}
+
+	/**
+	 * Starts the chronometer.
+	 */
+	public void start()
+	{
+		fRunning = true;
+	}
+
+	/**
+	 * Stops the chronometer.
+	 */
+	public void stop()
+	{
+		fRunning = false;
 	}
 
 	/**
@@ -73,9 +89,12 @@ public final class Chrono
 	 *
 	 * @return the chronometer's elapsed time in milliseconds
 	 */
-	public int getElapsedTimeInMilliseconds()
+	public long getElapsedTimeInMilliseconds()
 	{
-		return ((int) (System.currentTimeMillis() - fStartTimeMs));
+		if (fRunning) {
+			fElapsedTimeMs = (System.currentTimeMillis() - fStartTimeMs);
+		}
+		return fElapsedTimeMs;
 	}
 
 	/**

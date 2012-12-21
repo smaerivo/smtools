@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JGradientColorRamp.java
 // Author        : Sven Maerivoet
-// Last modified : 02/12/2012
+// Last modified : 21/12/2012
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
@@ -78,6 +78,41 @@ import smtools.miscellaneous.*;
  *   <IMG src="doc-files/gradient-color-ramp-blackandwhite.png">
  * </UL>
  * <P>
+ * <UL>
+ *   <B>Hue/saturation/brightness (HSB):</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-huesaturationbrightness.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Red:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-red.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Green:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-green.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Blue:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-blue.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Yellow:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-yellow.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Cyan:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-cyan.png">
+ * </UL>
+ * <P>
+ * <UL>
+ *   <B>Magenta:</B><BR />
+ *   <IMG src="doc-files/gradient-color-ramp-magenta.png">
+ * </UL>
+ * <P>
  * A gradient colour ramp can have four orientations (see {@link JGradientColorRamp.EOrientation}):
  * <P>
  * <UL>
@@ -114,7 +149,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 02/12/2012
+ * @version 21/12/2012
  */
 public final class JGradientColorRamp extends JPanel
 {
@@ -126,7 +161,11 @@ public final class JGradientColorRamp extends JPanel
 	/**
 	 * The various supported colour maps.
 	 */
-	public static enum EColorMap {kGrayScale, kJet, kCopper, kBone, kGreenRedDiverging, kHot, kDiscontinuousBlueWhiteGreen, kDiscontinuousDarkRedYellow, kBlackAndWhite};
+	public static enum EColorMap
+		{kGrayScale, kJet, kCopper, kBone, kGreenRedDiverging, kHot,
+		 kDiscontinuousBlueWhiteGreen, kDiscontinuousDarkRedYellow,
+		 kBlackAndWhite, kHueSaturationBrightness,
+		 kRed, kGreen, kBlue, kYellow, kCyan, kMagenta};
 
 	// colour ramp preferences
 	private static final float kLowerTreshold = 0.33f;
@@ -622,6 +661,30 @@ public final class JGradientColorRamp extends JPanel
 				green = 1.0f;
 				blue = 1.0f;
 			}
+		}
+		else if (colorMap == EColorMap.kHueSaturationBrightness) {
+			return Color.getHSBColor(t,1.0f,1.0f);
+		}
+		else if (colorMap == EColorMap.kRed) {
+			red = t;
+		}
+		else if (colorMap == EColorMap.kGreen) {
+			green = t;
+		}
+		else if (colorMap == EColorMap.kBlue) {
+			blue = t;
+		}
+		else if (colorMap == EColorMap.kYellow) {
+			red = t;
+			green = t;
+		}
+		else if (colorMap == EColorMap.kCyan) {
+			green = t;
+			blue = t;
+		}
+		else if (colorMap == EColorMap.kMagenta) {
+			red = t;
+			blue = t;
 		}
 
 		Color color = new Color(red,green,blue);

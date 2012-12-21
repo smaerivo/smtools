@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 13/12/2012
+// Last modified : 20/12/2012
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -99,6 +99,7 @@ import smtools.swing.util.*;
  *   <P>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#getInitialLookAndFeel()}</LI>
+ *     <LI>{@link JStandardGUIApplication#lookAndFeelChanged()}</LI>
  *     <LI>{@link JStandardGUIApplication#getInitialGUISize()}</LI>
  *     <LI>{@link JStandardGUIApplication#isGUIResizable()}</LI>
  *     <LI>{@link JStandardGUIApplication#isGUIRepaintedWhenResizing()}</LI>
@@ -149,7 +150,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 13/12/2012
+ * @version 20/12/2012
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -1159,6 +1160,13 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * A callback method for when the look-and-feel has changed.
+	 */
+	protected void lookAndFeelChanged()
+	{
+	}
+
+	/**
 	 * Returns the GUI's initial size on the screen.
 	 * <P>
 	 * A derived subclass should return a <CODE>Dimension</CODE> object containing the initial
@@ -1407,6 +1415,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		setLookAndFeelMenuItems();
+
+		// run the callback
+		lookAndFeelChanged();
 	}
 
 	/**
