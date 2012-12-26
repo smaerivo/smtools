@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 05/12/2012
+// Last modified : 26/12/2012
 // Target        : Java VM (1.6)
 // -------------------------------
 
@@ -37,7 +37,7 @@ import java.awt.geom.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 05/12/2012
+ * @version 26/12/2012
  */
 public final class MathTools
 {
@@ -143,27 +143,17 @@ public final class MathTools
 				angle = Math.PI / 2.0;
 			}
 			else if (y < 0.0) {
-				angle = 3.0 * (Math.PI / 2.0);//-Math.PI / 2.0; 
+				angle = 3.0 * (Math.PI / 2.0); // instead of -Math.PI / 2.0 
 			}
 		}
 		else {
-			double absAngle = Math.atan(Math.abs(y) / Math.abs(x));
-
-			if ((x >= 0.0) && (y >= 0.0)) {
-				angle = absAngle;
-			}
-			else if ((x <= 0.0) && (y >= 0.0)) {
-				angle = Math.PI - absAngle;
-			}
-			else if ((x <= 0.0) && (y <= 0.0)) {
-				angle = Math.PI + absAngle;
-			}
-			else {
-				angle = (2.0 * Math.PI) - absAngle;
+			angle = Math.atan2(y,x);
+			if (y < 0.0) {
+				angle = (2.0 * Math.PI) + angle;
 			}
 		}
 
-		return ((2.0 * Math.PI) - angle);
+		return angle;
 	}
 
 	/**
