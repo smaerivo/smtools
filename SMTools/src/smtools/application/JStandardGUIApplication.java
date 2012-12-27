@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 20/12/2012
+// Last modified : 27/12/2012
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -150,7 +150,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 20/12/2012
+ * @version 27/12/2012
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -256,7 +256,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private static final String kActionCommandMenuItemWindowsLAF = "menuItem.WindowsLAF";
 
 	// set the status bar miscellaneous text's update period to ten seconds
-	private static final int kStatusBarUpdatePeriod = 10000;
+	private static final int kStatusBarUpdatePeriod = 1000;
 
 	// set the clock's update period to half a second
 	private static final int kClockUpdatePeriod = 500;
