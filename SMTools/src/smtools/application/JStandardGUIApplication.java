@@ -256,7 +256,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private static final String kActionCommandMenuItemWindowsLAF = "menuItem.WindowsLAF";
 
 	// set the status bar miscellaneous text's update period to ten seconds
-	private static final int kStatusBarUpdatePeriod = 1000;
+	private static final int kStatusBarUpdatePeriod = 10 * 1000;
 
 	// set the clock's update period to half a second
 	private static final int kClockUpdatePeriod = 500;
@@ -884,13 +884,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * A callback method for when the GUI's window is resized.
-	 */
-	protected void windowResized()
-	{
-	}
-
-	/**
 	 * The application's <CODE>main</CODE> method.
 	 * <P>
 	 * Note that this method should be overridden by a derived subclass:
@@ -920,6 +913,19 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	public JPanel getGlassPane()
 	{
 		return fGlassPane;
+	}
+
+	/**
+	 * Update the status bar's miscellaneous text.
+	 */
+	public final void updateStatusBarMiscellaneousText()
+	{
+		double percentageFree = ((double) JMemoryStatistics.getFreeMemory() / (double) JMemoryStatistics.getTotalMemory()) * 100;
+
+		fStatusBar.setMiscellaneousText(
+			I18NL10N.translate("text.MemoryFree") + ": " +
+			StringTools.convertDoubleToString(MathTools.convertBToMiB(JMemoryStatistics.getFreeMemory()),0) + " " +
+			I18NL10N.translate("text.MiBAbbreviation") + " (" + StringTools.convertDoubleToString(percentageFree,0) + "%)");
 	}
 
 	/**
@@ -1216,6 +1222,13 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	protected boolean isGUIRepaintedWhenResizing()
 	{
 		return true;
+	}
+
+	/**
+	 * A callback method for when the GUI's window is resized.
+	 */
+	protected void windowResized()
+	{
 	}
 
 	/**
@@ -1595,18 +1608,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			}
 			menuBar.add(fClockLabel);
 		}
-	}
-
-	/**
-	 */
-	private void updateStatusBarMiscellaneousText()
-	{
-		double percentageFree = ((double) JMemoryStatistics.getFreeMemory() / (double) JMemoryStatistics.getTotalMemory()) * 100;
-
-		fStatusBar.setMiscellaneousText(
-			I18NL10N.translate("text.MemoryFree") + ": " +
-			StringTools.convertDoubleToString(MathTools.convertBToMiB(JMemoryStatistics.getFreeMemory()),0) + " " +
-			I18NL10N.translate("text.MiBAbbreviation") + " (" + StringTools.convertDoubleToString(percentageFree,0) + "%)");
 	}
 
 	/**
