@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JGradientColorRamp.java
 // Author        : Sven Maerivoet
-// Last modified : 21/12/2012
+// Last modified : 01/01/2013
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
@@ -24,6 +24,7 @@
 package smtools.swing.util;
 
 import java.awt.*;
+import java.util.*;
 import javax.swing.*;
 import smtools.math.*;
 import smtools.miscellaneous.*;
@@ -113,6 +114,11 @@ import smtools.miscellaneous.*;
  *   <IMG src="doc-files/gradient-color-ramp-magenta.png">
  * </UL>
  * <P>
+ * <UL>
+ *   <B>Custom:</B><BR />
+ *   Dependendant on the colors specified.
+ * </UL>
+ * <P>
  * A gradient colour ramp can have four orientations (see {@link JGradientColorRamp.EOrientation}):
  * <P>
  * <UL>
@@ -129,13 +135,7 @@ import smtools.miscellaneous.*;
  *  <CODE>Color interpolatedColor = myGradientColorRamp.interpolate(0.6);</CODE>
  * </UL>
  * <P>
- * or via a static method:
- * <P>
- * <UL>
- *  <CODE>Color interpolatedColor = JGradientColorRamp.interpolate(0.6,EColorMap.kJet);</CODE>
- * </UL>
- * <P>
- * both, e.g. corresponds to the following interpolation scheme:
+ * This corresponds to the following interpolation scheme (dependent on the colour map):
  * <P>
  * <UL>
  *   <IMG src="doc-files/gradient-color-ramp-interpolated.png">
@@ -149,7 +149,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 21/12/2012
+ * @version 01/01/2013
  */
 public final class JGradientColorRamp extends JPanel
 {
@@ -165,12 +165,13 @@ public final class JGradientColorRamp extends JPanel
 		{kGrayScale, kJet, kCopper, kBone, kGreenRedDiverging, kHot,
 		 kDiscontinuousBlueWhiteGreen, kDiscontinuousDarkRedYellow,
 		 kBlackAndWhite, kHueSaturationBrightness,
-		 kRed, kGreen, kBlue, kYellow, kCyan, kMagenta};
+		 kRed, kGreen, kBlue, kYellow, kCyan, kMagenta,
+		 kCustom};
 
 	// colour ramp preferences
 	private static final float kLowerTreshold = 0.33f;
-	private static final float kUpperTreshold = 0.66f;
-	private static final float kDifference = kUpperTreshold - kLowerTreshold;
+	private static final float kHigherTreshold = 0.66f;
+	private static final float kDifference = kHigherTreshold - kLowerTreshold;
 	private static final int kDefaultWidth = 100;
 	private static final int kDefaultHeight = 20;
 	private static final int kTickMarkSize = 10;
@@ -184,14 +185,15 @@ public final class JGradientColorRamp extends JPanel
 	private boolean fAnnotated;
 	private double fLowerTickValue;
 	private String fLowerTickValuePrefix;
-	private double fUpperTickValue;
-	private String fUpperTickValuePrefix;
+	private double fHigherTickValue;
+	private String fHigherTickValuePrefix;
 	private String fTickValuePrefix;
 	private String fTickValueSuffix;
 	private int fNrOfTickMarks;
 	private int fTickValueNrOfDecimals;
 	private boolean fValueIndicationEnabled;
 	private double fValueToIndicate;
+	private TreeMap<Double,Color> fCustomColorMap;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -253,6 +255,7 @@ public final class JGradientColorRamp extends JPanel
 		setPreferredSize(getPreferredSize());
 		setSize(getPreferredSize());
 		disableValueIndication();
+		fCustomColorMap = new TreeMap<Double,Color>();
 	}
 
 	/******************
@@ -287,20 +290,20 @@ public final class JGradientColorRamp extends JPanel
 	 *
 	 * @param lowerTickValue the value associated with the left colour
 	 * @param lowerTickValuePrefix the prefix label for the value associated with the left colour
-	 * @param upperTickValue the value associated with the right colour
-	 * @param upperTickValuePrefix the prefix label for the value associated with the right colour
+	 * @param higherTickValue the value associated with the right colour
+	 * @param higherTickValuePrefix the prefix label for the value associated with the right colour
 	 * @param tickValuePrefix the prefix label for each value
 	 * @param tickValueSuffix the suffix label for each value
 	 * @param nrOfTickMarks the number of tick marks to produce
 	 * @param nrOfDecimals the number of decimals to retain in the values beneath the tick marks
 	 */
-	public void setTickMarks(double lowerTickValue, String lowerTickValuePrefix, double upperTickValue, String upperTickValuePrefix, String tickValuePrefix, String tickValueSuffix, int nrOfTickMarks, int nrOfDecimals)
+	public void setTickMarks(double lowerTickValue, String lowerTickValuePrefix, double higherTickValue, String higherTickValuePrefix, String tickValuePrefix, String tickValueSuffix, int nrOfTickMarks, int nrOfDecimals)
 	{
 		fAnnotated = true;
 		fLowerTickValue = lowerTickValue;
 		fLowerTickValuePrefix = lowerTickValuePrefix;
-		fUpperTickValue = upperTickValue;
-		fUpperTickValuePrefix = upperTickValuePrefix;
+		fHigherTickValue = higherTickValue;
+		fHigherTickValuePrefix = higherTickValuePrefix;
 		fTickValuePrefix = tickValuePrefix;
 		fTickValueSuffix = tickValueSuffix;
 		fNrOfTickMarks = nrOfTickMarks;
@@ -311,7 +314,7 @@ public final class JGradientColorRamp extends JPanel
 	 */
 	public void indicateValue(double value)
 	{
-		fValueToIndicate = MathTools.clip(value,fLowerTickValue,fUpperTickValue);
+		fValueToIndicate = MathTools.clip(value,fLowerTickValue,fHigherTickValue);
 		enableValueIndication();
 
 		if (fAnnotated && ((fOrientation == EOrientation.kHorizontalLeftToRight) || (fOrientation == EOrientation.kHorizontalRightToLeft))) {
@@ -456,14 +459,14 @@ public final class JGradientColorRamp extends JPanel
 				g.drawLine(tickMarkX1,tickMarkY1,tickMarkX2,tickMarkY2);
 			
 				int textYPos = (trueHeight - (trueHeight - fHeight)) + (fontMetrics.getAscent() + fontMetrics.getHeight());
-				double tickValue = fLowerTickValue + ((fUpperTickValue - fLowerTickValue) / (fNrOfTickMarks - 1)) * tickMarkIndex;
+				double tickValue = fLowerTickValue + ((fHigherTickValue - fLowerTickValue) / (fNrOfTickMarks - 1)) * tickMarkIndex;
 
 				String tickValueStr = fTickValuePrefix + StringTools.convertDoubleToString(tickValue,fTickValueNrOfDecimals) + fTickValueSuffix;
 				if (tickMarkIndex == 0) {
 					tickValueStr = fLowerTickValuePrefix + tickValueStr;
 				}
 				else if (tickMarkIndex == (fNrOfTickMarks - 1)) {
-					tickValueStr = fUpperTickValuePrefix + tickValueStr;
+					tickValueStr = fHigherTickValuePrefix + tickValueStr;
 				}
 
 				// center tick values, except for the first (left-centered) and last (right-centered) tick values
@@ -478,7 +481,7 @@ public final class JGradientColorRamp extends JPanel
 			}
 
 			if (fValueIndicationEnabled) {
-				int indicationX1 = (int) Math.round(fWidth * ((fValueToIndicate - fLowerTickValue) / (fUpperTickValue - fLowerTickValue)));
+				int indicationX1 = (int) Math.round(fWidth * ((fValueToIndicate - fLowerTickValue) / (fHigherTickValue - fLowerTickValue)));
 				int indicationX2 = indicationX1;
 				int indicationY1 = 0;
 				int indicationY2 = fHeight - 1;
@@ -496,7 +499,36 @@ public final class JGradientColorRamp extends JPanel
 			fHeight = trueHeight;
 		}
 	}
-	
+
+	/**
+	 * Adds or updates an entry in the custom colour map.
+	 *
+	 * @param level the level of the entry (between 0.0 and 1.0)
+	 * @param color the <CODE>Color</CODE> to associate with the level
+	*/
+	public void setCustomColorMapEntry(double level, Color color)
+	{
+		// constrain the level
+		level = MathTools.clip(level,0.0,1.0);
+
+		// check if an existing level is modified
+		if (fCustomColorMap.containsKey(level)) {
+			removeCustomColorMapEntry(level);
+		}
+
+		fCustomColorMap.put(level,color);
+	}
+
+	/**
+	 * Removes a level from the custom colour map.
+	 *
+	 * @param level the level to remove from the custom colour map
+	 */
+	public void removeCustomColorMapEntry(double level)
+	{
+		fCustomColorMap.remove(level);
+	}
+
 	/**
 	 * Derives a <CODE>Color</CODE> that is linearly interpolated across a spectrum.
 	 * <P>
@@ -506,35 +538,18 @@ public final class JGradientColorRamp extends JPanel
 	 */
 	public Color interpolate(double u)
 	{
-		return interpolate(u,fColorMap);
-	}
-
-	/******************
-	 * STATIC METHODS *
-	 ******************/
-
-	/**
-	 * Derives a <CODE>Color</CODE> that is linearly interpolated across a spectrum from a specified colour map.
-	 * <P>
-	 * Note that the value of <CODE>u</CODE> is clipped in the interval [0,1].
-	 *
-	 * @param u the value to use when interpolating the spectrum
-	 * @param colorMap the colour map to use
-	 */
-	public static Color interpolate(double u, EColorMap colorMap)
-	{
 		float t = (float) MathTools.clip(u,0.0,1.0);
 
 		float red = 0.0f;
 		float green = 0.0f;
 		float blue = 0.0f;
 
-		if (colorMap == EColorMap.kGrayScale) {			
+		if (fColorMap == EColorMap.kGrayScale) {			
 			red = t;
 			green = t;
 			blue = t;
 		}
-		else if (colorMap == EColorMap.kJet) {
+		else if (fColorMap == EColorMap.kJet) {
 			if (t <= kLowerTreshold) {
 				// interpolate from blue to green
 				t = t / kLowerTreshold;
@@ -542,7 +557,7 @@ public final class JGradientColorRamp extends JPanel
 				green = t;
 				blue = 1.0f - t;
 			}
-			else if (t <= kUpperTreshold) {
+			else if (t <= kHigherTreshold) {
 				// interpolate from green to yellow
 				t = (t - kLowerTreshold) / kDifference;
 				red = t;
@@ -551,18 +566,18 @@ public final class JGradientColorRamp extends JPanel
 			}
 			else if (t <= 100) {
 				// interpolate from yellow to red
-				t = (t - kUpperTreshold) / (1.0f - kUpperTreshold);
+				t = (t - kHigherTreshold) / (1.0f - kHigherTreshold);
 				red = 1.0f;
 				green = 1.0f - t;
 				blue = 0.0f;
 			}
 		}
-		else if (colorMap == EColorMap.kCopper) {
+		else if (fColorMap == EColorMap.kCopper) {
 			red = (float) MathTools.clip(t * 1.5f,0.0,1.0);
 			green = t;
 			blue = t / 10.0f;
 		}
-		else if (colorMap == EColorMap.kBone) {
+		else if (fColorMap == EColorMap.kBone) {
 			float n = 3.0f / 8.0f;
 			if (t < n) {
 				red = 0.0f;
@@ -583,7 +598,7 @@ public final class JGradientColorRamp extends JPanel
 			green = ((7.0f * t) + green) / 8.0f;
 			blue = ((7.0f * t) + blue) / 8.0f;
 		}
-		else if (colorMap == EColorMap.kGreenRedDiverging) {
+		else if (fColorMap == EColorMap.kGreenRedDiverging) {
 			if (t < 0.5f) {
 				float divergingFactor = t / 0.5f;
 				red = divergingFactor;
@@ -597,7 +612,7 @@ public final class JGradientColorRamp extends JPanel
 				blue = divergingFactor;
 			}
 		}
-		else if (colorMap == EColorMap.kHot) {
+		else if (fColorMap == EColorMap.kHot) {
 			float n = 3.0f / 8.0f;
 			if (t < n) {
 				red = t * (1.0f / n);
@@ -615,7 +630,7 @@ public final class JGradientColorRamp extends JPanel
 				blue = (t - (2.0f * n)) * (1.0f / n);
 			}
 		}
-		else if (colorMap == EColorMap.kDiscontinuousBlueWhiteGreen) {
+		else if (fColorMap == EColorMap.kDiscontinuousBlueWhiteGreen) {
 			if (t < 0.0625f) {
 				red = t * 8.0f;
 				green = t * 8.0f;
@@ -633,7 +648,7 @@ public final class JGradientColorRamp extends JPanel
 				blue = x;
 			}
 		}
-		else if (colorMap == EColorMap.kDiscontinuousDarkRedYellow) {
+		else if (fColorMap == EColorMap.kDiscontinuousDarkRedYellow) {
 			if (t < 0.33f) {
 				red = t;
 				green = 0.0f;
@@ -650,7 +665,7 @@ public final class JGradientColorRamp extends JPanel
 				blue = t;
 			}
 		}
-		else if (colorMap == EColorMap.kBlackAndWhite) {
+		else if (fColorMap == EColorMap.kBlackAndWhite) {
 			if (t < 0.5f) {
 				red = 0.0f;
 				green = 0.0f;
@@ -662,29 +677,59 @@ public final class JGradientColorRamp extends JPanel
 				blue = 1.0f;
 			}
 		}
-		else if (colorMap == EColorMap.kHueSaturationBrightness) {
+		else if (fColorMap == EColorMap.kHueSaturationBrightness) {
 			return Color.getHSBColor(t,1.0f,1.0f);
 		}
-		else if (colorMap == EColorMap.kRed) {
+		else if (fColorMap == EColorMap.kRed) {
 			red = t;
 		}
-		else if (colorMap == EColorMap.kGreen) {
+		else if (fColorMap == EColorMap.kGreen) {
 			green = t;
 		}
-		else if (colorMap == EColorMap.kBlue) {
+		else if (fColorMap == EColorMap.kBlue) {
 			blue = t;
 		}
-		else if (colorMap == EColorMap.kYellow) {
+		else if (fColorMap == EColorMap.kYellow) {
 			red = t;
 			green = t;
 		}
-		else if (colorMap == EColorMap.kCyan) {
+		else if (fColorMap == EColorMap.kCyan) {
 			green = t;
 			blue = t;
 		}
-		else if (colorMap == EColorMap.kMagenta) {
+		else if (fColorMap == EColorMap.kMagenta) {
 			red = t;
 			blue = t;
+		}
+		else if (fColorMap == EColorMap.kCustom) {
+			fCustomColorMap = new TreeMap<Double,Color>();
+
+			// find the values surrounding the requested value
+			Double lowerValue = fCustomColorMap.floorKey((double) t);
+			if (lowerValue == null) {
+				return Color.BLACK;
+			}
+			Double higherValue = fCustomColorMap.ceilingKey((double) t);
+			if (higherValue == null) {
+				return Color.BLACK;
+			}
+
+			// find the interpolation value between both values
+			double range = higherValue - lowerValue;
+			double offset = t - lowerValue;
+			double fraction = 0.0f;
+			if (range > 0.0) {
+				fraction = (float) (offset / range);
+			}
+
+			// find the corresponding colors
+			Color lowerColor = fCustomColorMap.get(lowerValue);
+			Color higherColor = fCustomColorMap.get(higherValue);
+
+			// interpolate color components
+			red = (float) MathTools.clip((lowerColor.getRed() / 255.0) + fraction * ((higherColor.getRed() / 255.0) - (lowerColor.getRed() / 255.0)),0.0,1.0);
+			green = (float) MathTools.clip((lowerColor.getGreen() / 255.0) + fraction * ((higherColor.getGreen() / 255.0) - (lowerColor.getGreen() / 255.0)),0.0,1.0);
+			blue = (float) MathTools.clip((lowerColor.getBlue() / 255.0) + fraction * ((higherColor.getBlue() / 255.0) - (lowerColor.getBlue() / 255.0)),0.0,1.0);
 		}
 
 		Color color = new Color(red,green,blue);
