@@ -1,12 +1,12 @@
 // ---------------------------------------
 // Filename      : JGradientColorRamp.java
 // Author        : Sven Maerivoet
-// Last modified : 01/01/2013
+// Last modified : 02/01/2013
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,7 +149,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 01/01/2013
+ * @version 02/01/2013
  */
 public final class JGradientColorRamp extends JPanel
 {
@@ -193,6 +193,7 @@ public final class JGradientColorRamp extends JPanel
 	private int fTickValueNrOfDecimals;
 	private boolean fValueIndicationEnabled;
 	private double fValueToIndicate;
+	private TreeMap<Integer,CustomColorMapComponent> fCustomColorMapComponents;
 	private TreeMap<Double,Color> fCustomColorMap;
 
 	/****************
@@ -255,7 +256,7 @@ public final class JGradientColorRamp extends JPanel
 		setPreferredSize(getPreferredSize());
 		setSize(getPreferredSize());
 		disableValueIndication();
-		fCustomColorMap = new TreeMap<Double,Color>();
+		clearAllCustomColorMapComponents();
 	}
 
 	/******************
@@ -501,32 +502,76 @@ public final class JGradientColorRamp extends JPanel
 	}
 
 	/**
-	 * Adds or updates an entry in the custom colour map.
+	 * Adds or updates a component in the custom colour map.
 	 *
-	 * @param level the level of the entry (between 0.0 and 1.0)
-	 * @param color the <CODE>Color</CODE> to associate with the level
+	 * @param id the ID of the component
+	 * @param level the level of the component (between 0.0 and 1.0)
+	 * @param color the <CODE>Color</CODE> to associate with the component
 	*/
-	public void setCustomColorMapEntry(double level, Color color)
+	public void setCustomColorMapComponent(int id, double level, Color color)
 	{
+		removeCustomColorMapComponent(id);
+
 		// constrain the level
 		level = MathTools.clip(level,0.0,1.0);
 
-		// check if an existing level is modified
-		if (fCustomColorMap.containsKey(level)) {
-			removeCustomColorMapEntry(level);
-		}
+		// store the mapping from ID to color map component
+		CustomColorMapComponent customColorMapComponent = new CustomColorMapComponent(level,color);
+		fCustomColorMapComponents.put(id,customColorMapComponent);
 
+		// update the color map
 		fCustomColorMap.put(level,color);
 	}
 
 	/**
-	 * Removes a level from the custom colour map.
+	 * Removes a component from the custom colour map.
 	 *
-	 * @param level the level to remove from the custom colour map
+	 * @param id the ID of the component
 	 */
-	public void removeCustomColorMapEntry(double level)
+	public void removeCustomColorMapComponent(int id)
 	{
-		fCustomColorMap.remove(level);
+		if (fCustomColorMapComponents.containsKey(id)) {
+			fCustomColorMapComponents.remove(id);
+
+			// rebuild custom color map
+			fCustomColorMap = new TreeMap<Double,Color>();
+			for (CustomColorMapComponent customColorMapComponent : fCustomColorMapComponents.values()) {
+				fCustomColorMap.put(customColorMapComponent.fLevel,customColorMapComponent.fColor);
+			}
+		}
+	}
+
+	/**
+	 * Clears all components from the custom colour map.
+	 */
+	public void clearAllCustomColorMapComponents()
+	{
+		fCustomColorMapComponents = new TreeMap<Integer,CustomColorMapComponent>();
+		fCustomColorMap = new TreeMap<Double,Color>();
+	}
+
+	/**
+	 * Sets all components of the custom colour map.
+	 *
+	 * @param colorMapComponents a <CODE>TreeMap</CODE> containing all the custom colour map components
+	 */
+	public void setAllCustomColorMapComponents(TreeMap<Integer,CustomColorMapComponent> colorMapComponents)
+	{
+		clearAllCustomColorMapComponents();
+		for (int id : colorMapComponents.keySet()) {
+			CustomColorMapComponent colorMapComponent = colorMapComponents.get(id);
+			setCustomColorMapComponent(id,colorMapComponent.fLevel,colorMapComponent.fColor);
+		}
+	}
+
+	/**
+	 * Returns all components of the custom colour map.
+	 *
+	 * @return a <CODE>TreeMap</CODE> containing all the custom colour map components
+	 */
+	public TreeMap<Integer,CustomColorMapComponent> getAllCustomColorMapComponents()
+	{
+		return fCustomColorMapComponents;
 	}
 
 	/**
@@ -702,8 +747,6 @@ public final class JGradientColorRamp extends JPanel
 			blue = t;
 		}
 		else if (fColorMap == EColorMap.kCustom) {
-			fCustomColorMap = new TreeMap<Double,Color>();
-
 			// find the values surrounding the requested value
 			Double lowerValue = fCustomColorMap.floorKey((double) t);
 			if (lowerValue == null) {
@@ -735,5 +778,36 @@ public final class JGradientColorRamp extends JPanel
 		Color color = new Color(red,green,blue);
 
 		return color;
+	}
+
+	/*****************
+	 * INNER CLASSES *
+	 *****************/
+
+	/**
+	 * A container class for a custom colour map component.
+	 *
+	 * @author  Sven Maerivoet
+	 * @version 02/01/2013
+	 */
+	public final class CustomColorMapComponent
+	{
+		/**
+		 * The level associated with this color map component.
+		 */
+		public double fLevel;
+
+		/**
+		 * The colour associated with this color map component.
+		 */
+		public Color fColor;
+
+		/**
+		 */
+		public CustomColorMapComponent(double level, Color color)
+		{
+			fLevel = level;
+			fColor = color;
+		}
 	}
 }
