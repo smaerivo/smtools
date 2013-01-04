@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 02/01/2013
+// Last modified : 04/01/2013
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
@@ -41,13 +41,10 @@ import smtools.swing.util.JGradientColorRamp.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 02/01/2013
+ * @version 04/01/2013
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
-	// the number of color components
-	private static final int kNrOfColors = 10;
-
 	// the action commands
 	private static final String kActionCommandColorButtonPrefix = "colorbutton-";
 	private static final String kActionCommandColorCheckBoxPrefix = "colorcheckbox-";
@@ -59,6 +56,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	private static final String kFieldSeparator = ",";
 
 	// internal datastructures
+	private int fNrOfColors;
 	private JGradientColorRamp fColorMap;
 	private JButton[] fColorButtons;
 	private JSlider[] fColorSliders;
@@ -74,13 +72,13 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	 *
 	 * @param owner the owning frame
 	 */
-	public JCustomColorMapChooser(JFrame owner, TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent> customColorMapComponents)
+	public JCustomColorMapChooser(JFrame owner, int nrOfColors, TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent> customColorMapComponents)
 	{
 		super(owner,
 			JDefaultDialog.EModality.kModal,
 			JDefaultDialog.ESize.kFixedSize,
 			JDefaultDialog.EType.kOkCancel,
-			new Object[] {customColorMapComponents},
+			new Object[] {nrOfColors,customColorMapComponents},
 			JDefaultDialog.EActivation.kPostponed);
 	}
 
@@ -146,19 +144,23 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 						String idDesc = colorMapComponentsDesc[0];
 						int id = Integer.parseInt(idDesc);
 
-						// extract level
-						String levelDesc = colorMapComponentsDesc[1];
-						double level = Double.parseDouble(levelDesc);
+						// only retain supported color indices
+						if (id < fNrOfColors) {
 
-						// extract color components
-						String redDesc = colorMapComponentsDesc[2];
-						int red = Integer.parseInt(redDesc);
-						String greenDesc = colorMapComponentsDesc[3];
-						int green = Integer.parseInt(greenDesc);
-						String blueDesc = colorMapComponentsDesc[4];
-						int blue = Integer.parseInt(blueDesc);
+							// extract level
+							String levelDesc = colorMapComponentsDesc[1];
+							double level = Double.parseDouble(levelDesc);
 
-						fColorMap.setCustomColorMapComponent(id,level,new Color(red,green,blue));
+							// extract color components
+							String redDesc = colorMapComponentsDesc[2];
+							int red = Integer.parseInt(redDesc);
+							String greenDesc = colorMapComponentsDesc[3];
+							int green = Integer.parseInt(greenDesc);
+							String blueDesc = colorMapComponentsDesc[4];
+							int blue = Integer.parseInt(blueDesc);
+
+							fColorMap.setCustomColorMapComponent(id,level,new Color(red,green,blue));
+						}
 					}
 
 					adjustControls();
@@ -235,7 +237,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 		if (!colorSlider.getValueIsAdjusting()) {
 			// find colorIndex
 			int colorIndex = 0;
-			for (int i = 0; i < kNrOfColors; ++i) {
+			for (int i = 0; i < fNrOfColors; ++i) {
 				if (colorSlider == fColorSliders[i]) {
 					colorIndex = i;
 				}
@@ -271,8 +273,9 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	protected void initialiseClass(Object[] parameters)
 	{
 		fClearControls = false;
+		fNrOfColors = (int) parameters[0];
 		fColorMap = new JGradientColorRamp(JGradientColorRamp.EOrientation.kVerticalTopToBottom,JGradientColorRamp.EColorMap.kCustom,50,400);
-		fColorMap.setAllCustomColorMapComponents((TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent>) parameters[0]);
+		fColorMap.setAllCustomColorMapComponents((TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent>) parameters[1]);
 	}
 
 	/**
@@ -306,11 +309,11 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 
 			upperPanel.add(Box.createHorizontalStrut(20));
 
-			fColorButtons = new JButton[kNrOfColors];
-			fColorSliders = new JSlider[kNrOfColors];
-			fColorCheckBoxes = new JCheckBox[kNrOfColors];
+			fColorButtons = new JButton[fNrOfColors];
+			fColorSliders = new JSlider[fNrOfColors];
+			fColorCheckBoxes = new JCheckBox[fNrOfColors];
 			TreeMap<Integer,CustomColorMapComponent> customColorMapComponents = fColorMap.getAllCustomColorMapComponents();
-			for (int colorIndex = 0; colorIndex < kNrOfColors; ++colorIndex) {
+			for (int colorIndex = 0; colorIndex < fNrOfColors; ++colorIndex) {
 				JPanel colorPanel = new JPanel();
 				colorPanel.setLayout(new BoxLayout(colorPanel,BoxLayout.Y_AXIS));
 				boolean colorAvailable = customColorMapComponents.containsKey(colorIndex);
@@ -359,7 +362,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 				colorPanel.add(fColorCheckBoxes[colorIndex]);
 			
 				upperPanel.add(colorPanel);
-				if (colorIndex < (kNrOfColors - 1)) {
+				if (colorIndex < (fNrOfColors - 1)) {
 					upperPanel.add(Box.createHorizontalStrut(10));
 				}
 			}
@@ -420,7 +423,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	private void adjustControls()
 	{
 		// reset all controls
-		for (int colorIndex = 0; colorIndex < kNrOfColors; ++colorIndex) {
+		for (int colorIndex = 0; colorIndex < fNrOfColors; ++colorIndex) {
 			fColorButtons[colorIndex].setBackground(getBackground());
 			fColorButtons[colorIndex].setEnabled(false);
 
@@ -449,7 +452,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 			CustomColorMapComponent colorMapComponent = colorMapComponents.get(colorIndex);
 
 			// only adjust color map components within range
-			if (colorIndex < kNrOfColors) {
+			if (colorIndex < fNrOfColors) {
 				fColorButtons[colorIndex].setBackground(colorMapComponent.fColor);
 				fColorButtons[colorIndex].setEnabled(true);
 
