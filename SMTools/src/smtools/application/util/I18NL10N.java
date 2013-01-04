@@ -328,7 +328,7 @@ public final class I18NL10N {
 		String value = fTranslationTable.getProperty(languageKey);
 
 		if (value == null) {
-			kLogger.error("Language key (" + languageKey + ") not found in language definition file.");
+			kLogger.warn("Language key (" + languageKey + ") not found in language definition file.");
 			return "";
 		}
 		String fParsed = "";

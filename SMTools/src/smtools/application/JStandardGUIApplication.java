@@ -1,12 +1,12 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 27/12/2012
+// Last modified : 04/01/2013
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -113,6 +113,10 @@ import smtools.swing.util.*;
  *     <LI>{@link JStandardGUIApplication#constructContentPane(JPanel)}</LI>
  *     <LI>{@link JStandardGUIApplication#constructMenus()}</LI>
  *     <LI>{@link JStandardGUIApplication#constructRightHandMenu()}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructMenuItem(String,boolean)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructMenuItem(String)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructCheckBoxMenuItem(String,boolean)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructCheckBoxMenuItem(String)}</LI>
  *     <LI>{@link JStandardGUIApplication#getStatusBar()}</LI>
  *     <LI>{@link JStandardGUIApplication#isStatusBarEnabled()}</LI>
  *     <LI>{@link JStandardGUIApplication#constructGlassPane()}</LI>
@@ -150,7 +154,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 27/12/2012
+ * @version 04/01/2013
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -1312,6 +1316,81 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	protected JMenu constructRightHandMenu()
 	{
 		return null;
+	}
+
+	/**
+	 * Constructs a menu item object; an optional mnemonic can be used if it is found.
+	 * <P>
+	 * Note that this method cannot be overridden!
+	 *
+	 * @param menuItemKey the key of the menu item
+	 * @param useMnemonic a flag indicating whether to use a mnemonic or not
+	 * @return a menu item object
+	 */
+	protected final JMenuItem constructMenuItem(String menuItemKey, boolean useMnemonic)
+	{
+		if (useMnemonic) {
+			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(menuItemKey + ".Mnemonic"));
+			if (mnemonic != null) {
+				return (new JMenuItem(I18NL10N.translate(menuItemKey),mnemonic));
+			}
+			else {
+				return (new JMenuItem(I18NL10N.translate(menuItemKey)));
+			}
+		}
+		else {
+			return (new JMenuItem(I18NL10N.translate(menuItemKey)));
+		}
+	}
+
+	/**
+	 * Constructs a menu item object; a mnemonic is used if it is found.
+	 * <P>
+	 * Note that this method cannot be overridden!
+	 *
+	 * @param menuItemKey the key of the menu item
+	 * @return a menu item object
+	 */
+	protected final JMenuItem constructMenuItem(String menuItemKey)
+	{
+		return constructMenuItem(menuItemKey,true);
+	}
+
+	/**
+	 * Constructs a check box menu item object; an optional mnemonic can be used if it is found.
+	 * <P>
+	 * Note that this method cannot be overridden!
+	 *
+	 * @param checkBoxMenuItemKey the key of the menu item
+	 * @param useMnemonic a flag indicating whether to use a mnemonic or not
+	 * @return a check box menu item object
+	 */
+	protected final JCheckBoxMenuItem constructCheckBoxMenuItem(String checkBoxMenuItemKey, boolean useMnemonic)
+	{
+		JCheckBoxMenuItem checkBoxMenuItem = new JCheckBoxMenuItem(I18NL10N.translate(checkBoxMenuItemKey));
+
+		if (useMnemonic) {
+			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(checkBoxMenuItemKey + ".Mnemonic"));
+
+			if (mnemonic != null) {
+				checkBoxMenuItem.setMnemonic(mnemonic);
+			}
+		}
+
+		return checkBoxMenuItem;
+	}
+
+	/**
+	 * Constructs a check box menu item object; a mnemonic is used if it is found.
+	 * <P>
+	 * Note that this method cannot be overridden!
+	 *
+	 * @param checkBoxMenuItemKey the key of the menu item
+	 * @return a check box menu item object
+	 */
+	protected final JCheckBoxMenuItem constructCheckBoxMenuItem(String checkBoxMenuItemKey)
+	{
+		return constructCheckBoxMenuItem(checkBoxMenuItemKey,true);
 	}
 
 	/**
