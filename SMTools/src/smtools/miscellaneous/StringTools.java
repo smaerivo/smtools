@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 05/12/2012
+// Last modified : 05/01/2013
 // Target        : Java VM (1.6)
 // --------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import java.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 05/12/2012
+ * @version 05/01/2013
  */
 public final class StringTools
 {
@@ -259,6 +259,30 @@ public final class StringTools
 	public static String createLineOfCharacters(int length, char lineCharacter)
 	{
 		return alignLeft("",length,lineCharacter);
+	}
+
+	/**
+	 * Returns the optional indentation (i.e., any whitespace at the beginning) of a given <CODE>String</CODE>.
+	 *
+	 * @param stringToProcess the <CODE>String</CODE> to process
+	 * @return the optional indentation
+	 */
+	public static String getIndentation(String stringToProcess)
+	{
+		String indentation = "";
+
+		if ((stringToProcess != null) && (stringToProcess.length() > 0)) {
+			char c = stringToProcess.charAt(0);
+			if (Character.isWhitespace(c)) {
+				int pos = 1;
+				while ((pos < stringToProcess.length()) && Character.isWhitespace(stringToProcess.charAt(pos))) {
+					++pos;
+				}
+				indentation = stringToProcess.substring(0,pos);
+			}
+		}
+
+		return indentation;
 	}
 
 	/**

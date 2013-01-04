@@ -1329,17 +1329,20 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	protected final JMenuItem constructMenuItem(String menuItemKey, boolean useMnemonic)
 	{
+		String translation = I18NL10N.translate(menuItemKey.trim());
+		String indentation = StringTools.getIndentation(menuItemKey);
+
 		if (useMnemonic) {
-			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(menuItemKey + ".Mnemonic"));
+			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(menuItemKey.trim() + ".Mnemonic"));
 			if (mnemonic != null) {
-				return (new JMenuItem(I18NL10N.translate(menuItemKey),mnemonic));
+				return (new JMenuItem(indentation + translation,mnemonic));
 			}
 			else {
-				return (new JMenuItem(I18NL10N.translate(menuItemKey)));
+				return (new JMenuItem(indentation + translation));
 			}
 		}
 		else {
-			return (new JMenuItem(I18NL10N.translate(menuItemKey)));
+			return (new JMenuItem(indentation + translation));
 		}
 	}
 
@@ -1367,10 +1370,13 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	protected final JCheckBoxMenuItem constructCheckBoxMenuItem(String checkBoxMenuItemKey, boolean useMnemonic)
 	{
-		JCheckBoxMenuItem checkBoxMenuItem = new JCheckBoxMenuItem(I18NL10N.translate(checkBoxMenuItemKey));
+		String translation = I18NL10N.translate(checkBoxMenuItemKey.trim());
+		String indentation = StringTools.getIndentation(checkBoxMenuItemKey);
+
+		JCheckBoxMenuItem checkBoxMenuItem = new JCheckBoxMenuItem(indentation + translation);
 
 		if (useMnemonic) {
-			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(checkBoxMenuItemKey + ".Mnemonic"));
+			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(checkBoxMenuItemKey.trim() + ".Mnemonic"));
 
 			if (mnemonic != null) {
 				checkBoxMenuItem.setMnemonic(mnemonic);
