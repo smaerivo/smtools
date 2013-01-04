@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : I18NL10N.java
 // Author        : Sven Maerivoet
-// Last modified : 05/12/2012
+// Last modified : 04/01/2013
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -98,7 +98,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author Sven Maerivoet
- * @version 05/12/2012
+ * @version 04/01/2013
  */
 public final class I18NL10N {
 
@@ -383,10 +383,14 @@ public final class I18NL10N {
 	 * the caller to pass a <I>key</I> as parameter to this method.
 	 * 
 	 * @param mnemonic the mnemonic to retrieve the <CODE>KeyEvent</CODE> code from
-	 * @return the <CODE>KeyEvent</CODE> code associated with the specified mnemonic
+	 * @return the <CODE>KeyEvent</CODE> code associated with the specified mnemonic (<CODE>null</CODE> if the mnemonic was empty)
 	 */
-	public static int translateMnemonic(final String mnemonic)
+	public static Integer translateMnemonic(final String mnemonic)
 	{
+		if ((mnemonic == null) || (mnemonic.length() == 0)) {
+			return null;
+		}
+
 		char mnemonicChar = (mnemonic.toUpperCase()).charAt(0);
 
 		switch (mnemonicChar) {
