@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 04/01/2013
+// Last modified : 05/01/2013
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -154,7 +154,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 04/01/2013
+ * @version 05/01/2013
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -1586,8 +1586,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.retrieveComponent(fAboutBoxID);
 		if (aboutBox != null) {
-			menuItem = new JMenuItem(I18NL10N.translate(kActionCommandMenuItemAbout),
-				I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemAbout + ".Mnemonic")));
+			menuItem = constructMenuItem(kActionCommandMenuItemAbout);
 			menuItem.setActionCommand(kActionCommandMenuItemAbout);
 			menuItem.addActionListener(this);
 			menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'A',java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -1641,8 +1640,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		subMenu.addSeparator();
 
-		menuItem = new JMenuItem(I18NL10N.translate(kActionCommandMenuItemSystemLAF),
-				I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemSystemLAF + ".Mnemonic")));
+		menuItem = constructMenuItem(kActionCommandMenuItemSystemLAF);
 		menuItem.setActionCommand(kActionCommandMenuItemSystemLAF);
 		menuItem.addActionListener(this);
 		subMenu.add(menuItem);
@@ -1650,9 +1648,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		if (SystemTray.isSupported()) {
 			subMenu.addSeparator();
 
-			JCheckBoxMenuItem checkBoxMenuItem = new JCheckBoxMenuItem(I18NL10N.translate(kActionCommandMenuItemMinimiseToSystemTray));
+			JCheckBoxMenuItem checkBoxMenuItem = constructCheckBoxMenuItem(kActionCommandMenuItemMinimiseToSystemTray);
 			checkBoxMenuItem.setState(true);
-			checkBoxMenuItem.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMinimiseToSystemTray + ".Mnemonic")));
 			checkBoxMenuItem.setActionCommand(kActionCommandMenuItemMinimiseToSystemTray);
 			checkBoxMenuItem.addActionListener(this);
 			subMenu.add(checkBoxMenuItem);
@@ -1662,8 +1659,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		menu.addSeparator();
 
-		menuItem = new JMenuItem(I18NL10N.translate(kActionCommandMenuItemQuit),
-				I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemQuit + ".Mnemonic")));
+		menuItem = constructMenuItem(kActionCommandMenuItemQuit);
 		menuItem.setActionCommand(kActionCommandMenuItemQuit);
 		menuItem.addActionListener(this);
 		menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'Q',java.awt.event.InputEvent.CTRL_DOWN_MASK));

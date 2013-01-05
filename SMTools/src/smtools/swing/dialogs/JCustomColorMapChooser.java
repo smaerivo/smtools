@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 04/01/2013
+// Last modified : 05/01/2013
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
@@ -41,7 +41,7 @@ import smtools.swing.util.JGradientColorRamp.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/01/2013
+ * @version 05/01/2013
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
@@ -180,7 +180,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setDialogTitle(I18NL10N.translate("text.CustomColorMap.SaveTitle"));
 			fileChooser.setFileFilter(new JFileFilter("CSV",I18NL10N.translate("text.File.CSVDescription")));
-			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 				String filename = fileChooser.getSelectedFile().getPath();
 				if (!filename.endsWith(".csv")) {
 					filename += ".csv";

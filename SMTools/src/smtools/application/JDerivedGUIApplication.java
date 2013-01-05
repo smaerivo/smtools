@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 05/01/2013
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 05/01/2013
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -335,14 +335,12 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		menus[0] = new JMenu(I18NL10N.translate("menu.Demonstration"));
 		menus[0].setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.Demonstration.Mnemonic")));
 
-			menuItem = new JMenuItem(I18NL10N.translate(kActionCommandMenuItemDateChooser),
-				I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemDateChooser + ".Mnemonic")));
+			menuItem = constructMenuItem(kActionCommandMenuItemDateChooser);
 			menuItem.setActionCommand(kActionCommandMenuItemDateChooser);
 			menuItem.addActionListener(this);
 		menus[0].add(menuItem);
 
-			menuItem = new JMenuItem(I18NL10N.translate(kActionCommandMenuItemTimeChooser),
-				I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemTimeChooser + ".Mnemonic")));
+			menuItem = constructMenuItem(kActionCommandMenuItemTimeChooser);
 			menuItem.setActionCommand(kActionCommandMenuItemTimeChooser);
 			menuItem.addActionListener(this);
 		menus[0].add(menuItem);
@@ -362,8 +360,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		rightHandMenu = new JMenu(I18NL10N.translate("menu.Help"));
 		rightHandMenu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.Help.Mnemonic")));
 
-		menuItem = new JMenuItem(I18NL10N.translate(kActionCommandMenuItemIndex),
-				I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemIndex + ".Mnemonic")));
+		menuItem = constructMenuItem(kActionCommandMenuItemIndex);
 		menuItem.setActionCommand(kActionCommandMenuItemIndex);
 		menuItem.addActionListener(this);
 		rightHandMenu.add(menuItem);
