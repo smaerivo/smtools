@@ -57,7 +57,7 @@
 			author="true"
 			version="true"
 			overview="${srcDir}/smtools/overview.html" >
-			<group title="Application GUI development" packages="smtools.application:smtools.application.registry:smtools.application.util" />
+			<group title="Application GUI development" packages="smtools.application:smtools.application.concurrent:smtools.application.registry:smtools.application.util" />
 			<group title="Exception handling" packages="smtools.exceptions" />
 			<group title="Mathematical utilities" packages="smtools.math:smtools.math.lslr:smtools.math.quadmapping:smtools.math.statistics" />
 			<group title="Miscellaneous" packages="smtools.miscellaneous" />

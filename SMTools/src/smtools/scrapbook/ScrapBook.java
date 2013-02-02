@@ -1,5 +1,9 @@
+package smtools.scrapbook;
+
 import org.apache.log4j.*;
 
+/**
+ */
 public class ScrapBook
 {
 	// access point to the Log4j logging facility
@@ -29,6 +33,7 @@ public class ScrapBook
 	/**
 	 * The application's entry point.
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args)
 	{
 		ScrapBook scrapBook = new ScrapBook();

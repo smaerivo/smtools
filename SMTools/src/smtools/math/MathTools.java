@@ -1,12 +1,12 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 26/12/2012
+// Last modified : 02/02/2013
 // Target        : Java VM (1.6)
 // -------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import java.awt.geom.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 26/12/2012
+ * @version 02/02/2013
  */
 public final class MathTools
 {
@@ -58,6 +58,17 @@ public final class MathTools
 	/******************
 	 * PUBLIC METHODS *
 	 ******************/
+
+	/**
+	 * Calculates the fractional part of a <CODE>double</CODE>.
+	 *
+	 * @param  x the <CODE>double</CODE> to calculate the fractional part of
+	 * @return   the fractional part of the <CODE>double</CODE>
+	 */
+	public static double frac(double x)
+	{
+		return (x - Math.floor(x));
+	}
 
 	/**
 	 * Calculates the square of a <CODE>double</CODE>.

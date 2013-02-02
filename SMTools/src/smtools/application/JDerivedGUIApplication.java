@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 05/01/2013
+// Last modified : 02/02/2013
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
@@ -26,7 +26,10 @@ package smtools.application;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.*;
+
 import javax.swing.*;
+import smtools.application.concurrent.*;
 import smtools.application.util.*;
 import smtools.exceptions.*;
 import smtools.miscellaneous.*;
@@ -48,7 +51,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 05/01/2013
+ * @version 02/02/2013
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -74,24 +77,26 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	// the action commands for the menus
 	private static final String kActionCommandMenuItemDateChooser = "menuItem.DateChooser";
 	private static final String kActionCommandMenuItemTimeChooser = "menuItem.TimeChooser";
+	private static final String kActionCommandMenuItemTaskRunner = "menuItem.TaskRunner";
 	private static final String kActionCommandMenuItemIndex = "menuItem.Index";
 
 	// internal datastructures
 	private int fDateChooserID;
 	private int fTimeChooserID;
+	private JProgressUpdateGlassPane fProgressUpdateGlassPane;
 
 	/*************************
 	 * STATIC INITIALISATION *
 	 *************************/
 
 	static {
-		JDevelopMode.deactivate();
+		JDevelopMode.activate();
 	}
 
 	/****************
 	 * CONSTRUCTORS *
 	 ****************/
-	
+
 	/**
 	 * Constructs a <CODE>JDerivedGUIApplication</CODE> object.
 	 *
@@ -155,6 +160,18 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemIndex)) {
 			JIncompleteWarningDialog.warn(this,"smtools.application.DerivedGUIApplication.actionPerformed()");
+		}
+		else if (command.equalsIgnoreCase(kActionCommandMenuItemTaskRunner)) {
+			MyTaskExecutor taskExecutor = new MyTaskExecutor(fProgressUpdateGlassPane,this);
+			for (int taskID = 0; taskID < 100; ++taskID) {
+				// setup a task with custom input
+				MyTask task = new MyTask(taskID);
+				task.setID(taskID);
+				task.setNrOfSubTasks(1000);
+				taskExecutor.addTask(task);
+			}
+			// schedule asynchronous execution
+			taskExecutor.execute();
 		}
 	}
 
@@ -322,7 +339,17 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			// ignore
 		}
 	}
-	 
+
+	/**
+	 * See {@link JStandardGUIApplication}.
+	 */
+	@Override
+	protected JPanel constructGlassPane()
+	{
+		fProgressUpdateGlassPane = new JProgressUpdateGlassPane();
+		return fProgressUpdateGlassPane;
+	}
+
 	/**
 	 * See {@link JStandardGUIApplication}.
 	 */
@@ -342,6 +369,13 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 			menuItem = constructMenuItem(kActionCommandMenuItemTimeChooser);
 			menuItem.setActionCommand(kActionCommandMenuItemTimeChooser);
+			menuItem.addActionListener(this);
+		menus[0].add(menuItem);
+
+		menus[0].addSeparator();
+
+			menuItem = constructMenuItem(kActionCommandMenuItemTaskRunner);
+			menuItem.setActionCommand(kActionCommandMenuItemTaskRunner);
 			menuItem.addActionListener(this);
 		menus[0].add(menuItem);
 
@@ -393,5 +427,107 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	protected JAboutBox getAboutBox()
 	{
 		return (new JDerivedAboutBox(this,fResources));
+	}
+
+	/*****************
+	 * INNER CLASSES *
+	 *****************/
+
+	/**
+	 * @author  Sven Maerivoet
+	 * @version 02/02/2013
+	 */
+	public class MyTaskExecutor extends JTaskExecutor
+	{
+		// internal datastructures
+		private Component fMainWindow;
+
+		/****************
+		 * CONSTRUCTORS *
+		 ****************/
+
+		/**
+		 */
+		public MyTaskExecutor(JProgressUpdateGlassPane progressUpdateGlassPane, Component mainWindow)
+		{
+			super(progressUpdateGlassPane);
+			fMainWindow = mainWindow;
+		}
+
+		/*********************
+		 * PROTECTED METHODS *
+		 *********************/
+
+		/**
+		 */
+		@Override
+		protected void finishTasks()
+		{
+			int result = 0;
+			for (AJTask task : getTasks()) {
+				result += ((MyTask) task).getResult();
+			}
+
+			JMessageDialog.show(fMainWindow,I18NL10N.translate("text.TaskCompleted",String.valueOf(result)));
+		}
+	}
+
+	/**
+	 * @author  Sven Maerivoet
+	 * @version 02/02/2013
+	 */
+	public class MyTask extends AJTask
+	{
+		// internal datastructures
+		private int fTaskID;
+		private ArrayList<Integer> fSubTaskResults;
+		private int fTaskResult;
+
+		/****************
+		 * CONSTRUCTORS *
+		 ****************/
+
+		/**
+		 */
+		public MyTask(int taskID)
+		{
+			fTaskID = taskID;
+			fSubTaskResults = new ArrayList<Integer>();
+		}
+
+		/******************
+		 * PUBLIC METHODS *
+		 ******************/
+
+		/**
+		 */
+		public int getResult()
+		{
+			return fTaskResult;
+		}
+
+		/*********************
+		 * PROTECTED METHODS *
+		 *********************/
+
+		/**
+		 */
+		@Override
+		protected void executeSubTask(int subTaskID)
+		{
+			fSubTaskResults.add(fTaskID);
+			Chrono.wait(5);
+		}
+
+		/**
+		 */
+		@Override
+		protected void finishTask()
+		{
+			fTaskResult = 0;
+			for (int subTaskResult : fSubTaskResults) {
+				fTaskResult += subTaskResult;
+			}
+		}
 	}
 }

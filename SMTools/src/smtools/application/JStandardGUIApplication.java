@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 05/01/2013
+// Last modified : 02/02/2013
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -154,7 +154,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 05/01/2013
+ * @version 02/02/2013
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -634,12 +634,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		fGlassPane = constructGlassPane();
 		if (fGlassPane != null) {
 			setGlassPane(fGlassPane);
+			fGlassPane.setVisible(false);
+			fGlassPane.setOpaque(false);
 		}
 
 		// allow for custom post initialisation
 		postInitialise();
 	}
-	
+
 	/******************
 	 * PUBLIC METHODS *
 	 ******************/
@@ -907,16 +909,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	{
 		saveSystemRegistry();
 		new JStandardGUIApplication(argv,null);
-	}
-
-	/**
-	 * Returns a reference to the application's glass pane.
-	 *
-	 * @return a reference to the application's glass pane
-	 */
-	public JPanel getGlassPane()
-	{
-		return fGlassPane;
 	}
 
 	/**

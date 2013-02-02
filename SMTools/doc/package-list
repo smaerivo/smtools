@@ -1,4 +1,5 @@
 smtools.application
+smtools.application.concurrent
 smtools.application.registry
 smtools.application.util
 smtools.exceptions
@@ -7,5 +8,6 @@ smtools.math.lslr
 smtools.math.quadmapping
 smtools.math.statistics
 smtools.miscellaneous
+smtools.scrapbook
 smtools.swing.dialogs
 smtools.swing.util
