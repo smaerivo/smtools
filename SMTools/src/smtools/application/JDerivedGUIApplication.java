@@ -27,7 +27,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
-
 import javax.swing.*;
 import smtools.application.concurrent.*;
 import smtools.application.util.*;
@@ -84,13 +83,14 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	private int fDateChooserID;
 	private int fTimeChooserID;
 	private JProgressUpdateGlassPane fProgressUpdateGlassPane;
+	private int fVisualisationType;
 
 	/*************************
 	 * STATIC INITIALISATION *
 	 *************************/
 
 	static {
-		JDevelopMode.activate();
+		JDevelopMode.deactivate();
 	}
 
 	/****************
@@ -162,6 +162,23 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			JIncompleteWarningDialog.warn(this,"smtools.application.DerivedGUIApplication.actionPerformed()");
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTaskRunner)) {
+			// cycle to the next visualisation type
+			switch (fVisualisationType) {
+				case 0:
+					fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kBar);
+					break;
+				case 1:
+					fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kCircles);
+					break;
+				case 2:
+					fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kFixedSector);
+					break;
+				case 3:
+					fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kRotatingSector);
+					break;
+			}
+			fVisualisationType = (fVisualisationType + 1) % 4;
+
 			MyTaskExecutor taskExecutor = new MyTaskExecutor(fProgressUpdateGlassPane,this);
 			for (int taskID = 0; taskID < 100; ++taskID) {
 				// setup a task with custom input
@@ -347,6 +364,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	protected JPanel constructGlassPane()
 	{
 		fProgressUpdateGlassPane = new JProgressUpdateGlassPane();
+		fVisualisationType = 0;
 		return fProgressUpdateGlassPane;
 	}
 

@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 05/01/2013
+// Last modified : 02/02/2013
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
@@ -36,12 +36,16 @@ import smtools.swing.util.*;
 import smtools.swing.util.JGradientColorRamp.*;
 
 /**
- * The <CODE>JCustomColorMapChooser</CODE> class provides a dialog for creating a custom colour map.
+ * The <CODE>JCustomColorMapChooser</CODE> class provides a dialog for creating a custom colour map:
+ * <P>
+ * <UL>
+ *   <IMG src="doc-files/custom-color-map-chooser.png">
+ * </UL>
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 05/01/2013
+ * @version 02/02/2013
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
