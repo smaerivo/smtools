@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 02/02/2013
+// Last modified : 03/02/2013
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
@@ -50,7 +50,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 02/02/2013
+ * @version 03/02/2013
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -83,6 +83,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	private int fDateChooserID;
 	private int fTimeChooserID;
 	private JProgressUpdateGlassPane fProgressUpdateGlassPane;
+	private MyTaskExecutor fTaskExecutor;
 	private int fVisualisationType;
 
 	/*************************
@@ -162,33 +163,37 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			JIncompleteWarningDialog.warn(this,"smtools.application.DerivedGUIApplication.actionPerformed()");
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTaskRunner)) {
-			// cycle to the next visualisation type
-			switch (fVisualisationType) {
-				case 0:
-					fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kBar);
-					break;
-				case 1:
-					fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kCircles);
-					break;
-				case 2:
-					fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kFixedSector);
-					break;
-				case 3:
-					fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kRotatingSector);
-					break;
+			if ((fTaskExecutor == null) || (!fTaskExecutor.isBusy())) {
+				fTaskExecutor = new MyTaskExecutor(fProgressUpdateGlassPane,this);
 			}
-			fVisualisationType = (fVisualisationType + 1) % 4;
 
-			MyTaskExecutor taskExecutor = new MyTaskExecutor(fProgressUpdateGlassPane,this);
-			for (int taskID = 0; taskID < 100; ++taskID) {
-				// setup a task with custom input
-				MyTask task = new MyTask(taskID);
-				task.setID(taskID);
-				task.setNrOfSubTasks(1000);
-				taskExecutor.addTask(task);
+			if (!fTaskExecutor.isBusy()) {
+				// cycle to the next visualisation type
+				fVisualisationType = (fVisualisationType + 1) % 3;
+
+				switch (fVisualisationType) {
+					case 0:
+						fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kBar);
+						break;
+					case 1:
+						fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kCircles);
+						break;
+					case 2:
+						fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kFixedSector);
+						break;
+				}
+
+				for (int taskID = 0; taskID < 100; ++taskID) {
+					// setup a task with custom input
+					MyTask task = new MyTask(taskID);
+					task.setID(taskID);
+					task.setNrOfSubTasks(1000);
+					fTaskExecutor.addTask(task);
+				}
+
+				// schedule asynchronous execution
+				fTaskExecutor.execute();
 			}
-			// schedule asynchronous execution
-			taskExecutor.execute();
 		}
 	}
 

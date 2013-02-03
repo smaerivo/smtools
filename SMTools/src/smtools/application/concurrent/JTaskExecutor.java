@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : JTaskExecutor.java
 // Author        : Sven Maerivoet
-// Last modified : 02/02/2013
+// Last modified : 03/02/2013
 // Target        : Java VM (1.6)
 // ----------------------------------
 
@@ -32,12 +32,18 @@ import smtools.swing.util.*;
  * The <CODE>JTaskExecutor</CODE> class provides a facility for concurrently executing a number of <CODE>AJTask</CODE>s.
  * <P>
  * The class executes a certain number of tasks simultaneously, each one starting in its own thread. It then waits until all tasks have completed.
- * Each task can consist of multiple subtasks that are all executed within the same task's thread. Results can be collected via the {@link JTaskExecutor#finishTasks()} method.
+ * Each task can consist of multiple subtasks that are all executed within the same task's thread.
+ * <P>
+ * Tasks are added via the {@link JTaskExecutor#addTask(AJTask)} or {@link JTaskExecutor#addTasks(ArrayList)} methods;
+ * results can be collected via the {@link JTaskExecutor#finishTasks()} method.
+ * <P>
+ * Once all tasks are defined, a user calls the <CODE>JTaskExecutor.execute()</CODE> method; the class can only be used once.
+ * The current state of execution can be queried via the {@link JTaskExecutor#isBusy()} method.
  * <P>
  * Progress of the tasks' executions is shown via an optional progress update glasspane.
  * 
  * @author  Sven Maerivoet
- * @version 02/02/2013
+ * @version 03/02/2013
  * @see     AJTask
  */
 public class JTaskExecutor extends SwingWorker<Void,Void>
@@ -49,6 +55,7 @@ public class JTaskExecutor extends SwingWorker<Void,Void>
 	private ArrayList<AJTask> fTasks;
 	private CountDownLatch fCountDownLatch;
 	private JProgressUpdateGlassPane fProgressUpdateGlassPane;
+	private boolean fBusy;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -62,8 +69,9 @@ public class JTaskExecutor extends SwingWorker<Void,Void>
 	public JTaskExecutor(JProgressUpdateGlassPane progressUpdateGlassPane)
 	{
 		super();
-		fTasks = new ArrayList<AJTask>();
 		fProgressUpdateGlassPane = progressUpdateGlassPane;
+		fTasks = new ArrayList<AJTask>();
+		fBusy = false;
 
 		// override Swing's internal fixed number of worker threads
 		sun.awt.AppContext.getAppContext().put(SwingWorker.class,Executors.newFixedThreadPool(kNrOfThreads));
@@ -113,6 +121,16 @@ public class JTaskExecutor extends SwingWorker<Void,Void>
 		return fTasks;
 	}
 
+	/**
+	 * Returns whether or not the task executor is busy.
+	 *
+	 * @return a <CODE>boolean</CODE> indicating whether or not the task executor is busy
+	 */
+	public final boolean isBusy()
+	{
+		return fBusy;
+	}
+
 	/*********************
 	 * PROTECTED METHODS *
 	 *********************/
@@ -129,6 +147,8 @@ public class JTaskExecutor extends SwingWorker<Void,Void>
 	@Override
 	protected final Void doInBackground() throws Exception
 	{
+		fBusy = true;
+
 		// setup the synchronisation and progress updating mechanisms
 		int totalNrOfProgressUpdates = 0;
 		fCountDownLatch = new CountDownLatch(fTasks.size());
@@ -167,6 +187,7 @@ public class JTaskExecutor extends SwingWorker<Void,Void>
 			if (fProgressUpdateGlassPane != null) {
 				finishTasks();
 				fProgressUpdateGlassPane.done();
+				fBusy = false;
 			}
 		}
 	}

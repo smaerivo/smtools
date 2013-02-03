@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 02/02/2013
+// Last modified : 03/02/2013
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -154,7 +154,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 02/02/2013
+ * @version 03/02/2013
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -307,17 +307,17 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * During construction of the GUI, the following events take place:
 	 * <P>
 	 * <UL>
-	 *   <LI><I>The required version of the Java runtime engine is checked </I> (see {@link JStandardGUIApplication#getRequiredMajorJavaVersion()} and
+	 *   <LI>The required version of the Java runtime engine is checked (see {@link JStandardGUIApplication#getRequiredMajorJavaVersion()} and
 	 *       {@link JStandardGUIApplication#getRequiredMinorJavaVersion()}).</LI>
 	 *   <P>
 	 *   <LI>The system {@link JARResources} are loaded.</LI>
 	 *   <P>
-	 *   <LI><I>The GUI is set to auto-size by default</I> (see {@link JStandardGUIApplication#getInitialGUISize()} and
+	 *   <LI>The GUI is set to auto-size by default (see {@link JStandardGUIApplication#getInitialGUISize()} and
 	 *       {@link JStandardGUIApplication#isGUIResizable()}).</LI>
 	 *   <P>
 	 *   <LI>British English is the default language used.</LI>
 	 *   <P>
-	 *   <LI><I>The command-line parameters are parsed </I> (see {@link JStandardGUIApplication#parseParameter(int,String)}).</LI>
+	 *   <LI>The command-line parameters are parsed (see {@link JStandardGUIApplication#parseParameter(int,String)}).</LI>
 	 *   <P>
 	 *   <LI>The system's locale {@link I18NL10N} database is loaded.</LI>
 	 *   <P>
@@ -329,27 +329,25 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *   <P>
 	 *   <LI>The look-and-feel of the operating system is used by default.</LI>
 	 *   <P>
-	 *   <LI><I>A optional splash screen is shown</I> (see {@link JStandardGUIApplication#getSplashScreenContent()} and
+	 *   <LI>A optional splash screen is shown (see {@link JStandardGUIApplication#getSplashScreenContent()} and
 	 *       {@link JStandardGUIApplication#getSplashScreenSound()}).</LI>
 	 *   <P>
-	 *   <LI><I>Custom initialisation is performed</I> (see {@link JStandardGUIApplication#initialiseClass(Object[])}).</LI>
+	 *   <LI>Custom initialisation is performed (see {@link JStandardGUIApplication#initialiseClass(Object[])}).</LI>
 	 *   <P>
-	 *   <LI><I>The window's icon and title are set</I> (see {@link JStandardGUIApplication#getIcon()} and
+	 *   <LI>The window's icon and title are set (see {@link JStandardGUIApplication#getIcon()} and
 	 *       {@link JStandardGUIApplication#getWindowTitle()}).</LI>
 	 *   <P>
-	 *   <LI><I>The GUI's content pane is constructed</I> (see {@link JStandardGUIApplication#constructContentPane(JPanel)}).</LI>
+	 *   <LI>The GUI's content pane is constructed (see {@link JStandardGUIApplication#constructContentPane(JPanel)}).</LI>
 	 *   <P>
-	 *   <LI><I>The GUI's menu bar is constructed</I> (see {@link JStandardGUIApplication#constructMenus()} and
+	 *   <LI>The GUI's menu bar is constructed (see {@link JStandardGUIApplication#constructMenus()} and
 	 *       {@link JStandardGUIApplication#constructRightHandMenu()}).</LI>
 	 *   <P>
-	 *   <LI><I>The about box is shown</I> (see {@link JStandardGUIApplication#getAboutBox()}).</LI>
+	 *   <LI>The about box is shown (see {@link JStandardGUIApplication#getAboutBox()}).</LI>
 	 *   <P>
-	 *   <LI>The glass pane is constructed.</I> (see {@link JStandardGUIApplication#constructGlassPane()}).</LI>
+	 *   <LI>The glass pane is constructed (see {@link JStandardGUIApplication#constructGlassPane()}).</LI>
 	 *   <P>
 	 *   <LI>Post initialisation is performed as the GUI is fully constructed</I> (see {@link JStandardGUIApplication#postInitialise()}).</LI>
 	 * </UL>
-	 * <P>
-	 * <B>The items in <I>italic</I> can be influenced in a derived subclass.</B>
 	 * <P>
 	 * If no parameters are to be passed to the GUI, specify <CODE>null</CODE>
 	 * for <CODE>parameters</CODE>.
