@@ -1,7 +1,7 @@
 // ---------------------------------------------
 // Filename      : JProgressUpdateGlassPane.java
 // Author        : Sven Maerivoet
-// Last modified : 02/02/2013
+// Last modified : 04/02/2013
 // Target        : Java VM (1.6)
 // ---------------------------------------------
 
@@ -24,6 +24,7 @@
 package smtools.swing.util;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 import smtools.math.*;
@@ -60,9 +61,9 @@ import smtools.miscellaneous.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 02/02/2013
+ * @version 04/02/2013
  */
-public class JProgressUpdateGlassPane extends JPanel
+public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener
 {
 	/**
 	 * The different types of progress update visualisations.
@@ -77,14 +78,14 @@ public class JProgressUpdateGlassPane extends JPanel
 	private boolean fShowFractions;
 	private int fTotalNrOfProgressUpdates;
 	private int fNrOfProgressUpdatesCompleted;
-	private double  fPercentageCompleted;
+	private double fPercentageCompleted;
 
 	/****************
 	 * CONSTRUCTORS *
 	 ****************/
 
 	/**
-	 * Constructs a <CODE>JProgressUpdateGlassPane</CODE> object and resets it.
+	 * Constructs an unblocking <CODE>JProgressUpdateGlassPane</CODE> object and resets it.
 	 * <P>
 	 * A bar is used as the type of visualisation, fractions are not shown in the percentage completed.
 	 */
@@ -94,7 +95,7 @@ public class JProgressUpdateGlassPane extends JPanel
 	}
 
 	/**
-	 * Constructs a <CODE>JProgressUpdateGlassPane</CODE> object and resets it.
+	 * Constructs an unblocking <CODE>JProgressUpdateGlassPane</CODE> object and resets it.
 	 *
 	 * @param visualisationType the type of the visualisation to show
 	 * @param showFractions a <CODE>boolean</CODE> indicating whether or not fractions are shown in the percentage completed
@@ -105,6 +106,7 @@ public class JProgressUpdateGlassPane extends JPanel
 		setVisualisationType(visualisationType);
 		setShowFractions(showFractions);
 		reset();
+		setBlocking(false);
 	}
 
 	/******************
@@ -211,6 +213,27 @@ public class JProgressUpdateGlassPane extends JPanel
 	{
 		reset();
 		setVisible(false);
+	}
+
+	/**
+	 * Sets whether or not the glasspane should block all user mouse-input.
+	 *
+	 * @param blocking a <CODE>boolean</CODE> that indicates whether or not the glasspane should block all user mouse-input
+	 */
+	public final void setBlocking(boolean blocking)
+	{
+		if (blocking) {
+			if (getMouseListeners().length == 0) {
+				addMouseListener(this);
+				addMouseMotionListener(this);
+			}
+		}
+		else {
+			if (getMouseListeners().length > 0) {
+				removeMouseListener(this);
+				removeMouseMotionListener(this);
+			}
+		}
 	}
 
 	/**
@@ -372,5 +395,70 @@ public class JProgressUpdateGlassPane extends JPanel
 			g2.setColor(gcr.interpolate(0.25 + (percentageCompleted / 75.0)));
 			g2.draw(progressCircle);
 		}
+	}
+
+	// the mouse-listener
+	/**
+	 */
+	@Override
+	public final void mouseClicked(MouseEvent e)
+	{
+		// block event
+		e.consume();
+	}
+
+	/**
+	 */
+	@Override
+	public final void mousePressed(MouseEvent e)
+	{
+		// block event
+		e.consume();
+	}
+
+	/**
+	 */
+	@Override
+	public final void mouseReleased(MouseEvent e)
+	{
+		// block event
+		e.consume();
+	}
+
+	/**
+	 */
+	@Override
+	public final void mouseEntered(MouseEvent e)
+	{
+		// block event
+		e.consume();
+	}
+
+	/**
+	 */
+	@Override
+	public final void mouseExited(MouseEvent e)
+	{
+		// block event
+		e.consume();
+	}
+
+	// the mouse-motion-listener
+	/**
+	 */
+	@Override
+	public final void mouseMoved(MouseEvent e)
+	{
+		// block event
+		e.consume();
+	}
+
+	/**
+	 */
+	@Override
+	public final void mouseDragged(MouseEvent e)
+	{
+		// block event
+		e.consume();
 	}
 }
