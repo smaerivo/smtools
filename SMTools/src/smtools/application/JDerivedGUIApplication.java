@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 03/02/2013
+// Last modified : 09/02/2013
 // Target        : Java VM (1.6)
 // -------------------------------------------
 
@@ -50,7 +50,7 @@ import smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 03/02/2013
+ * @version 09/02/2013
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -169,7 +169,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 			if (!fTaskExecutor.isBusy()) {
 				// cycle to the next visualisation type
-				fVisualisationType = (fVisualisationType + 1) % 3;
+				fVisualisationType = (fVisualisationType + 1) % 4;
 
 				switch (fVisualisationType) {
 					case 0:
@@ -180,6 +180,9 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 						break;
 					case 2:
 						fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kFixedSector);
+						break;
+					case 3:
+						fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kRotatingSector);
 						break;
 				}
 

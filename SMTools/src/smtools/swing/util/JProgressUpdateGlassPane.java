@@ -1,7 +1,7 @@
 // ---------------------------------------------
 // Filename      : JProgressUpdateGlassPane.java
 // Author        : Sven Maerivoet
-// Last modified : 04/02/2013
+// Last modified : 09/02/2013
 // Target        : Java VM (1.6)
 // ---------------------------------------------
 
@@ -61,7 +61,7 @@ import smtools.miscellaneous.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 04/02/2013
+ * @version 09/02/2013
  */
 public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener
 {
@@ -79,6 +79,8 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	private int fTotalNrOfProgressUpdates;
 	private int fNrOfProgressUpdatesCompleted;
 	private double fPercentageCompleted;
+	
+	private double fStartAngleDelta = 0.0;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -380,9 +382,15 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 			g2.draw(innerArc);
 
 			if (fVisualisationType == EVisualisationType.kRotatingSector) {
+/*
 				// position the start of the circle according to the fraction
 				// the extent corresponds to the total percentage completed
 				startAngle = MathTools.frac(percentageCompleted) * 360.0;
+				angle = (percentageCompleted / 100.0) * 360.0;
+				startAngle = (360.0 - startAngle) + 90.0;
+*/
+				// position the start of the circle so that it has turned a full circle upon completion
+				startAngle = ((percentageCompleted * 2.0) / 100.0) * 360.0;
 				angle = (percentageCompleted / 100.0) * 360.0;
 				startAngle = (360.0 - startAngle) + 90.0;
 			}
