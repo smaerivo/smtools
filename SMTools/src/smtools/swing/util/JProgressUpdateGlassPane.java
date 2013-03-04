@@ -1,7 +1,7 @@
 // ---------------------------------------------
 // Filename      : JProgressUpdateGlassPane.java
 // Author        : Sven Maerivoet
-// Last modified : 09/02/2013
+// Last modified : 21/02/2013
 // Target        : Java VM (1.6)
 // ---------------------------------------------
 
@@ -61,7 +61,7 @@ import smtools.miscellaneous.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 09/02/2013
+ * @version 21/02/2013
  */
 public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener
 {
@@ -79,8 +79,6 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	private int fTotalNrOfProgressUpdates;
 	private int fNrOfProgressUpdatesCompleted;
 	private double fPercentageCompleted;
-	
-	private double fStartAngleDelta = 0.0;
 
 	/****************
 	 * CONSTRUCTORS *

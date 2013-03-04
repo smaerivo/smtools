@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 03/02/2013
+// Last modified : 04/03/2013
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -32,7 +32,6 @@ import org.apache.log4j.*;
 import smtools.application.registry.*;
 import smtools.application.util.*;
 import smtools.exceptions.*;
-import smtools.math.*;
 import smtools.miscellaneous.*;
 import smtools.swing.dialogs.*;
 import smtools.swing.util.*;
@@ -120,7 +119,6 @@ import smtools.swing.util.*;
  *     <LI>{@link JStandardGUIApplication#getStatusBar()}</LI>
  *     <LI>{@link JStandardGUIApplication#isStatusBarEnabled()}</LI>
  *     <LI>{@link JStandardGUIApplication#constructGlassPane()}</LI>
- *     <LI>{@link JStandardGUIApplication#getGlassPane()}</LI>
  *     <LI>{@link JStandardGUIApplication#isClockEnabled()}</LI>
  *     <LI>{@link JStandardGUIApplication#getAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
  *   </UL>
@@ -154,7 +152,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 03/02/2013
+ * @version 04/03/2013
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -259,9 +257,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private static final String kActionCommandMenuItemSystemLAF = "menuItem.SystemLAF";
 	private static final String kActionCommandMenuItemWindowsLAF = "menuItem.WindowsLAF";
 
-	// set the status bar miscellaneous text's update period to ten seconds
-	private static final int kStatusBarUpdatePeriod = 10 * 1000;
-
 	// set the clock's update period to half a second
 	private static final int kClockUpdatePeriod = 500;
 
@@ -278,7 +273,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private JRadioButtonMenuItem frbMotif;
 	private JRadioButtonMenuItem frbNimbus;
 	private JRadioButtonMenuItem frbWindows;
-	private JStatusBar fStatusBar;
+	private JExtendedStatusBar fStatusBar;
 	private JLabel fClockLabel;
 	private String fLocale;
 	private JSplashScreen fSplashScreen;
@@ -518,7 +513,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		// if necessary, add the status bar
 		if (isStatusBarEnabled()) {
-			fStatusBar = new JStatusBar(isGUIResizable());
+			fStatusBar = new JExtendedStatusBar(isGUIResizable());
+			
 			contentPane.add(fStatusBar,BorderLayout.SOUTH);
 
 			// create a Swing timer to periodically update the status bar miscellaneous text
@@ -526,13 +522,13 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					updateStatusBarMiscellaneousText();
+					fStatusBar.updateRighthandSide();
 				}
 			};
-			new javax.swing.Timer(kStatusBarUpdatePeriod,updateStatusBarAction).start();
+			new javax.swing.Timer(JExtendedStatusBar.kUpdatePeriod,updateStatusBarAction).start();
 
 			// perform the first update when the GUI is displayed
-			updateStatusBarMiscellaneousText();
+			fStatusBar.updateRighthandSide();
 		}
 
 			JPanel embeddedContentPane = new JPanel();
@@ -543,7 +539,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		// if necessary, add the clock
 		if (isClockEnabled()) {
-
 			fClockLabel = new JLabel("",SwingConstants.RIGHT);
 
 			// create a Swing timer to periodically update the clock label
@@ -907,19 +902,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	{
 		saveSystemRegistry();
 		new JStandardGUIApplication(argv,null);
-	}
-
-	/**
-	 * Update the status bar's miscellaneous text.
-	 */
-	public final void updateStatusBarMiscellaneousText()
-	{
-		double percentageFree = ((double) JMemoryStatistics.getFreeMemory() / (double) JMemoryStatistics.getTotalMemory()) * 100;
-
-		fStatusBar.setMiscellaneousText(
-			I18NL10N.translate("text.MemoryFree") + ": " +
-			StringTools.convertDoubleToString(MathTools.convertBToMiB(JMemoryStatistics.getFreeMemory()),0) + " " +
-			I18NL10N.translate("text.MiBAbbreviation") + " (" + StringTools.convertDoubleToString(percentageFree,0) + "%)");
 	}
 
 	/**
@@ -1392,7 +1374,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Getter method for the status bar.
 	 */
-	protected JStatusBar getStatusBar()
+	protected JExtendedStatusBar getStatusBar()
 	{
 		return fStatusBar;
 	}

@@ -1,12 +1,12 @@
 // -------------------------------
 // Filename      : JStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 02/12/2012
+// Last modified : 04/03/2013
 // Target        : Java VM (1.6)
 // -------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,74 +27,65 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * The <CODE>JStatusBar</CODE> class provides a <CODE>JPanel</CODE> that provides an application with a status bar.
- * <P>
- * <B>Note that this class cannot be subclassed!</B>
- *
+ * The <CODE>JStatusBar</CODE> class constructs a <CODE>JPanel</CODE> that provides an application with a status bar.
+ * A user can override the {@link JStatusBar#addRighthandSideLabels()} method to add his own labels to the status bar's righthand side.
+
  * @author  Sven Maerivoet
- * @version 02/12/2012
+ * @version 04/03/2013
  */
-public final class JStatusBar extends JPanel
+public class JStatusBar extends JPanel
 {
 	// the vertical size of the status bar
 	private static final int kHeight = 23;
 
-	// the offset
-	private static final int kOffset = 5;
+	// the separation offset
+	private static final int kSeparationOffset = 5;
 
 	// internal datastructures
 	private JLabel fStatusTextLabel;
-	private JPanel fSeparatorPanel;
-	private JLabel fMiscellaneousTextLabel;
+	private JPanel fRightLabelPanel;
 
 	/****************
 	 * CONSTRUCTORS *
 	 ****************/
 
 	/**
-	 * Constructs a <CODE>JStatusBar</CODE> object.
+	 * Constructs a <CODEJStatusBar</CODE> object.
 	 * <P>
-	 * Note that the resizable-icon is shown.
+	 * Note that the GUI resizable-icon is shown.
 	 */
 	public JStatusBar()
 	{
 		this(true);
-	}
+	}	
 
 	/**
 	 * Constructs a <CODE>JStatusBar</CODE> object.
 	 *
-	 * @param isGUIResizable indicates whether or not the resizable-icon should be shown
+	 * @param showGUIResizable indicates whether or not the resizable-icon should be shown
 	 */
-	public JStatusBar(boolean isGUIResizable)
+	public JStatusBar(boolean showGUIResizable)
 	{
 		setPreferredSize(new Dimension(getWidth(),kHeight));
 		setLayout(new BorderLayout());
-		add(Box.createRigidArea(new Dimension(kOffset,0)),BorderLayout.WEST);
+		add(Box.createRigidArea(new Dimension(kSeparationOffset,0)),BorderLayout.WEST);
 
-		// add left panel
+			// add left panel
 			fStatusTextLabel = new JLabel();
 			fStatusTextLabel.setOpaque(false);
 		add(fStatusTextLabel,BorderLayout.CENTER);
 
 			// add right panel
-			JPanel rightPanel = new JPanel();
-			rightPanel.setLayout(new BorderLayout());
-			rightPanel.setOpaque(false);
+			fRightLabelPanel = new JPanel();
+			fRightLabelPanel.setLayout(new BoxLayout(fRightLabelPanel,BoxLayout.X_AXIS));
+			fRightLabelPanel.setOpaque(false);
 
-				fSeparatorPanel = new JPanel();
-				fSeparatorPanel.setLayout(new BoxLayout(fSeparatorPanel,BoxLayout.Y_AXIS));
-				fSeparatorPanel.add(Box.createRigidArea(new Dimension(0,kOffset)));
-				fSeparatorPanel.add(new JEtchedLine(JEtchedLine.EOrientation.kVertical));
-				fSeparatorPanel.add(Box.createRigidArea(new Dimension(0,kOffset)));
-				fSeparatorPanel.setOpaque(false);
-			rightPanel.add(fSeparatorPanel,BorderLayout.WEST);
-				fMiscellaneousTextLabel = new JLabel();
-				fMiscellaneousTextLabel.setOpaque(false);
-			rightPanel.add(fMiscellaneousTextLabel,BorderLayout.CENTER);
+			// add other labels
+			addRighthandSideLabels();
 
 			// if necessary, add the resize icon
-			if (isGUIResizable) {
+			if (showGUIResizable) {
+				fRightLabelPanel.add(Box.createRigidArea(new Dimension(kSeparationOffset,0)));
 				JPanel resizeIconPanel = new JPanel();
 				resizeIconPanel.setLayout(new BoxLayout(resizeIconPanel,BoxLayout.Y_AXIS));
 				resizeIconPanel.add(Box.createVerticalGlue());
@@ -102,9 +93,10 @@ public final class JStatusBar extends JPanel
 					resizeIconLabel.setOpaque(false);
 				resizeIconPanel.add(resizeIconLabel);
 				resizeIconPanel.setOpaque(false);
-				rightPanel.add(resizeIconPanel,BorderLayout.EAST);
+				fRightLabelPanel.add(resizeIconPanel,BorderLayout.EAST);
 			}
-		add(rightPanel,BorderLayout.EAST);
+			
+		add(fRightLabelPanel,BorderLayout.EAST);
 	}
 
 	/******************
@@ -116,7 +108,7 @@ public final class JStatusBar extends JPanel
 	 *
 	 * @param statusText the new status text to show
 	 */
-	public void setStatusText(String statusText)
+	public final void setStatusText(String statusText)
 	{
 		fStatusTextLabel.setText(statusText);
 	}
@@ -124,7 +116,7 @@ public final class JStatusBar extends JPanel
 	/**
 	 * Clears the status text.
 	 */
-	public void clearStatusText()
+	public final void clearStatusText()
 	{
 		setStatusText("");
 	}
@@ -134,7 +126,7 @@ public final class JStatusBar extends JPanel
 	 *
 	 * @param color the status text's color
 	 */
-	public void setStatusTextColor(Color color)
+	public final void setStatusTextColor(Color color)
 	{
 		fStatusTextLabel.setForeground(color);
 	}
@@ -142,36 +134,14 @@ public final class JStatusBar extends JPanel
 	/**
 	 * Returns the status text's color to black.
 	 */
-	public void removeStatusTextColor()
+	public final void removeStatusTextColor()
 	{
 		setStatusTextColor(Color.BLACK);
 	}
 
 	/**
-	 * Sets the miscellaneous text.
-	 *
-	 * @param miscellaneousText the new miscellaneous text to show
 	 */
-	public void setMiscellaneousText(String miscellaneousText)
-	{
-		// add extra spaces for justification purposes
-		fMiscellaneousTextLabel.setText(" " + miscellaneousText + "  ");
-
-		// hide the separator line if no miscellaneous text is displayed
-		fSeparatorPanel.setVisible(miscellaneousText.length() > 0);
-	}
-
-	/**
-	 * Clears the miscellaneous text.
-	 */
-	public void clearMiscellaneousText()
-	{
-		setMiscellaneousText("");
-	}
-
-	/**
-	 */
-	public void paintComponent(Graphics g)
+	public final void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
 
@@ -198,6 +168,56 @@ public final class JStatusBar extends JPanel
 		g.setColor(new Color(221,221,220));
 		g.drawLine(0,y,getWidth(),y);
   }
+
+	/*********************
+	 * PROTECTED METHODS *
+	 *********************/
+
+	/**
+	 * Adds a custom label to the status bar's righthand side.
+	 *
+	 * @param label the label to add
+	 */
+	protected final void addRighthandSideLabel(JLabel label)
+	{
+		fRightLabelPanel.add(createSeparator());
+		label.setOpaque(false);
+		fRightLabelPanel.add(label);
+	}
+
+	/**
+	 * This method allows a derivative class to add labels to the righthand side of the status bar.
+	 *
+	 * @see JStatusBar#addRighthandSideLabel(JLabel)
+	 */
+	protected void addRighthandSideLabels()
+	{
+	}
+
+	/*******************
+	 * PRIVATE METHODS *
+	 *******************/
+
+	/**
+	 */
+	private JPanel createSeparator()
+	{
+		JPanel separatorPanel = new JPanel();
+		separatorPanel.setLayout(new BoxLayout(separatorPanel,BoxLayout.X_AXIS));
+		separatorPanel.add(Box.createRigidArea(new Dimension(kSeparationOffset,0)));
+
+			JPanel separatorSubPanel = new JPanel();
+			separatorSubPanel.setLayout(new BoxLayout(separatorSubPanel,BoxLayout.Y_AXIS));
+			separatorSubPanel.add(Box.createRigidArea(new Dimension(0,kSeparationOffset)));
+			separatorSubPanel.add(new JEtchedLine(JEtchedLine.EOrientation.kVertical));
+			separatorSubPanel.add(Box.createRigidArea(new Dimension(0,kSeparationOffset)));
+			separatorSubPanel.setOpaque(false);
+		separatorPanel.add(separatorSubPanel);
+
+		separatorPanel.add(Box.createRigidArea(new Dimension(kSeparationOffset,0)));
+		separatorPanel.setOpaque(false);
+		return separatorPanel;
+	}
 
 	/*****************
 	 * INNER CLASSES *

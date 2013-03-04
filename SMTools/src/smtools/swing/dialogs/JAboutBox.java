@@ -147,11 +147,11 @@ public class JAboutBox extends JDefaultDialog
 	public JAboutBox(JFrame owner, JARResources resources)
 	{
 		super(owner,
-				JDefaultDialog.EModality.kModal,
-				JDefaultDialog.ESize.kFixedSize,
-				JDefaultDialog.EType.kOk,
-				new Object[] {resources},
-				JDefaultDialog.EActivation.kPostponed);
+			JDefaultDialog.EModality.kModal,
+			JDefaultDialog.ESize.kFixedSize,
+			JDefaultDialog.EType.kOk,
+			new Object[] {resources},
+			JDefaultDialog.EActivation.kPostponed);
 	}
 
 	/*********************
