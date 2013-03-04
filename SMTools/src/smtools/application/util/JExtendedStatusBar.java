@@ -135,7 +135,12 @@ public class JExtendedStatusBar extends JStatusBar
 		if (batteryLifeTimeSeconds > 0) {
 			int batteryLifeTimeHours = batteryLifeTimeSeconds / 3600;
 			int batteryLifeTimeMinutes = (batteryLifeTimeSeconds - (batteryLifeTimeHours * 3600)) / 60;
-			fBatteryUsageLabel.setToolTipText(I18NL10N.translate("tooltip.BatteryLifeRemaining",String.valueOf(batteryLifeTimeHours),String.valueOf(batteryLifeTimeMinutes)));
+			if (batteryLifeTimeHours > 0) {
+				fBatteryUsageLabel.setToolTipText(I18NL10N.translate("tooltip.BatteryLifeRemaining",String.valueOf(batteryLifeTimeHours),String.valueOf(batteryLifeTimeMinutes)));
+			}
+			else {
+				fBatteryUsageLabel.setToolTipText(I18NL10N.translate("tooltip.BatteryLifeRemainingShort",String.valueOf(batteryLifeTimeMinutes)));
+			}
 		}
 		else {
 			fBatteryUsageLabel.setToolTipText(null);
