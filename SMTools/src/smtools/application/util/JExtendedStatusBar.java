@@ -43,7 +43,7 @@ public class JExtendedStatusBar extends JStatusBar
 	/**
 	 * The status bar's update period.
 	 */
-	public static final int kUpdatePeriod = 250;//xXXXXXX10 * 1000;
+	public static final int kUpdatePeriod = 1 * 1000;
 
 	// the names of the files containing the battery icons
 	private static final String kBatteryLevelHighImageFilename = "smtools-resources/images/statusbar-battery-level-high.png";
