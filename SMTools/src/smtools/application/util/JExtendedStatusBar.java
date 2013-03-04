@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JExtendedStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 04/03/2013
+// Last modified : 05/03/2013
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
@@ -36,7 +36,7 @@ import smtools.swing.util.*;
  * The <CODE>JExtendedStatusBar</CODE> class constructs an extended status bar that also indicates the battery level and memory usage.
  *
  * @author  Sven Maerivoet
- * @version 04/03/2013
+ * @version 05/03/2013
  */
 public class JExtendedStatusBar extends JStatusBar
 {
@@ -105,30 +105,31 @@ public class JExtendedStatusBar extends JStatusBar
 		// update the battery level label
 		fBatteryUsageLabel.setIcon(fBatteryLevelUnknownImage);
 
-		if (batteryStatus.isOnACPower()) {
-			fBatteryUsageLabel.setIcon(fBatteryLevelOnACPowerImage);
-		}
-
 		int batteryLifePercent = batteryStatus.getBatteryLifePercent();
 
-		if (batteryStatus.isCharging()) {
-			fBatteryUsageLabel.setIcon(fBatteryLevelChargingImage);
+		if (batteryStatus.isOnACPower() && !batteryStatus.isCharging()) {
+			fBatteryUsageLabel.setIcon(fBatteryLevelOnACPowerImage);
 		}
 		else {
-			if (batteryLifePercent >= 66) {
-				fBatteryUsageLabel.setIcon(fBatteryLevelHighImage);
-			}
-			else if (batteryLifePercent >= 33) {
-				fBatteryUsageLabel.setIcon(fBatteryLevelMediumImage);
-			}
-			else if (batteryLifePercent >= 10) {
-				fBatteryUsageLabel.setIcon(fBatteryLevelLowImage);
+			if (batteryStatus.isCharging()) {
+				fBatteryUsageLabel.setIcon(fBatteryLevelChargingImage);
 			}
 			else {
-				fBatteryUsageLabel.setIcon(fBatteryLevelCriticalImage);
+				if (batteryLifePercent >= 66) {
+					fBatteryUsageLabel.setIcon(fBatteryLevelHighImage);
+				}
+				else if (batteryLifePercent >= 33) {
+					fBatteryUsageLabel.setIcon(fBatteryLevelMediumImage);
+				}
+				else if (batteryLifePercent >= 10) {
+					fBatteryUsageLabel.setIcon(fBatteryLevelLowImage);
+				}
+				else {
+					fBatteryUsageLabel.setIcon(fBatteryLevelCriticalImage);
+				}
 			}
 		}
-		
+
 		fBatteryUsageLabel.setText(" " + batteryLifePercent + "%");
 
 		int batteryLifeTimeSeconds = batteryStatus.getBatteryLifeTime();
