@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : JAboutBox.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 04/03/2013
 // Target        : Java VM (1.6)
 // ------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ import smtools.miscellaneous.*;
  * tab is <B>not</B> shown.
  * 
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 04/03/2013
  */
 public class JAboutBox extends JDefaultDialog
 {
@@ -529,7 +529,7 @@ public class JAboutBox extends JDefaultDialog
 
 		// update the used libraries
 		aboutText += "<BR />";
-		aboutText += I18NL10N.translate("text.UsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8";
+		aboutText += I18NL10N.translate("text.UsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8, Java Native Access 3.5.1";
 		if (getUsedLibrariesDescriptions() != null) {
 			aboutText += ", " + getUsedLibrariesDescriptions();
 		}
