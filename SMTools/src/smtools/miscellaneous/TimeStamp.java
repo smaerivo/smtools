@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : TimeStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 06/12/2011
+// Last modified : 07/04/2013
 // Target        : Java VM (1.6)
 // ------------------------------
 
@@ -35,7 +35,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 06/12/2011
+ * @version 07/04/2013
  */
 public final class TimeStamp implements Comparable<TimeStamp>
 {
@@ -119,10 +119,10 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * The string has to have the following specific format:
 	 * <P>
 	 * <UL>
-	 *   <B>HH:mm:ss</B> or <B>HH:mm:ss.mls</B>, e.g., 12:45:16 or 05:03:06.002
+	 *   <B>HH:mm</B> or <B>HH:mm:ss</B>, or <B>HH:mm:ss.mls</B>, e.g., 10:15, 12:45:16, or 05:03:06.002
 	 * </UL>
 	 *
-	 * @param  timeString the string representation of the time stamp (in the format HH:mm:ss.SSS)
+	 * @param  timeString the string representation of the time stamp (in the format HH:mm, HH:mm:ss, or HH:mm:ss.SSS)
 	 * @see    TimeStamp#TimeStamp()
 	 * @see    TimeStamp#TimeStamp(int,int,int)
 	 * @see    TimeStamp#TimeStamp(long)
@@ -217,10 +217,10 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * The string has to have the following specific format:
 	 * <P>
 	 * <UL>
-	 *   <B>HH:mm:ss</B> or <B>HH:mm:ss.mls</B>, e.g., 12:45:16 or 05:03:06.002
+	 *   <B>HH:mm</B> or <B>HH:mm:ss</B>, or <B>HH:mm:ss.mls</B>, e.g., 10:15, 12:45:16, or 05:03:06.002
 	 * </UL>
 	 *
-	 * @param  timeString the string representation of the time stamp (in the format HH:mm:ss or HH:mm:ss.SSS)
+	 * @param  timeString the string representation of the time stamp (in the format HH:mm, HH:mm:ss, or HH:mm:ss.SSS)
 	 * @throws DateTimeFormatException if an error occurred during conversion
 	 * @see    java.text.SimpleDateFormat
 	 */
@@ -228,19 +228,21 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	{
 		fTimeStamp = Calendar.getInstance();
 
-		String[] timeStampParts = timeString.split(":");
+		String[] timeStampParts = timeString.split("\\:");
 		try {
 			int hour = Integer.parseInt(timeStampParts[0]);
 			int minute = Integer.parseInt(timeStampParts[1]);
 			int second = 0;
 			int millisecond = 0;
-			if (timeStampParts[2].indexOf(".") > -1) {
-				String[] secondParts = timeStampParts[2].split(".");
-				second = Integer.parseInt(secondParts[0]);
-				millisecond = Integer.parseInt(secondParts[1]);
-			}
-			else {
-				second = Integer.parseInt(timeStampParts[2]);
+			if (timeStampParts.length > 2) {
+				if (timeStampParts[2].indexOf(".") > -1) {
+					String[] secondParts = timeStampParts[2].split("\\.");
+					second = Integer.parseInt(secondParts[0]);
+					millisecond = Integer.parseInt(secondParts[1]);
+				}
+				else {
+					second = Integer.parseInt(timeStampParts[2]);
+				}
 			}
 			set(hour,minute,second,millisecond);
 		}

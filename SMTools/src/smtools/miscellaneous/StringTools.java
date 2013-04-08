@@ -1,7 +1,7 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 05/01/2013
+// Last modified : 07/04/2013
 // Target        : Java VM (1.6)
 // --------------------------------
 
@@ -44,7 +44,7 @@ import java.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 05/01/2013
+ * @version 07/04/2013
  */
 public final class StringTools
 {
@@ -401,7 +401,7 @@ public final class StringTools
 	 */
 	public static String convertEOLsToStrings(String input)
 	{
-		// convert system dependent EOL to CRLF
+		// convert system dependent EOL to CR+LF
 		return input.replace(kEOLCharacterSequence,"\\r\\n");
 	}
 
@@ -413,7 +413,20 @@ public final class StringTools
 	 */
 	public static String convertStringsToEOLs(String input)
 	{
-		// convert CRLF to system dependent EOL
+		// convert CR+LF to system dependent EOL
 		return input.replace("\\r\\n",kEOLCharacterSequence);
+	}
+
+	/**
+	 * Checks whether or not a line contains a comment.
+	 * <P>
+	 * Comments are preceeded by a hash-sign (#).
+	 * 
+	 * @param  input the <CODE>String</CODE> to check
+	 * @return a <CODE>boolean</CODE> indicating whether or not the line contains a comment
+	 */
+	public static boolean isComment(String input)
+	{
+		return input.trim().startsWith("#");
 	}
 }

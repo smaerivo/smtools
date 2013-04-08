@@ -1,12 +1,12 @@
 // ---------------------------------------
 // Filename      : FileParseException.java
 // Author        : Sven Maerivoet
-// Last modified : 18/04/2011
+// Last modified : 08/04/2013
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import smtools.miscellaneous.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 18/04/2011
+ * @version 08/04/2013
  */
 public final class FileParseException extends Exception
 {
@@ -60,6 +60,20 @@ public final class FileParseException extends Exception
 		fFilename = filename;
 		fValue = value;
 		fLineNr = lineNr;
+	}
+
+	/**
+	 * Constructs a <CODE>FileParseException</CODE> object, based on the specified filename
+	 * and the incorrect value that was read.
+	 *
+	 * @param filename the name of the file this exception corresponds to
+	 * @param value the incorrect value that was read
+	 * @see   TextFileParser
+	 */
+	public FileParseException(String filename, String value)
+	{
+		fFilename = filename;
+		fValue = value;
 	}
 
 	/**

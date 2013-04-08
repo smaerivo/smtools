@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : TextFileParser.java
 // Author        : Sven Maerivoet
-// Last modified : 11/11/2012
+// Last modified : 08/04/2013
 // Target        : Java VM (1.6)
 // -----------------------------------
 
@@ -49,7 +49,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 11/11/2012
+ * @version 08/04/2013
  */
 public final class TextFileParser
 {
@@ -64,7 +64,7 @@ public final class TextFileParser
 	/**
 	 * Sets up a text file parser for the specified file.
 	 *
-	 * @param  filename the name of the file to parse
+	 * @param filename the name of the file to parse
 	 * @throws FileDoesNotExistException if the file is not found
 	 */
 	public TextFileParser(String filename) throws FileDoesNotExistException
@@ -82,8 +82,8 @@ public final class TextFileParser
 	/**
 	 * Sets up a text file parser for the specified file.
 	 *
-	 * @param  filename the name of the file to parse
-	 * @param  encoding the encoding used (e.g., UTF-8)
+	 * @param filename the name of the file to parse
+	 * @param encoding the encoding used (e.g., UTF-8)
 	 * @throws FileDoesNotExistException if the file is not found
 	 */
 	public TextFileParser(String filename, String encoding) throws FileDoesNotExistException
@@ -103,7 +103,7 @@ public final class TextFileParser
 	 * <P>
 	 * Note that a buffer is automatically wrapped around the specified <CODE>InputStream</CODE>.
 	 *
-	 * @param  inputStream the <CODE>InputStream</CODE> containing the contents to parse
+	 * @param inputStream the <CODE>InputStream</CODE> containing the contents to parse
 	 */
 	public TextFileParser(InputStream inputStream)
 	{
@@ -115,8 +115,8 @@ public final class TextFileParser
 	 * <P>
 	 * Note that a buffer is automatically wrapped around the specified <CODE>InputStream</CODE>.
 	 *
-	 * @param  encoding the encoding used (e.g., UTF-8)
-	 * @param  inputStream the <CODE>InputStream</CODE> containing the contents to parse
+	 * @param encoding the encoding used (e.g., UTF-8)
+	 * @param inputStream the <CODE>InputStream</CODE> containing the contents to parse
 	 */
 	public TextFileParser(InputStream inputStream, String encoding)
 	{
@@ -167,7 +167,30 @@ public final class TextFileParser
 	}
 
 	/**
-	 * Returns the next line converted to a <CODE>char</CODE>.
+	 * Returns the next non-empty line converted to a <CODE>String</CODE>.
+	 * <P>
+	 * Note that any whitespace surrounding the <CODE>String</CODE> is automatically trimmed.
+	 *
+	 * @return the next non-empty line converted to a <CODE>String</CODE>
+	 * @throws FileParseException if the end-of-file is reached (the exception only contains the line number)
+	 */
+	public String getNextNonEmptyString() throws FileParseException
+	{
+		String nextNonEmptyString = "";
+		while (nextNonEmptyString.length() == 0) {
+			if (!endOfFileReached()) {
+				++fLineNr;
+				nextNonEmptyString = fContentScanner.nextLine().trim();
+			}
+			else {
+				throw (new FileParseException("",fLineNr));
+			}
+		}
+		return nextNonEmptyString;
+	}
+
+	/**
+	 * Returns the next line converted to a <CODE>char</CODE> (empty lines are ignored).
 	 *
 	 * @return the next line converted to a <CODE>char</CODE>
 	 * @throws FileParseException if the end-of-file is reached (the exception only contains the line number)
@@ -175,11 +198,11 @@ public final class TextFileParser
 	 */
 	public char getNextChar() throws FileParseException
 	{
-		return getNextString().charAt(0);
+		return getNextNonEmptyString().charAt(0);
 	}
 
 	/**
-	 * Returns the next line converted to a <CODE>byte</CODE>.
+	 * Returns the next line converted to a <CODE>byte</CODE> (empty lines are ignored).
 	 *
 	 * @return the next line converted to a <CODE>byte</CODE>
 	 * @throws FileParseException if the end-of-file is reached or the line contains a malformed byte (the exception contains the value and line number)
@@ -187,7 +210,7 @@ public final class TextFileParser
 	 */
 	public byte getNextByte() throws FileParseException
 	{
-		String stringRead = getNextString();
+		String stringRead = getNextNonEmptyString();
 		try {
 			return Byte.parseByte(stringRead);
 		}
@@ -197,7 +220,7 @@ public final class TextFileParser
 	}
 
 	/**
-	 * Returns the next line converted to an <CODE>int</CODE>.
+	 * Returns the next line converted to an <CODE>int</CODE> (empty lines are ignored).
 	 *
 	 * @return the next line converted to an <CODE>int</CODE>
 	 * @throws FileParseException if the end-of-file is reached or the line contains a malformed integer (the exception contains the value and line number)
@@ -205,7 +228,7 @@ public final class TextFileParser
 	 */
 	public int getNextInteger() throws FileParseException
 	{
-		String stringRead = getNextString();
+		String stringRead = getNextNonEmptyString();
 		try {
 			return Integer.parseInt(stringRead);
 		}
@@ -215,7 +238,7 @@ public final class TextFileParser
 	}
 
 	/**
-	 * Returns the next line converted to a <CODE>double</CODE>.
+	 * Returns the next line converted to a <CODE>double</CODE> (empty lines are ignored).
 	 *
 	 * @return the next line converted to a <CODE>double</CODE>
 	 * @throws FileParseException if the end-of-file is reached or the line contains a malformed double (the exception contains the value and line number)
@@ -223,7 +246,7 @@ public final class TextFileParser
 	 */
 	public double getNextDouble() throws FileParseException
 	{
-		String stringRead = getNextString();
+		String stringRead = getNextNonEmptyString();
 		try {
 			return Double.parseDouble(stringRead);
 		}
@@ -233,7 +256,7 @@ public final class TextFileParser
 	}
 
 	/**
-	 * Returns the next line converted to a <CODE>boolean</CODE>.
+	 * Returns the next line converted to a <CODE>boolean</CODE> (empty lines are ignored).
 	 * <P>
 	 * The following truth values are recognised:
 	 * <P>
@@ -248,7 +271,7 @@ public final class TextFileParser
 	 */
 	public boolean getNextBoolean() throws FileParseException
 	{
-		String stringRead = getNextString();
+		String stringRead = getNextNonEmptyString();
 		if (stringRead.equalsIgnoreCase("YES") || stringRead.equalsIgnoreCase("TRUE") || stringRead.equalsIgnoreCase("1")) {
 			return true;
 		}
@@ -261,7 +284,7 @@ public final class TextFileParser
 	}
 
 	/**
-	 * Returns the next line converted to a <CODE>DateStamp</CODE>.
+	 * Returns the next line converted to a <CODE>DateStamp</CODE> (empty lines are ignored).
 	 * <P>
 	 * The string has to have the following specific format:
 	 * <P>
@@ -275,7 +298,7 @@ public final class TextFileParser
 	 */
 	public DateStamp getNextDateStamp() throws FileParseException
 	{
-		String stringRead = getNextString();
+		String stringRead = getNextNonEmptyString();
 		try {
 			return (new DateStamp(stringRead));
 		}
@@ -285,7 +308,7 @@ public final class TextFileParser
 	}
 
 	/**
-	 * Returns the next line converted to a <CODE>TimeStamp</CODE>.
+	 * Returns the next line converted to a <CODE>TimeStamp</CODE> (empty lines are ignored).
 	 * <P>
 	 * The string has to have the following specific format:
 	 * <P>
@@ -299,7 +322,7 @@ public final class TextFileParser
 	 */
 	public TimeStamp getNextTimeStamp() throws FileParseException
 	{
-		String stringRead = getNextString();
+		String stringRead = getNextNonEmptyString();
 		try {
 			return (new TimeStamp(stringRead));
 		}
@@ -342,9 +365,11 @@ public final class TextFileParser
 			list.add(match);
 		}
 
-		// check if there was a trailing comma
-		if (source.charAt(source.length() - 1) == ',') {
-			list.add("");
+		if (source.length() > 0) {
+			// check if there was a trailing comma
+			if (source.charAt(source.length() - 1) == ',') {
+				list.add("");
+			}
 		}
 
 		// convert to an array of strings
@@ -395,12 +420,15 @@ public final class TextFileParser
 	 ******************/
 
 	/**
-	 * Loads a file containing comma-separated values.
+	 * Loads a file containing comma-separated values (empty lines are ignored).
+	 * <P>
+	 * Commented lines are preceeded by a hash-tag (#).
 	 *
-	 * @param  filename the name of the CSV file to load
+	 * @param filename the name of the CSV file to load
+	 * @param ignoreComments a <CODE>boolean</CODE> indicating whether or not comments should be ignored 
 	 * @return a sequence of CSV values, <CODE>null</CODE> is a problem occurred
 	 */
-	public static ArrayList<String[]> loadGeneralCSVFile(String filename)
+	public static ArrayList<String[]> loadGeneralCSVFile(String filename, boolean ignoreComments)
 	{
 		try {
 			TextFileParser tfp = new TextFileParser(filename);
@@ -408,7 +436,10 @@ public final class TextFileParser
 			// sequentially load file
 			ArrayList<String[]> result = new ArrayList<String[]>();
 			while (!tfp.endOfFileReached()) {
-				result.add(tfp.getNextCSV());
+				String[] csvRead = tfp.getNextCSV();
+				if (ignoreComments && (csvRead.length > 0) && (!StringTools.isComment(csvRead[0]))) {
+					result.add(csvRead);
+				}
 			}
 
 			return result;
@@ -419,9 +450,9 @@ public final class TextFileParser
 	}
 
 	/**
-	 * Loads a file containing a single column of <CODE>double</CODE>s.
+	 * Loads a file containing a single column of <CODE>double</CODE>s (empty lines are ignored).
 	 *
-	 * @param  filename the name of the file to load
+	 * @param filename the name of the file to load
 	 * @return a sequence of <CODE>double</CODE>s, <CODE>null</CODE> is a problem occurred
 	 */
 	public static double[] loadDoubleFile(String filename)
@@ -449,39 +480,34 @@ public final class TextFileParser
 	}
 
 	/**
-	 * Loads a file containing a table with comma-separated <CODE>double</CODE>s.
+	 * Loads a file containing a table with comma-separated <CODE>double</CODE>s (empty lines are ignored).
+	 * <P>
+	 * Commented lines preceeded by a hash-tag (#) are automatically ignored.
 	 *
-	 * @param  filename the name of the file to load
-	 * @return a sequence of <CODE>double</CODE>s, <CODE>null</CODE> is a problem occurred
+	 * @param filename the name of the file to load
+	 * @return a sequence of <CODE>double</CODE>s
+	 * @throws FileParseException if a malformed number was encountered
 	 */
-	public static double[][] loadDoubleCSVFile(String filename)
+	public static ArrayList<Double[]> loadDoubleCSVFile(String filename) throws FileParseException
 	{
-		ArrayList<String[]> data = loadGeneralCSVFile(filename);
-		if (data != null) {
-			int nrOfValues = data.size(); 
-			if (nrOfValues > 0) {
-				int nrOfColumns = data.get(1).length;
-				double[][] result = new double[nrOfValues][nrOfColumns];
-				try {
-					for (int i = 0; i < nrOfValues; ++i) {
-						for (int j = 0; j < nrOfColumns; ++j) {
-							result[i][j] = Double.parseDouble(data.get(i)[j]);
-						}
-					}
+		ArrayList<Double[]> convertedData = new ArrayList<Double[]>();
 
-					return result;
+		for (String[] csv : loadGeneralCSVFile(filename,true)) {
+			Double[] dataArray = new Double[csv.length];
+			int i = 0;
+			for (String s : csv) {
+				try {
+					dataArray[i] = Double.parseDouble(s);
 				}
-				catch (Exception exc) {
-					return null;
+				catch (NumberFormatException exc) {
+					throw (new FileParseException(filename,s));
 				}
+				++i;
 			}
-			else {
-				return null;
-			}
+			convertedData.add(dataArray);
 		}
-		else {
-			return null;
-		}
+
+		return convertedData;
 	}
 
 	/*******************
