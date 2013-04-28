@@ -1,12 +1,12 @@
 // ---------------------------------
 // Filename      : JARResources.java
 // Author        : Sven Maerivoet
-// Last modified : 20/01/2012
+// Last modified : 28/04/2013
 // Target        : Java VM (1.6)
 // ---------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 20/01/2012
+ * @version 28/04/2013
  */
 public final class JARResources
 {
@@ -94,6 +94,8 @@ public final class JARResources
 					fhtJARContents.put(zipEntry.getName(),buffer);
 				}
 			}
+
+			zis.close();
 		}
 		catch (FileNotFoundException exc) {
 			kLogger.error(exc.getMessage());

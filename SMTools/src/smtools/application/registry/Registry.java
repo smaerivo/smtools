@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : Registry.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 28/04/2013
 // Target        : Java VM (1.6)
 // ------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2013 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ import smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 28/04/2013
  */
 public final class Registry
 {
@@ -155,18 +155,11 @@ public final class Registry
 	 */
 	public synchronized Hive loadHive(String filename) throws RegistryException
 	{
-		FileInputStream fileInputStream = null;
-		ObjectInputStream objectInputStream = null;
-
-		try {
-			fileInputStream = new FileInputStream(filename);
-			objectInputStream = new ObjectInputStream(fileInputStream);
+		// prevent resource leaks
+		try (FileInputStream fileInputStream = new FileInputStream(filename); ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
 			// deserialise hives
 			Hive hive = (Hive) objectInputStream.readObject();
-
-			objectInputStream.close();
-			fileInputStream.close();
 
 			return hive;
 		}
@@ -219,12 +212,8 @@ public final class Registry
 	 */
 	public synchronized void load(String filename) throws RegistryException
 	{
-		FileInputStream fileInputStream = null;
-		ObjectInputStream objectInputStream = null;
-
-		try {
-			fileInputStream = new FileInputStream(filename);
-			objectInputStream = new ObjectInputStream(fileInputStream);
+		// prevent resource leaks
+		try (FileInputStream fileInputStream = new FileInputStream(filename); ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
 			// deserialise hives
 			Hashtable<String,Hive> hives = ((HivesWrapper) objectInputStream.readObject()).getHives();
