@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JExtendedStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 05/03/2013
+// Last modified : 29/04/2013
 // Target        : Java VM (1.6)
 // ---------------------------------------
 
@@ -36,7 +36,7 @@ import smtools.swing.util.*;
  * The <CODE>JExtendedStatusBar</CODE> class constructs an extended status bar that also indicates the battery level and memory usage.
  *
  * @author  Sven Maerivoet
- * @version 05/03/2013
+ * @version 29/04/2013
  */
 public class JExtendedStatusBar extends JStatusBar
 {
@@ -98,53 +98,61 @@ public class JExtendedStatusBar extends JStatusBar
 	 */
 	public void updateRighthandSide()
 	{	
-		// obtain the battery status
-		Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
-		Kernel32.INSTANCE.GetSystemPowerStatus(batteryStatus);
+		try {
+			// obtain the battery status
+			Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
+			Kernel32.INSTANCE.GetSystemPowerStatus(batteryStatus);
 
-		// update the battery level label
-		fBatteryUsageLabel.setIcon(fBatteryLevelUnknownImage);
+			// update the battery level label
+			fBatteryUsageLabel.setIcon(fBatteryLevelUnknownImage);
 
-		int batteryLifePercent = batteryStatus.getBatteryLifePercent();
+			int batteryLifePercent = batteryStatus.getBatteryLifePercent();
 
-		if (batteryStatus.isOnACPower() && !batteryStatus.isCharging()) {
-			fBatteryUsageLabel.setIcon(fBatteryLevelOnACPowerImage);
-		}
-		else {
-			if (batteryStatus.isCharging()) {
-				fBatteryUsageLabel.setIcon(fBatteryLevelChargingImage);
+			if (batteryStatus.isOnACPower() && !batteryStatus.isCharging()) {
+				fBatteryUsageLabel.setIcon(fBatteryLevelOnACPowerImage);
 			}
 			else {
-				if (batteryLifePercent >= 66) {
-					fBatteryUsageLabel.setIcon(fBatteryLevelHighImage);
-				}
-				else if (batteryLifePercent >= 33) {
-					fBatteryUsageLabel.setIcon(fBatteryLevelMediumImage);
-				}
-				else if (batteryLifePercent >= 10) {
-					fBatteryUsageLabel.setIcon(fBatteryLevelLowImage);
+				if (batteryStatus.isCharging()) {
+					fBatteryUsageLabel.setIcon(fBatteryLevelChargingImage);
 				}
 				else {
-					fBatteryUsageLabel.setIcon(fBatteryLevelCriticalImage);
+					if (batteryLifePercent >= 66) {
+						fBatteryUsageLabel.setIcon(fBatteryLevelHighImage);
+					}
+					else if (batteryLifePercent >= 33) {
+						fBatteryUsageLabel.setIcon(fBatteryLevelMediumImage);
+					}
+					else if (batteryLifePercent >= 10) {
+						fBatteryUsageLabel.setIcon(fBatteryLevelLowImage);
+					}
+					else {
+						fBatteryUsageLabel.setIcon(fBatteryLevelCriticalImage);
+					}
 				}
 			}
-		}
 
-		fBatteryUsageLabel.setText(" " + batteryLifePercent + "%");
+			fBatteryUsageLabel.setText(" " + batteryLifePercent + "%");
 
-		int batteryLifeTimeSeconds = batteryStatus.getBatteryLifeTime();
-		if (batteryLifeTimeSeconds > 0) {
-			int batteryLifeTimeHours = batteryLifeTimeSeconds / 3600;
-			int batteryLifeTimeMinutes = (batteryLifeTimeSeconds - (batteryLifeTimeHours * 3600)) / 60;
-			if (batteryLifeTimeHours > 0) {
-				fBatteryUsageLabel.setToolTipText(I18NL10N.translate("tooltip.BatteryLifeRemaining",String.valueOf(batteryLifeTimeHours),String.valueOf(batteryLifeTimeMinutes)));
+			int batteryLifeTimeSeconds = batteryStatus.getBatteryLifeTime();
+			if (batteryLifeTimeSeconds > 0) {
+				int batteryLifeTimeHours = batteryLifeTimeSeconds / 3600;
+				int batteryLifeTimeMinutes = (batteryLifeTimeSeconds - (batteryLifeTimeHours * 3600)) / 60;
+				if (batteryLifeTimeHours > 0) {
+					fBatteryUsageLabel.setToolTipText(I18NL10N.translate("tooltip.BatteryLifeRemaining",String.valueOf(batteryLifeTimeHours),String.valueOf(batteryLifeTimeMinutes)));
+				}
+				else {
+					fBatteryUsageLabel.setToolTipText(I18NL10N.translate("tooltip.BatteryLifeRemainingShort",String.valueOf(batteryLifeTimeMinutes)));
+				}
 			}
 			else {
-				fBatteryUsageLabel.setToolTipText(I18NL10N.translate("tooltip.BatteryLifeRemainingShort",String.valueOf(batteryLifeTimeMinutes)));
+				fBatteryUsageLabel.setToolTipText(null);
 			}
 		}
-		else {
-			fBatteryUsageLabel.setToolTipText(null);
+		catch (UnsatisfiedLinkError exc) {
+			// ignore
+		}
+		catch (NoClassDefFoundError exc) {
+			// ignore
 		}
 
 		// update the memory usage label

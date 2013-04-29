@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 04/03/2013
+// Last modified : 29/04/2013
 // Target        : Java VM (1.6)
 // --------------------------------------------
 
@@ -152,7 +152,7 @@ import smtools.swing.util.*;
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 04/03/2013
+ * @version 29/04/2013
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -170,6 +170,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	protected static final int kFullScreenGUI = 0;
 
 	// the different look-and-feels
+	/**
+	 * Useful constant for specifying the GTK look-and-feel.
+	 */
+	protected static final String klafGTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
+
 	/**
 	 * Useful constant for specifying the Mac OS X look-and-feel.
 	 */
@@ -191,9 +196,19 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	protected static final String klafNimbus = "javax.swing.plaf.nimbus.NimbusLookAndFeel";
 
 	/**
+	 * Useful constant for specifying the Quaqua (Mac OS X emulation) look-and-feel.
+	 */
+	protected static final String klafQuaqua = "ch.randelshofer.quaqua.QuaquaLookAndFeel";
+
+	/**
 	 * Useful constant for specifying the Microsoft Windows look-and-feel.
 	 */
 	protected static final String klafWindows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+
+	/**
+	 * Useful constant for specifying the Microsoft Windows Classic look-and-feel.
+	 */
+	protected static final String klafWindowsClassic = "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel";
 
 	/**
 	 * Useful constant for specifying the current platform's look-and-feel.
@@ -248,14 +263,17 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 	// the action commands for the default menu
 	private static final String kActionCommandMenuItemAbout = "menuItem.About";
+	private static final String kActionCommandMenuItemGTKLAF = "menuItem.GTKLAF";
 	private static final String kActionCommandMenuItemMacLAF = "menuItem.MacLAF";
 	private static final String kActionCommandMenuItemMetalLAF = "menuItem.MetalLAF";
 	private static final String kActionCommandMenuItemMinimiseToSystemTray = "menuItem.MinimiseToSystemTray";
 	private static final String kActionCommandMenuItemMotifLAF = "menuItem.MotifLAF";
 	private static final String kActionCommandMenuItemNimbusLAF = "menuItem.NimbusLAF";
+	private static final String kActionCommandMenuItemQuaquaLAF = "menuItem.QuaquaLAF";
 	private static final String kActionCommandMenuItemQuit = "menuItem.Quit";
 	private static final String kActionCommandMenuItemSystemLAF = "menuItem.SystemLAF";
 	private static final String kActionCommandMenuItemWindowsLAF = "menuItem.WindowsLAF";
+	private static final String kActionCommandMenuItemWindowsClassicLAF = "menuItem.WindowsClassicLAF";
 
 	// set the clock's update period to half a second
 	private static final int kClockUpdatePeriod = 500;
@@ -268,11 +286,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private int fGUIWidth;
 	private int fGUIHeight;
 	private String fCurrentLAF;
+	private JRadioButtonMenuItem frbGTK;
 	private JRadioButtonMenuItem frbMac;
 	private JRadioButtonMenuItem frbMetal;
 	private JRadioButtonMenuItem frbMotif;
 	private JRadioButtonMenuItem frbNimbus;
+	private JRadioButtonMenuItem frbQuaqua;
 	private JRadioButtonMenuItem frbWindows;
+	private JRadioButtonMenuItem frbWindowsClassic;
 	private JExtendedStatusBar fStatusBar;
 	private JLabel fClockLabel;
 	private String fLocale;
@@ -474,8 +495,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		// set the look-and-feel to that of the platform
 		kLogger.info(I18NL10N.translate("text.SettingGUILookAndFeel"));
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		JDialog.setDefaultLookAndFeelDecorated(true);
 		setInitialLookAndFeel(getInitialLookAndFeel());
-		setDefaultLookAndFeelDecorated(true);
 
 		// activate the splash screen
 		fSplashScreen = new JSplashScreen(getSplashScreenContent(),getSplashScreenSound());
@@ -672,6 +694,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 				aboutBox.activate();
 			}
 		}
+		else if (command.equalsIgnoreCase(kActionCommandMenuItemGTKLAF)) {
+			setLookAndFeel(klafGTK,false);
+		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemMacLAF)) {
 			setLookAndFeel(klafMac,false);
 		}
@@ -684,8 +709,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemNimbusLAF)) {
 			setLookAndFeel(klafNimbus,false);
 		}
+		else if (command.equalsIgnoreCase(kActionCommandMenuItemQuaquaLAF)) {
+			setLookAndFeel(klafQuaqua,false);
+		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemWindowsLAF)) {
 			setLookAndFeel(klafWindows,false);
+		}
+		else if (command.equalsIgnoreCase(kActionCommandMenuItemWindowsClassicLAF)) {
+			setLookAndFeel(klafWindowsClassic,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemSystemLAF)) {
 			setLookAndFeel(klafSystem,false);
@@ -1124,11 +1155,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * The possible values that can be returned are:<BR />
 	 * <BR />
 	 * <UL>
+	 *   <LI>the GTK look-and-feel ({@link JStandardGUIApplication#klafGTK})</LI>
 	 *   <LI>the Mac OS X look-and-feel ({@link JStandardGUIApplication#klafMac})</LI>
 	 *   <LI>Java's Metal look-and-feel ({@link JStandardGUIApplication#klafMetal})</LI>
 	 *   <LI>the Motif look-and-feel ({@link JStandardGUIApplication#klafMotif})</LI>
 	 *   <LI>Java's Nimbus look-and-feel ({@link JStandardGUIApplication#klafNimbus})</LI>
+	 *   <LI>the Quaqua (Mac OS X emulation) look-and-feel ({@link JStandardGUIApplication#klafQuaqua})</LI>
 	 *   <LI>the Microsoft Windows look-and-feel ({@link JStandardGUIApplication#klafWindows})</LI>
+	 *   <LI>the Microsoft Windows (classic) look-and-feel ({@link JStandardGUIApplication#klafWindowsClassic})</LI>
 	 *   <LI>the current platform's look-and-feel ({@link JStandardGUIApplication#klafSystem})</LI>
 	 * </UL>
 	 * <P>
@@ -1460,7 +1494,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		String previousLookAndFeel = fCurrentLAF;
 		fCurrentLAF = translateLookAndFeelName(lookAndFeel);
 
-		// change the look-and-feel
 		try {
 			UIManager.setLookAndFeel(fCurrentLAF);
 			if (!silent) {
@@ -1494,13 +1527,19 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	private void setLookAndFeelMenuItems()
 	{
+		frbGTK.setSelected(false);
 		frbMac.setSelected(false);
 		frbMetal.setSelected(false);
 		frbMotif.setSelected(false);
 		frbNimbus.setSelected(false);
+		frbQuaqua.setSelected(false);
 		frbWindows.setSelected(false);
+		frbWindowsClassic.setSelected(false);
 
-		if (fCurrentLAF.equalsIgnoreCase(klafMac)) {
+		if (fCurrentLAF.equalsIgnoreCase(klafGTK)) {
+			frbGTK.setSelected(true);
+		}
+		else if (fCurrentLAF.equalsIgnoreCase(klafMac)) {
 			frbMac.setSelected(true);
 		}
 		else if (fCurrentLAF.equalsIgnoreCase(klafMetal)) {
@@ -1512,8 +1551,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		else if (fCurrentLAF.equalsIgnoreCase(klafNimbus)) {
 			frbNimbus.setSelected(true);
 		}
+		else if (fCurrentLAF.equalsIgnoreCase(klafQuaqua)) {
+			frbQuaqua.setSelected(true);
+		}
 		else if (fCurrentLAF.equalsIgnoreCase(klafWindows)) {
 			frbWindows.setSelected(true);
+		}
+		else if (fCurrentLAF.equalsIgnoreCase(klafWindowsClassic)) {
+			frbWindowsClassic.setSelected(true);
 		}
 	}
 
@@ -1594,6 +1639,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		buttonGroup.add(frbMotif);
 		subMenu.add(frbMotif);
 
+		frbGTK = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemGTKLAF));
+		frbGTK.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemGTKLAF + ".Mnemonic")));
+		frbGTK.setSelected(false);
+		frbGTK.setActionCommand(kActionCommandMenuItemGTKLAF);
+		frbGTK.addActionListener(this);
+		buttonGroup.add(frbGTK);
+		subMenu.add(frbGTK);
+
 		frbWindows = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemWindowsLAF));
 		frbWindows.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemWindowsLAF + ".Mnemonic")));
 		frbWindows.setSelected(false);
@@ -1602,6 +1655,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		buttonGroup.add(frbWindows);
 		subMenu.add(frbWindows);
 
+		frbWindowsClassic = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemWindowsClassicLAF));
+		frbWindowsClassic.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemWindowsClassicLAF + ".Mnemonic")));
+		frbWindowsClassic.setSelected(false);
+		frbWindowsClassic.setActionCommand(kActionCommandMenuItemWindowsClassicLAF);
+		frbWindowsClassic.addActionListener(this);
+		buttonGroup.add(frbWindowsClassic);
+		subMenu.add(frbWindowsClassic);
+
 		frbMac = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMacLAF));
 		frbMac.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMacLAF + ".Mnemonic")));
 		frbMac.setSelected(false);
@@ -1609,6 +1670,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		frbMac.addActionListener(this);
 		buttonGroup.add(frbMac);
 		subMenu.add(frbMac);
+
+		frbQuaqua = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemQuaquaLAF));
+		frbQuaqua.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemQuaquaLAF + ".Mnemonic")));
+		frbQuaqua.setSelected(false);
+		frbQuaqua.setActionCommand(kActionCommandMenuItemQuaquaLAF);
+		frbQuaqua.addActionListener(this);
+		buttonGroup.add(frbQuaqua);
+		subMenu.add(frbQuaqua);
 
 		subMenu.addSeparator();
 
