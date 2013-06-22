@@ -337,10 +337,10 @@ public final class EmpiricalDistribution
 		double hConst = 0.0;
 		switch (kernelType) {
 			case kRectangular:
-				hConst = 1;
+				hConst = 1.0;
 				break;
 			case kTriangular:
-				hConst = 1;
+				hConst = 1.0;
 				break;
 			case kEpanechnikov:
 				hConst = 2.34;
@@ -350,6 +350,9 @@ public final class EmpiricalDistribution
 				break;
 			case kGaussian:
 				hConst = 1.06;
+				break;
+			case kLanczos:
+				hConst = 1.0;
 				break;
 		}
 

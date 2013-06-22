@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 02/02/2013
+// Last modified : 22/06/2013
 // Target        : Java VM (1.6)
 // -------------------------------
 
@@ -37,14 +37,17 @@ import java.awt.geom.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 02/02/2013
+ * @version 22/06/2013
  */
 public final class MathTools
 {
 	/**
 	 * The different kernel types.
 	 */
-	public static enum EKernelType {kRectangular, kTriangular, kEpanechnikov, kQuartic, kGaussian};
+	public static enum EKernelType {kRectangular, kTriangular, kEpanechnikov, kQuartic, kGaussian, kLanczos};
+
+	// the a parameter of the Lanczos kernel
+	private static double kLanczosA = 2.0;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -165,6 +168,38 @@ public final class MathTools
 		}
 
 		return angle;
+	}
+
+	/**
+	 * Calculates the unnormalised sinc (sinus cardinalis) function of a <CODE>double</CODE>.
+	 *
+	 * @param x the <CODE>double</CODE> to calculate the unnormalised sinc of
+	 * @return the unnormalised sinc of the <CODE>double</CODE>
+	 */
+	public static double sinc(double x)
+	{
+		if (x == 0.0) {
+			return 1.0;
+		}
+		else {
+			return (Math.sin(x) / x);
+		}
+	}
+
+	/**
+	 * Calculates the normalised sinc (sinus cardinalis) function of a <CODE>double</CODE>.
+	 *
+	 * @param x the <CODE>double</CODE> to calculate the normalised sinc of
+	 * @return the normalised sinc of the <CODE>double</CODE>
+	 */
+	public static double sincn(double x)
+	{
+		if (x == 0.0) {
+			return 1.0;
+		}
+		else {
+			return (Math.sin(Math.PI * x) / (Math.PI * x));
+		}
 	}
 
 	/**
@@ -585,7 +620,7 @@ public final class MathTools
 	}
 
 	/**
-	 * Provides a quartic kernel.
+	 * Provides a kernel.
 	 *
 	 * @param u the point where the kernel is to be evaluated
 	 * @param kernelType the type of kernel to use in the evaluation
@@ -614,6 +649,9 @@ public final class MathTools
 				break;
 			case kGaussian:
 				result = (1.0 / Math.sqrt(2.0 * Math.PI)) * Math.exp((-1.0 / 2.0) * MathTools.sqr(u));
+				break;
+			case kLanczos:
+				result = (sinc(u) * sinc(u / kLanczosA)) * indicatorFunction;
 				break;
 		}
 		return result;
