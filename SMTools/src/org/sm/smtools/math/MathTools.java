@@ -1,12 +1,12 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 22/06/2013
-// Target        : Java VM (1.6)
+// Last modified : 29/04/2014
+// Target        : Java VM (1.8)
 // -------------------------------
 
 /**
- * Copyright 2003-2013 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 package org.sm.smtools.math;
 
 import java.awt.geom.*;
+import java.math.*;
 
 /**
  * The <CODE>MathTools</CODE> class offers some basic useful mathematical operations.
@@ -37,7 +38,7 @@ import java.awt.geom.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 22/06/2013
+ * @version 29/04/2014
  */
 public final class MathTools
 {
@@ -113,14 +114,33 @@ public final class MathTools
 	}
 
 	/**
-	 * Calculates the cubic root of a <CODE>double</CODE>.
+	 * Calculates the factorial of a <CODE>double</CODE>.
 	 *
-	 * @param  x the <CODE>double</CODE> to calculate the cubic root for
-	 * @return the <CODE>double</CODE>'s cubic root
+	 * @param  n the <CODE>double</CODE> to calculate the factorial for
+	 * @return   the factorial of the specified <CODE>double</CODE>
+	 * @see    MathTools#facApprox(double)
 	 */
-	public static double cubicRoot(double x)
+	public static double fac(double n)
 	{
-		return Math.exp((Math.log(x) / 3.0));
+		if (n == 0) {
+			return 1;
+		}
+		else {
+			return (n * fac(n - 1));
+		}
+	}
+	
+	/**
+	 * Calculates the approximated factorial of a <CODE>double</CODE> (using Stirling's formula).
+	 *
+	 * @param  n the <CODE>double</CODE> to calculate the approximated factorial for
+	 * @return   the approximated factorial of the specified <CODE>double</CODE>
+	 * @see    MathTools#fac(double)
+	 */
+	public static double facApprox(double n)
+	{
+		// Stirling's approximation
+		return (Math.sqrt(2.0 * Math.PI * n) * Math.pow((n / Math.E),n));
 	}
 
 	/**
@@ -259,40 +279,6 @@ public final class MathTools
 		}
 		else {
 			return value;
-		}
-	}
-
-	/**
-	 * Determines the minimum of two <CODE>double</CODE>s.
-	 *
-	 * @param a the first <CODE>double</CODE>
-	 * @param b the second <CODE>double</CODE>
-	 * @return the minimum of the two <CODE>double</CODE>s
-	 */
-	public static double min(double a, double b)
-	{
-		if (a < b) {
-			return a;
-		}
-		else {
-			return b;
-		}
-	}
-
-	/**
-	 * Determines the maximum of two <CODE>double</CODE>s.
-	 *
-	 * @param a the first <CODE>double</CODE>
-	 * @param b the second <CODE>double</CODE>
-	 * @return the maximum of the two <CODE>double</CODE>s
-	 */
-	public static double max(double a, double b)
-	{
-		if (a > b) {
-			return a;
-		}
-		else {
-			return b;
 		}
 	}
 
@@ -547,6 +533,30 @@ public final class MathTools
 	public static long round(double x)
 	{
 		return (long) Math.round(x);
+	}
+
+	/**
+	 * Takes a logarithm of a <CODE>double</CODE> in a custom base.
+	 *
+	 * @param  x    the <CODE>double</CODE> to take the logarithm of
+	 * @param  base the base of the logarithm
+	 * @return      a <CODE>double</CODE> representing the calculated logarithm in the specified base
+	 */
+	public static double logBase(double x, double base)
+	{
+		return (Math.log(x) / Math.log(base));
+	}
+
+	/**
+	 * Returns whether or not a given <CODE>long</CODE> number is prime.
+	 *
+	 * @param  x the <CODE>long</CODE> to test for primality
+	 * @return   <CODE>true</CODE> if the given <CODE>long</CODE> is prime, <CODE>false</CODE> otherwise 
+	 */
+	public static boolean isPrime(long x)
+	{
+		// see also http://stackoverflow.com/questions/2385909/what-would-be-the-fastest-method-to-test-for-primality-in-java
+		return ((new BigInteger(String.valueOf(x))).isProbablePrime(15));
 	}
 
 	/**

@@ -1,12 +1,12 @@
 // ------------------------------------------
 // Filename      : EmpiricalDistribution.java
 // Author        : Sven Maerivoet
-// Last modified : 02/08/2013
-// Target        : Java VM (1.6)
+// Last modified : 01/05/2014
+// Target        : Java VM (1.8)
 // ------------------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,13 +39,14 @@ import org.sm.smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 02/08/2013
+ * @version 01/05/2014
  */
 public final class EmpiricalDistribution
 {
 	// internal datastructures
 	private int fN;
 	private double[] fX;
+	private double[] fXSorted;
 	private double fXMin;
 	private double fXMax;
 	private double fXRange;
@@ -54,6 +55,7 @@ public final class EmpiricalDistribution
 	private double fKDEXRange;
 	private double[] fCDF;
 	private double[] fPercentiles;
+	private double fTrimmedMean;
 	private double fMedian;
 	private double fInterquartileRange;
 	private boolean fUseOptimalNrOfHistogramBins;
@@ -73,6 +75,8 @@ public final class EmpiricalDistribution
 	private double fSkewnessZStatistic;
 	private double fKurtosis;
 	private double fKurtosisZStatistic;
+	private double[] fZScores;
+	private boolean[] fOutliers;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -125,7 +129,7 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Private constructor that is invoked in case of a number of histograms was specified or requested.
+	 * Private constructor that is invoked in case a number of histograms was specified or requested.
 	 */
 	private EmpiricalDistribution(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins)
 	{
@@ -140,6 +144,7 @@ public final class EmpiricalDistribution
 	 * Retrieves the raw data for this empirical distribution.
 	 * 
 	 * @return the raw data for this empirical distribution
+	 * @see    EmpiricalDistribution#getSortedData()
 	 */
 	public double[] getData()
 	{
@@ -147,7 +152,18 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Estimates the empirical distribution for a given array of values.
+	 * Retrieves the raw data for this empirical distribution.
+	 * 
+	 * @return the raw data for this empirical distribution
+	 * @see    EmpiricalDistribution#getData()
+	 */
+	public double[] getSortedData()
+	{
+		return fXSorted;
+	}
+
+	/**
+	 * Sets the source data for the empirical distribution.
 	 * <P>
 	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
 	 * <P>
@@ -163,7 +179,7 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Estimates the empirical distribution for a given array of values and a user-specified number of histogram bins.
+	 * Sets the source data for the empirical distribution, as well as a user-specified number of histogram bins.
 	 * 
 	 * @param x the array of values to estimate the empirical distribution for
 	 * @param nrOfHistogramBins the user-specified number of histogram bins
@@ -174,6 +190,148 @@ public final class EmpiricalDistribution
 	}
 
 	/**
+	 * Clears the empirical distribution.
+	 */
+	public void clear()
+	{
+		fN = 0;
+		fX = null;
+		fXSorted = null;
+		fXMin = 0.0;
+		fXMax = 0.0;
+		fXRange = 0.0;
+		fKDEXMin = 0.0;
+		fKDEXMax = 0.0;
+		fKDEXRange = 0.0;
+		fCDF = null;
+		fPercentiles = null;
+		fTrimmedMean = 0.0;
+		fMedian = 0.0;
+		fInterquartileRange = 0.0;
+		fUseOptimalNrOfHistogramBins = false;
+		fNrOfHistogramBins = 0;
+		fHistogramBinCounts = null;
+		fHistogramBinFrequencies = null;
+		fHistogramBinRightEdges = null;
+		fHistogramBinCentres = null;
+		fHistogramBinWidth = 0.0;
+		fKDEPDF = null;
+		fExpectedValue = 0.0;
+		fKDEPDFExtrema = null;
+		fVariance = 0.0;
+		fStandardDeviation = 0.0;
+		fSkewness = 0.0;
+		fSkewnessConfidenceBounds = 0.0;
+		fSkewnessZStatistic = 0.0;
+		fKurtosis = 0.0;
+		fKurtosisZStatistic = 0.0;
+		fZScores = null;
+		fOutliers = null;
+	}
+
+	/**
+	 * Estimates the empirical distribution and analyses it various statistical quantities.
+	 */
+	public void analyse()
+	{
+		// check if data was loaded
+		if (fX == null) {
+			return;
+		}
+
+		// *********************************************************
+		// estimate empirical cumulative distribution function (CDF)
+		// *********************************************************
+
+		// sort all samples in ascending order
+		ArrayList<Double> sortedX = new ArrayList<>();
+		fXSorted = new double[fN];
+		for (int i = 0; i < fN; ++i) {
+			sortedX.add(fX[i]);
+			fXSorted[i] = fX[i];
+		}
+		Collections.sort(sortedX);
+		fXMin = fX[0];
+		fXMax = fX[0];
+		for (int i = 0; i < fN; ++i) {
+			// convert back to array
+			fXSorted[i] = sortedX.get(i);
+			if (fXSorted[i] < fXMin) {
+				fXMin = fXSorted[i];
+			}
+			if (fXSorted[i] > fXMax) {
+				fXMax = fXSorted[i];
+			}
+		}
+		fXRange = fXMax - fXMin;
+
+		// use the product-limit (Kaplan-Meier) estimate of the survivor function and transform to the CDF
+		double[] D = new double[fN];
+		for (int i = 0; i < fN; ++i) {
+			D[i] = 1;
+		}
+		double[] N = new double[fN];
+		for (int i = 0; i < fN; ++i) {
+			N[i] = fN - i;
+		}
+
+		double[] cumulativeProductTerms = new double[fN];
+		for (int i = 0; i < fN; ++i) {
+			cumulativeProductTerms[i] = 1.0 - (D[i] / N[i]);
+		}
+		double[] S = new double[fN];
+		S[0] = cumulativeProductTerms[0];
+		for (int i = 1; i < fN; ++i) {
+			S[i] = S[i - 1] * cumulativeProductTerms[i];
+		}
+		double[] Func = new double[fN];
+		double F0 = 0.0;
+		for (int i = 0; i < fN; ++i) {
+			Func[i] = 1 - S[i];
+		}
+
+		fCDF = new double[fN];
+		fCDF[0] = F0;
+		fCDF[fN - 1] = 1.0;
+		for (int i = 1; i < (fN - 1); ++i) {
+			fCDF[i] = Func[i - 1];
+		}
+
+		// ********************
+		// estimate percentiles
+		// ********************
+
+		// estimate the percentiles
+		fPercentiles = new double[101];
+		for (int percentile = 0; percentile <= 100; ++percentile) {
+			double rank = (((double) percentile / 100.0) * ((double) fN - 1.0)) + 1.0;
+			if (rank <= 1.0) {
+				fPercentiles[percentile] = fXSorted[0];
+			}
+			else if (rank >= fN) {
+				fPercentiles[percentile] = fXSorted[fN - 1];
+			}
+			else {
+				int k = (int) Math.floor(rank);
+				double d = rank - (double) k;
+				fPercentiles[percentile] = fXSorted[k - 1] + (d * (fXSorted[k] - fXSorted[k - 1]));
+			}
+		}
+
+		// *******************************
+		// estimate statistical quantities
+		// *******************************
+
+		estimateStatistics();
+
+		// *****************************************************
+		// estimate empirical probability density function (PDF)
+		// *****************************************************
+
+		estimatePDF();
+	}
+
+	/**
 	 * Returns the value of the cumulative distribution function (CDF) evaluated at <CODE>x</CODE>.
 	 *
 	 * @param x the value to evaluate the cumulative distribution function at
@@ -181,6 +339,10 @@ public final class EmpiricalDistribution
 	 */
 	public double getCDF(double x)
 	{
+		if (fX == null) {
+			return 0.0;
+		}
+
 		// do linear interpolation
 		ArraySearchBounds bounds = MathTools.searchArrayBounds(fX,x);
 
@@ -205,6 +367,10 @@ public final class EmpiricalDistribution
 	 */
 	public double getPercentile(int percentile)
 	{
+		if (fPercentiles == null) {
+			return 0.0;
+		}
+
 		return fPercentiles[MathTools.clip(percentile,0,100)];
 	}
 
@@ -299,7 +465,7 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Adjusts the probability density function (PDF).
+	 * Recalculates the probability density function (PDF).
 	 * <P>
 	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
 	 * <P>
@@ -307,18 +473,18 @@ public final class EmpiricalDistribution
 	 *   bin width = 2 * IQR / n^1/3
 	 * </UL>
 	 */
-	public void adjustPDF()
+	public void recalculatePDF()
 	{
 		fUseOptimalNrOfHistogramBins = true;
 		estimatePDF();
 	}
 
 	/**
-	 * Adjusts the probability density function (PDF) using a user-specified number of histogram bins.
+	 * Recalculates the probability density function (PDF) using a user-specified number of histogram bins.
 	 *
 	 * @param nrOfHistogramBins the user-specified number of histogram bins
 	 */
-	public void adjustPDF(int nrOfHistogramBins)
+	public void recalculatePDF(int nrOfHistogramBins)
 	{
 		fUseOptimalNrOfHistogramBins = false;
 		fNrOfHistogramBins = nrOfHistogramBins;
@@ -333,6 +499,10 @@ public final class EmpiricalDistribution
 	 */
 	public double calculateKDEPDFBandwidth(MathTools.EKernelType kernelType)
 	{
+		if (fX == null) {
+			return 0.0;
+		}
+
 		// apply Silverman Rule-of-Thumb to calculate the bandwidth
 		double hConst = 0.0;
 		switch (kernelType) {
@@ -370,6 +540,10 @@ public final class EmpiricalDistribution
 	 */
 	public void estimateKDEPDF(MathTools.EKernelType kernelType, double bandwidth, int nrOfSupportPoints, double minSupport, double maxSupport)
 	{
+		if (fX == null) {
+			return;
+		}
+
 		// prepare new support
 		double xRange = maxSupport - minSupport;
 		double delta = xRange / (nrOfSupportPoints - 1);
@@ -432,6 +606,10 @@ public final class EmpiricalDistribution
 	 */
 	public double getHistogramBinCount(int histogramBin)
 	{
+		if (fHistogramBinCounts == null) {
+			return 0.0;
+		}
+
 		return fHistogramBinCounts[histogramBin];
 	}
 
@@ -453,6 +631,10 @@ public final class EmpiricalDistribution
 	 */
 	public double getHistogramBinFrequency(int histogramBin)
 	{
+		if (fHistogramBinFrequencies == null) {
+			return 0.0;
+		}
+
 		return fHistogramBinFrequencies[histogramBin];
 	}
 
@@ -474,6 +656,10 @@ public final class EmpiricalDistribution
 	 */
 	public double getHistogramBinCentre(int histogramBin)
 	{
+		if (fHistogramBinCentres == null) {
+			return 0.0;
+		}
+
 		return fHistogramBinCentres[histogramBin];
 	}
 
@@ -604,9 +790,10 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Returns the expected value.
+	 * Returns the expected value for the first moment (population mean), which in this case is approximated by the sample mean.
 	 * 
-	 * @return the expected value
+	 * @return the expected value for the first moment
+	 * @see    EmpiricalDistribution#getMean()
 	 */
 	public double getExpectedValue()
 	{
@@ -614,13 +801,43 @@ public final class EmpiricalDistribution
 	}
 
 	/**
-	 * Alias for the expected value.
+	 * This is the sample mean, which in this case is an alias for the expected value.
 	 * 
-	 * @return the expected value
+	 * @return the sample mean
+	 * @see    EmpiricalDistribution#getExpectedValue()
+	 * @see    EmpiricalDistribution#getTrimmedMean(double)
 	 */
 	public double getMean()
 	{
 		return getExpectedValue();
+	}
+
+	/**
+	 * This is the trimmed (or truncated) mean, which corresponds to the mean calculated
+	 * after symmetrically discarding a certain percentage of data points at the high and low end (without interpolation).
+	 * 
+	 * @return the trimmed mean
+	 * @see    EmpiricalDistribution#getMean()
+	 */
+	public double getTrimmedMean(double percentageToTrim)
+	{
+		int nrOfDataPointsToDiscardAtEachEnd = (int) ((double) fN * MathTools.clip(percentageToTrim,0.0,1.0) / 2.0);
+		int lowEnd = (int) MathTools.clip(nrOfDataPointsToDiscardAtEachEnd,1.0,fN) - 1;
+		int highEnd = (int) MathTools.clip(fN - nrOfDataPointsToDiscardAtEachEnd,lowEnd,fN) - 1;
+		int range = highEnd - lowEnd + 1;
+
+		// E[X] = sum(Xi * fi)
+		if (range > 0) {
+			double frequency = 1.0 / (double) range;
+			fTrimmedMean = 0.0;
+			for (int i = lowEnd; i <= highEnd; ++i) {
+				fTrimmedMean += fX[i];
+			}
+			return (fTrimmedMean * frequency);
+		}
+		else {
+			return 0.0;
+		}
 	}
 
 	/**
@@ -748,12 +965,117 @@ public final class EmpiricalDistribution
 	 * Calculates the Jarque-Bera test statistic.
 	 * <P>
 	 * This tests the goodness-of-fit of whether the distribution's skewness and kurtosis match that of the normal distribution.
+	 * <P>
+	 * <I>The test result should be compared to the values of the chi-square distribution with 2 degrees of freedom.</I> 
 	 *
-	 *  @return the Jarque-Bera test statistic
+	 * @return the Jarque-Bera test statistic
+	 * @see    EmpiricalDistribution#isJarqueBeraTestAccepted(double)
+	 * @see    EmpiricalDistribution#getChiSquare(double,int)
 	 */
 	public double getJarqueBeraTestStatistic()
 	{
-		return (fN * ((MathTools.sqr(fSkewness) / 6.0) + (MathTools.sqr(fKurtosis - 3.0) / 24.0)));
+		if (fX == null) {
+			return 0.0;
+		}
+
+		return (fN * ((MathTools.sqr(fSkewness) / 6.0) + (MathTools.sqr(fKurtosis) / 24.0)));
+	}
+
+	/**
+	 * Compares the Jarque-Bera test statistic with the chi-square distribution with 2 degrees of freedom for a given alpha level.
+	 * <P>
+	 * Alpha levels can be 0.995, 0.99, 0.975, 0.95, 0.90, 0.10, 0.05, 0.025, 0.01, or 0.005.
+	 * 
+	 * @param  alpha the alpha level 
+	 * @return <CODE>true</CODE> if the test is accepted, <CODE>false</CODE> if it is rejected
+	 * @see    EmpiricalDistribution#getJarqueBeraTestStatistic()
+	 * @see    EmpiricalDistribution#getChiSquare(double,int)
+	 */
+	public boolean isJarqueBeraTestAccepted(double alpha)
+	{
+		return (getJarqueBeraTestStatistic() <= getChiSquare(alpha,2));
+	}
+
+	/**
+	 * Returns the chi-square value corresponding to a specified alpha level and number of degrees of freedom.
+	 * <P>
+	 * Alpha levels can be 0.995, 0.99, 0.975, 0.95, 0.90, 0.10, 0.05, 0.025, 0.01, or 0.005.
+	 * <P>
+	 * The number of degrees of freedom is clipped between 1 and 100.
+	 *
+	 * @param alpha            the alpha level
+	 * @param degreesOfFreedom the number of degrees of freedom
+	 * @return                 the chi-square value corresponding to the specified alpha level and number of degrees of freedom
+	 * @see                    EmpiricalDistribution#getJarqueBeraTestStatistic()
+	 * @see                    EmpiricalDistribution#isJarqueBeraTestAccepted(double)
+	 */
+	public static double getChiSquare(double alpha, int degreesOfFreedom)
+	{
+		double[][] kChiSquareValues = {
+			{0.0,0.01,0.072,0.207,0.412,0.676,0.989,1.344,1.735,2.156,2.603,3.074,3.565,4.075,4.601,5.142,5.697,6.265,6.844,7.434,8.034,8.643,9.26,9.886,10.52,11.16,11.808,12.461,13.121,13.787,20.707,27.991,35.534,43.275,51.172,59.196,67.328},
+			{0.0,0.02,0.115,0.297,0.554,0.872,1.239,1.646,2.088,2.558,3.053,3.571,4.107,4.66,5.229,5.812,6.408,7.015,7.633,8.26,8.897,9.542,10.196,10.856,11.524,12.198,12.879,13.565,14.256,14.953,22.164,29.707,37.485,45.442,53.54,61.754,70.065},
+			{0.001,0.051,0.216,0.484,0.831,1.237,1.69,2.18,2.7,3.247,3.816,4.404,5.009,5.629,6.262,6.908,7.564,8.231,8.907,9.591,10.283,10.982,11.689,12.401,13.12,13.844,14.573,15.308,16.047,16.791,24.433,32.357,40.482,48.758,57.153,65.647,74.222},
+			{0.004,0.103,0.352,0.711,1.145,1.635,2.167,2.733,3.325,3.94,4.575,5.226,5.892,6.571,7.261,7.962,8.672,9.39,10.117,10.851,11.591,12.338,13.091,13.848,14.611,15.379,16.151,16.928,17.708,18.493,26.509,34.764,43.188,51.739,60.391,69.126,77.929},
+			{0.016,0.211,0.584,1.064,1.61,2.204,2.833,3.49,4.168,4.865,5.578,6.304,7.042,7.79,8.547,9.312,10.085,10.865,11.651,12.443,13.24,14.041,14.848,15.659,16.473,17.292,18.114,18.939,19.768,20.599,29.051,37.689,46.459,55.329,64.278,73.291,82.358},
+			{2.706,4.605,6.251,7.779,9.236,10.645,12.017,13.362,14.684,15.987,17.275,18.549,19.812,21.064,22.307,23.542,24.769,25.989,27.204,28.412,29.615,30.813,32.007,33.196,34.382,35.563,36.741,37.916,39.087,40.256,51.805,63.167,74.397,85.527,96.578,107.565,118.498},
+			{3.841,5.991,7.815,9.488,11.07,12.592,14.067,15.507,16.919,18.307,19.675,21.026,22.362,23.685,24.996,26.296,27.587,28.869,30.144,31.41,32.671,33.924,35.172,36.415,37.652,38.885,40.113,41.337,42.557,43.773,55.758,67.505,79.082,90.531,101.879,113.145,124.342},
+			{5.024,7.378,9.348,11.143,12.833,14.449,16.013,17.535,19.023,20.483,21.92,23.337,24.736,26.119,27.488,28.845,30.191,31.526,32.852,34.17,35.479,36.781,38.076,39.364,40.646,41.923,43.195,44.461,45.722,46.979,59.342,71.42,83.298,95.023,106.629,118.136,129.561},
+			{6.635,9.21,11.345,13.277,15.086,16.812,18.475,20.09,21.666,23.209,24.725,26.217,27.688,29.141,30.578,32,33.409,34.805,36.191,37.566,38.932,40.289,41.638,42.98,44.314,45.642,46.963,48.278,49.588,50.892,63.691,76.154,88.379,100.425,112.329,124.116,135.807},
+			{7.879,10.597,12.838,14.86,16.75,18.548,20.278,21.955,23.589,25.188,26.757,28.3,29.819,31.319,32.801,34.267,35.718,37.156,38.582,39.997,41.401,42.796,44.181,45.559,46.928,48.29,49.645,50.993,52.336,53.672,66.766,79.49,91.952,104.215,116.321,128.299,140.169}
+		};
+
+		int alphaIndex = 0;
+		if (alpha == 0.995) { alphaIndex = 0; }
+		else if (alpha == 0.990) { alphaIndex = 1; }
+		else if (alpha == 0.975) { alphaIndex = 2; }
+		else if (alpha == 0.950) { alphaIndex = 3; }
+		else if (alpha == 0.900) { alphaIndex = 4; }
+		else if (alpha == 0.100) { alphaIndex = 5; }
+		else if (alpha == 0.050) { alphaIndex = 6; }
+		else if (alpha == 0.025) { alphaIndex = 7; }
+		else if (alpha == 0.010) { alphaIndex = 8; }
+		else if (alpha == 0.005) { alphaIndex = 9; }
+
+		degreesOfFreedom = (int) MathTools.clip(degreesOfFreedom,1,100);
+		if (degreesOfFreedom <= 30) {
+			// values up to and including 30 are specified exactly
+			return kChiSquareValues[alphaIndex][degreesOfFreedom - 1];
+		}
+		else {
+			// interpolate for values above 30 (which are given in increments of 10)
+			int lowerDoF = (degreesOfFreedom / 10) * 10;
+			int upperDoF = (int) MathTools.clip(((degreesOfFreedom / 10) + 1) * 10,0,100);
+			double interp = (double) (degreesOfFreedom - lowerDoF) / 10.0;
+			lowerDoF = 30 + (lowerDoF / 10) - 3; // adjust for index into array
+			upperDoF = 30 + (upperDoF / 10) - 3; // adjust for index into array
+			double lowerChiSquare = kChiSquareValues[alphaIndex][lowerDoF - 1];
+			double upperChiSquare = kChiSquareValues[alphaIndex][upperDoF - 1];
+			return MathTools.normalisedLinearInterpolation(interp,lowerChiSquare,upperChiSquare);
+		}
+	}
+
+	/**
+	 * Returns the calculated z-scores, defined as:
+	 * <P>
+	 * (value - mean) / standard deviation
+	 *
+	 * @return the z-scores
+	 * @see    EmpiricalDistribution#getOutliers()
+	 */
+	public double[] getZScores()
+	{
+		return fZScores;
+	}
+
+	/**
+	 * Returns the outliers which are defined as having z-scores greater than 3.
+	 *
+	 * @return the outliers
+	 * @see    EmpiricalDistribution#getZScores()
+	 */
+	public boolean[] getOutliers()
+	{
+		return fOutliers;
 	}
 
 	/**
@@ -902,6 +1224,8 @@ public final class EmpiricalDistribution
 	 */
 	private void setData(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins, double histogramBinRightEdges[])
 	{
+		clear();
+
 		if (x != null) {
 			fN = x.length;
 
@@ -918,106 +1242,7 @@ public final class EmpiricalDistribution
 		fNrOfHistogramBins = nrOfHistogramBins;
 		fHistogramBinRightEdges = histogramBinRightEdges;
 
-    estimateDistributions();
-	}
-
-	/**
-	 */
-	private void estimateDistributions()
-	{
-		// check if data was loaded
-		if (fX == null) {
-			return;
-		}
-
-		// *********************************************************
-		// estimate empirical cumulative distribution function (CDF)
-		// *********************************************************
-
-		// sort all samples in ascending order
-		ArrayList<Double> sortedX = new ArrayList<>();
-		for (int i = 0; i < fN; ++i) {
-			sortedX.add(fX[i]);
-		}
-		Collections.sort(sortedX);
-		fXMin = fX[0];
-		fXMax = fX[0];
-		for (int i = 0; i < fN; ++i) {
-			// convert back to array
-			fX[i] = sortedX.get(i);
-			if (fX[i] < fXMin) {
-				fXMin = fX[i];
-			}
-			if (fX[i] > fXMax) {
-				fXMax = fX[i];
-			}
-		}
-		fXRange = fXMax - fXMin;
-
-		// use the product-limit (Kaplan-Meier) estimate of the survivor function and transform to the CDF
-		double[] D = new double[fN];
-		for (int i = 0; i < fN; ++i) {
-			D[i] = 1;
-		}
-		double[] N = new double[fN];
-		for (int i = 0; i < fN; ++i) {
-			N[i] = fN - i;
-		}
-
-		double[] cumulativeProductTerms = new double[fN];
-		for (int i = 0; i < fN; ++i) {
-			cumulativeProductTerms[i] = 1.0 - (D[i] / N[i]);
-		}
-		double[] S = new double[fN];
-		S[0] = cumulativeProductTerms[0];
-		for (int i = 1; i < fN; ++i) {
-			S[i] = S[i - 1] * cumulativeProductTerms[i];
-		}
-		double[] Func = new double[fN];
-		double F0 = 0.0;
-		for (int i = 0; i < fN; ++i) {
-			Func[i] = 1 - S[i];
-		}
-
-		fCDF = new double[fN];
-		fCDF[0] = F0;
-		fCDF[fN - 1] = 1.0;
-		for (int i = 1; i < (fN - 1); ++i) {
-			fCDF[i] = Func[i - 1];
-		}
-
-		// ********************
-		// estimate percentiles
-		// ********************
-
-		// estimate the percentiles
-		fPercentiles = new double[101];
-		for (int percentile = 0; percentile <= 100; ++percentile) {
-			double rank = (((double) percentile / 100.0) * ((double) fN - 1.0)) + 1.0;
-			if (rank <= 1.0) {
-				fPercentiles[percentile] = fX[0];
-			}
-			else if (rank >= fN) {
-				fPercentiles[percentile] = fX[fN - 1];
-			}
-			else {
-				int k = (int) Math.floor(rank);
-				double d = rank - (double) k;
-				fPercentiles[percentile] = fX[k - 1] + (d * (fX[k] - fX[k - 1]));
-			}
-		}
-
-		// *******************************
-		// estimate statistical quantities
-		// *******************************
-
-		estimateStatistics();
-
-		// *****************************************************
-		// estimate empirical probability density function (PDF)
-		// *****************************************************
-
-		estimatePDF();
+		analyse();
 	}
 
 	/**
@@ -1072,6 +1297,15 @@ public final class EmpiricalDistribution
 		fKurtosis -= 3.0; // leading to zero kurtosis for a normal distribution
 		double standardErrorOfKurtosis = 2.0 * standardErrorOfSkewness * Math.sqrt((MathTools.sqr(n) - 1.0) / ((n - 3.0) * (n + 5.0)));
 		fKurtosisZStatistic = fKurtosis / standardErrorOfKurtosis; // two-tailed test of kurtosis != 0 with 5% significance level
+
+		if (fStandardDeviation != 0.0) {
+			fZScores = new double[fN];
+			fOutliers = new boolean[fN];
+			for (int i = 0; i < fN; ++i) {
+				fZScores[i] = (fX[i] - fExpectedValue) / fStandardDeviation;
+				fOutliers[i] = (fZScores[i] > 3.0);
+			}
+		}
 	}
 
 	/**
@@ -1084,7 +1318,7 @@ public final class EmpiricalDistribution
 		if (fHistogramBinRightEdges == null) {
 			if (fUseOptimalNrOfHistogramBins) {
 				// apply the Freedman-Diaconis rule for finding the optimal histogram bin width
-				double optimalBinWidth = (2.0 * fInterquartileRange) / MathTools.cubicRoot(fN);
+				double optimalBinWidth = (2.0 * fInterquartileRange) / Math.cbrt(fN);
 				fNrOfHistogramBins = ((int) Math.round((fXMax - fXMin) / optimalBinWidth));
 			}
 
@@ -1111,11 +1345,11 @@ public final class EmpiricalDistribution
 		fHistogramBinCounts = new double[fNrOfHistogramBins];
 		int currentBinIndex = 0;
 		for (int i = 0; i < fN; ++i) {
-			if (fX[i] < fHistogramBinRightEdges[currentBinIndex]) {
+			if (fXSorted[i] < fHistogramBinRightEdges[currentBinIndex]) {
 				++fHistogramBinCounts[currentBinIndex];
 			}
 			else {
-				while ((currentBinIndex < (fNrOfHistogramBins - 1)) && (fX[i] >= fHistogramBinRightEdges[currentBinIndex])) {
+				while ((currentBinIndex < (fNrOfHistogramBins - 1)) && (fXSorted[i] >= fHistogramBinRightEdges[currentBinIndex])) {
 					++currentBinIndex;
 				}
 				++fHistogramBinCounts[currentBinIndex];

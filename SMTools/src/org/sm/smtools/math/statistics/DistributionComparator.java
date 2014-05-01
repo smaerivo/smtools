@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : DistributionComparator.java
 // Author        : Sven Maerivoet
-// Last modified : 16/11/2012
-// Target        : Java VM (1.6)
+// Last modified : 01/05/2014
+// Target        : Java VM (1.8)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,13 +32,13 @@ import org.sm.smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 16/11/2012
+ * @version 01/05/2014
  */
 public final class DistributionComparator
 {
 	// internal datastructures
-	private double[] fX;
-	private double[] fY;
+	private EmpiricalDistribution fX;
+	private EmpiricalDistribution fY;
 	private int fN;
 	private double fMAE;
 	private double fMSE;
@@ -51,6 +51,8 @@ public final class DistributionComparator
 	private double fME;
 	private double fMAPE;
 	private double fEQC;
+	private double fCovariance;
+	private double fPearsonCorrelation;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -64,20 +66,7 @@ public final class DistributionComparator
 	}
 
 	/**
-	 * Constructs a <CODE>DistributionComparator</CODE> object with specified <I>X</I> and <I>Y</I> sequences and calculates the statistics.
-	 * <P>
-	 * Note that both sequences should have the same number of values.
-	 *
-	 * @param x the <I>X</I> sequence
-	 * @param y the <I>Y</I> sequence
-	 */
-	public DistributionComparator(double[] x, double[] y)
-	{
-		setData(x,y);
-	}
-
-	/**
-	 * Constructs a <CODE>DistributionComparator</CODE> object with specified <I>X</I> and <I>Y</I> sequences and calculates the statistics.
+	 * Constructs a <CODE>DistributionComparator</CODE> object with specified <I>X</I> and <I>Y</I> sequences and compares them.
 	 * <P>
 	 * Note that both sequences should have the same number of values.
 	 *
@@ -98,7 +87,7 @@ public final class DistributionComparator
 	 *
 	 * @return the <I>X</I> sequence
 	 */
-	public double[] getXData()
+	public EmpiricalDistribution getXData()
 	{
 		return fX;
 	}
@@ -108,26 +97,13 @@ public final class DistributionComparator
 	 *
 	 * @return the <I>Y</I> sequence
 	 */
-	public double[] getYData()
+	public EmpiricalDistribution getYData()
 	{
 		return fY;
 	}
 
 	/**
-	 * Loads specific <I>X</I> and <I>Y</I> sequences and calculates the statistics.
-	 * <P>
-	 * Note that both sequences should have the same number of values.
-	 *
-	 * @param x the <I>X</I> sequence
-	 * @param y the <I>Y</I> sequence
-	 */
-	public void setData(double[] x, double[] y)
-	{
-		load(x,y);
-	}
-
-	/**
-	 * Loads specific <I>X</I> and <I>Y</I> sequences and calculates the statistics.
+	 * Loads specific <I>X</I> and <I>Y</I> sequences and compares them.
 	 * <P>
 	 * Note that both sequences should have the same number of values.
 	 *
@@ -136,7 +112,34 @@ public final class DistributionComparator
 	 */
 	public void setData(EmpiricalDistribution x, EmpiricalDistribution y)
 	{
-		load(x.getData(),y.getData());
+		load(x,y);
+		analyse();
+	}
+
+	/**
+	 * Loads a specific <I>X</I> sequence and compares them.
+	 * <P>
+	 * Note that it should have the same number of values as the <I>Y</I> sequence.
+	 *
+	 * @param x the <I>X</I> sequence
+	 */
+	public void setXData(EmpiricalDistribution x)
+	{
+		loadX(x);
+		analyse();
+	}
+
+	/**
+	 * Loads a specific <I>Y</I> sequence and compares them.
+	 * <P>
+	 * Note that it should have the same number of values as the <I>X</I> sequence.
+	 *
+	 * @param y the <I>Y</I> sequence
+	 */
+	public void setYData(EmpiricalDistribution y)
+	{
+		loadY(y);
+		analyse();
 	}
 
 	/**
@@ -299,6 +302,26 @@ public final class DistributionComparator
 		return fEQC;
 	}
 
+	/**
+	 * Getter method for the covariance.
+	 *
+	 * @return the covariance
+	 */
+	public double getCovariance()
+	{
+		return fCovariance;
+	}
+
+	/**
+	 * Getter method for Pearson's correlation coefficient.
+	 *
+	 * @return Pearson's correlation coefficient
+	 */
+	public double getPearsonCorrelation()
+	{
+		return fPearsonCorrelation;
+	}
+
 	/******************
 	 * STATIC METHODS *
 	 ******************/
@@ -313,30 +336,17 @@ public final class DistributionComparator
 	 */
 	public static boolean performKolmogorovSmirnovTest(EmpiricalDistribution x, EmpiricalDistribution y, double alpha)
 	{
-		return performKolmogorovSmirnovTest(x.getData(),y.getData(),alpha);
-	}
-
-	/**
-	 * Peforms a Kolmogorov-Smirnov (KS) test on 2 sequences (they can have different lengths).
-	 *
-	 * @param x the <I>X</I> sequence
-	 * @param y the <I>Y</I> sequence
-	 * @param alpha the alpha value for the KS-test
-	 * @return <CODE>true</CODE> when the H0 hypothesis is accepted (i.e. there is not enough evidence to conclude that <I>X</I> and <I>Y</I> are significantly different) 
-	 */
-	public static boolean performKolmogorovSmirnovTest(double[] x, double[] y, double alpha)
-	{
-		int n1 = x.length;
-		int n2 = y.length;
+		int n1 = x.getN();
+		int n2 = y.getN();
 		int n = n1 + n2;
 
 		// construct new cumulative distribution functions
 		double[] binEdges = new double[n];
-		System.arraycopy(x,0,binEdges,0,n1);
-		System.arraycopy(y,0,binEdges,n1,n2);
+		System.arraycopy(x.getData(),0,binEdges,0,n1);
+		System.arraycopy(y.getData(),0,binEdges,n1,n2);
 		Arrays.sort(binEdges);
-		EmpiricalDistribution ed1 = new EmpiricalDistribution(x,binEdges);
-		EmpiricalDistribution ed2 = new EmpiricalDistribution(y,binEdges);
+		EmpiricalDistribution ed1 = new EmpiricalDistribution(x.getData(),binEdges);
+		EmpiricalDistribution ed2 = new EmpiricalDistribution(y.getData(),binEdges);
 
 		double[] binCounts1 = ed1.getHistogramBinCounts();
 		double[] cdf1 = new double[binCounts1.length];
@@ -403,22 +413,42 @@ public final class DistributionComparator
 
 	/**
 	 */
-	private void load(double[] x, double[] y)
+	private void load(EmpiricalDistribution x, EmpiricalDistribution y)
 	{
-		fN = fX.length;
-		if ((fN == 0) || (y.length != fN)) {
+		if ((x.getN() == 0) || (y.getN() != x.getN())) {
 			return;
 		}
 
+		fN = x.getN();
 		fX = x;
 		fY = y;
-
-		calculateStatistics();
 	}
 
 	/**
 	 */
-	private void calculateStatistics()
+	private void loadX(EmpiricalDistribution x)
+	{
+		if ((x.getN() == 0) || (x.getN() != fN)) {
+			return;
+		}
+
+		fX = x;
+	}
+
+	/**
+	 */
+	private void loadY(EmpiricalDistribution y)
+	{
+		if ((y.getN() == 0) || (y.getN() != fN)) {
+			return;
+		}
+
+		fY = y;
+	}
+
+	/**
+	 */
+	private void analyse()
 	{
 		fMAE = 0.0;
 		fMSE = 0.0;
@@ -428,7 +458,7 @@ public final class DistributionComparator
 		fRRMSE = 0.0;
 		fRMSEP = 0.0;
 		double fRMSEPdenominator = 0.0;
-		fMAXE = fX[0] - fY[0];
+		fMAXE = fX.getData()[0] - fY.getData()[0];
 		fME = 0.0;
 		fMAPE = 0.0;
 		fEQC = 0.0;
@@ -436,23 +466,25 @@ public final class DistributionComparator
 		double fEQCdenominatorTermY = 0.0;
 
 		for (int n = 0; n < fN; ++n) {
-			double delta = fX[n] - fY[n];
+			double xn = fX.getData()[n];
+			double yn = fY.getData()[n];
+			double delta = xn - yn;
 			fMAE += Math.abs(delta);
 			fMSE += MathTools.sqr(delta);
 			fSSE += MathTools.sqr(delta);
-			if (fX[n] != 0.0) {
-				fMRE += (Math.abs(delta) / fX[n]);
-				fRRMSE += MathTools.sqr(delta / fX[n]);
+			if (xn != 0.0) {
+				fMRE += (Math.abs(delta) / xn);
+				fRRMSE += MathTools.sqr(delta / xn);
 			}
 			fRMSEP += MathTools.sqr(delta);
-			fRMSEPdenominator += fX[n];
+			fRMSEPdenominator += xn;
 			if (Math.abs(delta) > fMAXE) {
 				fMAXE = Math.abs(delta);
 			}
 			fME += delta;
 			fEQC += MathTools.sqr(delta);
-			fEQCdenominatorTermX += MathTools.sqr(fX[n]);
-			fEQCdenominatorTermY += MathTools.sqr(fY[n]);
+			fEQCdenominatorTermX += MathTools.sqr(xn);
+			fEQCdenominatorTermY += MathTools.sqr(yn);
 		}
 
 		fMAE /= ((double) fN);
@@ -475,5 +507,13 @@ public final class DistributionComparator
 		else {
 			fEQC = 0.0;
 		}
+
+		fCovariance = 0.0;
+		for (int n = 0; n < fN; ++n) {
+			fCovariance += ((fX.getData()[n] - fX.getMean()) * (fY.getData()[n] - fY.getMean()));
+		}
+		fCovariance /= (fN - 1.0);
+
+		fPearsonCorrelation = fCovariance / (fX.getStandardDeviation() * fY.getStandardDeviation());
 	}
 }
