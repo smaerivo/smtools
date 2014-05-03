@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="/Java Native Access 3.5.1/jna-3.5.1.jar"/>
 	<classpathentry kind="lib" path="/Java Native Access 3.5.1/platform-3.5.1.jar"/>
 	<classpathentry kind="lib" path="/QuaQua Look-and-Feel/quaqua.jar"/>
+	<classpathentry kind="lib" path="/BigDecimalMath/bigdecimalmath.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
