@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 26/12/2013
-// Target        : Java VM (1.6)
+// Last modified : 04/05/2014
+// Target        : Java VM (1.8)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2013 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ import org.sm.smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 26/12/2013
+ * @version 04/05/2014
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -91,7 +91,8 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 *************************/
 
 	static {
-		JDevelopMode.deactivate();
+//XXX
+		JDevelopMode.activate();
 	}
 
 	/****************
@@ -208,7 +209,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected String getApplicationResourceArchiveFilename()
+	protected String setupApplicationResourceArchiveFilename()
 	{
 		return kResourceArchiveFilename;
 	}
@@ -217,7 +218,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected String getApplicationLocalePrefix()
+	protected String setupApplicationLocalePrefix()
 	{
 		return kApplicationLocalePrefix;
 	}
@@ -291,7 +292,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JLabel getSplashScreenContent()
+	protected JLabel setupSplashScreenContent()
 	{
 		JLabel label = new JLabel("JDerivedGUIApplication",JLabel.LEFT);
 		label.setFont(label.getFont().deriveFont(Font.BOLD).deriveFont(20.0f));
@@ -302,7 +303,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected InputStream getSplashScreenSound()
+	protected InputStream setupSplashScreenSound()
 	{
 		try {
 			return fResources.getInputStream(kSplashScreenSoundFilename);
@@ -316,7 +317,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected final Dimension getInitialGUISize()
+	protected final Dimension setupInitialGUISize()
 	{
 		return (new Dimension(JStandardGUIApplication.kFullScreenGUI,JStandardGUIApplication.kFullScreenGUI));
 	}
@@ -325,7 +326,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected Image getIcon()
+	protected Image setupIcon()
 	{
 		try {
 			return fResources.getImage(kApplicationIconFilename);
@@ -339,7 +340,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected String getWindowTitle()
+	protected String setupWindowTitle()
 	{
 		return "smtools.application.JDerivedGUIApplication";
 	}
@@ -348,7 +349,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected void constructContentPane(JPanel contentPane)
+	protected void setupContentPane(JPanel contentPane)
 	{
 		contentPane.setLayout(new BorderLayout());
 
@@ -369,7 +370,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JPanel constructGlassPane()
+	protected JPanel setupGlassPane()
 	{
 		fProgressUpdateGlassPane = new JProgressUpdateGlassPane();
 		fVisualisationType = 0;
@@ -380,7 +381,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JMenu[] constructMenus()
+	protected JMenu[] setupMenus()
 	{
 		JMenu[] menus = new JMenu[1];
 		JMenuItem menuItem = null;
@@ -412,7 +413,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JMenu constructRightHandMenu()
+	protected JMenu setupRightHandMenu()
 	{
 		JMenu rightHandMenu = null;
 		JMenuItem menuItem = null;
@@ -431,8 +432,18 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	/**
 	 * See {@link JStandardGUIApplication}.
 	 */
+	protected JLabel[] setupStatusBarCustomLabels()
+	{
+		JLabel[] customLabels = new JLabel[1];
+			customLabels[0] = new JLabel("64-bit FP");
+		return customLabels;
+	}
+
+	/**
+	 * See {@link JStandardGUIApplication}.
+	 */
 	@Override
-	protected boolean isStatusBarEnabled()
+	protected boolean setupIsStatusBarEnabled()
 	{
 		return true;
 	}
@@ -441,7 +452,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected boolean isClockEnabled()
+	protected boolean setupIsClockEnabled()
 	{
 		return true;
 	}
@@ -450,7 +461,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JAboutBox getAboutBox()
+	protected JAboutBox setupAboutBox()
 	{
 		return (new JDerivedAboutBox(this,fResources));
 	}
