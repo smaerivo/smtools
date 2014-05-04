@@ -80,6 +80,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	private static final String kActionCommandMenuItemIndex = "menuItem.Index";
 
 	// internal datastructures
+	private JLabel fStatusBarCustomLabel;
 	private int fDateChooserID;
 	private int fTimeChooserID;
 	private JProgressUpdateGlassPane fProgressUpdateGlassPane;
@@ -91,8 +92,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 *************************/
 
 	static {
-//XXX
-		JDevelopMode.activate();
+		JDevelopMode.deactivate();
 	}
 
 	/****************
@@ -104,7 +104,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 *
 	 * @param argv an array of strings containing the <B>command-line</B> parameters
 	 */
-	public JDerivedGUIApplication(String argv[])
+	public JDerivedGUIApplication(String[] argv)
 	{
 		super(argv,null);
 	}
@@ -133,13 +133,14 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		String command = e.getActionCommand();
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemDateChooser)) {
+			fStatusBarCustomLabel.setText("64-bit FP");
 			getStatusBar().setStatusText(I18NL10N.translate("text.ChooseDateDialogTitle"));
 			JDateChooser dateChooser = (JDateChooser) getGUIComponentCache().retrieveComponent(fDateChooserID);
 			dateChooser.setDefaultDate(new DateStamp(11,4,1976));
 			dateChooser.activate();
 			getStatusBar().clearStatusText();
 
-			if (dateChooser.cancelled()) {
+			if (dateChooser.isCancelled()) {
 				JWarningDialog.warn(this,I18NL10N.translate("text.ChoiceCancelled"));
 			}
 			else {
@@ -147,13 +148,14 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTimeChooser)) {
+			fStatusBarCustomLabel.setText("128-bit FP");
 			getStatusBar().setStatusText(I18NL10N.translate("text.ChooseTimeDialogTitle"));
 			JTimeChooser timeChooser = (JTimeChooser) getGUIComponentCache().retrieveComponent(fTimeChooserID);
 			timeChooser.setDefaultTime(new TimeStamp(12,25,20,10));
 			timeChooser.activate();
 
 			getStatusBar().clearStatusText();
-			if (timeChooser.cancelled()) {
+			if (timeChooser.isCancelled()) {
 				JWarningDialog.warn(this,I18NL10N.translate("text.ChoiceCancelled"));
 			}
 			else {
@@ -381,30 +383,32 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JMenu[] setupMenus()
+	protected ArrayList<JMenu> setupMenus()
 	{
-		JMenu[] menus = new JMenu[1];
+		ArrayList<JMenu> menus = new ArrayList<JMenu>();
+		JMenu menu = null;
 		JMenuItem menuItem = null;
 
-		menus[0] = new JMenu(I18NL10N.translate("menu.Demonstration"));
-		menus[0].setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.Demonstration.Mnemonic")));
+			menu = new JMenu(I18NL10N.translate("menu.Demonstration"));
+			menu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.Demonstration.Mnemonic")));
 
-			menuItem = constructMenuItem(kActionCommandMenuItemDateChooser);
-			menuItem.setActionCommand(kActionCommandMenuItemDateChooser);
-			menuItem.addActionListener(this);
-		menus[0].add(menuItem);
+				menuItem = constructMenuItem(kActionCommandMenuItemDateChooser);
+				menuItem.setActionCommand(kActionCommandMenuItemDateChooser);
+				menuItem.addActionListener(this);
+			menu.add(menuItem);
 
-			menuItem = constructMenuItem(kActionCommandMenuItemTimeChooser);
-			menuItem.setActionCommand(kActionCommandMenuItemTimeChooser);
-			menuItem.addActionListener(this);
-		menus[0].add(menuItem);
+				menuItem = constructMenuItem(kActionCommandMenuItemTimeChooser);
+				menuItem.setActionCommand(kActionCommandMenuItemTimeChooser);
+				menuItem.addActionListener(this);
+			menu.add(menuItem);
 
-		menus[0].addSeparator();
+			menu.addSeparator();
 
-			menuItem = constructMenuItem(kActionCommandMenuItemTaskRunner);
-			menuItem.setActionCommand(kActionCommandMenuItemTaskRunner);
-			menuItem.addActionListener(this);
-		menus[0].add(menuItem);
+				menuItem = constructMenuItem(kActionCommandMenuItemTaskRunner);
+				menuItem.setActionCommand(kActionCommandMenuItemTaskRunner);
+				menuItem.addActionListener(this);
+			menu.add(menuItem);
+		menus.add(menu);
 
 		return menus;
 	}
@@ -432,10 +436,11 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	/**
 	 * See {@link JStandardGUIApplication}.
 	 */
-	protected JLabel[] setupStatusBarCustomLabels()
+	protected ArrayList<JLabel> setupStatusBarCustomLabels()
 	{
-		JLabel[] customLabels = new JLabel[1];
-			customLabels[0] = new JLabel("64-bit FP");
+		ArrayList<JLabel> customLabels = new ArrayList<JLabel>();
+			fStatusBarCustomLabel = new JLabel("64-bit FP");
+			customLabels.add(fStatusBarCustomLabel);
 		return customLabels;
 	}
 
@@ -590,8 +595,10 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		 * PROTECTED METHODS *
 		 *********************/
 
+		/**
+		 */
 		@Override
-		protected JLabel getLogo()
+		protected JLabel setupLogo()
 		{
 			try {
 				return (new JLabel(new ImageIcon(fResources.getImage("application-resources/images/smtools-splash-banner.png"))));
@@ -601,22 +608,28 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			}
 		}
 
+		/**
+		 */
 		@Override
-		protected ELogoPosition getLogoPosition()
+		protected ELogoPosition setupLogoPosition()
 		{
 			return JAboutBox.ELogoPosition.kTop;
 		}
 
+		/**
+		 */
 		@Override
-		protected String getAboutText()
+		protected String setupAboutText()
 		{
 			return
 			("<B>JDerivedGUIApplication v1.1</B><BR />" +
 				"Copyright 2003-2014 Sven Maerivoet");
 		}
 
+		/**
+		 */
 		@Override
-		protected StringBuilder getCopyrightContent()
+		protected StringBuilder setupCopyrightContent()
 		{
 			try {
 				return fResources.getText("application-resources/licence/copyright.txt");
@@ -626,8 +639,10 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			}
 		}
 
+		/**
+		 */
 		@Override
-		protected StringBuilder getLicenceContent()
+		protected StringBuilder setupLicenceContent()
 		{
 			try {
 				return fResources.getText("application-resources/licence/apache-licence.txt");
@@ -637,41 +652,48 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			}
 		}
 
+		/**
+		 */
 		@Override
-		protected JLabel[] getAffiliationsLabels()
+		protected ArrayList<JLabel> setupAffiliationsLabels()
 		{
-			JLabel[] affiliationsLabels = new JLabel[4];
+			ArrayList<JLabel> affiliationsLabels = new ArrayList<JLabel>();
+			JLabel affiliationLabel = null;
 
-			affiliationsLabels[0] = new JLabel("",SwingConstants.CENTER);
-			try {
-				affiliationsLabels[0].setIcon(new ImageIcon(fResources.getImage("application-resources/images/smtools-splash-banner.png")));
-			}
-			catch (FileDoesNotExistException exc) {
-			}
-			affiliationsLabels[0].setToolTipText(I18NL10N.translate("tooltip.AboutBox.ClickForBrowser"));
+				affiliationLabel = new JLabel("",SwingConstants.CENTER);
+				try {
+					affiliationLabel.setIcon(new ImageIcon(fResources.getImage("application-resources/images/smtools-splash-banner.png")));
+				}
+				catch (FileDoesNotExistException exc) {
+				}
+				affiliationLabel.setToolTipText(I18NL10N.translate("tooltip.AboutBox.ClickForBrowser"));
+			affiliationsLabels.add(affiliationLabel);
 
-			affiliationsLabels[1] = new JLabel(
-				"<html>" +
-					"<b>Sven Maerivoet</b>" +
-				"</html>");
+				affiliationLabel = new JLabel(
+					"<html>" +
+						"<b>Sven Maerivoet</b>" +
+					"</html>");
+			affiliationsLabels.add(affiliationLabel);
 
-			affiliationsLabels[2] = new JLabel(
-				"<html>" +
-					"E-mail: sven.maerivoet@gmail.com" +
-				"</html>");
-			affiliationsLabels[2].setToolTipText(I18NL10N.translate("tooltip.AboutBox.ClickForEmailClient"));
+				affiliationLabel = new JLabel(
+					"<html>" +
+						"E-mail: sven.maerivoet@gmail.com" +
+					"</html>");
+				affiliationLabel.setToolTipText(I18NL10N.translate("tooltip.AboutBox.ClickForEmailClient"));
+			affiliationsLabels.add(affiliationLabel);
 
-			affiliationsLabels[3] = new JLabel(
-				"<html>" +
-					"Website: http://www.maerivoet.org/" +
-				"</html>");
-			affiliationsLabels[3].setToolTipText(I18NL10N.translate("tooltip.AboutBox.ClickForBrowser"));
+				affiliationLabel = new JLabel(
+					"<html>" +
+						"Website: http://www.maerivoet.org/" +
+					"</html>");
+				affiliationLabel.setToolTipText(I18NL10N.translate("tooltip.AboutBox.ClickForBrowser"));
+			affiliationsLabels.add(affiliationLabel);
 
-			for (JLabel affiliationLabel : affiliationsLabels) { 
-				affiliationLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-				affiliationLabel.setHorizontalAlignment(SwingConstants.LEFT);
-				affiliationLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
-				affiliationLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+			for (JLabel label : affiliationsLabels) { 
+				label.setHorizontalTextPosition(SwingConstants.CENTER);
+				label.setHorizontalAlignment(SwingConstants.LEFT);
+				label.setVerticalTextPosition(SwingConstants.BOTTOM);
+				label.setVerticalAlignment(SwingConstants.BOTTOM);
 			}
 
 			// install mouse listeners
@@ -721,9 +743,9 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 				public void mouseReleased(MouseEvent e) { }
 			};
 
-			affiliationsLabels[0].addMouseListener(browserLauncher);
-			affiliationsLabels[2].addMouseListener(emailLauncher);
-			affiliationsLabels[3].addMouseListener(browserLauncher);
+			affiliationsLabels.get(0).addMouseListener(browserLauncher);
+			affiliationsLabels.get(2).addMouseListener(emailLauncher);
+			affiliationsLabels.get(3).addMouseListener(browserLauncher);
 
 			return affiliationsLabels;
 		}

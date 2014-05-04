@@ -1,12 +1,12 @@
 // -----------------------------------
 // Filename      : TextFileWriter.java
 // Author        : Sven Maerivoet
-// Last modified : 22/04/2011
-// Target        : Java VM (1.6)
+// Last modified : 04/05/2014
+// Target        : Java VM (1.8)
 // -----------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,11 +41,13 @@ import org.sm.smtools.exceptions.*;
  *   <LI><CODE>Time</CODE> (hh:mm:ss.ms)</LI>
  *   <LI>comma-separated values (CSV)</LI>
  * </UL>
+ * <P>
+ * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 22/04/2011
+ * @version 04/05/2014
  */
-public class TextFileWriter
+public final class TextFileWriter
 {
 	// internal datastructures
 	private PrintWriter fFileWriter;

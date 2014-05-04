@@ -1,12 +1,12 @@
 // ---------------------------------
 // Filename      : JDateChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
-// Target        : Java VM (1.6)
+// Last modified : 04/05/2014
+// Target        : Java VM (1.8)
 // ---------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ import org.sm.smtools.swing.util.*;
  * <P>
  * <CODE>
  * <PRE>
- *   if (!myDateChooser.cancelled()) {
+ *   if (!myDateChooser.isCancelled()) {
  *     DateStamp dateStamp = myDateChooser.getSelectedDate();
  *     // rest of code
  *   }
@@ -91,7 +91,7 @@ import org.sm.smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 04/05/2014
  */
 public final class JDateChooser extends JDefaultDialog implements ChangeListener
 {
@@ -259,7 +259,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	 */
 	public DateStamp getSelectedDate()
 	{
-		if (cancelled()) {
+		if (isCancelled()) {
 			return fDefaultDate;
 		}
 		else {
@@ -304,7 +304,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	/**
 	 */
 	@Override
-	protected final String getWindowTitle()
+	protected final String setupWindowTitle()
 	{
 		return fWindowTitle;
 	}
@@ -312,7 +312,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	/**
 	 */
 	@Override
-	protected void constructMainPanel(JPanel mainPanel)
+	protected void setupMainPanel(JPanel mainPanel)
 	{
 		JPanel panel = null;
 		JPanel subPanel = null;
@@ -444,6 +444,8 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	 * PRIVATE METHODS *
 	 *******************/
 
+	/**
+	 */
 	private void setCaptions()
 	{
 		int selectedDay = fSelectedDate.getDay();
@@ -498,9 +500,11 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		fSelectedDateLabel.setPreferredSize(new Dimension(kSelectedLabelWidth,30));
 
 		// update the window title by appending it with the current selected week
-		setTitle(getWindowTitle() + " (" + I18NL10N.translate("text.Week") + " " + String.valueOf(fSelectedDate.getWeekOfYear()) + ")");
+		setTitle(setupWindowTitle() + " (" + I18NL10N.translate("text.Week") + " " + String.valueOf(fSelectedDate.getWeekOfYear()) + ")");
 	}
 
+	/**
+	 */
 	private int preventDateOverlow(int selectedDay)
 	{
 		// find the last day of the current month
@@ -519,6 +523,8 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		}
 	}
 
+	/**
+	 */
 	private int getMonthIndex(String month)
 	{
 		boolean found = false;

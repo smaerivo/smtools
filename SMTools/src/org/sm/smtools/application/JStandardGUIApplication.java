@@ -103,6 +103,7 @@ import org.sm.smtools.swing.dialogs.*;
  *     <LI>{@link JStandardGUIApplication#setupIsGUIRepaintedWhenResizing()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupIcon()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupWindowTitle()}</LI>
+ *     <LI>{@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}</LI>
  *   </UL>
  *   <P>
  *   <LI><B><U>Visual layout (content related)</U></B></LI>
@@ -348,7 +349,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *   <LI>A optional splash screen is shown (see {@link JStandardGUIApplication#setupSplashScreenContent()} and
 	 *       {@link JStandardGUIApplication#setupSplashScreenSound()}).</LI>
 	 *   <P>
-	 *   <LI>Custom initialisation is performed (see {@link JStandardGUIApplication#initialiseClass(Object[])}).</LI>
+	 *   <LI>Custom initialisation is performed (see {@link JStandardGUIApplication#initialiseClass(Object[])}).
+	 *       Note that the objects are specified as <CODE>new Object[] {object1,object2}</CODE>.</LI>
 	 *   <P>
 	 *   <LI>The window's icon and title are set (see {@link JStandardGUIApplication#setupIcon()} and
 	 *       {@link JStandardGUIApplication#setupWindowTitle()}).</LI>
@@ -362,6 +364,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *       {@link JStandardGUIApplication#setupRightHandMenu()}).</LI>
 	 *   <P>
 	 *   <LI>The about box is shown (see {@link JStandardGUIApplication#setupAboutBox()}).</LI>
+	 *   <P>
+	 *   <LI>The application checks if minimisation to the system tray is allowed (see {@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}).</LI>
 	 *   <P>
 	 *   <LI>The glass pane is constructed (see {@link JStandardGUIApplication#setupGlassPane()}).</LI>
 	 *   <P>
@@ -636,7 +640,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		setLookAndFeelMenuItems();
 
 		// check whether or not minimising to the system tray is supported
-		fMinimiseToSystemTray = SystemTray.isSupported();
+		fMinimiseToSystemTray = (SystemTray.isSupported() && setupMinimiseToSystemTrayAllowed());
 
 		// show the aboutbox
 		aboutBox = (JDefaultDialog) fGUIComponentCache.retrieveComponent(fAboutBoxID);
@@ -1024,6 +1028,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * The parameters in the <CODE>Object[]</CODE> array are passed through
 	 * the class's constructor (see {@link JStandardGUIApplication#JStandardGUIApplication(String[],Object[])}).
+	 * They are typically specified as <CODE>new Object[] {object1,object2}</CODE>.
 	 *
 	 * @param parameters an array of <CODE>Objects</CODE>
 	 */
@@ -1305,10 +1310,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * Note that this method returns <CODE>null</CODE> by default.
 	 *
-	 * @return an array of menus
+	 * @return an <CODE>ArrayList</CODE> of menus
 	 * @see    JStandardGUIApplication#setupRightHandMenu()
 	 */
-	protected JMenu[] setupMenus()
+	protected ArrayList<JMenu> setupMenus()
 	{
 		return null;
 	}
@@ -1410,9 +1415,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Sets up custom labels that are shown to the right hand side of the status bar.
 	 *
-	 * @param customLabels an array of custom labels, or <CODE>null</CODE> if none are provided
+	 * @return an <CODE>ArrayList<CODE> of custom labels, or <CODE>null</CODE> if none are provided
 	 */
-	protected JLabel[] setupStatusBarCustomLabels()
+	protected ArrayList<JLabel> setupStatusBarCustomLabels()
 	{
 		return null;
 	}
@@ -1475,6 +1480,18 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	protected JAboutBox setupAboutBox()
 	{
 		return null;
+	}
+
+	/**
+	 * Sets up whether or not the application is allowed to minimise to the system tray (if supported by the host platform).
+	 * <P>
+	 * Note that this method returns <CODE>true</CODE> by default.
+	 *
+	 * @return whether or not the application is allowed to minimise to the system tray
+	 */
+	protected boolean setupMinimiseToSystemTrayAllowed()
+	{
+		return true;
 	}
 
 	/**
@@ -1707,6 +1724,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			checkBoxMenuItem.setState(true);
 			checkBoxMenuItem.setActionCommand(kActionCommandMenuItemMinimiseToSystemTray);
 			checkBoxMenuItem.addActionListener(this);
+			if (!setupMinimiseToSystemTrayAllowed()) {
+				checkBoxMenuItem.setState(false);
+				checkBoxMenuItem.setEnabled(false);
+			}
 			subMenu.add(checkBoxMenuItem);
 		}
 
@@ -1721,10 +1742,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		menu.add(menuItem);
 
 		// if necessary, add other menus
-		JMenu[] otherMenus = setupMenus();
+		ArrayList<JMenu> otherMenus = setupMenus();
 		if (otherMenus != null) {
-			for (int menuNr = 0; menuNr < otherMenus.length; ++menuNr) {
-				menuBar.add(otherMenus[menuNr]);
+			for (JMenu otherMenu : otherMenus) {
+				menuBar.add(otherMenu);
 			}
 		}
 

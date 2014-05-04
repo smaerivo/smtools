@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : JAboutBox.java
 // Author        : Sven Maerivoet
-// Last modified : 02/05/2014
+// Last modified : 04/05/2014
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -24,6 +24,7 @@
 package org.sm.smtools.swing.dialogs;
 
 import java.awt.*;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import org.sm.smtools.application.util.*;
@@ -65,23 +66,23 @@ import org.sm.smtools.miscellaneous.*;
  * customisation of each of the previously shown four tabs. The overrideable methods that control
  * these aspects of the visual layout of the dialog box are:
  * <UL>
- *   <LI>{@link JAboutBox#getLogo}</LI>
- *   <LI>{@link JAboutBox#getLogoPosition}</LI>
- *   <LI>{@link JAboutBox#getAboutText}</LI>
- *   <LI>{@link JAboutBox#getCopyrightContent}</LI>
- *   <LI>{@link JAboutBox#getLicenceContent}</LI>
- *   <LI>{@link JAboutBox#getAffiliationsLabels}</LI>
- *   <LI>{@link JAboutBox#getUsedLibrariesDescriptions}</LI>
+ *   <LI>{@link JAboutBox#setupLogo}</LI>
+ *   <LI>{@link JAboutBox#setupLogoPosition}</LI>
+ *   <LI>{@link JAboutBox#setupAboutText}</LI>
+ *   <LI>{@link JAboutBox#setupCopyrightContent}</LI>
+ *   <LI>{@link JAboutBox#setupLicenceContent}</LI>
+ *   <LI>{@link JAboutBox#setupAffiliationsLabels}</LI>
+ *   <LI>{@link JAboutBox#setupUsedLibrariesDescriptions}</LI>
  * </UL>
  * <P>
  * In the first tab, the amount of free memory available to the Java Virtual Machine is also shown.
  * <P>
- * Finally, if either {@link JAboutBox#getCopyrightContent}, {@link JAboutBox#getLicenceContent},
- * or {@link JAboutBox#getAffiliationsLabels} returns <CODE>null</CODE>, then its corresponding
+ * Finally, if either {@link JAboutBox#setupCopyrightContent}, {@link JAboutBox#setupLicenceContent},
+ * or {@link JAboutBox#setupAffiliationsLabels} returns <CODE>null</CODE>, then its corresponding
  * tab is <B>not</B> shown.
  * 
  * @author  Sven Maerivoet
- * @version 29/04/2013
+ * @version 04/05/2014
  */
 public class JAboutBox extends JDefaultDialog
 {
@@ -159,7 +160,7 @@ public class JAboutBox extends JDefaultDialog
 	 *********************/
 
 	/**
-	 * Returns a <CODE>JLabel</CODE> containing the application's logo.
+	 * Sets up a <CODE>JLabel</CODE> containing the application's logo.
 	 * <P>
 	 * A typical logo can span up to 500x200 pixels (when positioned at the top) or
 	 * 200x300 pixels (when positioned at the left).
@@ -169,13 +170,13 @@ public class JAboutBox extends JDefaultDialog
 	 *
 	 * @return a <CODE>JLabel</CODE> containing the application's logo
 	 */
-	protected JLabel getLogo()
+	protected JLabel setupLogo()
 	{
 		return null;
 	}
 
 	/**
-	 * Returns an <CODE>ELogoPosition</CODE> indicating where the application's logo should
+	 * Sets up an <CODE>ELogoPosition</CODE> indicating where the application's logo should
 	 * be relative to its accompanying about text.
 	 * <P>
 	 * See also {@link JAboutBox.ELogoPosition}.
@@ -184,13 +185,13 @@ public class JAboutBox extends JDefaultDialog
 	 *
 	 * @return an <CODE>ELogoPosition</CODE> indicating the application's logo's position
 	 */
-	protected ELogoPosition getLogoPosition()
+	protected ELogoPosition setupLogoPosition()
 	{
 		return ELogoPosition.kTop;
 	}
 
 	/**
-	 * Returns a <CODE>String</CODE> containing the about text displayed together
+	 * Sets up a <CODE>String</CODE> containing the about text displayed together
 	 * with the application's logo.
 	 * <P>
 	 * In order to have some control over the copyright notice's layout, HTML tags
@@ -202,13 +203,13 @@ public class JAboutBox extends JDefaultDialog
 	 *
 	 * @return a <CODE>String</CODE> containing the about text
 	 */
-	protected String getAboutText()
+	protected String setupAboutText()
 	{
 		return null;
 	}
 
 	/**
-	 * Returns a <CODE>StringBuilder</CODE> containing the <I>short</I> application's copyright notice.
+	 * Sets up a <CODE>StringBuilder</CODE> containing the <I>short</I> application's copyright notice.
 	 * <P>
 	 * In order to have some control over the copyright notice's layout, HTML tags
 	 * are allowed (except the starting &lt;HTML&gt; and ending &lt;/HTML&gt; tags which	 
@@ -222,13 +223,13 @@ public class JAboutBox extends JDefaultDialog
 	 *
 	 * @return a <CODE>StringBuffer</CODE> containing the application's copyright notice
 	 */
-	protected StringBuilder getCopyrightContent()
+	protected StringBuilder setupCopyrightContent()
 	{
 		return null;
 	}
 
 	/**
-	 * Returns a <CODE>StringBuilder</CODE> containing the (long) application's licence text (e.g., the Apache Licence).
+	 * Sets up a <CODE>StringBuilder</CODE> containing the (long) application's licence text (e.g., the Apache Licence).
 	 * <P>
 	 * This method returns <CODE>null</CODE> by default, so in order to
 	 * obtain a custom licence text, the caller should override this method.
@@ -240,13 +241,13 @@ public class JAboutBox extends JDefaultDialog
 	 *
 	 * @return a <CODE>StringBuffer</CODE> containing the application's licence text
 	 */
-	protected StringBuilder getLicenceContent()
+	protected StringBuilder setupLicenceContent()
 	{
 		return null;
 	}
 
 	/**
-	 * Returns an array of <CODE>JLabel</CODE>s containing the author's affiliations.
+	 * Sets up a list of <CODE>JLabel</CODE>s containing the author's affiliations.
 	 * <P>
 	 * This method returns <CODE>null</CODE> by default, so in order to
 	 * obtain custom affiliations, the caller should override this method.
@@ -256,22 +257,22 @@ public class JAboutBox extends JDefaultDialog
 	 * If no explicit affiliations are given, the tab containing them will
 	 * not be displayed in the about box. 
 	 *
-	 * @return an array of <CODE>JLabel</CODE>s containing the author's affiliations
+	 * @return a list of <CODE>JLabel</CODE>s containing the author's affiliations
 	 */
-	protected JLabel[] getAffiliationsLabels()
+	protected ArrayList<JLabel> setupAffiliationsLabels()
 	{
 		return null;
 	}
 
 	/**
-	 * Returns a <CODE>String</CODE> describing the application's used libraries.
+	 * Sets up a <CODE>String</CODE> describing the application's used libraries.
 	 * <P>
 	 * This method returns <CODE>null</CODE> by default, so in order to
 	 * obtain custom affiliations, the caller should override this method.
 	 *
 	 * @return a <CODE>String</CODE> describing the application's used libraries
 	 */
-	protected String getUsedLibrariesDescriptions()
+	protected String setupUsedLibrariesDescriptions()
 	{
 		return null;
 	}
@@ -291,34 +292,34 @@ public class JAboutBox extends JDefaultDialog
 	}
 
 	/**
-	 * Returns the window title of the about box.
+	 * Sets up the window title of the about box.
 	 * <P>
 	 * <B>Note that this method cannot be overridden!</B>
 	 */
 	@Override
-	protected final String getWindowTitle()
+	protected final String setupWindowTitle()
 	{
 		return I18NL10N.translate("text.AboutBox.DialogTitle");
 	}
 
 	/**
-	 * Creates the about box content area.
+	 * Sets up the about box content area.
 	 * <P>
 	 * <B>Note that this method cannot be overridden!</B>
 	 */
 	@Override
-	protected final void constructMainPanel(JPanel mainPanel)
+	protected final void setupMainPanel(JPanel mainPanel)
 	{
 		fTabbedPane = new JTabbedPane();
 
 		// create the about pane
 		JPanel aboutPane = new JPanel();
 		Dimension customSpacing = null;
-		if (getLogoPosition() == ELogoPosition.kTop) {
+		if (setupLogoPosition() == ELogoPosition.kTop) {
 			aboutPane.setLayout(new BoxLayout(aboutPane,BoxLayout.Y_AXIS));
 			customSpacing = new Dimension(0,10);
 		}
-		else if (getLogoPosition() == ELogoPosition.kLeft) {
+		else if (setupLogoPosition() == ELogoPosition.kLeft) {
 			aboutPane.setLayout(new BoxLayout(aboutPane,BoxLayout.X_AXIS));
 			customSpacing = new Dimension(10,0);
 		}
@@ -326,7 +327,7 @@ public class JAboutBox extends JDefaultDialog
 		aboutPane.setAlignmentY(Component.TOP_ALIGNMENT);
 		aboutPane.setBorder(new EmptyBorder(0,10,10,10));
 		aboutPane.add(Box.createRigidArea(customSpacing));
-		JLabel logo = getLogo();
+		JLabel logo = setupLogo();
 		if (logo != null) {
 			aboutPane.add(logo);
 			logo.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -341,7 +342,7 @@ public class JAboutBox extends JDefaultDialog
 		fTabbedPane.addTab(I18NL10N.translate("text.AboutBox.AboutPaneTitle"),aboutPane);
 
 		// create the copyright pane
-		if (getCopyrightContent() != null) {
+		if (setupCopyrightContent() != null) {
 			JPanel copyrightPane = new JPanel();
 			copyrightPane.setLayout(new BorderLayout());
 			copyrightPane.setBorder(new EmptyBorder(5,5,10,10));
@@ -400,7 +401,7 @@ public class JAboutBox extends JDefaultDialog
 			JPanel centerPanel = new JPanel();
 			centerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 			StringBuilder copyrightLabelText = new StringBuilder("<HTML>");
-			String[] copyrightContent = getCopyrightContent().toString().split(StringTools.kEOLCharacterSequence);
+			String[] copyrightContent = setupCopyrightContent().toString().split(StringTools.kEOLCharacterSequence);
 			// convert plain text to HTML code
 			for (int lineNr = 0; lineNr < copyrightContent.length; ++lineNr) {
 				copyrightLabelText.append(copyrightContent[lineNr] + "<BR />");
@@ -414,11 +415,11 @@ public class JAboutBox extends JDefaultDialog
 
 		Dimension maximumDimensions = new Dimension(0,0);
 
-		if (getLicenceContent() != null) {
+		if (setupLicenceContent() != null) {
 			// create the licence pane
 			JPanel licencePane = new JPanel();
 			licencePane.setLayout(new BorderLayout());
-			fLicenceTextArea = new JTextArea(getLicenceContent().toString());
+			fLicenceTextArea = new JTextArea(setupLicenceContent().toString());
 			fLicenceTextArea.setRows(kTextAreaInitialNrOfRows);
 			fLicenceTextArea.setFont(fLicenceTextArea.getFont().deriveFont(12.0f));
 			fLicenceTextArea.setCaretPosition(0);
@@ -442,7 +443,7 @@ public class JAboutBox extends JDefaultDialog
 			fTabbedPane.addTab(I18NL10N.translate("text.AboutBox.LicencePaneTitle"),licencePane);
 		}
 
-		if (getAffiliationsLabels() != null) {
+		if (setupAffiliationsLabels() != null) {
 		
 			JPanel affiliationsPane = new JPanel();
 			affiliationsPane.setLayout(new BoxLayout(affiliationsPane,BoxLayout.Y_AXIS));
@@ -450,12 +451,12 @@ public class JAboutBox extends JDefaultDialog
 			affiliationsPane.setAlignmentX(Component.LEFT_ALIGNMENT);
 			affiliationsPane.setAlignmentY(Component.TOP_ALIGNMENT);
 
-			JLabel[] affiliationsLabels = getAffiliationsLabels();
+			ArrayList<JLabel> affiliationsLabels = setupAffiliationsLabels();
 			for (JLabel affiliationLabel : affiliationsLabels) {
 				affiliationLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 				affiliationLabel.setAlignmentY(Component.TOP_ALIGNMENT);
 				affiliationsPane.add(affiliationLabel);
-				if (affiliationLabel != affiliationsLabels[affiliationsLabels.length - 1]) {
+				if (affiliationLabel != affiliationsLabels.get(affiliationsLabels.size() - 1)) {
 					affiliationsPane.add(Box.createRigidArea(new Dimension(0,15)));
 				}
 			}	
@@ -487,13 +488,13 @@ public class JAboutBox extends JDefaultDialog
 		// always jump to the first tab (logo and about text)
 		fTabbedPane.setSelectedIndex(0);
 
-		if (getLicenceContent() != null) {
+		if (setupLicenceContent() != null) {
 			// always scroll the beginning of the text in the licence tab
 			fLicenceTextArea.setCaretPosition(0);
 			fLicenceScrollPane.getVerticalScrollBar().setValue(0);
 		}
 
-		if (getAffiliationsLabels() != null) {
+		if (setupAffiliationsLabels() != null) {
 			// always scroll the first affiliation in the affiliations tab
 			fAffiliationsScrollPane.getVerticalScrollBar().setValue(0);
 		}
@@ -503,12 +504,14 @@ public class JAboutBox extends JDefaultDialog
 	 * PRIVATE METHODS *
 	 *******************/
 
+	/**
+	 */
 	private void updateAboutTextLabel()
 	{
 		// incorporate a custom about text
 		String aboutText = "<HTML>";
-		if (getAboutText() != null) {
-			aboutText += getAboutText() + "<BR />";
+		if (setupAboutText() != null) {
+			aboutText += setupAboutText() + "<BR />";
 			aboutText += "<BR />";
 		}
 
@@ -530,8 +533,8 @@ public class JAboutBox extends JDefaultDialog
 		// update the used libraries
 		aboutText += "<BR />";
 		aboutText += I18NL10N.translate("text.UsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8, Java Native Access 3.5.1, Quaqua 8, BigDecimalMath 2012-03";
-		if (getUsedLibrariesDescriptions() != null) {
-			aboutText += ", " + getUsedLibrariesDescriptions();
+		if (setupUsedLibrariesDescriptions() != null) {
+			aboutText += ", " + setupUsedLibrariesDescriptions();
 		}
 
 		aboutText += "</HTML>";

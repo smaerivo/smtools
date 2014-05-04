@@ -1,8 +1,8 @@
 // -----------------------------------
 // Filename      : JDefaultDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 11/12/2012
-// Target        : Java VM (1.6)
+// Last modified : 04/05/2014
+// Target        : Java VM (1.8)
 // -----------------------------------
 
 /**
@@ -66,9 +66,9 @@ import org.sm.smtools.swing.util.*;
  * <P>
  * <UL>
  *   <LI>{@link JDefaultDialog#initialiseClass(Object[])}</LI>
- *   <LI>{@link JDefaultDialog#getWindowTitle()}</LI>
- *   <LI>{@link JDefaultDialog#getInitialDialogSize()}</LI>
- *   <LI>{@link JDefaultDialog#constructMainPanel(JPanel)}</LI>
+ *   <LI>{@link JDefaultDialog#setupWindowTitle()}</LI>
+ *   <LI>{@link JDefaultDialog#setupInitialDialogSize()}</LI>
+ *   <LI>{@link JDefaultDialog#setupMainPanel(JPanel)}</LI>
  *   <LI>{@link JDefaultDialog#actionPerformed(ActionEvent)}</LI>
  * </UL>
  * <P>
@@ -103,7 +103,7 @@ import org.sm.smtools.swing.util.*;
  * during the reactivation process, can be performed by overriding the {@link JDefaultDialog#initialiseDuringActivation} method.
  *
  * @author  Sven Maerivoet
- * @version 11/12/2012
+ * @version 04/05/2014
  */
 public class JDefaultDialog extends JDialog implements ActionListener, WindowListener
 {
@@ -191,8 +191,8 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 
 		initialiseClass(parameters);
 
-		if (getWindowTitle() != null) {
-			setTitle(getWindowTitle());
+		if (setupWindowTitle() != null) {
+			setTitle(setupWindowTitle());
 		}
 
 		if (size == ESize.kResizable) {
@@ -201,8 +201,8 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 		else if (size == ESize.kFixedSize) {
 			setResizable(false);
 		}
-		if (getInitialDialogSize() != null) {
-			setSize(getInitialDialogSize());
+		if (setupInitialDialogSize() != null) {
+			setSize(setupInitialDialogSize());
 		}
 
 		fApplicationFrame = applicationFrame;
@@ -363,7 +363,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * @return <CODE>false</CODE> for "Ok" and "Custom" type dialog boxes, and "Ok/Cancel"
 	 *         type dialog boxes if the user has selected the "Ok" button
 	 */
-	public boolean cancelled()
+	public boolean isCancelled()
 	{
 		return fCancelled;
 	}
@@ -435,33 +435,33 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	}
 
 	/**
-	 * Returns the window title of the dialog box.
+	 * Sets up the window title of the dialog box.
 	 * <P>
 	 * In order to obtain a custom dialog title, the caller should override this method
 	 * (it returns <CODE>null</CODE> in the baseclass).
 	 *
 	 * @return the window title of the dialog box
 	 */
-	protected String getWindowTitle()
+	protected String setupWindowTitle()
 	{
 		return null;
 	}
 
 	/**
-	 * Returns the initial screen size of the dialog box.
+	 * Sets up the initial screen size of the dialog box.
 	 * <P>
 	 * In order to obtain a custom size for the dialog box, the caller should override this
 	 * method (it returns <CODE>null</CODE> in the baseclass).
 	 *
 	 * @return the initial screen size of the dialog box
 	 */
-	protected Dimension getInitialDialogSize()
+	protected Dimension setupInitialDialogSize()
 	{
 		return null;
 	}
 
 	/**
-	 * Allows the creation of custom content in the dialog box.
+	 * Sets up the custom content in the dialog box.
 	 * <P>
 	 * A subclass should typically create labels, inputfields, ... in the dialog
 	 * boxes main panel, by overriding this method.
@@ -470,7 +470,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 *
 	 * @param mainPanel the area of the dialog box that is reserved for custom content
 	 */
-	protected void constructMainPanel(JPanel mainPanel)
+	protected void setupMainPanel(JPanel mainPanel)
 	{
 	}
 
@@ -512,6 +512,8 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * PRIVATE METHODS *
 	 *******************/
 
+	/**
+	 */
 	private void constructContentPane(JPanel contentPane)
 	{
 		contentPane.setLayout(new BorderLayout());
@@ -523,7 +525,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 
 		// construct the main panel
 		JPanel mainPanel = new JPanel();
-		constructMainPanel(mainPanel);
+		setupMainPanel(mainPanel);
 		contentPane.add(mainPanel,BorderLayout.CENTER);
 
 		if ((fType == EType.kOk) || (fType == EType.kOkCancel)) {
@@ -555,6 +557,8 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 		}
 	}
 
+	/**
+	 */
 	private void reposition()
 	{
 		// try to position the dialog in the middle of its parent's window

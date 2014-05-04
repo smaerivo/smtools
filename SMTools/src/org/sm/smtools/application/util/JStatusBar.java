@@ -95,9 +95,9 @@ public final class JStatusBar extends JPanel
 	 * Constructs a <CODE>JStatusBar</CODE> object and sets up optional custom labels that are shown to the right hand side.
 	 *
 	 * @param showGUIResizable indicates whether or not the resizable-icon should be shown
-	 * @param customLabels     an array of custom labels, or <CODE>null</CODE> if none are provided
+	 * @param customLabels     an <CODE>ArrayList</CODE> of custom labels, or <CODE>null</CODE> if none are provided
 	 */
-	public JStatusBar(boolean showGUIResizable, JLabel[] customLabels)
+	public JStatusBar(boolean showGUIResizable, ArrayList<JLabel> customLabels)
 	{
 		setPreferredSize(new Dimension(getWidth(),kHeight));
 		setLayout(new BorderLayout());

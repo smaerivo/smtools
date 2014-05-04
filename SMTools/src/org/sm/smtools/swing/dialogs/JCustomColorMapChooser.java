@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 02/02/2013
-// Target        : Java VM (1.6)
+// Last modified : 04/05/2014
+// Target        : Java VM (1.8)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2013 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ import org.sm.smtools.swing.util.JGradientColorRamp.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 02/02/2013
+ * @version 04/05/2014
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
@@ -286,7 +286,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	 * Returns the dialog box's title.
 	 */
 	@Override
-	protected java.lang.String getWindowTitle()
+	protected java.lang.String setupWindowTitle()
 	{
 		return I18NL10N.translate("text.CustomColorMap.Title");
 	}
@@ -297,7 +297,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	 * <B>Note that this method cannot be overridden!</B>
 	 */
 	@Override
-	protected void constructMainPanel(JPanel mainPanel)
+	protected void setupMainPanel(JPanel mainPanel)
 	{
 		mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
 

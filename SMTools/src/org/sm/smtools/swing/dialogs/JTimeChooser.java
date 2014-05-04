@@ -1,12 +1,12 @@
 // ---------------------------------
 // Filename      : JTimeChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
-// Target        : Java VM (1.6)
+// Last modified : 04/05/2014
+// Target        : Java VM (1.8)
 // ---------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ import org.sm.smtools.swing.util.*;
  * <P>
  * <CODE>
  * <PRE>
- *   if (!myTimeChooser.cancelled()) {
+ *   if (!myTimeChooser.isCancelled()) {
  *     TimeStamp timeStamp = myTimeChooser.getSelectedTime();
  *     // rest of code
  *   }
@@ -95,7 +95,7 @@ import org.sm.smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 04/05/2014
  * @see     TimeStamp
  */
 public final class JTimeChooser extends JDefaultDialog implements ChangeListener
@@ -321,7 +321,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 	/**
 	 */
 	@Override
-	protected final String getWindowTitle()
+	protected final String setupWindowTitle()
 	{
 		return fWindowTitle;
 	}
@@ -329,7 +329,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 	/**
 	 */
 	@Override
-	protected void constructMainPanel(JPanel mainPanel)
+	protected void setupMainPanel(JPanel mainPanel)
 	{
 		JPanel panel = null;
 		JUnfocusableButton unfocusableButton = null;

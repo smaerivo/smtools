@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : JFileFilter.java
 // Author        : Sven Maerivoet
-// Last modified : 26/10/2004
-// Target        : Java VM (1.6)
+// Last modified : 04/05/2014
+// Target        : Java VM (1.8)
 // --------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import java.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 26/10/2004
+ * @version 04/05/2014
  */
 public final class JFileFilter extends javax.swing.filechooser.FileFilter
 {
@@ -92,7 +92,7 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	 *
 	 * @param extensions the different filetypes (i.e., extensions) to allow
 	 */
-	public JFileFilter(String[] extensions)
+	public JFileFilter(ArrayList<String> extensions)
 	{
 		this(extensions,null);
 	}
@@ -105,12 +105,12 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	 * @param extensions  the different filetypes (i.e., extensions) to allow
 	 * @param description the <I>collective</I> description of the different filetypes
 	 */
-	public JFileFilter(String[] extensions, String description)
+	public JFileFilter(ArrayList<String> extensions, String description)
 	{
 		this();
 
-		for (int i = 0; i < extensions.length; ++i) {
-			addExtension(extensions[i]);
+		for (String extension : extensions) {
+			addExtension(extension);
 		}
 
 		if (description != null) {
