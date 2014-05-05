@@ -54,10 +54,10 @@ public class JNumberInputField extends JTextField implements ActionListener
 	/**
 	 * Constructs a <CODE>JNumberInputField</CODE> for editing an <CODE>int</CODE> value.
 	 *
-	 * @param integerValue               the initial <CODE>int</CODE> value in the input textfield
-	 * @param transferFocusAfterEntering a <CODE>boolean</CODE> to indicate whether or not the focus should be transferred
-	 *                                   to the next component in the GUI after pressing the &lt;ENTER&gt; key in the textfield
-	 * @see   JNumberInputField#JNumberInputField(double,int,boolean)
+	 * @param integerValue                the initial <CODE>int</CODE> value in the input textfield
+	 * @param transferFocusAfterEntering  a <CODE>boolean</CODE> to indicate whether or not the focus should be transferred
+	 *                                    to the next component in the GUI after pressing the &lt;ENTER&gt; key in the textfield
+	 * @see                               JNumberInputField#JNumberInputField(double,int,boolean)
 	 */
 	public JNumberInputField(int integerValue, boolean transferFocusAfterEntering)
 	{
@@ -73,11 +73,11 @@ public class JNumberInputField extends JTextField implements ActionListener
 	/**
 	 * Constructs a <CODE>JNumberInputField</CODE> for editing a <CODE>double</CODE> value.
 	 *
-	 * @param doubleValue                the initial <CODE>double</CODE> value in the input textfield
-	 * @param nrOfFPDecimals             the number of floating point decimals (base 10) to use in the input textfield
-	 * @param transferFocusAfterEntering a <CODE>boolean</CODE> to indicate whether or not the focus should be transferred
-	 *                                   to the next component in the GUI after pressing the &lt;ENTER&gt; key in the textfield
-	 * @see   JNumberInputField#JNumberInputField(int,boolean)
+	 * @param doubleValue                 the initial <CODE>double</CODE> value in the input textfield
+	 * @param nrOfFPDecimals              the number of floating point decimals (base 10) to use in the input textfield
+	 * @param transferFocusAfterEntering  a <CODE>boolean</CODE> to indicate whether or not the focus should be transferred
+	 *                                    to the next component in the GUI after pressing the &lt;ENTER&gt; key in the textfield
+	 * @see                               JNumberInputField#JNumberInputField(int,boolean)
 	 */
 	public JNumberInputField(double doubleValue, int nrOfFPDecimals,
 			boolean transferFocusAfterEntering)
@@ -114,7 +114,7 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 * If the &lt;ENTER&gt; key is pressed in the textfield, the focus may transfer to the next
 	 * GUI component (if this behavior is specified).
 	 *
-	 * @param e the <CODE>ActionEvent</CODE> that is received.
+	 * @param e  the <CODE>ActionEvent</CODE> that is received.
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -177,7 +177,7 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 * Note that this method has no effect when the <CODE>JNumberInputField</CODE> object
 	 * operates on a <CODE>double</CODE>.
 	 *
-	 * @param newIntegerValue the new <CODE>int</CODE> value for the textfield
+	 * @param newIntegerValue  the new <CODE>int</CODE> value for the textfield
 	 */
 	public final void setIntegerValue(int newIntegerValue)
 	{
@@ -204,7 +204,7 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 * Note that this method has no effect when the <CODE>JNumberInputField</CODE> object
 	 * operates on a <CODE>int</CODE>.
 	 *
-	 * @param newDoubleValue the new <CODE>double</CODE> value for the textfield
+	 * @param newDoubleValue  the new <CODE>double</CODE> value for the textfield
 	 */
 	public final void setDoubleValue(double newDoubleValue)
 	{
@@ -237,12 +237,10 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 * positive numbers, the following code can be used:
 	 * <P>
 	 * <CODE>
-	 * <PRE>
-	 *   return (i > 0);
-	 * </PRE>
+	 *   return (i &gt; 0);
 	 * </CODE>
 	 *
-	 * @param  i the <CODE>int</CODE> value to check
+	 * @param i  the <CODE>int</CODE> value to check
 	 * @return   <CODE>true</CODE> when the specified <CODE>int</CODE> value is accepted, <CODE>false</CODE> otherwise
 	 */
 	protected boolean validateInteger(int i)
@@ -258,12 +256,10 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 * positive numbers, the following code can be used:
 	 * <P>
 	 * <CODE>
-	 * <PRE>
-	 *   return (d > 0.0);
-	 * </PRE>
+	 *   return (d &gt; 0.0);
 	 * </CODE>
 	 *
-	 * @param  d the <CODE>double</CODE> value to check
+	 * @param d  the <CODE>double</CODE> value to check
 	 * @return   <CODE>true</CODE> when the specified <CODE>double</CODE> value is accepted, <CODE>false</CODE> otherwise
 	 */
 	protected boolean validateDouble(double d)

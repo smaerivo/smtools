@@ -54,8 +54,8 @@ public final class JImagePanel extends JPanel
 	 * <P>
 	 * Note that a {@link FileReadException} is thrown when the image file cannot be read.
 	 * 
-	 * @param  imageFilename     the name of the file containing the background image
-	 * @throws FileReadException if the specified image file cannot be read
+	 * @param imageFilename       the name of the file containing the background image
+	 * @throws FileReadException  if the specified image file cannot be read
 	 */
 	public JImagePanel(String imageFilename) throws FileReadException
 	{
@@ -71,7 +71,7 @@ public final class JImagePanel extends JPanel
 	 * <P>
 	 * Only GIF, JPG or PNG images are allowed.
 	 * 
-	 * @param  backgroundImage the background <CODE>Image</CODE>
+	 * @param backgroundImage  the background <CODE>Image</CODE>
 	 */
 	public JImagePanel(Image backgroundImage)
 	{

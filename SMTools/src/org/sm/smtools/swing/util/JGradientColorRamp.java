@@ -27,100 +27,65 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 import org.sm.smtools.math.*;
-import org.sm.smtools.miscellaneous.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JGradientColorRamp</CODE> class provides a gradient colour ramp.
  * <P>
  * A gradient colour ramp provides a visual display of a bar with a certain specified spectrum:
  * <P>
- * <UL>
- *   <B>Gray scale:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-grayscale.png">
- * </UL>
+ * <B>Gray scale:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-grayscale.png" alt="">
  * <P>
- * <UL>
- *   <B>Jet:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-jet.png">
- * </UL>
+ * <B>Jet:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-jet.png" alt="">
  * <P>
- * <UL>
- *   <B>Copper:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-copper.png">
- * </UL>
+ * <B>Copper:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-copper.png" alt="">
  * <P>
- * <UL>
- *   <B>Bone:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-bone.png">
- * </UL>
+ * <B>Bone:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-bone.png" alt="">
  * <P>
- * <UL>
- *   <B>Green-red diverging:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-greenreddiverging.png">
- * </UL>
+ * <B>Green-red diverging:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-greenreddiverging.png" alt="">
  * <P>
- * <UL>
- *   <B>Hot:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-hot.png">
- * </UL>
+ * <B>Hot:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-hot.png" alt="">
  * <P>
- * <UL>
- *   <B>Discontinuous blue-white-green:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-discontinuousbluewhitegreen.png">
- * </UL>
+ * <B>Discontinuous blue-white-green:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-discontinuousbluewhitegreen.png" alt="">
  * <P>
- * <UL>
- *   <B>Discontinuous dark-red-yellow:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-discontinuousdarkredyellow.png">
- * </UL>
+ * <B>Discontinuous dark-red-yellow:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-discontinuousdarkredyellow.png" alt="">
  * <P>
- * <UL>
- *   <B>Black and white:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-blackandwhite.png">
- * </UL>
+ * <B>Black and white:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-blackandwhite.png" alt="">
  * <P>
- * <UL>
- *   <B>Hue/saturation/brightness (HSB):</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-huesaturationbrightness.png">
- * </UL>
+ * <B>Hue/saturation/brightness (HSB):</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-huesaturationbrightness.png" alt="">
  * <P>
- * <UL>
- *   <B>Red:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-red.png">
- * </UL>
+ * <B>Red:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-red.png" alt="">
  * <P>
- * <UL>
- *   <B>Green:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-green.png">
- * </UL>
+ * <B>Green:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-green.png" alt="">
  * <P>
- * <UL>
- *   <B>Blue:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-blue.png">
- * </UL>
+ * <B>Blue:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-blue.png" alt="">
  * <P>
- * <UL>
- *   <B>Yellow:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-yellow.png">
- * </UL>
+ * <B>Yellow:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-yellow.png" alt="">
  * <P>
- * <UL>
- *   <B>Cyan:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-cyan.png">
- * </UL>
+ * <B>Cyan:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-cyan.png" alt="">
  * <P>
- * <UL>
- *   <B>Magenta:</B><BR />
- *   <IMG src="doc-files/gradient-color-ramp-magenta.png">
- * </UL>
+ * <B>Magenta:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-magenta.png" alt="">
  * <P>
- * <UL>
- *   <B>Custom:</B><BR />
- *   Dependendant on the colors specified.
- * </UL>
+ * <B>Custom:</B><BR>
+ * Dependendant on the colours specified.
  * <P>
  * A gradient colour ramp can have four orientations (see {@link JGradientColorRamp.EOrientation}):
- * <P>
  * <UL>
  *   <LI>horizontal left to right (tick marks are supported),</LI>
  *   <LI>horizontal right to left (tick marks are supported),</LI>
@@ -131,15 +96,11 @@ import org.sm.smtools.miscellaneous.*;
  * This class has also one method that can be used to derive a <CODE>Color</CODE> that
  * is linearly interpolated across the specified spectrum:
  * <P>
- * <UL>
- *  <CODE>Color interpolatedColor = myGradientColorRamp.interpolate(0.6);</CODE>
- * </UL>
+ * <CODE>Color interpolatedColor = myGradientColorRamp.interpolate(0.6);</CODE>
  * <P>
  * This corresponds to the following interpolation scheme (dependent on the colour map):
  * <P>
- * <UL>
- *   <IMG src="doc-files/gradient-color-ramp-interpolated.png">
- * </UL>
+ * <IMG src="doc-files/gradient-color-ramp-interpolated.png" alt="">
  * <P>
  * The value can also be indicated on the colour ramp itself.
  * <P>
@@ -216,9 +177,9 @@ public final class JGradientColorRamp extends JPanel
 	 * <P>
 	 * The jet colour map is used by default.
 	 *
-	 * @param orientation the orientation of the gradient colour ramp ({@link JGradientColorRamp.EOrientation})
-	 * @param width       the width of the gradient colour ramp (expressed in pixels)
-	 * @param height      the height of the gradient colour ramp (expressed in pixels)
+	 * @param orientation  the orientation of the gradient colour ramp ({@link JGradientColorRamp.EOrientation})
+	 * @param width        the width of the gradient colour ramp (expressed in pixels)
+	 * @param height       the height of the gradient colour ramp (expressed in pixels)
 	 */
 	public JGradientColorRamp(EOrientation orientation, int width, int height)
 	{
@@ -230,6 +191,8 @@ public final class JGradientColorRamp extends JPanel
 	 * <P>
 	 * The gradient colour ramp has by default a horizontal orientation (going from left
 	 * to right) with a width of 100 pixels and a height of 20 pixels.
+	 *
+	 * @param colorMap  the colour map to use
 	 */
 	public JGradientColorRamp(EColorMap colorMap)
 	{
@@ -239,10 +202,10 @@ public final class JGradientColorRamp extends JPanel
 	/**
 	 * Constructs a <CODE>JGradientColorRamp</CODE> object with the specified orientation and size.
 	 *
-	 * @param orientation the orientation of the gradient colour ramp ({@link JGradientColorRamp.EOrientation})
-	 * @param colorMap    the colour map to use
-	 * @param width       the width of the gradient colour ramp (expressed in pixels)
-	 * @param height      the height of the gradient colour ramp (expressed in pixels)
+	 * @param orientation  the orientation of the gradient colour ramp ({@link JGradientColorRamp.EOrientation})
+	 * @param colorMap     the colour map to use
+	 * @param width        the width of the gradient colour ramp (expressed in pixels)
+	 * @param height       the height of the gradient colour ramp (expressed in pixels)
 	 */
 	public JGradientColorRamp(EOrientation orientation, EColorMap colorMap, int width, int height)
 	{
@@ -266,7 +229,7 @@ public final class JGradientColorRamp extends JPanel
 	/**
 	 * Changes the colour map that is used.
 	 * 
-	 * @param colorMap the colour map to use
+	 * @param colorMap  the colour map to use
 	 */
 	public void setColorMap(EColorMap colorMap)
 	{
@@ -289,14 +252,14 @@ public final class JGradientColorRamp extends JPanel
 	 * <P>
 	 * Note that these tick marks only appear on <B>horizontally</B>-oriented gradient colour ramps.
 	 *
-	 * @param lowerTickValue the value associated with the left colour
-	 * @param lowerTickValuePrefix the prefix label for the value associated with the left colour
-	 * @param higherTickValue the value associated with the right colour
-	 * @param higherTickValuePrefix the prefix label for the value associated with the right colour
-	 * @param tickValuePrefix the prefix label for each value
-	 * @param tickValueSuffix the suffix label for each value
-	 * @param nrOfTickMarks the number of tick marks to produce
-	 * @param nrOfDecimals the number of decimals to retain in the values beneath the tick marks
+	 * @param lowerTickValue         the value associated with the left colour
+	 * @param lowerTickValuePrefix   the prefix label for the value associated with the left colour
+	 * @param higherTickValue        the value associated with the right colour
+	 * @param higherTickValuePrefix  the prefix label for the value associated with the right colour
+	 * @param tickValuePrefix        the prefix label for each value
+	 * @param tickValueSuffix        the suffix label for each value
+	 * @param nrOfTickMarks          the number of tick marks to produce
+	 * @param nrOfDecimals           the number of decimals to retain in the values beneath the tick marks
 	 */
 	public void setTickMarks(double lowerTickValue, String lowerTickValuePrefix, double higherTickValue, String higherTickValuePrefix, String tickValuePrefix, String tickValueSuffix, int nrOfTickMarks, int nrOfDecimals)
 	{
@@ -312,6 +275,9 @@ public final class JGradientColorRamp extends JPanel
 	}
 
 	/**
+	 * Instructs to indicate the specified value
+	 * 
+	 * @param value  the value to indicate
 	 */
 	public void indicateValue(double value)
 	{
@@ -326,6 +292,7 @@ public final class JGradientColorRamp extends JPanel
 	}
 
 	/**
+	 * Enables the indication of values.
 	 */
 	public void enableValueIndication()
 	{
@@ -333,6 +300,7 @@ public final class JGradientColorRamp extends JPanel
 	}
 
 	/**
+	 * Disables the indication of values.
 	 */
 	public void disableValueIndication()
 	{
@@ -504,9 +472,9 @@ public final class JGradientColorRamp extends JPanel
 	/**
 	 * Adds or updates a component in the custom colour map.
 	 *
-	 * @param id the ID of the component
-	 * @param level the level of the component (between 0.0 and 1.0)
-	 * @param color the <CODE>Color</CODE> to associate with the component
+	 * @param id     the ID of the component
+	 * @param level  the level of the component (between 0.0 and 1.0)
+	 * @param color  the <CODE>Color</CODE> to associate with the component
 	*/
 	public void setCustomColorMapComponent(int id, double level, Color color)
 	{
@@ -526,7 +494,7 @@ public final class JGradientColorRamp extends JPanel
 	/**
 	 * Removes a component from the custom colour map.
 	 *
-	 * @param id the ID of the component
+	 * @param id  the ID of the component
 	 */
 	public void removeCustomColorMapComponent(int id)
 	{
@@ -553,7 +521,7 @@ public final class JGradientColorRamp extends JPanel
 	/**
 	 * Sets all components of the custom colour map.
 	 *
-	 * @param colorMapComponents a <CODE>TreeMap</CODE> containing all the custom colour map components
+	 * @param colorMapComponents  a <CODE>TreeMap</CODE> containing all the custom colour map components
 	 */
 	public void setAllCustomColorMapComponents(TreeMap<Integer,CustomColorMapComponent> colorMapComponents)
 	{
@@ -579,7 +547,8 @@ public final class JGradientColorRamp extends JPanel
 	 * <P>
 	 * Note that the value of <CODE>u</CODE> is clipped in the interval [0,1].
 	 *
-	 * @param u the value to use when interpolating the spectrum
+	 * @param u  the value to use when interpolating the spectrum
+	 * @return   a linearly interpolated value across a spectrum
 	 */
 	public Color interpolate(double u)
 	{
@@ -803,6 +772,8 @@ public final class JGradientColorRamp extends JPanel
 		public Color fColor;
 
 		/**
+		 * @param level  -
+		 * @param color  -
 		 */
 		public CustomColorMapComponent(double level, Color color)
 		{

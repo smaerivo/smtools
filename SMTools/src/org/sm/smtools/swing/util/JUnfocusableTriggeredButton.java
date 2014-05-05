@@ -68,10 +68,10 @@ public class JUnfocusableTriggeredButton extends JTriggeredButton
 	/**
 	 * Creates a <CODE>JUnfocusableButton</CODE> with an icon.
 	 *
-	 * @param icon the <CODE>Icon</CODE> image to display on the button
-	 * @see   JUnfocusableTriggeredButton#JUnfocusableTriggeredButton()
-	 * @see   JUnfocusableTriggeredButton#JUnfocusableTriggeredButton(String)
-	 * @see   JUnfocusableTriggeredButton#JUnfocusableTriggeredButton(String,Icon)
+	 * @param icon  the <CODE>Icon</CODE> image to display on the button
+	 * @see         JUnfocusableTriggeredButton#JUnfocusableTriggeredButton()
+	 * @see         JUnfocusableTriggeredButton#JUnfocusableTriggeredButton(String)
+	 * @see         JUnfocusableTriggeredButton#JUnfocusableTriggeredButton(String,Icon)
 	 */
 	public JUnfocusableTriggeredButton(Icon icon)
 	{
@@ -81,11 +81,11 @@ public class JUnfocusableTriggeredButton extends JTriggeredButton
 	/**
 	 * Creates a <CODE>JUnfocusableButton</CODE> with an icon.
 	 *
-	 * @param text the text of the button
-	 * @param icon the <CODE>Icon</CODE> image to display on the button
-	 * @see   JUnfocusableTriggeredButton#JUnfocusableTriggeredButton()
-	 * @see   JUnfocusableTriggeredButton#JUnfocusableTriggeredButton(String)
-	 * @see   JUnfocusableTriggeredButton#JUnfocusableTriggeredButton(Icon)
+	 * @param text  the text of the button
+	 * @param icon  the <CODE>Icon</CODE> image to display on the button
+	 * @see         JUnfocusableTriggeredButton#JUnfocusableTriggeredButton()
+	 * @see         JUnfocusableTriggeredButton#JUnfocusableTriggeredButton(String)
+	 * @see         JUnfocusableTriggeredButton#JUnfocusableTriggeredButton(Icon)
 	 */
 	public JUnfocusableTriggeredButton(String text, Icon icon)
 	{

@@ -52,8 +52,8 @@ public final class FunctionLookupTable
 	/**
 	 * Constructs a <CODE>FunctionLookupTable</CODE> object with specified inputs.
 	 *
-	 * @param x the X-values
-	 * @param y the Y-values
+	 * @param x  the X-values
+	 * @param y  the Y-values
 	 */
 	public FunctionLookupTable(double[] x, double[] y)
 	{

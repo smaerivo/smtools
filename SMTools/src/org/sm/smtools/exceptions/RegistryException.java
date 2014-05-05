@@ -47,9 +47,9 @@ public final class RegistryException extends Exception
 	/**
 	 * Constructs a <CODE>RegistryException</CODE> object, based on the specified error.
 	 *
-	 * @param registryError the specified error
-	 * @see   org.sm.smtools.application.registry.Hive
-	 * @see   org.sm.smtools.application.registry.Registry
+	 * @param registryError  the specified error
+	 * @see                  org.sm.smtools.application.registry.Hive
+	 * @see                  org.sm.smtools.application.registry.Registry
 	 */
 	public RegistryException(String registryError)
 	{

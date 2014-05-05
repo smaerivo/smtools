@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.miscellaneous;
+package org.sm.smtools.util;
 
 /**
  * The <CODE>Chrono</CODE> class contains functionality for a simple chronometer.
@@ -102,11 +102,9 @@ public final class Chrono
 	 * <P>
 	 * Note that this is a static method and it should be called as:
 	 * <P>
-	 * <UL>
-	 *   <CODE>Chrono.wait(...);</CODE>
-	 * </UL>
+	 * <CODE>Chrono.wait(...);</CODE>
 	 *
-	 * @param ms the amount of time to wait, expressed in milliseconds
+	 * @param ms  the amount of time to wait, expressed in milliseconds
 	 */
 	public static void wait(int ms)
 	{

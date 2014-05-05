@@ -97,7 +97,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Constructs a complex number as a real number with a zero imaginary part.
 	 *
-	 * @param realPart the real part
+	 * @param realPart  the real part
 	 */
 	public BigComplexNumber(BigDecimal realPart)
 	{
@@ -107,8 +107,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Constructs a complex number with a specified value.
 	 *
-	 * @param realPart      the real part
-	 * @param imaginaryPart the imaginaryPart
+	 * @param realPart       the real part
+	 * @param imaginaryPart  the imaginaryPart
 	 */
 	public BigComplexNumber(BigDecimal realPart, BigDecimal imaginaryPart)
 	{
@@ -147,7 +147,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Sets the precision to use for all subsequent calculations.
 	 *
-	 * @param precision the precision to use
+	 * @param precision  the precision to use
 	 */
 	public static void setPrecision(MathContext precision)
 	{
@@ -190,8 +190,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Add the specified complex number to this one and returns a reference to the result.
 	 *
-	 * @param ComplexNumber the complex number to add
-	 * @return              a reference to the result
+	 * @param c  the complex number to add
+	 * @return   a reference to the result
 	 */
 	public BigComplexNumber add(BigComplexNumber c)
 	{
@@ -203,8 +203,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Subtracts the specified complex number from this one and returns a reference to the result.
 	 *
-	 * @param ComplexNumber the complex number to subtract
-	 * @return              a reference to the subtraction
+	 * @param c  the complex number to subtract
+	 * @return   a reference to the subtraction
 	 */
 	public BigComplexNumber subtract(BigComplexNumber c)
 	{
@@ -216,8 +216,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Multiplies the specified complex number with this one and returns a reference to the result.
 	 *
-	 * @param ComplexNumber the complex number to multiply with
-	 * @return              a reference to the multiplication
+	 * @param c  the complex number to multiply with
+	 * @return   a reference to the multiplication
 	 */
 	public BigComplexNumber multiply(BigComplexNumber c)
 	{
@@ -284,8 +284,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Divides this complex number by the specified one and returns a reference to the result.
 	 *
-	 * @param ComplexNumber the complex number to divide by
-	 * @return              a reference to the division
+	 * @param c  the complex number to divide by
+	 * @return   a reference to the division
 	 */
 	public BigComplexNumber divide(BigComplexNumber c)
 	{
@@ -353,8 +353,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Exponentiates this complex number to a specified power and returns a reference to the result.
 	 *
-	 * @param n the power for the exponentiation
-	 * @result  a reference to this exponentiated complex number 
+	 * @param n  the power for the exponentiation
+	 * @return   a reference to this exponentiated complex number 
 	 */
 	public BigComplexNumber power(double n)
 	{
@@ -367,7 +367,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes the natural logarithm of this complex number and returns a reference to the result.
 	 *
-	 * @result a reference to the natural logarithm of this complex number 
+	 * @return a reference to the natural logarithm of this complex number 
 	 */
 	public BigComplexNumber ln()
 	{
@@ -379,7 +379,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes the base 10 logarithm of this complex number and returns a reference to the result.
 	 *
-	 * @result a reference to the base 10 logarithm of this complex number 
+	 * @return a reference to the base 10 logarithm of this complex number 
 	 */
 	public BigComplexNumber log()
 	{
@@ -389,8 +389,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes a custom logarithm of this complex number and returns a reference to the result.
 	 *
-	 * @param base the base of the custom logarithm
-	 * @result     a reference to the custom logarithm of this complex number 
+	 * @param base  the base of the custom logarithm
+	 * @return      a reference to the custom logarithm of this complex number 
 	 */
 	public BigComplexNumber logBase(BigComplexNumber base)
 	{
@@ -400,7 +400,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes the exponential of this complex number and returns a reference to the result.
 	 *
-	 * @result a reference to the exponential of this complex number 
+	 * @return a reference to the exponential of this complex number 
 	 */
 	public BigComplexNumber exp()
 	{
@@ -412,7 +412,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes the cosine of this complex number and returns a reference to the result.
 	 *
-	 * @result a reference to the cosine of this complex number 
+	 * @return a reference to the cosine of this complex number 
 	 */
 	public BigComplexNumber cos()
 	{
@@ -424,7 +424,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes the sine of this complex number and returns a reference to the result.
 	 *
-	 * @result a reference to the sine of this complex number 
+	 * @return a reference to the sine of this complex number 
 	 */
 	public BigComplexNumber sin()
 	{
@@ -436,7 +436,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes the tangens (= sin/cos) of this complex number and returns a reference to the result.
 	 *
-	 * @result a reference to the tangens of this complex number 
+	 * @return a reference to the tangens of this complex number 
 	 */
 	public BigComplexNumber tan()
 	{
@@ -446,7 +446,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes the cotangens (= cos/sin) of this complex number and returns a reference to the result.
 	 *
-	 * @result a reference to the cotangens of this complex number 
+	 * @return a reference to the cotangens of this complex number 
 	 */
 	public BigComplexNumber cot()
 	{
@@ -456,7 +456,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes the secans (= 1/cos) of this complex number and returns a reference to the result.
 	 *
-	 * @result a reference to the secans of this complex number 
+	 * @return a reference to the secans of this complex number 
 	 */
 	public BigComplexNumber sec()
 	{
@@ -466,7 +466,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Takes the cosecans (= 1/sin) of this complex number and returns a reference to the result.
 	 *
-	 * @result a reference to the cosecans of this complex number 
+	 * @return a reference to the cosecans of this complex number 
 	 */
 	public BigComplexNumber cosec()
 	{
@@ -531,9 +531,9 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Helper method for converting from polar to complex form.
 	 *
-	 * @param  modulus  the modulus
-	 * @param  argument the argument
-	 * @return          a complex number corresponding to the specified polar form
+	 * @param  modulus   the modulus
+	 * @param  argument  the argument
+	 * @return           a complex number corresponding to the specified polar form
 	 */
 	public static BigComplexNumber convertPolarToComplex(BigDecimal modulus, BigDecimal argument)
 	{
@@ -545,8 +545,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Compares this complex number to another one, via a partial ordering based on their moduli.
 	 *
-	 * @param c the complex number to compare to
-	 * @return  -1, 0, or 1 as this complex number's modulus is numerically less than, equal to, or greater than that of c
+	 * @param c  the complex number to compare to
+	 * @return   -1, 0, or 1 as this complex number's modulus is numerically less than, equal to, or greater than that of c
 	 */
 	public int compareTo(BigComplexNumber c)
 	{
@@ -565,8 +565,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	/**
 	 * Compares this complex number to another one for total equality.
 	 *
-	 * @param c the complex number to compare to
-	 * @return  <CODE>true</CODE> if both complex numbers are equal, <CODE>false</CODE> otherwise
+	 * @param c  the complex number to compare to
+	 * @return   <CODE>true</CODE> if both complex numbers are equal, <CODE>false</CODE> otherwise
 	 */
 	public boolean equals(BigComplexNumber c)
 	{

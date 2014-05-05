@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.miscellaneous;
+package org.sm.smtools.util;
 
 import java.text.*;
 import java.util.*;
@@ -66,14 +66,14 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * <P>
 	 * The millisecond is set to zero.
 	 *
-	 * @param hour   the hour component
-	 * @param minute the minute component
-	 * @param second the second component
-	 * @see   TimeStamp#TimeStamp()
-	 * @see   TimeStamp#TimeStamp(int,int,int,int)
-	 * @see   TimeStamp#TimeStamp(long)
-	 * @see   TimeStamp#TimeStamp(String)
-	 * @see   TimeStamp#TimeStamp(TimeStamp)
+	 * @param hour    the hour component
+	 * @param minute  the minute component
+	 * @param second  the second component
+	 * @see           TimeStamp#TimeStamp()
+	 * @see           TimeStamp#TimeStamp(int,int,int,int)
+	 * @see           TimeStamp#TimeStamp(long)
+	 * @see           TimeStamp#TimeStamp(String)
+	 * @see           TimeStamp#TimeStamp(TimeStamp)
 	 */
 	public TimeStamp(int hour, int minute, int second)
 	{
@@ -83,15 +83,15 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	/**
 	 * Constructs a <CODE>TimeStamp</CODE> object corresponding to the specified values.
 	 *
-	 * @param hour        the hour component
-	 * @param minute      the minute component
-	 * @param second      the second component
-	 * @param millisecond the millisecond component
-	 * @see   TimeStamp#TimeStamp()
-	 * @see   TimeStamp#TimeStamp(int,int,int)
-	 * @see   TimeStamp#TimeStamp(long)
-	 * @see   TimeStamp#TimeStamp(String)
-	 * @see   TimeStamp#TimeStamp(TimeStamp)
+	 * @param hour         the hour component
+	 * @param minute       the minute component
+	 * @param second       the second component
+	 * @param millisecond  the millisecond component
+	 * @see                TimeStamp#TimeStamp()
+	 * @see                TimeStamp#TimeStamp(int,int,int)
+	 * @see                TimeStamp#TimeStamp(long)
+	 * @see                TimeStamp#TimeStamp(String)
+	 * @see                TimeStamp#TimeStamp(TimeStamp)
 	 */
 	public TimeStamp(int hour, int minute, int second, int millisecond)
 	{
@@ -101,12 +101,12 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	/**
 	 * Constructs a <CODE>TimeStamp</CODE> object corresponding to a number of milliseconds (since 00:00:00.000).
 	 *
-	 * @param millisecondOfDay the number of milliseconds (since 00:00:00.000) to convert to a <CODE>TimeStamp</CODE> object
-	 * @see   TimeStamp#TimeStamp()
-	 * @see   TimeStamp#TimeStamp(int,int,int)
-	 * @see   TimeStamp#TimeStamp(int,int,int, int)
-	 * @see   TimeStamp#TimeStamp(String)
-	 * @see   TimeStamp#TimeStamp(TimeStamp)
+	 * @param millisecondOfDay  the number of milliseconds (since 00:00:00.000) to convert to a <CODE>TimeStamp</CODE> object
+	 * @see                     TimeStamp#TimeStamp()
+	 * @see                     TimeStamp#TimeStamp(int,int,int)
+	 * @see                     TimeStamp#TimeStamp(int,int,int, int)
+	 * @see                     TimeStamp#TimeStamp(String)
+	 * @see                     TimeStamp#TimeStamp(TimeStamp)
 	 */
 	public TimeStamp(long millisecondOfDay)
 	{
@@ -118,17 +118,15 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * <P>
 	 * The string has to have the following specific format:
 	 * <P>
-	 * <UL>
-	 *   <B>HH:mm</B> or <B>HH:mm:ss</B>, or <B>HH:mm:ss.mls</B>, e.g., 10:15, 12:45:16, or 05:03:06.002
-	 * </UL>
+	 * <B>HH:mm</B> or <B>HH:mm:ss</B>, or <B>HH:mm:ss.mls</B>, e.g., 10:15, 12:45:16, or 05:03:06.002
 	 *
-	 * @param  timeString the string representation of the time stamp (in the format HH:mm, HH:mm:ss, or HH:mm:ss.SSS)
-	 * @see    TimeStamp#TimeStamp()
-	 * @see    TimeStamp#TimeStamp(int,int,int)
-	 * @see    TimeStamp#TimeStamp(long)
-	 * @see    TimeStamp#TimeStamp(TimeStamp)
-	 * @throws DateTimeFormatException if an error occurred during conversion
-	 * @see    java.text.SimpleDateFormat
+	 * @param timeString                the string representation of the time stamp (in the format HH:mm, HH:mm:ss, or HH:mm:ss.SSS)
+	 * @throws DateTimeFormatException  if an error occurred during conversion
+	 * @see                             TimeStamp#TimeStamp()
+	 * @see                             TimeStamp#TimeStamp(int,int,int)
+	 * @see                             TimeStamp#TimeStamp(long)
+	 * @see                             TimeStamp#TimeStamp(TimeStamp)
+	 * @see                             java.text.SimpleDateFormat
 	 */
 	public TimeStamp(String timeString) throws DateTimeFormatException
 	{
@@ -140,12 +138,12 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * <P>
 	 * This is the <B>copy constructor</B>.
 	 *
-	 * @param timeStamp the <CODE>TimeStamp</CODE> object to <B>deep copy</B>
-	 * @see   TimeStamp#TimeStamp()
-	 * @see   TimeStamp#TimeStamp(int,int,int)
-	 * @see   TimeStamp#TimeStamp(int,int,int, int)
-	 * @see   TimeStamp#TimeStamp(long)
-	 * @see   TimeStamp#TimeStamp(String)
+	 * @param timeStamp  the <CODE>TimeStamp</CODE> object to <B>deep copy</B>
+	 * @see              TimeStamp#TimeStamp()
+	 * @see              TimeStamp#TimeStamp(int,int,int)
+	 * @see              TimeStamp#TimeStamp(int,int,int, int)
+	 * @see              TimeStamp#TimeStamp(long)
+	 * @see              TimeStamp#TimeStamp(String)
 	 */
 	public TimeStamp(TimeStamp timeStamp)
 	{
@@ -167,10 +165,10 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	/**
 	 * Sets this <CODE>TimeStamp</CODE> to the specified values.
 	 *
-	 * @param hour        the hour component
-	 * @param minute      the minute component
-	 * @param second      the second component
-	 * @param millisecond the millisecond component
+	 * @param hour         the hour component
+	 * @param minute       the minute component
+	 * @param second       the second component
+	 * @param millisecond  the millisecond component
 	 */
 	public void set(int hour, int minute, int second, int millisecond)
 	{
@@ -184,7 +182,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	/**
 	 * Sets this <CODE>TimeStamp</CODE> equal to another one.
 	 *
-	 * @param timeStamp the <CODE>TimeStamp</CODE> to copy
+	 * @param timeStamp  the <CODE>TimeStamp</CODE> to copy
 	 */
 	public void set(TimeStamp timeStamp)
 	{
@@ -194,7 +192,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	/**
 	 * Sets this <CODE>TimeStamp</CODE> based on a cumulative millisecond representation (since 00:00:00.000).
 	 *
-	 * @param millisecond the number of milliseconds (since 00:00:00.000) to convert to a <CODE>TimeStamp</CODE> object
+	 * @param millisecond  the number of milliseconds (since 00:00:00.000) to convert to a <CODE>TimeStamp</CODE> object
 	 */
 	public void setToMillisecondOfDay(long millisecond)
 	{
@@ -216,13 +214,11 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * <P>
 	 * The string has to have the following specific format:
 	 * <P>
-	 * <UL>
-	 *   <B>HH:mm</B> or <B>HH:mm:ss</B>, or <B>HH:mm:ss.mls</B>, e.g., 10:15, 12:45:16, or 05:03:06.002
-	 * </UL>
+	 * <B>HH:mm</B> or <B>HH:mm:ss</B>, or <B>HH:mm:ss.mls</B>, e.g., 10:15, 12:45:16, or 05:03:06.002
 	 *
-	 * @param  timeString the string representation of the time stamp (in the format HH:mm, HH:mm:ss, or HH:mm:ss.SSS)
-	 * @throws DateTimeFormatException if an error occurred during conversion
-	 * @see    java.text.SimpleDateFormat
+	 * @param                           timeString the string representation of the time stamp (in the format HH:mm, HH:mm:ss, or HH:mm:ss.SSS)
+	 * @throws DateTimeFormatException  if an error occurred during conversion
+	 * @see                             java.text.SimpleDateFormat
 	 */
 	public void set(String timeString) throws DateTimeFormatException
 	{
@@ -263,7 +259,9 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	}
 
 	/**
-	 * Returns this <CODE>TimeStamp</CODE>'s hour of day [0-23].
+	 * Returns this <CODE>TimeStamp</CODE>'s hour of the day [0-23].
+	 *
+	 * @return the hour
 	 */
 	public int getHour()
 	{
@@ -272,6 +270,8 @@ public final class TimeStamp implements Comparable<TimeStamp>
 
 	/**
 	 * Returns this <CODE>TimeStamp</CODE>'s minute [0-59].
+	 * 
+	 * @return the minute
 	 */
 	public int getMinute()
 	{
@@ -280,6 +280,8 @@ public final class TimeStamp implements Comparable<TimeStamp>
 
 	/**
 	 * Returns this <CODE>TimeStamp</CODE>'s second [0-59].
+	 * 
+	 * @return the second
 	 */
 	public int getSecond()
 	{
@@ -288,6 +290,8 @@ public final class TimeStamp implements Comparable<TimeStamp>
 
 	/**
 	 * Returns this <CODE>TimeStamp</CODE>'s millisecond [0-999].
+	 * 
+	 * @return the millisecond
 	 */
 	public int getMillisecond()
 	{
@@ -375,12 +379,12 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	/**
 	 * Converts this <CODE>TimeStamp</CODE> object from one time zone to another.
 	 * Note that daylight savings are taken into account when applicable.
-	 * 
+	 * <P> 
 	 * Time zones can be obtained via, e.g., <CODE>TimeZone.getTimeZone("Europe/Brussels")</CODE>.
 	 * 
-	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
-	 * @param fromTimeZone the <CODE>TimeZone</CODE> to convert from
-	 * @param toTimeZone the <CODE>TimeZone</CODE> to convert to
+	 * @param date          the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * @param fromTimeZone  the <CODE>TimeZone</CODE> to convert from
+	 * @param toTimeZone    the <CODE>TimeZone</CODE> to convert to
 	 * 
 	 */
 	public void convertBetweenTimeZones(DateStamp date, TimeZone fromTimeZone, TimeZone toTimeZone)
@@ -406,8 +410,8 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * Converts this <CODE>TimeStamp</CODE> object from a time zone to UTC.
 	 * Note that daylight savings are taken into account when applicable.
 	 * 
-	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
-	 * @param fromTimeZone the <CODE>TimeZone</CODE> to convert from
+	 * @param date          the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * @param fromTimeZone  the <CODE>TimeZone</CODE> to convert from
 	 * 
 	 */
 	public void convertFromTimeZoneToUTC(DateStamp date, TimeZone fromTimeZone)
@@ -419,8 +423,8 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * Converts this <CODE>TimeStamp</CODE> object from UTC to a time zone.
 	 * Note that daylight savings are taken into account when applicable.
 	 * 
-	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
-	 * @param toTimeZone the <CODE>TimeZone</CODE> to convert to
+	 * @param date        the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * @param toTimeZone  the <CODE>TimeZone</CODE> to convert to
 	 * 
 	 */
 	public void convertFromUTCToTimeZone(DateStamp date, TimeZone toTimeZone)
@@ -432,7 +436,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * Converts this <CODE>TimeStamp</CODE> object from the user's local time zone to UTC.
 	 * Note that daylight savings are taken into account when applicable.
 	 * 
-	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * @param date  the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
 	 * 
 	 */
 	public void convertFromLocalTimeZoneToUTC(DateStamp date)
@@ -444,7 +448,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * Converts this <CODE>TimeStamp</CODE> object from UTC to the user's local time zone.
 	 * Note that daylight savings are taken into account when applicable.
 	 * 
-	 * @param date the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
+	 * @param date  the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
 	 * 
 	 */
 	public void convertFromUTCToLocalTimeZone(DateStamp date)
@@ -453,7 +457,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	}
 
 	/**
-	 * The overloaded <CODE>Comparable<CODE> interface.
+	 * The overloaded <CODE>Comparable</CODE> interface.
 	 */
 	@Override
 	public int compareTo(TimeStamp otherTimeStamp)
@@ -494,7 +498,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	}
 
 	/**
-	 * Default overloaded <CODE>toString()<CODE> method.
+	 * Default overloaded <CODE>toString()</CODE> method.
 	 * 
 	 * @return a <CODE>String</CODE> representation of this <CODE>TimeStamp</CODE> object in the format HH:mm:ss.SSS
 	 * @see    java.text.SimpleDateFormat

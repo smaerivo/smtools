@@ -70,8 +70,8 @@ public final class DistributionComparator
 	 * <P>
 	 * Note that both sequences should have the same number of values.
 	 *
-	 * @param x the <I>X</I> sequence
-	 * @param y the <I>Y</I> sequence
+	 * @param x  the <I>X</I> sequence
+	 * @param y  the <I>Y</I> sequence
 	 */
 	public DistributionComparator(EmpiricalDistribution x, EmpiricalDistribution y)
 	{
@@ -107,8 +107,8 @@ public final class DistributionComparator
 	 * <P>
 	 * Note that both sequences should have the same number of values.
 	 *
-	 * @param x the <I>X</I> sequence
-	 * @param y the <I>Y</I> sequence
+	 * @param x  the <I>X</I> sequence
+	 * @param y  the <I>Y</I> sequence
 	 */
 	public void setData(EmpiricalDistribution x, EmpiricalDistribution y)
 	{
@@ -121,7 +121,7 @@ public final class DistributionComparator
 	 * <P>
 	 * Note that it should have the same number of values as the <I>Y</I> sequence.
 	 *
-	 * @param x the <I>X</I> sequence
+	 * @param x  the <I>X</I> sequence
 	 */
 	public void setXData(EmpiricalDistribution x)
 	{
@@ -134,7 +134,7 @@ public final class DistributionComparator
 	 * <P>
 	 * Note that it should have the same number of values as the <I>X</I> sequence.
 	 *
-	 * @param y the <I>Y</I> sequence
+	 * @param y  the <I>Y</I> sequence
 	 */
 	public void setYData(EmpiricalDistribution y)
 	{
@@ -329,10 +329,10 @@ public final class DistributionComparator
 	/**
 	 * Peforms a Kolmogorov-Smirnov (KS) test on 2 sequences (they can have different lengths).
 	 *
-	 * @param x the <I>X</I> sequence
-	 * @param y the <I>Y</I> sequence
-	 * @param alpha the alpha value for the KS-test
-	 * @return <CODE>true</CODE> when the H0 hypothesis is accepted (i.e. there is not enough evidence to conclude that <I>X</I> and <I>Y</I> are significantly different) 
+	 * @param x      the <I>X</I> sequence
+	 * @param y      the <I>Y</I> sequence
+	 * @param alpha  the alpha value for the KS-test
+	 * @return       <CODE>true</CODE> when the H0 hypothesis is accepted (i.e. there is not enough evidence to conclude that <I>X</I> and <I>Y</I> are significantly different) 
 	 */
 	public static boolean performKolmogorovSmirnovTest(EmpiricalDistribution x, EmpiricalDistribution y, double alpha)
 	{
@@ -412,6 +412,8 @@ public final class DistributionComparator
 	 *******************/
 
 	/**
+	 * @param x  -
+	 * @param y  -
 	 */
 	private void load(EmpiricalDistribution x, EmpiricalDistribution y)
 	{
@@ -425,6 +427,7 @@ public final class DistributionComparator
 	}
 
 	/**
+	 * @param x  -
 	 */
 	private void loadX(EmpiricalDistribution x)
 	{
@@ -436,6 +439,7 @@ public final class DistributionComparator
 	}
 
 	/**
+	 * @param y  -
 	 */
 	private void loadY(EmpiricalDistribution y)
 	{

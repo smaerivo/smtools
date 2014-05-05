@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : LSLR.java
 // Author        : Sven Maerivoet
-// Last modified : 07/08/2007
-// Target        : Java VM (1.6)
+// Last modified : 05/05/2014
+// Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,16 +30,13 @@ import org.sm.smtools.math.*;
 /**
  * The <CODE>LSLR</CODE> class offers <I>least squares linear regression</I> for 2D data.
  * <P>
- * The 2D data consists of a {@link Vector} of <CODE>Point2D.Double</CODE> objects (which contain
+ * The 2D data consists of a {@link ArrayList} of <CODE>Point2D.Double</CODE> objects (which contain
  * x and y values). The least squares linear regression (LSLR) will be calculated as follows:
- * <P>
  * <UL>
- *   y = (<B>slope</B> * x) + <B>intercept</B>
+ *   <LI>y = (<B>slope</B> * x) + <B>intercept</B></LI>
  * </UL>
  * <P>
- * <UL>
- *   <IMG src="doc-files/lslr.png">
- * </UL>
+z* <IMG src="doc-files/lslr.png" alt="">
  * <P>
  * Along with the LSLR, this class also calculates the <B>mean</B> and the <B>standard
  * deviation</B> of the y values.
@@ -50,12 +47,12 @@ import org.sm.smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 09/12/2004
+ * @version 05/05/2014
  */
 public final class LSLR
 {
 	// internal datastructures
-	private Vector<Point2D.Double> fDataPoints;
+	private ArrayList<Point2D.Double> fDataPoints;
 	private boolean fSuccess;
 	private double fSlope;
 	private double fIntercept;
@@ -69,7 +66,7 @@ public final class LSLR
 	/**
 	 * Constructs an <CODE>LSLR</CODE> object with all fields cleared.
 	 *
-	 * @see LSLR#LSLR(Vector)
+	 * @see LSLR#LSLR(ArrayList)
 	 * @see LSLR#clear()
 	 */
 	public LSLR()
@@ -82,14 +79,15 @@ public final class LSLR
 	 * <P>
 	 * The <CODE>LSLR's</CODE> slope, intercept, mean and standard deviation
 	 * are available after the object's construction.
-	 *
-	 * @see LSLR#LSLR()
-	 * @see LSLR#getSlope()
-	 * @see LSLR#getIntercept()
-	 * @see LSLR#getMean()
-	 * @see LSLR#getStandardDeviation()
+	 * 
+	 * @param dataPoints  an <CODE>ArrayList</CODE> of 2D-data points
+	 * @see               LSLR#LSLR()
+	 * @see               LSLR#getSlope()
+	 * @see               LSLR#getIntercept()
+	 * @see               LSLR#getMean()
+	 * @see               LSLR#getStandardDeviation()
 	 */
-	public LSLR(Vector<Point2D.Double> dataPoints)
+	public LSLR(ArrayList<Point2D.Double> dataPoints)
 	{
 		setDataPoints(dataPoints);
 	}
@@ -102,14 +100,14 @@ public final class LSLR
 	 * Uses the given 2D-data points to calculate the slope, intercept,
 	 * mean and standard deviation.
 	 *
-	 * @param dataPoints a <CODE>Vector</CODE> of 2D-data points
-	 * @see   Point2D
-	 * @see   LSLR#getSlope()
-	 * @see   LSLR#getIntercept()
-	 * @see   LSLR#getMean()
-	 * @see   LSLR#getStandardDeviation()
+	 * @param dataPoints  an <CODE>ArrayList</CODE> of 2D-data points
+	 * @see               Point2D
+	 * @see               LSLR#getSlope()
+	 * @see               LSLR#getIntercept()
+	 * @see               LSLR#getMean()
+	 * @see               LSLR#getStandardDeviation()
 	 */
-	public void setDataPoints(Vector<Point2D.Double> dataPoints)
+	public void setDataPoints(ArrayList<Point2D.Double> dataPoints)
 	{
 		clear();
 		fDataPoints = dataPoints;
@@ -133,7 +131,6 @@ public final class LSLR
 	 * Returns whether or not the LSLR operation was successful.
 	 *
 	 * The operation fails whenever:
-	 * <P>
 	 * <UL>
 	 *   <LI>the number of 2D-data points is zero</LI>
 	 *   <LI>the result is a vertical line (i.e., the slope is infinite)</LI>
@@ -194,6 +191,9 @@ public final class LSLR
 	 * PRIVATE METHODS *
 	 *******************/
 
+	/**
+	 * @return -
+	 */
 	private boolean calcCoefficients()
 	{
 		if (fDataPoints == null) {
@@ -208,22 +208,22 @@ public final class LSLR
 
 		double sumOfX = 0.0;
 		for (int i = 0; i < n; ++i) {
-			sumOfX += fDataPoints.elementAt(i).x;
+			sumOfX += fDataPoints.get(i).x;
 		}
 
 		double sumOfXSquared = 0.0;
 		for (int i = 0; i < n; ++i) {
-			sumOfXSquared += (fDataPoints.elementAt(i).x * fDataPoints.elementAt(i).x);
+			sumOfXSquared += (fDataPoints.get(i).x * fDataPoints.get(i).x);
 		}
 
 		double sumOfY = 0.0;
 		for (int i = 0; i < n; ++i) {
-			sumOfY += fDataPoints.elementAt(i).y;
+			sumOfY += fDataPoints.get(i).y;
 		}
 
 		double sumOfXY = 0.0;
 		for (int i = 0; i < n; ++i) {
-			sumOfXY += (fDataPoints.elementAt(i).x * fDataPoints.elementAt(i).y);
+			sumOfXY += (fDataPoints.get(i).x * fDataPoints.get(i).y);
 		}
 
 		double nominator = (n * sumOfXY) - (sumOfX * sumOfY);
@@ -243,7 +243,7 @@ public final class LSLR
 
 			double sum = 0.0;
 			for (int i = 0; i < n; ++i) {
-				sum += MathTools.sqr(fDataPoints.elementAt(i).y - fMean);
+				sum += MathTools.sqr(fDataPoints.get(i).y - fMean);
 			}
 
 			fStandardDeviation = Math.sqrt(sum / (n - 1));

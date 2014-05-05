@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.miscellaneous;
+package org.sm.smtools.util;
 
 import java.io.*;
 import java.util.*;
@@ -64,8 +64,8 @@ public final class TextFileParser
 	/**
 	 * Sets up a text file parser for the specified file.
 	 *
-	 * @param filename the name of the file to parse
-	 * @throws FileDoesNotExistException if the file is not found
+	 * @param filename                    the name of the file to parse
+	 * @throws FileDoesNotExistException  if the file is not found
 	 */
 	public TextFileParser(String filename) throws FileDoesNotExistException
 	{
@@ -82,9 +82,9 @@ public final class TextFileParser
 	/**
 	 * Sets up a text file parser for the specified file.
 	 *
-	 * @param filename the name of the file to parse
-	 * @param encoding the encoding used (e.g., UTF-8)
-	 * @throws FileDoesNotExistException if the file is not found
+	 * @param filename                    the name of the file to parse
+	 * @param encoding                    the encoding used (e.g., UTF-8)
+	 * @throws FileDoesNotExistException  if the file is not found
 	 */
 	public TextFileParser(String filename, String encoding) throws FileDoesNotExistException
 	{
@@ -103,7 +103,7 @@ public final class TextFileParser
 	 * <P>
 	 * Note that a buffer is automatically wrapped around the specified <CODE>InputStream</CODE>.
 	 *
-	 * @param inputStream the <CODE>InputStream</CODE> containing the contents to parse
+	 * @param inputStream  the <CODE>InputStream</CODE> containing the contents to parse
 	 */
 	public TextFileParser(InputStream inputStream)
 	{
@@ -115,8 +115,8 @@ public final class TextFileParser
 	 * <P>
 	 * Note that a buffer is automatically wrapped around the specified <CODE>InputStream</CODE>.
 	 *
-	 * @param encoding the encoding used (e.g., UTF-8)
-	 * @param inputStream the <CODE>InputStream</CODE> containing the contents to parse
+	 * @param encoding     the encoding used (e.g., UTF-8)
+	 * @param inputStream  the <CODE>InputStream</CODE> containing the contents to parse
 	 */
 	public TextFileParser(InputStream inputStream, String encoding)
 	{
@@ -152,8 +152,8 @@ public final class TextFileParser
 	 * <P>
 	 * Note that any whitespace surrounding the <CODE>String</CODE> is automatically trimmed.
 	 *
-	 * @return the next line converted to a <CODE>String</CODE>
-	 * @throws FileParseException if the end-of-file is reached (the exception only contains the line number)
+	 * @return                     the next line converted to a <CODE>String</CODE>
+	 * @throws FileParseException  if the end-of-file is reached (the exception only contains the line number)
 	 */
 	public String getNextString() throws FileParseException
 	{
@@ -171,8 +171,8 @@ public final class TextFileParser
 	 * <P>
 	 * Note that any whitespace surrounding the <CODE>String</CODE> is automatically trimmed.
 	 *
-	 * @return the next non-empty line converted to a <CODE>String</CODE>
-	 * @throws FileParseException if the end-of-file is reached (the exception only contains the line number)
+	 * @return                     the next non-empty line converted to a <CODE>String</CODE>
+	 * @throws FileParseException  if the end-of-file is reached (the exception only contains the line number)
 	 */
 	public String getNextNonEmptyString() throws FileParseException
 	{
@@ -192,9 +192,9 @@ public final class TextFileParser
 	/**
 	 * Returns the next line converted to a <CODE>char</CODE> (empty lines are ignored).
 	 *
-	 * @return the next line converted to a <CODE>char</CODE>
-	 * @throws FileParseException if the end-of-file is reached (the exception only contains the line number)
-	 * @see    TextFileParser#getNextString
+	 * @return                     the next line converted to a <CODE>char</CODE>
+	 * @throws FileParseException  if the end-of-file is reached (the exception only contains the line number)
+	 * @see                        TextFileParser#getNextString
 	 */
 	public char getNextChar() throws FileParseException
 	{
@@ -204,9 +204,9 @@ public final class TextFileParser
 	/**
 	 * Returns the next line converted to a <CODE>byte</CODE> (empty lines are ignored).
 	 *
-	 * @return the next line converted to a <CODE>byte</CODE>
-	 * @throws FileParseException if the end-of-file is reached or the line contains a malformed byte (the exception contains the value and line number)
-	 * @see    TextFileParser#getNextString
+	 * @return                     the next line converted to a <CODE>byte</CODE>
+	 * @throws FileParseException  if the end-of-file is reached or the line contains a malformed byte (the exception contains the value and line number)
+	 * @see                        TextFileParser#getNextString
 	 */
 	public byte getNextByte() throws FileParseException
 	{
@@ -222,9 +222,9 @@ public final class TextFileParser
 	/**
 	 * Returns the next line converted to an <CODE>int</CODE> (empty lines are ignored).
 	 *
-	 * @return the next line converted to an <CODE>int</CODE>
-	 * @throws FileParseException if the end-of-file is reached or the line contains a malformed integer (the exception contains the value and line number)
-	 * @see    TextFileParser#getNextString
+	 * @return                     the next line converted to an <CODE>int</CODE>
+	 * @throws FileParseException  if the end-of-file is reached or the line contains a malformed integer (the exception contains the value and line number)
+	 * @see                        TextFileParser#getNextString
 	 */
 	public int getNextInteger() throws FileParseException
 	{
@@ -240,9 +240,9 @@ public final class TextFileParser
 	/**
 	 * Returns the next line converted to a <CODE>double</CODE> (empty lines are ignored).
 	 *
-	 * @return the next line converted to a <CODE>double</CODE>
-	 * @throws FileParseException if the end-of-file is reached or the line contains a malformed double (the exception contains the value and line number)
-	 * @see    TextFileParser#getNextString
+	 * @return                     the next line converted to a <CODE>double</CODE>
+	 * @throws FileParseException  if the end-of-file is reached or the line contains a malformed double (the exception contains the value and line number)
+	 * @see                        TextFileParser#getNextString
 	 */
 	public double getNextDouble() throws FileParseException
 	{
@@ -259,15 +259,14 @@ public final class TextFileParser
 	 * Returns the next line converted to a <CODE>boolean</CODE> (empty lines are ignored).
 	 * <P>
 	 * The following truth values are recognised:
-	 * <P>
 	 * <UL>
 	 *   <LI><B>yes / true / 1</B></LI>
 	 *   <LI><B>no / false / 0</B></LI>
 	 * </UL>
 	 *
-	 * @return the next line converted to a <CODE>boolean</CODE>
-	 * @throws FileParseException if the end-of-file is reached or the line contains a malformed boolean (the exception contains the value and line number)
-	 * @see    TextFileParser#getNextString
+	 * @return                     the next line converted to a <CODE>boolean</CODE>
+	 * @throws FileParseException  if the end-of-file is reached or the line contains a malformed boolean (the exception contains the value and line number)
+	 * @see                        TextFileParser#getNextString
 	 */
 	public boolean getNextBoolean() throws FileParseException
 	{
@@ -288,13 +287,11 @@ public final class TextFileParser
 	 * <P>
 	 * The string has to have the following specific format:
 	 * <P>
-	 * <UL>
-	 *   <B>dd/MM/yyyy</B>, e.g., 11/04/1976
-	 * </UL>
+	 * <B>dd/MM/yyyy</B>, e.g., 11/04/1976
 	 *
-	 * @return the next line converted to a <CODE>DateStamp</CODE>
-	 * @throws FileParseException if the end-of-file is reached or the line contains a malformed date stamp (the exception contains the value and line number)
-	 * @see    DateStamp
+	 * @return                     the next line converted to a <CODE>DateStamp</CODE>
+	 * @throws FileParseException  if the end-of-file is reached or the line contains a malformed date stamp (the exception contains the value and line number)
+	 * @see                        DateStamp
 	 */
 	public DateStamp getNextDateStamp() throws FileParseException
 	{
@@ -312,13 +309,11 @@ public final class TextFileParser
 	 * <P>
 	 * The string has to have the following specific format:
 	 * <P>
-	 * <UL>
-	 *   <B>HH:mm:ss</B> or <B>HH:mm:ss.mls</B>, e.g., 12:45:16 or 05:03:06.002
-	 * </UL>
+	 * <B>HH:mm:ss</B> or <B>HH:mm:ss.mls</B>, e.g., 12:45:16 or 05:03:06.002
 	 *
-	 * @return the next line converted to a <CODE>TimeStamp</CODE>
-	 * @throws FileParseException if the end-of-file is reached or the line contains a malformed time stamp (the exception contains the value and line number)
-	 * @see    TimeStamp
+	 * @return                     the next line converted to a <CODE>TimeStamp</CODE>
+	 * @throws FileParseException  if the end-of-file is reached or the line contains a malformed time stamp (the exception contains the value and line number)
+	 * @see                        TimeStamp
 	 */
 	public TimeStamp getNextTimeStamp() throws FileParseException
 	{
@@ -336,8 +331,8 @@ public final class TextFileParser
 	 * <P>
 	 * The CSV parser can operate on quoted, unquoted and empty <CODE>String</CODE>s.
 	 *
-	 * @return the next line converted to a <CODE>String[]</CODE> array of comma-separated values
-	 * @throws FileParseException if the end-of-file is reached (the exception only contains the line number)
+	 * @return                     the next line converted to a <CODE>String[]</CODE> array of comma-separated values
+	 * @throws FileParseException  if the end-of-file is reached (the exception only contains the line number)
 	 */
 	public String[] getNextCSV() throws FileParseException
 	{
@@ -424,9 +419,9 @@ public final class TextFileParser
 	 * <P>
 	 * Commented lines are preceeded by a hash-tag (#).
 	 *
-	 * @param filename the name of the CSV file to load
-	 * @param ignoreComments a <CODE>boolean</CODE> indicating whether or not comments should be ignored 
-	 * @return a sequence of CSV values, <CODE>null</CODE> is a problem occurred
+	 * @param filename        the name of the CSV file to load
+	 * @param ignoreComments  a <CODE>boolean</CODE> indicating whether or not comments should be ignored 
+	 * @return                a sequence of CSV values, <CODE>null</CODE> is a problem occurred
 	 */
 	public static ArrayList<String[]> loadGeneralCSVFile(String filename, boolean ignoreComments)
 	{
@@ -452,8 +447,8 @@ public final class TextFileParser
 	/**
 	 * Loads a file containing a single column of <CODE>double</CODE>s (empty lines are ignored).
 	 *
-	 * @param filename the name of the file to load
-	 * @return a sequence of <CODE>double</CODE>s, <CODE>null</CODE> is a problem occurred
+	 * @param filename  the name of the file to load
+	 * @return          a sequence of <CODE>double</CODE>s, <CODE>null</CODE> is a problem occurred
 	 */
 	public static double[] loadDoubleFile(String filename)
 	{
@@ -484,9 +479,9 @@ public final class TextFileParser
 	 * <P>
 	 * Commented lines preceeded by a hash-tag (#) are automatically ignored.
 	 *
-	 * @param filename the name of the file to load
-	 * @return a sequence of <CODE>double</CODE>s
-	 * @throws FileParseException if a malformed number was encountered
+	 * @param                      filename the name of the file to load
+	 * @return                     a sequence of <CODE>double</CODE>s
+	 * @throws FileParseException  if a malformed number was encountered
 	 */
 	public static ArrayList<Double[]> loadDoubleCSVFile(String filename) throws FileParseException
 	{
@@ -514,6 +509,10 @@ public final class TextFileParser
 	 * PRIVATE METHODS *
 	 *******************/
 
+	/**
+	 * @param inputStream  -
+	 * @param encoding     -
+	 */
 	private void initialise(InputStream inputStream, String encoding)
 	{
 		BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);

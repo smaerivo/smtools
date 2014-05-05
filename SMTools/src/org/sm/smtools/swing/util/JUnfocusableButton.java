@@ -54,10 +54,10 @@ public class JUnfocusableButton extends JButton
 	/**
 	 * Creates a <CODE>JUnfocusableButton</CODE> with text.
 	 *
-	 * @param text the text of the button
-	 * @see   JUnfocusableButton#JUnfocusableButton()
-	 * @see   JUnfocusableButton#JUnfocusableButton(Icon)
-	 * @see   JUnfocusableButton#JUnfocusableButton(String,Icon)
+	 * @param text  the text of the button
+	 * @see         JUnfocusableButton#JUnfocusableButton()
+	 * @see         JUnfocusableButton#JUnfocusableButton(Icon)
+	 * @see         JUnfocusableButton#JUnfocusableButton(String,Icon)
 	 */
 	public JUnfocusableButton(String text)
 	{
@@ -67,10 +67,10 @@ public class JUnfocusableButton extends JButton
 	/**
 	 * Creates a <CODE>JUnfocusableButton</CODE> with an icon.
 	 *
-	 * @param icon the <CODE>Icon</CODE> image to display on the button
-	 * @see   JUnfocusableButton#JUnfocusableButton()
-	 * @see   JUnfocusableButton#JUnfocusableButton(String)
-	 * @see   JUnfocusableButton#JUnfocusableButton(String,Icon)
+	 * @param icon  the <CODE>Icon</CODE> image to display on the button
+	 * @see         JUnfocusableButton#JUnfocusableButton()
+	 * @see         JUnfocusableButton#JUnfocusableButton(String)
+	 * @see         JUnfocusableButton#JUnfocusableButton(String,Icon)
 	 */
 	public JUnfocusableButton(Icon icon)
 	{
@@ -80,11 +80,11 @@ public class JUnfocusableButton extends JButton
 	/**
 	 * Creates a <CODE>JUnfocusableButton</CODE> with text and an icon.
 	 *
-	 * @param text the text of the button
-	 * @param icon the <CODE>Icon</CODE> image to display on the button
-	 * @see   JUnfocusableButton#JUnfocusableButton()
-	 * @see   JUnfocusableButton#JUnfocusableButton(String)
-	 * @see   JUnfocusableButton#JUnfocusableButton(Icon)
+	 * @param text  the text of the button
+	 * @param icon  the <CODE>Icon</CODE> image to display on the button
+	 * @see         JUnfocusableButton#JUnfocusableButton()
+	 * @see         JUnfocusableButton#JUnfocusableButton(String)
+	 * @see         JUnfocusableButton#JUnfocusableButton(Icon)
 	 */
 	public JUnfocusableButton(String text, Icon icon)
 	{

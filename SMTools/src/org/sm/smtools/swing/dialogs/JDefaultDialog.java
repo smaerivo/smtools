@@ -28,8 +28,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import org.sm.smtools.application.util.*;
-import org.sm.smtools.miscellaneous.*;
 import org.sm.smtools.swing.util.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JDefaultDialog</CODE> class is a baseclass for creating arbitrary dialog boxes.
@@ -38,23 +38,17 @@ import org.sm.smtools.swing.util.*;
  * <P>
  * There are three types of dialog boxes available:
  * <P>
- * <UL>
- *   <B><U>"Ok" dialog box</U></B><BR />
- *   <BR />
- *   <IMG src="doc-files/ok-default-dialog-windows.png">
- * </UL>
+ * <B><U>"Ok" dialog box</U></B><BR>
+ * <BR>
+ * <IMG src="doc-files/ok-default-dialog-windows.png" alt="">
  * <P>
- * <UL>
- *   <B><U>"Ok/Cancel" dialog box</U></B><BR />
- *   <BR />
- *   <IMG src="doc-files/ok-cancel-default-dialog-windows.png">
- * </UL>
+ * <B><U>"Ok/Cancel" dialog box</U></B><BR>
+ * <BR>
+ * <IMG src="doc-files/ok-cancel-default-dialog-windows.png" alt="">
  * <P>
- * <UL>
- *   <B><U>Custom dialog box</U></B><BR />
- *   <BR />
- *   <IMG src="doc-files/custom-default-dialog-windows.png">
- * </UL>
+ * <B><U>Custom dialog box</U></B><BR>
+ * <BR>
+ * <IMG src="doc-files/custom-default-dialog-windows.png" alt="">
  * <P>
  * Typically, <CODE>JDefaultDialog</CODE> is subclassed, with several methods overridden.
  * These methods control both the visual layout of the dialog box (custom dialog title and
@@ -63,7 +57,6 @@ import org.sm.smtools.swing.util.*;
  * When the dialog box is shown, it is placed in the middle of the parent's frame.
  * <P>
  * The overridable methods are called in the following order:
- * <P>
  * <UL>
  *   <LI>{@link JDefaultDialog#initialiseClass(Object[])}</LI>
  *   <LI>{@link JDefaultDialog#setupWindowTitle()}</LI>
@@ -73,7 +66,7 @@ import org.sm.smtools.swing.util.*;
  * </UL>
  * <P>
  * The result of an "Ok/Cancel" type dialog box should be queried using the
- * {@link JDefaultDialog#cancelled} method.
+ * {@link JDefaultDialog#isCancelled} method.
  * <P>
  * <B><U>Important remark</U></B>
  * <P>
@@ -83,16 +76,14 @@ import org.sm.smtools.swing.util.*;
  * constructor, for example:
  * <P>
  * <CODE>
- * <PRE>
- *   MyDialogClass myDialogObject =
- *     new MyDialogClass(
- *       parentComponent,
- *       JDefaultDialog.EModality.kModal,
- *       JDefaultDialog.ESize.kResizable,
- *       JDefaultDialog.EType.kOkCancel,
- *       new Object[] {object1,object2},
- *       JDefaultDialog.EActivation.kImmediately);
- * </PRE>
+ *   MyDialogClass myDialogObject =<BR>
+ *     new MyDialogClass(<BR>
+ *       parentComponent,<BR>
+ *       JDefaultDialog.EModality.kModal,<BR>
+ *       JDefaultDialog.ESize.kResizable,<BR>
+ *       JDefaultDialog.EType.kOkCancel,<BR>
+ *       new Object[] {object1,object2},<BR>
+ *       JDefaultDialog.EActivation.kImmediately);<BR>
  * </CODE>
  * So the <CODE>Object[]</CODE> array is constructed using <CODE>new Object[]
  * {object1,object2}</CODE>. If no parameters are to be passed, you should specify
@@ -147,15 +138,15 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * <P>
 	 * Note that the dialog box is activated (i.e., made visible) at the end of the constructor.
 	 *
-	 * @param applicationFrame the frame in which this dialog box is to be displayed
-	 * @param modality         an <CODE>EModality</CODE> flag to indicate if the dialog box should be modal or modeless
-	 * @param size             an <CODE>ESize</CODE> flag indicating whether or not the dialog box should be resizable
-	 * @param type             the type of the dialog box ("Ok", "Ok/Cancel" or custom)
-	 * @param parameters       an array of objects which are passed to the {@link JDefaultDialog#initialiseClass(Object[])} method
-	 * @see   JDefaultDialog#JDefaultDialog(JFrame,EModality,ESize,EType,Object[],EActivation)
-	 * @see   JDefaultDialog.EModality
-	 * @see   JDefaultDialog.ESize
-	 * @see   JDefaultDialog.EType
+	 * @param applicationFrame  the frame in which this dialog box is to be displayed
+	 * @param modality          an <CODE>EModality</CODE> flag to indicate if the dialog box should be modal or modeless
+	 * @param size              an <CODE>ESize</CODE> flag indicating whether or not the dialog box should be resizable
+	 * @param type              the type of the dialog box ("Ok", "Ok/Cancel" or custom)
+	 * @param parameters        an array of objects which are passed to the {@link JDefaultDialog#initialiseClass(Object[])} method
+	 * @see                     JDefaultDialog#JDefaultDialog(JFrame,EModality,ESize,EType,Object[],EActivation)
+	 * @see                     JDefaultDialog.EModality
+	 * @see                     JDefaultDialog.ESize
+	 * @see                     JDefaultDialog.EType
 	 */
 	public JDefaultDialog(JFrame applicationFrame, EModality modality, ESize size, EType type, Object[] parameters)
 	{
@@ -168,16 +159,16 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * If <CODE>immediateActivation</CODE> is <CODE>false</CODE>, the dialog box should be made
 	 * visible by explicitly calling the {@link JDefaultDialog#activate} method.
 	 *
-	 * @param applicationFrame the frame in which this dialog box is to be displayed
-	 * @param modality         an <CODE>EModality</CODE> flag to indicate if the dialog box should be modal or modeless
-	 * @param size             an <CODE>ESize</CODE> flag indicating whether or not the dialog box should be resizable
-	 * @param type             the type of the dialog box ("Ok", "Ok/Cancel" or custom)
-	 * @param parameters       an array of objects which are passed to the {@link JDefaultDialog#initialiseClass(Object[])} method
-	 * @param activation       an <CODE>EActivation</CODE> flag indicating whether or not the dialog box should be made visible at the end of the constructor
-	 * @see   JDefaultDialog#JDefaultDialog(JFrame,EModality,ESize,EType,Object[])
-	 * @see   JDefaultDialog.EModality
-	 * @see   JDefaultDialog.ESize
-	 * @see   JDefaultDialog.EType
+	 * @param applicationFrame  the frame in which this dialog box is to be displayed
+	 * @param modality          an <CODE>EModality</CODE> flag to indicate if the dialog box should be modal or modeless
+	 * @param size              an <CODE>ESize</CODE> flag indicating whether or not the dialog box should be resizable
+	 * @param type              the type of the dialog box ("Ok", "Ok/Cancel" or custom)
+	 * @param parameters        an array of objects which are passed to the {@link JDefaultDialog#initialiseClass(Object[])} method
+	 * @param activation        an <CODE>EActivation</CODE> flag indicating whether or not the dialog box should be made visible at the end of the constructor
+	 * @see                     JDefaultDialog#JDefaultDialog(JFrame,EModality,ESize,EType,Object[])
+	 * @see                     JDefaultDialog.EModality
+	 * @see                     JDefaultDialog.ESize
+	 * @see                     JDefaultDialog.EType
 	 */
 	public JDefaultDialog(JFrame applicationFrame, EModality modality, ESize size, EType type, Object[] parameters, EActivation activation)
 	{
@@ -239,13 +230,11 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * the user's input ("Ok" and "Ok/Cancel" type of dialog boxes):
 	 * <P>
 	 * <CODE>
-	 * <PRE>
-	 *   super.actionPerformed(e);
-	 *   // rest of method's code
-	 * </PRE>
+	 * super.actionPerformed(e);<BR>
+	 * // rest of method's code
 	 * </CODE>
 	 *
-	 * @param e the <CODE>ActionEvent</CODE> that is received
+	 * @param e  the <CODE>ActionEvent</CODE> that is received
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -269,7 +258,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowActivated(WindowEvent e)
@@ -281,7 +270,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowClosed(WindowEvent e)
@@ -293,7 +282,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowClosing(WindowEvent e)
@@ -307,7 +296,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowDeactivated(WindowEvent e)
@@ -319,7 +308,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowDeiconified(WindowEvent e)
@@ -331,7 +320,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowIconified(WindowEvent e)
@@ -343,7 +332,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowOpened(WindowEvent e)
@@ -414,6 +403,9 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 		return fIsShown;
 	}
 
+	/**
+	 * Disables autopositioning of the dialog.
+	 */
 	public final void disableAutoPositioning()
 	{
 		fAutoPositioning = false;
@@ -468,7 +460,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 * <P>
 	 * <B>Note that the <CODE>mainPanel</CODE> object is already constructed!</B>
 	 *
-	 * @param mainPanel the area of the dialog box that is reserved for custom content
+	 * @param mainPanel  the area of the dialog box that is reserved for custom content
 	 */
 	protected void setupMainPanel(JPanel mainPanel)
 	{
@@ -486,9 +478,9 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	/**
 	 * Returns a location that guarantees that a dialog is fully shown within the screen's boundaries.
 	 *
-	 * @param  requestedLocation the requested location to position the dialog
-	 * @param  size the size of the dialog
-	 * @return a location that guarantees that a dialog is fully shown within the screen's boundaries
+	 * @param requestedLocation  the requested location to position the dialog
+	 * @param size               the size of the dialog
+	 * @return                   a location that guarantees that a dialog is fully shown within the screen's boundaries
 	 */
 	public static Point getOnScreenLocation(Point requestedLocation, Dimension size)
 	{
@@ -513,6 +505,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 *******************/
 
 	/**
+	 * @param contentPane  -
 	 */
 	private void constructContentPane(JPanel contentPane)
 	{

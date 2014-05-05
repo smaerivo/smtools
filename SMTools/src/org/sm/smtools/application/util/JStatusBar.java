@@ -30,8 +30,8 @@ import java.util.*;
 import javax.swing.*;
 import org.sm.smtools.exceptions.*;
 import org.sm.smtools.math.*;
-import org.sm.smtools.miscellaneous.*;
 import org.sm.smtools.swing.util.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JStatusBar</CODE> class constructs a <CODE>JPanel</CODE> that provides an application with a status bar.
@@ -94,8 +94,8 @@ public final class JStatusBar extends JPanel
 	/**
 	 * Constructs a <CODE>JStatusBar</CODE> object and sets up optional custom labels that are shown to the right hand side.
 	 *
-	 * @param showGUIResizable indicates whether or not the resizable-icon should be shown
-	 * @param customLabels     an <CODE>ArrayList</CODE> of custom labels, or <CODE>null</CODE> if none are provided
+	 * @param showGUIResizable  indicates whether or not the resizable-icon should be shown
+	 * @param customLabels      an <CODE>ArrayList</CODE> of custom labels, or <CODE>null</CODE> if none are provided
 	 */
 	public JStatusBar(boolean showGUIResizable, ArrayList<JLabel> customLabels)
 	{
@@ -164,7 +164,7 @@ public final class JStatusBar extends JPanel
 	/**
 	 * Sets the status text.
 	 *
-	 * @param statusText the new status text to show
+	 * @param statusText  the new status text to show
 	 */
 	public void setStatusText(String statusText)
 	{
@@ -182,7 +182,7 @@ public final class JStatusBar extends JPanel
 	/**
 	 * Sets the status text's color.
 	 *
-	 * @param color the status text's color
+	 * @param color  the status text's color
 	 */
 	public void setStatusTextColor(Color color)
 	{
@@ -190,7 +190,7 @@ public final class JStatusBar extends JPanel
 	}
 
 	/**
-	 * Returns the status text's color to black.
+	 * Reverts the status text's color to black.
 	 */
 	public void clearStatusTextColor()
 	{
@@ -199,6 +199,7 @@ public final class JStatusBar extends JPanel
 
 	/**
 	 */
+	@Override
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
@@ -302,6 +303,7 @@ public final class JStatusBar extends JPanel
 	 *******************/
 
 	/**
+	 * @param label  -
 	 */
 	private void addCustomLabel(JLabel label)
 	{
@@ -311,6 +313,7 @@ public final class JStatusBar extends JPanel
 	}
 
 	/**
+	 * @return -
 	 */
 	private JPanel createSeparator()
 	{
@@ -521,6 +524,9 @@ public final class JStatusBar extends JPanel
 
 		/**
 		 * Fills the structure.
+		 * 
+		 * @param result  -
+		 * @return        -
 		 */
 		public int GetSystemPowerStatus(SYSTEM_POWER_STATUS result);
 	}

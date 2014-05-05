@@ -30,9 +30,7 @@ import java.awt.geom.*;
  * <P>
  * This class maps 2D-data points between a convex quadrilateral and a normalised square:
  * <P>
- * <UL>
- *   <IMG src="doc-files/quad-mapping.png">
- * </UL>
+ * <IMG src="doc-files/quad-mapping.png" alt="">
  * <P>
  * Note: it is assumed that the X axis points to the right and the Y axis points upwards.
  * <P>
@@ -56,8 +54,8 @@ public final class QuadMapping
 	/**
 	 * Constructs a <CODE>QuadMapping</CODE> object based on the perspective mapping of the specified quadrilateral.
 	 *
-	 * @param q the quadrilateral to use for the perspective mapping
-	 * @see   QuadMapping#setQuadrilateral(Quadrilateral)
+	 * @param q  the quadrilateral to use for the perspective mapping
+	 * @see      QuadMapping#setQuadrilateral(Quadrilateral)
 	 */
 	public QuadMapping(Quadrilateral q)
 	{
@@ -71,7 +69,7 @@ public final class QuadMapping
 	/**
 	 * Calculates the perspective mapping of the specified quadrilateral.
 	 *
-	 * @param q the quadrilateral to use for the perspective mapping
+	 * @param q  the quadrilateral to use for the perspective mapping
 	 */
 	public void setQuadrilateral(Quadrilateral q)
 	{
@@ -81,9 +79,9 @@ public final class QuadMapping
 	/**
 	 * Maps a 2D-data point in the normalised square to a 2D-data point in the quadrilateral.
 	 *
-	 * @param  p the 2D-data point in the normalised square to map
+	 * @param p  the 2D-data point in the normalised square to map
 	 * @return   the corresponding 2D-data point in the quadrilateral
-	 * @see    QuadMapping#mapSquareToQuadrilateral(double,double)
+	 * @see      QuadMapping#mapSquareToQuadrilateral(double,double)
 	 */
 	public Point2D.Double mapSquareToQuadrilateral(Point2D.Double p)
 	{
@@ -93,10 +91,10 @@ public final class QuadMapping
 	/**
 	 * Maps a 2D-data point in the normalised square to a 2D-data point in the quadrilateral.
 	 *
-	 * @param  u the x coordinate of the 2D-data point in the normalised square to map
-	 * @param  v the y coordinate of the 2D-data point in the normalised square to map
+	 * @param u  the x coordinate of the 2D-data point in the normalised square to map
+	 * @param v  the y coordinate of the 2D-data point in the normalised square to map
 	 * @return   the corresponding 2D-data point in the quadrilateral
-	 * @see    QuadMapping#mapSquareToQuadrilateral(Point2D.Double)
+	 * @see      QuadMapping#mapSquareToQuadrilateral(Point2D.Double)
 	 */
 	public Point2D.Double mapSquareToQuadrilateral(double u, double v)
 	{
@@ -107,9 +105,9 @@ public final class QuadMapping
 	/**
 	 * Inversely maps a 2D-data point in the quadrilateral to a 2D-data point in the normalised square.
 	 *
-	 * @param  p the 2D-data point in the quadrilateral to map inversely
+	 * @param p  the 2D-data point in the quadrilateral to map inversely
 	 * @return   the corresponding 2D-data point in the normalised square
-	 * @see    QuadMapping#mapQuadrilateralToSquare(double,double)
+	 * @see      QuadMapping#mapQuadrilateralToSquare(double,double)
 	 */
 	public Point2D.Double mapQuadrilateralToSquare(Point2D.Double p)
 	{
@@ -119,10 +117,10 @@ public final class QuadMapping
 	/**
 	 * Inversely maps a 2D-data point in the quadrilateral to a 2D-data point in the normalised square.
 	 *
-	 * @param  x the x coordinate of the 2D-data point in the quadrilateral to map inversely
-	 * @param  y the y coordinate of the 2D-data point in the quadrilateral to map inversely
+	 * @param x  the x coordinate of the 2D-data point in the quadrilateral to map inversely
+	 * @param y  the y coordinate of the 2D-data point in the quadrilateral to map inversely
 	 * @return   the corresponding 2D-data point in the normalised square
-	 * @see    QuadMapping#mapQuadrilateralToSquare(Point2D.Double)
+	 * @see      QuadMapping#mapQuadrilateralToSquare(Point2D.Double)
 	 */
 	public Point2D.Double mapQuadrilateralToSquare(double x, double y)
 	{
@@ -134,6 +132,9 @@ public final class QuadMapping
 	 * PRIVATE METHODS *
 	 *******************/
 
+	/**
+	 * @param q  -
+	 */
 	private void constructQuadrilateralMapping(Quadrilateral q)
 	{
 		// construct mapping from square to quadriteral and vice versa

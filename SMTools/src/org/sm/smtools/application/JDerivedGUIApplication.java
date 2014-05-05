@@ -31,9 +31,9 @@ import javax.swing.*;
 import org.sm.smtools.application.concurrent.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
-import org.sm.smtools.miscellaneous.*;
 import org.sm.smtools.swing.dialogs.*;
 import org.sm.smtools.swing.util.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JDerivedGUIApplication</CODE> class is a demonstration of the <I>SMTools</I> GUI framework.
@@ -41,9 +41,7 @@ import org.sm.smtools.swing.util.*;
  * When this class's {@link JDerivedGUIApplication#main(String[])} method is invoked, the resulting
  * GUI looks as follows:
  * <P>
- * <UL>
- *   <IMG src="doc-files/derived-gui.png">
- * </UL>
+ * <IMG src="doc-files/derived-gui.png" alt="">
  * <P>
  * Refer to the {@link JStandardGUIApplication} class for further information.
  * <P>
@@ -102,7 +100,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	/**
 	 * Constructs a <CODE>JDerivedGUIApplication</CODE> object.
 	 *
-	 * @param argv an array of strings containing the <B>command-line</B> parameters
+	 * @param argv  an array of strings containing the <B>command-line</B> parameters
 	 */
 	public JDerivedGUIApplication(String[] argv)
 	{
@@ -115,6 +113,8 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 	/**
 	 * The application's entry point.
+	 *
+	 * @param argv  an array of strings containing the <B>command-line</B> parameters
 	 */
 	public static void main(String[] argv)
 	{
@@ -479,7 +479,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * @author  Sven Maerivoet
 	 * @version 02/02/2013
 	 */
-	public class MyTaskExecutor extends JTaskExecutor
+	private class MyTaskExecutor extends JTaskExecutor
 	{
 		// internal datastructures
 		private Component fMainWindow;
@@ -518,7 +518,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * @author  Sven Maerivoet
 	 * @version 02/02/2013
 	 */
-	public class MyTask extends AJTask
+	private class MyTask extends AJTask
 	{
 		// internal datastructures
 		private int fTaskID;
@@ -580,12 +580,14 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * @version 26/12/2013
 	 * @see     org.sm.smtools.swing.dialogs.JAboutBox
 	 */
-	public final class JDerivedAboutBox extends JAboutBox
+	private final class JDerivedAboutBox extends JAboutBox
 	{
 		/****************
 		 * CONSTRUCTORS *
 		 ****************/
 
+		/**
+		 */
 		public JDerivedAboutBox(JFrame owner, JARResources resources)
 		{
 			super(owner,resources);
@@ -617,6 +619,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		}
 
 		/**
+		 * @return
 		 */
 		@Override
 		protected String setupAboutText()

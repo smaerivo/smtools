@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.miscellaneous;
+package org.sm.smtools.util;
 
 import java.io.*;
 import java.util.*;
@@ -59,7 +59,7 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	/**
 	 * Constructs a <CODE>JFileFilter</CODE> object for the specified single file extension.
 	 *
-	 * @param extension the filetype (i.e., extension) to allow
+	 * @param extension  the filetype (i.e., extension) to allow
 	 */
 	public JFileFilter(String extension)
 	{
@@ -71,8 +71,8 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	 * <P>
 	 * The specified <CODE>description</CODE> is substituted in the <CODE>JFileChooser</CODE>'s dialog box.
 	 *
-	 * @param extension   the filetype (i.e., extension) to allow
-	 * @param description the description of the filetype
+	 * @param extension    the filetype (i.e., extension) to allow
+	 * @param description  the description of the filetype
 	 */
 	public JFileFilter(String extension, String description)
 	{
@@ -90,7 +90,7 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	/**
 	 * Constructs a <CODE>JFileFilter</CODE> object for the specified multiple file extensions.
 	 *
-	 * @param extensions the different filetypes (i.e., extensions) to allow
+	 * @param extensions  the different filetypes (i.e., extensions) to allow
 	 */
 	public JFileFilter(ArrayList<String> extensions)
 	{
@@ -102,8 +102,8 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	 * <P>
 	 * The specified <CODE>description</CODE> is substituted in the <CODE>JFileChooser</CODE>'s dialog box.
 	 *
-	 * @param extensions  the different filetypes (i.e., extensions) to allow
-	 * @param description the <I>collective</I> description of the different filetypes
+	 * @param extensions   the different filetypes (i.e., extensions) to allow
+	 * @param description  the <I>collective</I> description of the different filetypes
 	 */
 	public JFileFilter(ArrayList<String> extensions, String description)
 	{
@@ -153,7 +153,8 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	 * <P>
 	 * The extension of a file is everything that follows after the last dot of the filename.
 	 *
-	 * @return the extension of a specified file
+	 * @param f  the file to check
+	 * @return   the extension of a specified file
 	 */
 	public String getExtension(File f)
 	{
@@ -176,7 +177,7 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	/**
 	 * Adds the specified extension to the file filter.
 	 *
-	 * @param extension the extension to add to this <CODE>JFileFilter</CODE> object
+	 * @param extension  the extension to add to this <CODE>JFileFilter</CODE> object
 	 */
 	public void addExtension(String extension)
 	{
@@ -241,7 +242,7 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	/**
 	 * Sets the description of the file filter.
 	 *
-	 * @param description the description of the file filter
+	 * @param description  the description of the file filter
 	 */
 	public void setDescription(String description)
 	{
@@ -252,7 +253,7 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	/**
 	 * Sets whether or not the accepted extensions of the file filter should be appended to the description.
 	 *
-	 * @param b a <CODE>boolean</CODE> flag indicating whether or not extensions should be appended to the description
+	 * @param b  a <CODE>boolean</CODE> flag indicating whether or not extensions should be appended to the description
 	 */
 	public void setExtensionListInDescription(boolean b)
 	{

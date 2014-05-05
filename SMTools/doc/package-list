@@ -7,7 +7,7 @@ org.sm.smtools.math
 org.sm.smtools.math.lslr
 org.sm.smtools.math.quadmapping
 org.sm.smtools.math.statistics
-org.sm.smtools.miscellaneous
 org.sm.smtools.scrapbook
 org.sm.smtools.swing.dialogs
 org.sm.smtools.swing.util
+org.sm.smtools.util

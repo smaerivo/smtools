@@ -48,7 +48,9 @@ public final class JImageLoader
 	 * CONSTRUCTORS *
 	 ****************/
 
-	// prevent instantiation
+	/**
+	 * Prevent instantiation.
+	 */
 	private JImageLoader()
 	{
 	}
@@ -60,10 +62,10 @@ public final class JImageLoader
 	/**
 	 * Helper method to load an image from a specified file.
 	 * 
-	 * @param  filename          the name of the image file to load
-	 * @param  caller            the object that called this method
-	 * @return                   an <CODE>ImageIcon</CODE> object containing the loaded image
-	 * @throws FileReadException if an error occurred during the loading of the image
+	 * @param  filename           the name of the image file to load
+	 * @param  caller             the object that called this method
+	 * @return                    an <CODE>ImageIcon</CODE> object containing the loaded image
+	 * @throws FileReadException  if an error occurred during the loading of the image
 	 */
 	public static ImageIcon loadImageIcon(String filename, Component caller) throws FileReadException
 	{

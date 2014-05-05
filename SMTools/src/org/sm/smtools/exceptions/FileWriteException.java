@@ -46,8 +46,8 @@ public final class FileWriteException extends Exception
 	 * Constructs a <CODE>FileWriteException</CODE> object, based on the specified filename
 	 * and the value that should have been written.
 	 *
-	 * @param filename the name of the file this exception corresponds to
-	 * @param value    the value that should have been written
+	 * @param filename  the name of the file this exception corresponds to
+	 * @param value     the value that should have been written
 	 */
 	public FileWriteException(String filename, String value)
 	{

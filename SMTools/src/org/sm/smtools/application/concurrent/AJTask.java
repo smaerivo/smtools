@@ -73,7 +73,7 @@ public abstract class AJTask extends SwingWorker<Void,Integer>
 	/**
 	 * Sets the ID of this task.
 	 *
-	 * @param id the ID of this task
+	 * @param id  the ID of this task
 	 */
 	public final void setID(int id)
 	{
@@ -83,7 +83,7 @@ public abstract class AJTask extends SwingWorker<Void,Integer>
 	/**
 	 * Sets the number of subtasks.
 	 *
-	 * @param nrOfSubTasks the number of subtasks
+	 * @param nrOfSubTasks  the number of subtasks
 	 */
 	public final void setNrOfSubTasks(int nrOfSubTasks)
 	{
@@ -103,7 +103,7 @@ public abstract class AJTask extends SwingWorker<Void,Integer>
 	/**
 	 * Installs the <CODE>CountDownLatch</CODE> that is used to synchronise this task.
 	 *
-	 * @param countDownLatch the <CODE>CountDownLatch</CODE> to use for synchronisation
+	 * @param countDownLatch  the <CODE>CountDownLatch</CODE> to use for synchronisation
 	 */
 	public final void installCountDownLatch(CountDownLatch countDownLatch)
 	{
@@ -113,7 +113,7 @@ public abstract class AJTask extends SwingWorker<Void,Integer>
 	/**
 	 * Installs the <CODE>AJProgressUpdateGlassPane</CODE> that is used for progress updates of this task.
 	 *
-	 * @param progressUpdateGlassPane the <CODE>JProgressUpdateGlassPane</CODE> to use for progress updates of this task
+	 * @param progressUpdateGlassPane  the <CODE>JProgressUpdateGlassPane</CODE> to use for progress updates of this task
 	 */
 	public final void installProgressUpdateGlassPane(JProgressUpdateGlassPane progressUpdateGlassPane)
 	{
@@ -127,7 +127,7 @@ public abstract class AJTask extends SwingWorker<Void,Integer>
 	/**
 	 * This method is called when a subtask is executed.
 	 *
-	 * @param subTaskID the ID of the subtask (between 0 and the number of subtasks - 1)
+	 * @param subTaskID  the ID of the subtask (between 0 and the number of subtasks - 1)
 	 */
 	protected abstract void executeSubTask(int subTaskID);
 
@@ -137,6 +137,8 @@ public abstract class AJTask extends SwingWorker<Void,Integer>
 	protected abstract void finishTask();
 
 	/**
+	 * @return            -
+	 * @throws Exception  -
 	 */
 	@Override
 	protected final Void doInBackground() throws Exception

@@ -30,8 +30,8 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
-import org.sm.smtools.miscellaneous.*;
 import org.sm.smtools.swing.util.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JDateChooser</CODE> class provides a dialog box for choosing a date.
@@ -39,52 +39,41 @@ import org.sm.smtools.swing.util.*;
  * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * The dialog box is <I>modal</I>, <I>non-resizable</I> and contains <I>"Ok"</I> and <I>"Cancel" buttons</I>
- * to close it. Here's an example of a date chooser (Microsoft Windows L&F):
+ * to close it. Here's an example of a date chooser (Microsoft Windows L&amp;F):
  * <P>
- * <UL>
- *   <IMG src="doc-files/date-chooser-windows.png">
- * </UL>
+ * <IMG src="doc-files/date-chooser-windows.png" alt="">
  * <P>
  * As can be seen, the following features are available:
- * <P>
  * <UL>
  *   <LI>The <B>currently selected date</B> is shown in white.</LI>
- *   <P>
  *   <LI>Whenever the mouse pointer moves over the day numbers of the calendar, they become
  *       <B>clickable buttons</B>. The button currently underneath the mouse pointer
  *       is shown in green (a tooltip containing the full date is shown after
  *       a while).</LI>
- *   <P>
- *   <LI>At the top of the dialog box, a navigational area is present for choosing a month and a year.</LI>
- *   <P>
+ *   <LI>At the top of the dialog box, a navigational area is present for choosing a month and a year.
  *   <UL>
- *     <LI>The optional <B>undo button</B> <IMG src="doc-files/calendar-undo.png" align=center>
+ *     <LI>The optional <B>undo button</B> <IMG src="doc-files/calendar-undo.png" alt="">
  *         resets the calendar to its initial date (and selects it).</LI>
- *     <P>
- *     <LI>The <B>exclamation button</B> <IMG src="doc-files/calendar-exclamation.png" align=center>
+ *     <LI>The <B>exclamation button</B> <IMG src="doc-files/calendar-exclamation.png" alt="">
  *         moves the calendar to the current date (and selects it).</LI>
  *   </UL>
+ *   </LI>
  * </UL>
  * <P>
  * When the user closes the date chooser's dialog box, its state should be queried as follows:
  * <P>
  * <CODE>
- * <PRE>
- *   if (!myDateChooser.isCancelled()) {
- *     DateStamp dateStamp = myDateChooser.getSelectedDate();
- *     // rest of code
- *   }
- * </PRE>
+ *   if (!myDateChooser.isCancelled()) {<BR>
+ *     DateStamp dateStamp = myDateChooser.getSelectedDate();<BR>
+ *     // rest of code<BR>
+ *   }<BR>
  * </CODE>
  * <P>
- * <B><U>Important remark</U></B>
- * <P>
- * <UL>
- *   This GUI-component supports <B>caching</B> in the <I>SMTools</I> framework. Using the
- *   {@link JDateChooser#JDateChooser(JFrame,String,JDefaultDialog.EType,DateStamp,EUseDefaultDate,JDefaultDialog.EActivation)} constructor, dialog
- *   activation can be postponed until an explicit call to {@link JDefaultDialog#activate}
- *   is made.
- * </UL>
+ * <B><U>Important remark</U></B><BR>
+ * This GUI-component supports <B>caching</B> in the <I>SMTools</I> framework. Using the
+ * {@link JDateChooser#JDateChooser(JFrame,String,JDefaultDialog.EType,DateStamp,EUseDefaultDate,JDefaultDialog.EActivation)} constructor, dialog
+ * activation can be postponed until an explicit call to {@link JDefaultDialog#activate}
+ * is made.
  * <P>
  * Note that the system resources must be initialised (see {@link JARResources#fSystemResources}).
  * <P>
@@ -98,7 +87,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	// the different default date modes
 	/**
 	 * Useful constants to allow the use of the <B>undo button</B>
-	 * <IMG src="doc-files/calendar-undo.png" align=center>.
+	 * <IMG src="doc-files/calendar-undo.png" alt="">.
 	 */
 	public static enum EUseDefaultDate {kEnabled, kDisabled};
 
@@ -162,12 +151,12 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	/**
 	 * Constructs a <CODE>JDateChooser</CODE> object and shows it on the screen.
 	 *
-	 * @param owner            the frame in which this dialog is to be displayed
-	 * @param title            the dialog's window title
-	 * @param dialogType       the type of dialog
-	 * @param defaultDateStamp the default <CODE>DateStamp</CODE> used when the calendar is shown
-	 * @param useDefaultDate   an <CODE>EUseDefaultDate</CODE> switch for enabling/disabling the use of the default date
-	 * @see   JDateChooser#JDateChooser(JFrame,String,JDefaultDialog.EType,DateStamp,EUseDefaultDate,JDefaultDialog.EActivation)
+	 * @param owner             the frame in which this dialog is to be displayed
+	 * @param title             the dialog's window title
+	 * @param dialogType        the type of dialog
+	 * @param defaultDateStamp  the default <CODE>DateStamp</CODE> used when the calendar is shown
+	 * @param useDefaultDate    an <CODE>EUseDefaultDate</CODE> switch for enabling/disabling the use of the default date
+	 * @see                     JDateChooser#JDateChooser(JFrame,String,JDefaultDialog.EType,DateStamp,EUseDefaultDate,JDefaultDialog.EActivation)
 	 */
 	public JDateChooser(JFrame owner, String title, JDefaultDialog.EType dialogType, DateStamp defaultDateStamp, EUseDefaultDate useDefaultDate)
 	{
@@ -177,15 +166,15 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	/**
 	 * Constructs a <CODE>JDateChooser</CODE> object and allows postponing of activation.
 	 *
-	 * @param owner            the frame in which this dialog is to be displayed
-	 * @param title            the dialog's window title
-	 * @param dialogType       the type of dialog
-	 * @param defaultDateStamp the default <CODE>DateStamp</CODE> used when the calendar is shown
-	 * @param useDefaultDate   an <CODE>EUseDefaultDate</CODE> switch for enabling/disabling the use of the default date
-	 * @param activation       an <CODE>EActivation</CODE> flag indicating whether or not the dialog box should be made
-	 *                         visible at the end of the constructor (which can be useful for <B>caching</B>)
-	 * @see   JDateChooser#JDateChooser(JFrame,String,JDefaultDialog.EType,DateStamp,EUseDefaultDate)
-	 * @see   JDefaultDialog.EActivation
+	 * @param owner             the frame in which this dialog is to be displayed
+	 * @param title             the dialog's window title
+	 * @param dialogType        the type of dialog
+	 * @param defaultDateStamp  the default <CODE>DateStamp</CODE> used when the calendar is shown
+	 * @param useDefaultDate    an <CODE>EUseDefaultDate</CODE> switch for enabling/disabling the use of the default date
+	 * @param activation        an <CODE>EActivation</CODE> flag indicating whether or not the dialog box should be made
+	 *                          visible at the end of the constructor (which can be useful for <B>caching</B>)
+	 * @see                     JDateChooser#JDateChooser(JFrame,String,JDefaultDialog.EType,DateStamp,EUseDefaultDate)
+	 * @see                     JDefaultDialog.EActivation
 	 */
 	public JDateChooser(JFrame owner, String title, JDefaultDialog.EType dialogType, DateStamp defaultDateStamp, EUseDefaultDate useDefaultDate, JDefaultDialog.EActivation activation)
 	{
@@ -272,9 +261,9 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	 * <P>
 	 * The default date is initially shown in the calendar, it is furthermore
 	 * accessible via the optional <B>undo button</B>
-	 * <IMG src="doc-files/calendar-undo.png" align=center>.
+	 * <IMG src="doc-files/calendar-undo.png" alt="">.
 	 *
-	 * @param defaultDateStamp the default date for the date chooser
+	 * @param defaultDateStamp  the default date for the date chooser
 	 */
 	public void setDefaultDate(DateStamp defaultDateStamp)
 	{
@@ -504,6 +493,8 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	}
 
 	/**
+	 * @param selectedDay  -
+	 * @return             -
 	 */
 	private int preventDateOverlow(int selectedDay)
 	{
@@ -524,6 +515,8 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	}
 
 	/**
+	 * @param month  -
+	 * @return       -
 	 */
 	private int getMonthIndex(String month)
 	{

@@ -43,7 +43,7 @@ public class SystemHive implements Hive
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * The parameterized contents of the hive </CODE>Object</CODE>s are referenced/looked up
+	 * The parameterized contents of the hive <CODE>Object</CODE>s are referenced/looked up
 	 * as <CODE>String</CODE>s).
 	 */
 	public Hashtable<String,Object> fContents;

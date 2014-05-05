@@ -31,9 +31,7 @@ import java.math.*;
  * <P>
  * All methods in this class are static, so they should be invoked as:
  * <P>
- * <UL>
- *   <CODE>... = MathTools.method(...);</CODE>
- * </UL>
+ * <CODE>... = MathTools.method(...);</CODE>
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
@@ -54,7 +52,9 @@ public final class MathTools
 	 * CONSTRUCTORS *
 	 ****************/
 
-	// prevent instantiation
+	/**
+	 * Prevent instantiation.
+	 */
 	private MathTools()
 	{
 	}
@@ -66,7 +66,7 @@ public final class MathTools
 	/**
 	 * Calculates the fractional part of a <CODE>double</CODE>.
 	 *
-	 * @param  x the <CODE>double</CODE> to calculate the fractional part of
+	 * @param x  the <CODE>double</CODE> to calculate the fractional part of
 	 * @return   the fractional part of the <CODE>double</CODE>
 	 */
 	public static double frac(double x)
@@ -77,10 +77,10 @@ public final class MathTools
 	/**
 	 * Calculates the square of a <CODE>double</CODE>.
 	 *
-	 * @param  x the <CODE>double</CODE> to be squared
+	 * @param x  the <CODE>double</CODE> to be squared
 	 * @return   the squared <CODE>double</CODE>
-	 * @see    MathTools#cube(double)
-	 * @see    MathTools#quadr(double)
+	 * @see      MathTools#cube(double)
+	 * @see      MathTools#quadr(double)
 	 */
 	public static double sqr(double x)
 	{
@@ -90,10 +90,10 @@ public final class MathTools
 	/**
 	 * Calculates the cube of a <CODE>double</CODE>.
 	 *
-	 * @param  x the <CODE>double</CODE> to be cubed
-	 * @return the cubed <CODE>double</CODE>
-	 * @see    MathTools#sqr(double)
-	 * @see    MathTools#quadr(double)
+	 * @param x  the <CODE>double</CODE> to be cubed
+	 * @return   the cubed <CODE>double</CODE>
+	 * @see      MathTools#sqr(double)
+	 * @see      MathTools#quadr(double)
 	 */
 	public static double cube(double x)
 	{
@@ -103,10 +103,10 @@ public final class MathTools
 	/**
 	 * Calculates the quadratic of a <CODE>double</CODE>.
 	 *
-	 * @param  x the <CODE>double</CODE> to be quadrated
+	 * @param x  the <CODE>double</CODE> to be quadrated
 	 * @return   the quadrated <CODE>double</CODE>
-	 * @see    MathTools#sqr(double)
-	 * @see    MathTools#cube(double)
+	 * @see      MathTools#sqr(double)
+	 * @see      MathTools#cube(double)
 	 */
 	public static double quadr(double x)
 	{
@@ -116,9 +116,9 @@ public final class MathTools
 	/**
 	 * Calculates the factorial of a <CODE>double</CODE>.
 	 *
-	 * @param  n the <CODE>double</CODE> to calculate the factorial for
+	 * @param n  the <CODE>double</CODE> to calculate the factorial for
 	 * @return   the factorial of the specified <CODE>double</CODE>
-	 * @see    MathTools#facApprox(double)
+	 * @see      MathTools#facApprox(double)
 	 */
 	public static double fac(double n)
 	{
@@ -133,9 +133,9 @@ public final class MathTools
 	/**
 	 * Calculates the approximated factorial of a <CODE>double</CODE> (using Stirling's formula).
 	 *
-	 * @param  n the <CODE>double</CODE> to calculate the approximated factorial for
+	 * @param n  the <CODE>double</CODE> to calculate the approximated factorial for
 	 * @return   the approximated factorial of the specified <CODE>double</CODE>
-	 * @see    MathTools#fac(double)
+	 * @see      MathTools#fac(double)
 	 */
 	public static double facApprox(double n)
 	{
@@ -149,23 +149,21 @@ public final class MathTools
 	 * Both <CODE>doubles x</CODE> and <CODE>y</CODE> are used as y / x
 	 * (<CODE>x</CODE> is allowed to be zero). The arc tangent will be a <B>positive angle</B>,
 	 * lying in [0,2*PI]. The following cases are considered:
-	 * <P>
 	 * <UL>
-	 *   <LI><CODE>x</CODE> >= 0, <CODE>y</CODE> >= 0: 0 <= <CODE>atan(x,y)</CODE> <= PI/2</LI>
-	 *   <LI><CODE>x</CODE> <= 0, <CODE>y</CODE> >= 0: PI/2 <= <CODE>atan(x,y)</CODE> <= PI</LI>
-	 *   <LI><CODE>x</CODE> <= 0, <CODE>y</CODE> <= 0: PI <= <CODE>atan(x,y)</CODE> <= 3*PI/2</LI>
-	 *   <LI><CODE>x</CODE> >= 0, <CODE>y</CODE> <= 0: 3*PI/2 <= <CODE>atan(x,y)</CODE> <= 2*PI</LI>
+	 *   <LI><CODE>x</CODE> &ge; 0, <CODE>y</CODE> &ge; 0: 0 &le; <CODE>atan(x,y)</CODE> &le; PI/2</LI>
+	 *   <LI><CODE>x</CODE> &le; 0, <CODE>y</CODE> &ge; 0: PI/2 &le; <CODE>atan(x,y)</CODE> &le; PI</LI>
+	 *   <LI><CODE>x</CODE> &le; 0, <CODE>y</CODE> &le; 0: PI &le; <CODE>atan(x,y)</CODE> &le; 3*PI/2</LI>
+	 *   <LI><CODE>x</CODE> &ge; 0, <CODE>y</CODE> &le; 0: 3*PI/2 &le; <CODE>atan(x,y)</CODE> &le; 2*PI</LI>
 	 * </UL>
 	 * <P>
 	 * With these two special cases:
-	 * <P>
 	 * <UL>
-	 *   <LI><CODE>x</CODE> = 0, <CODE>y</CODE> > 0: <CODE>atan(x,y)</CODE> = PI/2</LI>
-	 *   <LI><CODE>x</CODE> = 0, <CODE>y</CODE> < 0: <CODE>atan(x,y)</CODE> = 3*PI/2</LI>
+	 *   <LI><CODE>x</CODE> = 0, <CODE>y</CODE> &gt; 0: <CODE>atan(x,y)</CODE> = PI/2</LI>
+	 *   <LI><CODE>x</CODE> = 0, <CODE>y</CODE> &lt; 0: <CODE>atan(x,y)</CODE> = 3*PI/2</LI>
 	 * </UL>
 	 *
-	 * @param  x the denominator of the <CODE>double</CODE> to calculate the arc tangent of
-	 * @param  y the numerator of the <CODE>double</CODE> to calculate the arc tangent of
+	 * @param x  the denominator of the <CODE>double</CODE> to calculate the arc tangent of
+	 * @param y  the numerator of the <CODE>double</CODE> to calculate the arc tangent of
 	 * @return   the arc tangent of the <CODE>doubles</CODE>
 	 */
 	public static double atan(double x, double y)
@@ -193,8 +191,8 @@ public final class MathTools
 	/**
 	 * Calculates the unnormalised sinc (sinus cardinalis) function of a <CODE>double</CODE>.
 	 *
-	 * @param x the <CODE>double</CODE> to calculate the unnormalised sinc of
-	 * @return the unnormalised sinc of the <CODE>double</CODE>
+	 * @param x  the <CODE>double</CODE> to calculate the unnormalised sinc of
+	 * @return   the unnormalised sinc of the <CODE>double</CODE>
 	 */
 	public static double sinc(double x)
 	{
@@ -209,8 +207,8 @@ public final class MathTools
 	/**
 	 * Calculates the normalised sinc (sinus cardinalis) function of a <CODE>double</CODE>.
 	 *
-	 * @param x the <CODE>double</CODE> to calculate the normalised sinc of
-	 * @return the normalised sinc of the <CODE>double</CODE>
+	 * @param x  the <CODE>double</CODE> to calculate the normalised sinc of
+	 * @return   the normalised sinc of the <CODE>double</CODE>
 	 */
 	public static double sincn(double x)
 	{
@@ -225,9 +223,9 @@ public final class MathTools
 	/**
 	 * Converts degrees to radians.
 	 *
-	 * @param  degrees the number of degrees to convert
-	 * @return the number of degrees converted to radians
-	 * @see    MathTools#rad2deg(double)
+	 * @param  degrees  the number of degrees to convert
+	 * @return          the number of degrees converted to radians
+	 * @see             MathTools#rad2deg(double)
 	 */
 	public static double deg2rad(double degrees)
 	{
@@ -237,9 +235,9 @@ public final class MathTools
 	/**
 	 * Converts radians to degrees.
 	 *
-	 * @param  radians the radians to convert
-	 * @return the radians converted to number of degrees
-	 * @see    MathTools#deg2rad(double)
+	 * @param radians  the radians to convert
+	 * @return         the radians converted to number of degrees
+	 * @see            MathTools#deg2rad(double)
 	 */
 	public static double rad2deg(double radians)
 	{
@@ -249,11 +247,11 @@ public final class MathTools
 	/**
 	 * Clips an <CODE>int</CODE> between two extrema.
 	 *
-	 * @param  value   the <CODE>int</CODE> to clip between the two extrema
-	 * @param  minimum the lower boundary to clip the <CODE>int</CODE>
-	 * @param  maximum the upper boundary to clip the <CODE>int</CODE>
-	 * @return         the <CODE>int</CODE> clipped between the two extrema
-	 * @see MathTools#clip(double,double,double)
+	 * @param  value    the <CODE>int</CODE> to clip between the two extrema
+	 * @param  minimum  the lower boundary to clip the <CODE>int</CODE>
+	 * @param  maximum  the upper boundary to clip the <CODE>int</CODE>
+	 * @return          the <CODE>int</CODE> clipped between the two extrema
+	 * @see             MathTools#clip(double,double,double)
 	 */
 	public static int clip(int value, int minimum, int maximum)
 	{
@@ -263,11 +261,11 @@ public final class MathTools
 	/**
 	 * Clips a <CODE>double</CODE> between two extrema.
 	 *
-	 * @param  value   the <CODE>double</CODE> to clip between the two extrema
-	 * @param  minimum the lower boundary to clip the <CODE>double</CODE>
-	 * @param  maximum the upper boundary to clip the <CODE>double</CODE>
-	 * @return         the <CODE>double</CODE> clipped between the two extrema
-	 * @see MathTools#clip(int,int,int)
+	 * @param  value    the <CODE>double</CODE> to clip between the two extrema
+	 * @param  minimum  the lower boundary to clip the <CODE>double</CODE>
+	 * @param  maximum  the upper boundary to clip the <CODE>double</CODE>
+	 * @return          the <CODE>double</CODE> clipped between the two extrema
+	 * @see             MathTools#clip(int,int,int)
 	 */
 	public static double clip(double value, double minimum, double maximum)
 	{
@@ -283,10 +281,10 @@ public final class MathTools
 	}
 
 	/**
-	 * Forces a partial order on the components of two points p1 and p2 such that (x1,y1) <= (x2,y2).
+	 * Forces a partial order on the components of two points p1 and p2 such that (x1,y1) &le; (x2,y2).
 	 *
-	 * @param p1 the first point
-	 * @param p2 the second point
+	 * @param p1  the first point
+	 * @param p2  the second point
 	 */	
 	public static void forcePartialOrder(Point2D.Double p1, Point2D.Double p2)
 	{
@@ -314,7 +312,8 @@ public final class MathTools
 	/**
 	 * Searches incrementally for the minimum value in an array.
 	 * 
-	 * @param x the array to search in
+	 * @param x  the array to search in
+	 * @return   the minimum value in the array
 	 */
 	public static double findMinimum(double[] x)
 	{
@@ -330,7 +329,8 @@ public final class MathTools
 	/**
 	 * Searches incrementally for the maximum value in an array.
 	 * 
-	 * @param x the array to search in
+	 * @param x  the array to search in
+	 * @return   the maximum value in the array
 	 */
 	public static double findMaximum(double[] x)
 	{
@@ -349,10 +349,10 @@ public final class MathTools
 	 * This method assumes that the specified <CODE>value</CODE> lies in the interval [0,1], with 0.0 corresponding to the
 	 * lower boundary (<CODE>from</CODE>) and 1.0 to the upper boundary (<CODE>to</CODE>).
 	 *
-	 * @param  value the <CODE>double</CODE> to interpolate linearly with respect to two boundary values
-	 * @param  from  the lower boundary to use for the linear interpolation (corresponding to <CODE>value</CODE> = 0.0)
-	 * @param  to    the upper boundary to use for the linear interpolation (corresponding to <CODE>value</CODE> = 1.0)
-	 * @return       the linear interpolation of the specified <CODE>double</CODE> between the two boundary values
+	 * @param  value  the <CODE>double</CODE> to interpolate linearly with respect to two boundary values
+	 * @param  from   the lower boundary to use for the linear interpolation (corresponding to <CODE>value</CODE> = 0.0)
+	 * @param  to     the upper boundary to use for the linear interpolation (corresponding to <CODE>value</CODE> = 1.0)
+	 * @return        the linear interpolation of the specified <CODE>double</CODE> between the two boundary values
 	 */
 	public static double normalisedLinearInterpolation(double value, double from, double to)
 	{
@@ -361,22 +361,19 @@ public final class MathTools
 
 	/**
 	 * Determines the indices of the 2 values surrounding the searched value in an array of <CODE>x.length</CODE> elements, such that:
-	 * <P>
-	 * <UL>
-	 *   <CODE>x[fLowerBound] <= xSearch < x[fUpperBound]</CODE>
-	 * </UL>
+	 * <CODE>x[fLowerBound] &le; xSearch &lt; x[fUpperBound]</CODE>
 	 * <P>
 	 * There are 2 special cases:
 	 * <UL>
-	 *   <LI><CODE>xSearch < min(x)</CODE> leads to <CODE>fLowerBound = fUpperBound = 0</CODE></LI>
-	 *   <LI><CODE>xSearch >= max(x)</CODE> leads to <CODE>fLowerBound = fUpperBound = x.length - 1</CODE></LI>
+	 *   <LI><CODE>xSearch &lt; min(x)</CODE> leads to <CODE>fLowerBound = fUpperBound = 0</CODE></LI>
+	 *   <LI><CODE>xSearch &ge; max(x)</CODE> leads to <CODE>fLowerBound = fUpperBound = x.length - 1</CODE></LI>
 	 * </UL>
 	 * <P>
 	 * <B>Note that this method assumes that the elements in <CODE>x</CODE> are sorted!</B>
 	 *
-	 * @param  x an array of <CODE>double</CODE>s containing the values
-	 * @param  xSearch the value to search for
-	 * @return an <CODE>ArraySearchBounds</CODE> object containing the indices of the 2 values surrounding the searched value
+	 * @param x        an array of <CODE>double</CODE>s containing the values
+	 * @param xSearch  the value to search for
+	 * @return         an <CODE>ArraySearchBounds</CODE> object containing the indices of the 2 values surrounding the searched value
 	 */
 	public static ArraySearchBounds searchArrayBounds(double[] x, double xSearch)
 	{
@@ -417,7 +414,7 @@ public final class MathTools
 	/**
 	 * Checks whether or not a number is even.
 	 *
-	 * @param  n the number to check
+	 * @param n  the number to check
 	 * @return   <CODE>true</CODE> when <I>n</I> is even, <CODE>false</CODE> if it's odd
 	 */
 	public static boolean isEven(int n)
@@ -428,7 +425,7 @@ public final class MathTools
 	/**
 	 * Checks whether or not a number is odd.
 	 *
-	 * @param  n the number to check
+	 * @param n  the number to check
 	 * @return   <CODE>true</CODE> when <I>n</I> is odd, <CODE>false</CODE> if it's even
 	 */
 	public static boolean isOdd(int n)
@@ -439,7 +436,7 @@ public final class MathTools
 	/**
 	 * Converts a number of bytes to kilobytes (1 kB = 1000 B).
 	 *
-	 * @param  nrOfBytes the number of bytes to convert
+	 * @param nrOfBytes  the number of bytes to convert
 	 * @return           the number of kilobytes corresponding to the number of bytes
 	 */
 	public static double convertBTokB(long nrOfBytes)
@@ -450,7 +447,7 @@ public final class MathTools
 	/**
 	 * Converts a number of bytes to kibibytes (1 KiB = 1024 B).
 	 *
-	 * @param  nrOfBytes the number of bytes to convert
+	 * @param nrOfBytes  the number of bytes to convert
 	 * @return           the number of kibibytes corresponding to the number of bytes
 	 */
 	public static double convertBToKiB(long nrOfBytes)
@@ -461,7 +458,7 @@ public final class MathTools
 	/**
 	 * Converts a number of bytes to megabytes (1 MB = 1000^2 B).
 	 *
-	 * @param  nrOfBytes the number of bytes to convert
+	 * @param nrOfBytes  the number of bytes to convert
 	 * @return           the number of megabytes corresponding to the number of bytes
 	 */
 	public static double convertBToMB(long nrOfBytes)
@@ -472,7 +469,7 @@ public final class MathTools
 	/**
 	 * Converts a number of bytes to mebibytes (1 MiB = 1024^2 B).
 	 *
-	 * @param  nrOfBytes the number of bytes to convert
+	 * @param nrOfBytes  the number of bytes to convert
 	 * @return           the number of mebibytes corresponding to the number of bytes
 	 */
 	public static double convertBToMiB(long nrOfBytes)
@@ -483,7 +480,7 @@ public final class MathTools
 	/**
 	 * Converts a number of bytes to gigabytes (1 GB = 1000^3 B).
 	 *
-	 * @param  nrOfBytes the number of bytes to convert
+	 * @param nrOfBytes  the number of bytes to convert
 	 * @return           the number of gigabytes corresponding to the number of bytes
 	 */
 	public static double convertBToGB(long nrOfBytes)
@@ -494,7 +491,7 @@ public final class MathTools
 	/**
 	 * Converts a number of bytes to gibibytes (1 GiB = 1024^3 B).
 	 *
-	 * @param  nrOfBytes the number of bytes to convert
+	 * @param nrOfBytes  the number of bytes to convert
 	 * @return           the number of gibibytes corresponding to the number of bytes
 	 */
 	public static double convertBToGiB(long nrOfBytes)
@@ -505,7 +502,7 @@ public final class MathTools
 	/**
 	 * Converts a number of bytes to terabytes (1 GB = 1000^4 B).
 	 *
-	 * @param  nrOfBytes the number of bytes to convert
+	 * @param nrOfBytes  the number of bytes to convert
 	 * @return           the number of terabytes corresponding to the number of bytes
 	 */
 	public static double convertBToTB(long nrOfBytes)
@@ -516,7 +513,7 @@ public final class MathTools
 	/**
 	 * Converts a number of bytes to tebibytes (1 TiB = 1024^4 B).
 	 *
-	 * @param  nrOfBytes the number of bytes to convert
+	 * @param nrOfBytes  the number of bytes to convert
 	 * @return           the number of tebibytes corresponding to the number of bytes
 	 */
 	public static double convertBToTiB(long nrOfBytes)
@@ -527,7 +524,7 @@ public final class MathTools
 	/**
 	 * Rounds a <CODE>double</CODE> to a <CODE>long</CODE>.
 	 *
-	 * @param  x the <CODE>double</CODE> to round
+	 * @param x  the <CODE>double</CODE> to round
 	 * @return   a <CODE>long</CODE> representing the rounded <CODE>double</CODE>
 	 */
 	public static long round(double x)
@@ -538,8 +535,8 @@ public final class MathTools
 	/**
 	 * Takes a logarithm of a <CODE>double</CODE> in a custom base.
 	 *
-	 * @param  x    the <CODE>double</CODE> to take the logarithm of
-	 * @param  base the base of the logarithm
+	 * @param x     the <CODE>double</CODE> to take the logarithm of
+	 * @param base  the base of the logarithm
 	 * @return      a <CODE>double</CODE> representing the calculated logarithm in the specified base
 	 */
 	public static double logBase(double x, double base)
@@ -550,7 +547,7 @@ public final class MathTools
 	/**
 	 * Returns whether or not a given <CODE>long</CODE> number is prime.
 	 *
-	 * @param  x the <CODE>long</CODE> to test for primality
+	 * @param x  the <CODE>long</CODE> to test for primality
 	 * @return   <CODE>true</CODE> if the given <CODE>long</CODE> is prime, <CODE>false</CODE> otherwise 
 	 */
 	public static boolean isPrime(long x)
@@ -562,8 +559,8 @@ public final class MathTools
 	/**
 	 * Finds all local extreme values (and their indices) in an array.
 	 *
-	 * @param  x the sequence to find all local extreme values for
-	 * @return all encountered local extreme values
+	 * @param x  the sequence to find all local extreme values for
+	 * @return   all encountered local extreme values
 	 */
 	public static Extrema findExtrema(double[] x)
 	{
@@ -632,9 +629,9 @@ public final class MathTools
 	/**
 	 * Provides a kernel.
 	 *
-	 * @param u the point where the kernel is to be evaluated
-	 * @param kernelType the type of kernel to use in the evaluation
-	 * @return the kernel evaluated in <I>u</I>
+	 * @param u           the point where the kernel is to be evaluated
+	 * @param kernelType  the type of kernel to use in the evaluation
+	 * @return            the kernel evaluated in <I>u</I>
 	 */
 	public static double getKernel(double u, EKernelType kernelType)
 	{
@@ -670,11 +667,11 @@ public final class MathTools
 	/**
 	 * Performs kernel smoothing on a 1D function specified by lookup tables for in the (X,Y) plane.
 	 * 
-	 * @param  functionLookupTable the lookup table for the specified 1D function
-	 * @param  kernelType the type of kernel to use
-	 * @param  bandwidth the bandwidth of the kernel
-	 * @param  nrOfSupportPoints the number of (X,Y) values to use for the smoothened 1D function
-	 * @return the smoothed data in a new lookup table
+	 * @param  functionLookupTable  the lookup table for the specified 1D function
+	 * @param  kernelType           the type of kernel to use
+	 * @param  bandwidth            the bandwidth of the kernel
+	 * @param  nrOfSupportPoints    the number of (X,Y) values to use for the smoothened 1D function
+	 * @return                      the smoothed data in a new lookup table
 	 */
 	public static FunctionLookupTable getKernelSmoother(FunctionLookupTable functionLookupTable, EKernelType kernelType, double bandwidth, int nrOfSupportPoints)
 	{

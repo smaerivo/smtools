@@ -30,9 +30,7 @@ import java.awt.geom.*;
  * <P>
  * This class maps 2D-data points between two convex quadrilaterals:
  * <P>
- * <UL>
- *   <IMG src="doc-files/quad-quad-mapping.png">
- * </UL>
+ * <IMG src="doc-files/quad-quad-mapping.png" alt="">
  * <P>
  * Note: it is assumed that the X axis points to the right and the Y axis points upwards.
  * <P>
@@ -56,10 +54,10 @@ public final class QuadToQuadMapping
 	/**
 	 * Constructs a <CODE>QuadToQuadMapping</CODE> object based on the two perspective mappings between quadrilaterals.
 	 *
-	 * @param quad1Mapping the first perspective mapping to use
-	 * @param quad2Mapping the second perspective mapping to use
-	 * @see   QuadToQuadMapping#QuadToQuadMapping(QuadMapping,QuadMapping)
-	 * @see   QuadToQuadMapping#set(QuadMapping,QuadMapping)
+	 * @param quad1Mapping  the first perspective mapping to use
+	 * @param quad2Mapping  the second perspective mapping to use
+	 * @see                 QuadToQuadMapping#QuadToQuadMapping(QuadMapping,QuadMapping)
+	 * @see                 QuadToQuadMapping#set(QuadMapping,QuadMapping)
 	 */
 	public QuadToQuadMapping(QuadMapping quad1Mapping, QuadMapping quad2Mapping)
 	{
@@ -69,10 +67,10 @@ public final class QuadToQuadMapping
 	/**
 	 * Constructs a <CODE>QuadToQuadMapping</CODE> object based on the two specified quadrilaterals.
 	 *
-	 * @param q1 the first quadrilateral to use for the perspective mapping
-	 * @param q2 the second quadrilateral to use for the perspective mapping
-	 * @see   QuadToQuadMapping#QuadToQuadMapping(QuadMapping,QuadMapping)
-	 * @see   QuadToQuadMapping#set(QuadMapping,QuadMapping)
+	 * @param q1  the first quadrilateral to use for the perspective mapping
+	 * @param q2  the second quadrilateral to use for the perspective mapping
+	 * @see       QuadToQuadMapping#QuadToQuadMapping(QuadMapping,QuadMapping)
+	 * @see       QuadToQuadMapping#set(QuadMapping,QuadMapping)
 	 */
 	public QuadToQuadMapping(Quadrilateral q1, Quadrilateral q2)
 	{
@@ -86,8 +84,8 @@ public final class QuadToQuadMapping
 	/**
 	 * Sets the perspective mapping based on the two perspective mappings between quadrilaterals.
 	 *
-	 * @param quad1Mapping the first perspective mapping to use
-	 * @param quad2Mapping the second perspective mapping to use
+	 * @param quad1Mapping  the first perspective mapping to use
+	 * @param quad2Mapping  the second perspective mapping to use
 	 */
 	public void set(QuadMapping quad1Mapping, QuadMapping quad2Mapping)
 	{
@@ -98,7 +96,7 @@ public final class QuadToQuadMapping
 	/**
 	 * Maps a 2D-datapoint in the first quadrilateral to a 2D-data point in the second quadrilateral.
 	 *
-	 * @param  p the 2D-data point in the first quadrilateral
+	 * @param p  the 2D-data point in the first quadrilateral
 	 * @return   the corresponding 2D-data point in the second quadrilateral
 	 */
 	public Point2D.Double mapQuad1ToQuad2(Point2D.Double p)
@@ -109,8 +107,8 @@ public final class QuadToQuadMapping
 	/**
 	 * Maps a 2D-data point in the first quadrilateral to a 2D-data point in the second quadrilateral.
 	 *
-	 * @param  x the x coordinate of the 2D-data point in the first quadrilateral
-	 * @param  y the y coordinate of the 2D-data point in the first quadrilateral
+	 * @param x  the x coordinate of the 2D-data point in the first quadrilateral
+	 * @param y  the y coordinate of the 2D-data point in the first quadrilateral
 	 * @return   the corresponding 2D-data point in the second quadrilateral
 	 */
 	public Point2D.Double mapQuad1ToQuad2(double x, double y)
@@ -121,7 +119,7 @@ public final class QuadToQuadMapping
 	/**
 	 * Maps a 2D-data point in the second quadrilateral to a 2D-data point in the first quadrilateral.
 	 *
-	 * @param  p the 2D-data point in the second quadrilateral
+	 * @param p  the 2D-data point in the second quadrilateral
 	 * @return   the corresponding 2D-data point in the first quadrilateral
 	 */
 	public Point2D.Double mapQuad2ToQuad1(Point2D.Double p)
@@ -132,8 +130,8 @@ public final class QuadToQuadMapping
 	/**
 	 * Maps a 2D-data point in the second quadrilateral to a 2D-data point in the first quadrilateral.
 	 *
-	 * @param  x the x coordinate of the 2D-data point in the second quadrilateral
-	 * @param  y the y coordinate of the 2D-data point in the second quadrilateral
+	 * @param x  the x coordinate of the 2D-data point in the second quadrilateral
+	 * @param y  the y coordinate of the 2D-data point in the second quadrilateral
 	 * @return   the corresponding 2D-data point in the first quadrilateral
 	 */
 	public Point2D.Double mapQuad2ToQuad1(double x, double y)

@@ -31,8 +31,8 @@ import javax.swing.event.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
 import org.sm.smtools.math.*;
-import org.sm.smtools.miscellaneous.*;
 import org.sm.smtools.swing.util.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JTimeChooser</CODE> class provides a dialog box for choosing a time.
@@ -40,27 +40,21 @@ import org.sm.smtools.swing.util.*;
  * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * The dialog box is <I>modal</I>, <I>non-resizable</I> and contains <I>"Ok"</I> and <I>"Cancel" buttons</I>
- * to close it. Here's an example of a time chooser (Microsoft Windows L&F):
+ * to close it. Here's an example of a time chooser (Microsoft Windows L&amp;F):
  * <P>
- * <UL>
- *   <IMG src="doc-files/time-chooser-windows.png">
- * </UL>
+ * <IMG src="doc-files/time-chooser-windows.png" alt="">
  * <P>
  * As can be seen, the time chooser's GUI consists of two main areas:
- * <P>
  * <UL>
  *   <LI>An <B>analogue clock</B> showing the currently selected hour, minute and second. An
  *       <B>optional digital clock</B> can also be shown in the clock's panel. Both clocks are
  *       updated in real-time.</LI>
- *   <P>
  *   <LI>Four <B><CODE>JSpinner</CODE></B>s for selecting the hour, minute, second and millisecond.</LI>
- *   <P>
  * </UL>
- * There's also the <B>exclamation button</B> <IMG src="doc-files/calendar-exclamation.png" align=center>
+ * There's also the <B>exclamation button</B> <IMG src="doc-files/calendar-exclamation.png" alt="">
  * that jumps to the current time (and selects it).
  * <P>
  * Depending on the desired functionality, the time chooser can be allowed to select only:
- * <P>
  * <UL>
  *   <LI>the hour and minute,</LI>
  *   <LI>the hour, minute and second,</LI>
@@ -70,25 +64,20 @@ import org.sm.smtools.swing.util.*;
  * When the user closes the time chooser's dialog box, its state should be queried as follows:
  * <P>
  * <CODE>
- * <PRE>
- *   if (!myTimeChooser.isCancelled()) {
- *     TimeStamp timeStamp = myTimeChooser.getSelectedTime();
- *     // rest of code
- *   }
- * </PRE>
+ *   if (!myTimeChooser.isCancelled()) {<BR>
+ *     TimeStamp timeStamp = myTimeChooser.getSelectedTime();<BR>
+ *     // rest of code<BR>
+ *   }<BR>
  * </CODE>
  * <P>
  * The clock's digits can be set to either always show the numbers 1 to 12, or to show the
  * numbers 1 to 12 and 13 to 24 in the AM and PM time periods respectively.
  * <P>
- * <B><U>Important remark</U></B>
- * <P>
- * <UL>
- *   This GUI-component supports <B>caching</B> in the <I>SMTools</I> framework. Using the
- *   {@link JTimeChooser#JTimeChooser(JFrame,String,JDefaultDialog.EType,TimeStamp,EType,EClockDigits,EUpdating,EDigitalClock)} constructor, dialog
- *   activation can be postponed until an explicit call to {@link JDefaultDialog#activate}
- *   is made.
- * </UL>
+ * <B><U>Important remark</U></B><BR>
+ * This GUI-component supports <B>caching</B> in the <I>SMTools</I> framework. Using the
+ * {@link JTimeChooser#JTimeChooser(JFrame,String,JDefaultDialog.EType,TimeStamp,EType,EClockDigits,EUpdating,EDigitalClock)} constructor, dialog
+ * activation can be postponed until an explicit call to {@link JDefaultDialog#activate}
+ * is made.
  * <P>
  * Note that the system resources must be initialised (see {@link JARResources#fSystemResources}).
  * <P>
@@ -152,29 +141,28 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 	 * Constructs a <CODE>JTimeChooser</CODE> object and shows it on the screen.
 	 * <P>
 	 * Depending on the desired functionality, the time chooser can be allowed to select only:
-	 * <P>
 	 * <UL>
 	 *   <LI>the hour and minute,</LI>
 	 *   <LI>the hour, minute and second,</LI>
 	 *   <LI>or the hour, minute, second and millisecond.</LI>
 	 * </UL>
 	 *
-	 * @param owner        the frame in which this dialog is to be displayed
-	 * @param title        the dialog's window title
-	 * @param dialogType   the type of dialog
-	 * @param timeStamp    the initial <CODE>TimeStamp</CODE> used when the time chooser is shown
-	 * @param type         the <CODE>EType</CODE> type of time chooser
-	 * @param clockDigits  an <CODE>EClockDigits</CODE> flag indicating whether or not the clock's digits should
-	 *                     always be numbered from 1 to 12, or from 1 to 12 and 13 to 24 in AM and PM respectively
-	 * @param updating     an <CODE>EUpdating</CODE> flag indicating whether or not the clock's hands should
-	 *                     be updated continuously
-	 * @param digitalClock an <CODE>EDigitalClock</CODE> flag indicating whether or not a digital indication of
-	 *                     the current time should be shown
-	 * @see   JTimeChooser#JTimeChooser(JFrame,String,JDefaultDialog.EType,TimeStamp,EType,EClockDigits,EUpdating,EDigitalClock,JDefaultDialog.EActivation)
-	 * @see   JTimeChooser.EType
-	 * @see   JTimeChooser.EClockDigits
-	 * @see   JTimeChooser.EUpdating
-	 * @see   JTimeChooser.EDigitalClock
+	 * @param owner         the frame in which this dialog is to be displayed
+	 * @param title         the dialog's window title
+	 * @param dialogType    the type of dialog
+	 * @param timeStamp     the initial <CODE>TimeStamp</CODE> used when the time chooser is shown
+	 * @param type          the <CODE>EType</CODE> type of time chooser
+	 * @param clockDigits   an <CODE>EClockDigits</CODE> flag indicating whether or not the clock's digits should
+	 *                      always be numbered from 1 to 12, or from 1 to 12 and 13 to 24 in AM and PM respectively
+	 * @param updating      an <CODE>EUpdating</CODE> flag indicating whether or not the clock's hands should
+	 *                      be updated continuously
+	 * @param digitalClock  an <CODE>EDigitalClock</CODE> flag indicating whether or not a digital indication of
+	 *                      the current time should be shown
+	 * @see                 JTimeChooser#JTimeChooser(JFrame,String,JDefaultDialog.EType,TimeStamp,EType,EClockDigits,EUpdating,EDigitalClock,JDefaultDialog.EActivation)
+	 * @see                 JTimeChooser.EType
+	 * @see                 JTimeChooser.EClockDigits
+	 * @see                 JTimeChooser.EUpdating
+	 * @see                 JTimeChooser.EDigitalClock
 	 */
 	public JTimeChooser(JFrame owner, String title, JDefaultDialog.EType dialogType, TimeStamp timeStamp, EType type, EClockDigits clockDigits, EUpdating updating, EDigitalClock digitalClock)
 	{
@@ -185,31 +173,30 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 	 * Constructs a <CODE>JTimeChooser</CODE> object and allows postponing of activation.
 	 * <P>
 	 * Depending on the desired functionality, the time chooser can be allowed to select only:
-	 * <P>
 	 * <UL>
 	 *   <LI>the hour and minute,</LI>
 	 *   <LI>the hour, minute and second,</LI>
 	 *   <LI>or the hour, minute, second and millisecond.</LI>
 	 * </UL>
 	 *
-	 * @param owner        the frame in which this dialog is to be displayed
-	 * @param title        the dialog's window title
-	 * @param dialogType   the type of dialog
-	 * @param timeStamp    the initial <CODE>TimeStamp</CODE> used when the time chooser is shown
-	 * @param type         the <CODE>EType</CODE> type of time chooser
-	 * @param clockDigits  an <CODE>EClockDigits</CODE> flag indicating whether or not the clock's digits should
-	 *                     always be numbered from 1 to 12, or from 1 to 12 and 13 to 24 in AM and PM respectively
-	 * @param updating     an <CODE>EUpdating</CODE> flag indicating whether or not the clock's hands should
-	 *                     be updated continuously
-	 * @param digitalClock an <CODE>EDigitalClock</CODE> flag indicating whether or not a digital indication of
-	 *                     the current time should be shown
-	 * @param activation   an <CODE>EActivation</CODE> flag indicating whether or not the dialog box should be made
-	 *                     visible at the end of the constructor (which can be useful for <B>caching</B>)
-	 * @see   JTimeChooser#JTimeChooser(JFrame,String,JDefaultDialog.EType,TimeStamp,EType,EClockDigits,EUpdating,EDigitalClock)
-	 * @see   JTimeChooser.EType
-	 * @see   JTimeChooser.EClockDigits
-	 * @see   JTimeChooser.EUpdating
-	 * @see   JTimeChooser.EDigitalClock
+	 * @param owner         the frame in which this dialog is to be displayed
+	 * @param title         the dialog's window title
+	 * @param dialogType    the type of dialog
+	 * @param timeStamp     the initial <CODE>TimeStamp</CODE> used when the time chooser is shown
+	 * @param type          the <CODE>EType</CODE> type of time chooser
+	 * @param clockDigits   an <CODE>EClockDigits</CODE> flag indicating whether or not the clock's digits should
+	 *                      always be numbered from 1 to 12, or from 1 to 12 and 13 to 24 in AM and PM respectively
+	 * @param updating      an <CODE>EUpdating</CODE> flag indicating whether or not the clock's hands should
+	 *                      be updated continuously
+	 * @param digitalClock  an <CODE>EDigitalClock</CODE> flag indicating whether or not a digital indication of
+	 *                      the current time should be shown
+	 * @param activation    an <CODE>EActivation</CODE> flag indicating whether or not the dialog box should be made
+	 *                      visible at the end of the constructor (which can be useful for <B>caching</B>)
+	 * @see                 JTimeChooser#JTimeChooser(JFrame,String,JDefaultDialog.EType,TimeStamp,EType,EClockDigits,EUpdating,EDigitalClock)
+	 * @see                 JTimeChooser.EType
+	 * @see                 JTimeChooser.EClockDigits
+	 * @see                 JTimeChooser.EUpdating
+	 * @see                 JTimeChooser.EDigitalClock
 	 */
 	public JTimeChooser(JFrame owner, String title, JDefaultDialog.EType dialogType, TimeStamp timeStamp, EType type, EClockDigits clockDigits, EUpdating updating, EDigitalClock digitalClock, JDefaultDialog.EActivation activation)
 	{
@@ -290,7 +277,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 	 * <P>
 	 * The default time is initially shown in the time chooser.
 	 *
-	 * @param defaultTimeStamp the default time for the time chooser
+	 * @param defaultTimeStamp  the default time for the time chooser
 	 */
 	public void setDefaultTime(TimeStamp defaultTimeStamp)
 	{
@@ -420,8 +407,8 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 	 * INNER CLASSES *
 	 *****************/
 
-	/** @author Sven Maerivoet<BR />
-	 All rights reserved.<BR />
+	/**
+	 * @author Sven Maerivoet
 	 */
 	private final class ClockPanel extends JPanel implements MouseListener, MouseMotionListener
 	{
@@ -446,6 +433,8 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		 * CONSTRUCTORS *
 		 ****************/
 
+		/**
+		 */
 		public ClockPanel(EUpdating updating, EDigitalClock digitalClock)
 		{
 			fUpdating = updating;
@@ -498,6 +487,8 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		 * PUBLIC METHODS *
 		 ******************/
 
+		/**
+		 */
 		@Override
 		public void paint(Graphics gr)
 		{
@@ -652,6 +643,8 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 			gr.fillOval(fCenterX - 3,fCenterY - 3,7,7);
 		}
 
+		/**
+		 */
 		public void putPixel(Graphics gr, int x, int y, Color color)
 		{
 			gr.setColor(color);
@@ -659,6 +652,8 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 		}
 
 		// the mouse-listener
+		/**
+		 */
 		@Override
 		public final void mouseClicked(MouseEvent e)
 		{
@@ -679,33 +674,45 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 			}
 		}
 
+		/**
+		 */
 		@Override
 		public final void mouseEntered(MouseEvent e)
 		{
 		}
 
+		/**
+		 */
 		@Override
 		public final void mouseExited(MouseEvent e)
 		{
 		}
 
+		/**
+		 */
 		@Override
 		public final void mousePressed(MouseEvent e)
 		{
 		}
 
+		/**
+		 */
 		@Override
 		public final void mouseReleased(MouseEvent e)
 		{
 		}
 
 		// the mouse-motion-listener
+		/**
+		 */
 		@Override
 		public final void mouseDragged(MouseEvent e)
 		{
 			mouseClicked(e);
 		}
 
+		/**
+		 */
 		@Override
 		public final void mouseMoved(MouseEvent e)
 		{

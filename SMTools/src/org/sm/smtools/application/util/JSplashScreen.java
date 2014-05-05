@@ -28,7 +28,7 @@ import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import org.sm.smtools.exceptions.*;
-import org.sm.smtools.miscellaneous.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JSplashScreen</CODE> class provides a splash screen for Swing-based GUIs.
@@ -37,29 +37,28 @@ import org.sm.smtools.miscellaneous.*;
  * <P>
  * When visible, the splash screen looks as follows:
  * <P>
- * <UL>
- *   <IMG src="doc-files/splash-screen.png">
- * </UL>
+ * <IMG src="doc-files/splash-screen.png" alt="">
  * <P>
  * As can be seen, there are three main areas:
- * <P>
  * <UL>
- *   <LI>An area where <B>custom content</B> can be shown.</LI>
- *   <P>
+ *   <LI>An area where <B>custom content</B> can be shown.
  *   <UL>
+ *     <LI>
  *     The custom content is passed as a <CODE>JLabel</CODE> to the <CODE>JSplashScreen</CODE>
  *     object via its constructor. Typically, an image is provided; for visual coherence, we
  *     suggest using a <CODE>JLabel</CODE>/image with a <B>maximum width of 500 pixels</B>.
+ *     </LI>
  *   </UL>
- *   <P>
+ *   </LI>
  *   <LI>The <B>common <I>SMTools</I> area</B> (with the hammer and the spanner).</LI>
- *   <P>
- *   <LI>An area containing custom <B>status messages</B> and a <B>progress bar</B>.</LI>
- *   <P>
+ *   <LI>An area containing custom <B>status messages</B> and a <B>progress bar</B>.
  *   <UL>
+ *     <LI>
  *     The caller updates the status message by invoking the {@link JSplashScreen#setStatusMessage(String)}
  *     method.
+ *     </LI>
  *   </UL>
+ *   </LI>
  * </UL>
  * <P>
  * When the splash screen is shown, an optional MP3 soundfile can be played.
@@ -69,7 +68,7 @@ import org.sm.smtools.miscellaneous.*;
  * @author  Sven Maerivoet
  * @version 04/12/2012
  * @see     org.sm.smtools.application.JStandardGUIApplication
- * @see     org.sm.smtools.miscellaneous.MP3Player
+ * @see     org.sm.smtools.util.MP3Player
  */
 public final class JSplashScreen extends JWindow
 {
@@ -99,14 +98,13 @@ public final class JSplashScreen extends JWindow
 	 * parameter if no MP3 soundfile is to be played.
 	 * <P>
 	 * <B><U>Important remark:</U></B>
-	 * <P>
 	 * <UL>
 	 *   <LI>If the specified MP3 soundfile could not be played, it is ignored.</LI>
 	 * </UL>
 	 *
-	 * @param customSplashScreenContent the custom content (typically an image with a maximum dimension of 460x130 pixels)
-	 * @param mp3SoundInputStream       an <CODE>InputStream</CODE> containing the MP3 sound to be played (use <CODE>null</CODE> for no sound)
-	 * @see   JSplashScreen#isAvailable()
+	 * @param customSplashScreenContent  the custom content (typically an image with a maximum dimension of 460x130 pixels)
+	 * @param mp3SoundInputStream        an <CODE>InputStream</CODE> containing the MP3 sound to be played (use <CODE>null</CODE> for no sound)
+	 * @see                              JSplashScreen#isAvailable()
 	 */
 	public JSplashScreen(JLabel customSplashScreenContent, InputStream mp3SoundInputStream)
 	{
@@ -227,7 +225,7 @@ public final class JSplashScreen extends JWindow
 	/**
 	 * Changes the status message.
 	 *
-	 * @param statusMessage the status message
+	 * @param statusMessage  the status message
 	 */
 	public void setStatusMessage(String statusMessage)
 	{
@@ -243,8 +241,8 @@ public final class JSplashScreen extends JWindow
 	/**
 	 * Sets the delay that is forced each time the status message is changed.
 	 *
-	 * @param statusWaitTime the time to wait (in milliseconds)
-	 * @see   JSplashScreen#setStatusMessage(String)
+	 * @param statusWaitTime  the time to wait (in milliseconds)
+	 * @see                   JSplashScreen#setStatusMessage(String)
 	 */
 	public void setStatusMessageWaitTime(int statusWaitTime)
 	{

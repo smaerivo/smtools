@@ -44,7 +44,7 @@ public class JScrollablePanel extends JPanel implements Scrollable
 	/**
 	 * Creates a <CODE>JScrollablePanel</CODE> object.
 	 *
-	 * @param panel the contained <CODE>JPanel</CODE>
+	 * @param panel  the contained <CODE>JPanel</CODE>
 	 */
 	public JScrollablePanel(JPanel panel)
 	{

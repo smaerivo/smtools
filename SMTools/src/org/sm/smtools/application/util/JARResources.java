@@ -23,13 +23,13 @@
 
 package org.sm.smtools.application.util;
 
-import org.apache.log4j.*;
-import org.sm.smtools.exceptions.*;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.zip.*;
 import javax.swing.*;
+import org.apache.log4j.*;
+import org.sm.smtools.exceptions.*;
 
 /**
  * The <CODE>JARResources</CODE> class provides access to JAR and ZIP files.
@@ -61,9 +61,9 @@ public final class JARResources
 	/**
 	 * Constructs a <CODE>JARResources</CODE> object and loads all resources from it into memory.
 	 *
-	 * @param  jarFilename               the filename of the JAR or ZIP file containing the resources
-	 * @throws FileDoesNotExistException if the archive file is not found
-	 * @throws FileReadException         if an error occurred during loading resources from the archive file
+	 * @param  jarFilename                the filename of the JAR or ZIP file containing the resources
+	 * @throws FileDoesNotExistException  if the archive file is not found
+	 * @throws FileReadException          if an error occurred during loading resources from the archive file
 	 */
 	public JARResources(String jarFilename) throws FileDoesNotExistException, FileReadException
 	{
@@ -126,9 +126,9 @@ public final class JARResources
 	/**
 	 * Retrieves a raw resource from the archive.
 	 * 
-	 * @param  name                      the name of the resource to retrieve from the archive
-	 * @return                           a byte array representing the resource
-	 * @throws FileDoesNotExistException if the resource was not found
+	 * @param  name                       the name of the resource to retrieve from the archive
+	 * @return                            a byte array representing the resource
+	 * @throws FileDoesNotExistException  if the resource was not found
 	 */
 	public byte[] getRawResource(String name) throws FileDoesNotExistException
 	{
@@ -143,10 +143,10 @@ public final class JARResources
 	/**
 	 * Retrieves a resource as an <CODE>InputStream</CODE> from the archive.
 	 * 
-	 * @param  name                      the name of the resource to retrieve from the archive
-	 * @return                           an <CODE>InputStream</CODE> representing the resource
-	 * @throws FileDoesNotExistException if the resource was not found
-	 * @see                              JARResources#getRawResource(String name)
+	 * @param  name                       the name of the resource to retrieve from the archive
+	 * @return                            an <CODE>InputStream</CODE> representing the resource
+	 * @throws FileDoesNotExistException  if the resource was not found
+	 * @see                               JARResources#getRawResource(String name)
 	 */
 	public InputStream getInputStream(String name) throws FileDoesNotExistException
 	{
@@ -156,10 +156,10 @@ public final class JARResources
 	/**
 	 * Retrieves a resource as a <CODE>StringBuilder</CODE> from the archive.
 	 * 
-	 * @param  name                      the name of the resource to retrieve from the archive
-	 * @return                           a <CODE>StringBuilder</CODE> representing the resource
-	 * @throws FileDoesNotExistException if the resource was not found
-	 * @see                              JARResources#getRawResource(String name)
+	 * @param  name                       the name of the resource to retrieve from the archive
+	 * @return                            a <CODE>StringBuilder</CODE> representing the resource
+	 * @throws FileDoesNotExistException  if the resource was not found
+	 * @see                               JARResources#getRawResource(String name)
 	 */
 	public StringBuilder getText(String name) throws FileDoesNotExistException
 	{
@@ -169,10 +169,10 @@ public final class JARResources
 	/**
 	 * Retrieves a resource as an <CODE>Image</CODE> from the archive.
 	 * 
-	 * @param  name                      the name of the resource to retrieve from the archive
-	 * @return                           an <CODE>Image</CODE> representing the resource
-	 * @throws FileDoesNotExistException if the resource was not found
-	 * @see                              JARResources#getRawResource(String name)
+	 * @param  name                       the name of the resource to retrieve from the archive
+	 * @return                            an <CODE>Image</CODE> representing the resource
+	 * @throws FileDoesNotExistException  if the resource was not found
+	 * @see                               JARResources#getRawResource(String name)
 	 */
 	public Image getImage(String name) throws FileDoesNotExistException
 	{

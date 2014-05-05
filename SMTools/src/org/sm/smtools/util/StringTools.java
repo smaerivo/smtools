@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 07/04/2013
-// Target        : Java VM (1.6)
+// Last modified : 05/05/2014
+// Target        : Java VM (1.8)
 // --------------------------------
 
 /**
- * Copyright 2003-2013 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,11 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.miscellaneous;
+package org.sm.smtools.util;
 
 import java.text.*;
 import java.util.*;
+import org.sm.smtools.math.*;
 
 /**
  * The <CODE>StringTools</CODE> class is mainly intended for string alignment operations.
@@ -37,14 +38,12 @@ import java.util.*;
  * <P>
  * All methods in this class are static, so they should be invoked as:
  * <P>
- * <UL>
- *   <CODE>... = StringTools.method(...);</CODE>
- * </UL>
+ * <CODE>... = StringTools.method(...);</CODE>
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 07/04/2013
+ * @version 05/05/2014
  */
 public final class StringTools
 {
@@ -60,7 +59,9 @@ public final class StringTools
 	 * CONSTRUCTORS *
 	 ****************/
 
-	// prevent instantiation
+	/**
+	 * Prevent instantiation.
+	 */
 	private StringTools()
 	{
 	}
@@ -72,9 +73,9 @@ public final class StringTools
 	/**
 	 * Aligns a string left, padding with extra characters if necessary.
 	 *
-	 * @param  stringToAlign  the string that should be aligned left
-	 * @param  nrOfCharacters the minimum length of the string after the alignment
-	 * @param  padCharacter   the character used to pad the string at the right end
+	 * @param stringToAlign   the string that should be aligned left
+	 * @param nrOfCharacters  the minimum length of the string after the alignment
+	 * @param padCharacter    the character used to pad the string at the right end
 	 * @return                the left aligned string
 	 */
 	public static String alignLeft(String stringToAlign, int nrOfCharacters, char padCharacter)
@@ -98,9 +99,9 @@ public final class StringTools
 	/**
 	 * Aligns a string right, padding with extra characters if necessary.
 	 *
-	 * @param  stringToAlign  the string that should be aligned right
-	 * @param  nrOfCharacters the minimum length of the string after the alignment
-	 * @param  padCharacter   the character used to pad the string at the left end
+	 * @param stringToAlign   the string that should be aligned right
+	 * @param nrOfCharacters  the minimum length of the string after the alignment
+	 * @param padCharacter    the character used to pad the string at the left end
 	 * @return                the right aligned string
 	 */
 	public static String alignRight(String stringToAlign, int nrOfCharacters, char padCharacter)
@@ -126,9 +127,9 @@ public final class StringTools
 	/**
 	 * Centers a string, padding with extra characters if necessary.
 	 *
-	 * @param  stringToCenter the string that should be centered
-	 * @param  nrOfCharacters the minimum length of the string after the centering
-	 * @param  padCharacter   the character used to pad the string at the left and right ends
+	 * @param stringToCenter  the string that should be centered
+	 * @param nrOfCharacters  the minimum length of the string after the centering
+	 * @param padCharacter    the character used to pad the string at the left and right ends
 	 * @return                the centered string
 	 */
 	public static String alignCenter(String stringToCenter, int nrOfCharacters, char padCharacter)
@@ -164,8 +165,8 @@ public final class StringTools
 	/**
 	 * Truncates the end of a string.
 	 *
-	 * @param  stringToTruncate the string that should be truncated
-	 * @param  nrOfCharacters   the maximum length of the string after the truncation
+	 * @param stringToTruncate  the string that should be truncated
+	 * @param nrOfCharacters    the maximum length of the string after the truncation
 	 * @return                  the truncated string
 	 */
 	public static String truncate(String stringToTruncate, int nrOfCharacters)
@@ -183,12 +184,12 @@ public final class StringTools
 	 * <P>
 	 * If the length of the resulting string is too long, the end is truncated.
 	 *
-	 * @param  stringToAlign  the string that should be aggressively aligned left
-	 * @param  nrOfCharacters the maximum length of the string after the aggressive alignment
-	 * @param  padCharacter   the character used to pad the string at the right end
+	 * @param stringToAlign   the string that should be aggressively aligned left
+	 * @param nrOfCharacters  the maximum length of the string after the aggressive alignment
+	 * @param padCharacter    the character used to pad the string at the right end
 	 * @return                the left aggressively aligned string
-	 * @see    StringTools#alignLeft(String,int,char)
-	 * @see    StringTools#truncate(String,int)
+	 * @see                   StringTools#alignLeft(String,int,char)
+	 * @see                   StringTools#truncate(String,int)
 	 */
 	public static String aggressiveAlignLeft(String stringToAlign, int nrOfCharacters,
 			char padCharacter)
@@ -201,12 +202,12 @@ public final class StringTools
 	 * <P>
 	 * If the length of the resulting string is too long, the end is truncated.
 	 *
-	 * @param  stringToAlign  the string that should be aggressively aligned right
-	 * @param  nrOfCharacters the maximum length of the string after the aggressive alignment
-	 * @param  padCharacter   the character used to pad the string at the left end
+	 * @param stringToAlign   the string that should be aggressively aligned right
+	 * @param nrOfCharacters  the maximum length of the string after the aggressive alignment
+	 * @param padCharacter    the character used to pad the string at the left end
 	 * @return                the right aggressively aligned string
-	 * @see    StringTools#alignRight(String,int,char)
-	 * @see    StringTools#truncate(String,int)
+	 * @see                   StringTools#alignRight(String,int,char)
+	 * @see                   StringTools#truncate(String,int)
 	 */
 	public static String aggressiveAlignRight(String stringToAlign, int nrOfCharacters,
 			char padCharacter)
@@ -219,12 +220,12 @@ public final class StringTools
 	 * <P>
 	 * If the length of the resulting string is too long, the end is truncated.
 	 *
-	 * @param  stringToCenter the string that should be aggressively centered
-	 * @param  nrOfCharacters the maximum length of the string after the aggressive centering
-	 * @param  padCharacter   the character used to pad the string at the left and right ends
+	 * @param stringToCenter  the string that should be aggressively centered
+	 * @param nrOfCharacters  the maximum length of the string after the aggressive centering
+	 * @param padCharacter    the character used to pad the string at the left and right ends
 	 * @return                the aggressively centered string
-	 * @see    StringTools#alignCenter(String,int,char)
-	 * @see    StringTools#truncate(String,int)
+	 * @see                   StringTools#alignCenter(String,int,char)
+	 * @see                   StringTools#truncate(String,int)
 	 */
 	public static String aggressiveAlignCenter(String stringToCenter, int nrOfCharacters, char padCharacter)
 	{
@@ -234,7 +235,8 @@ public final class StringTools
 	/**
 	 * Capitalises the first letter in a string.
 	 * 
-	 * @param text the text to capitalise the first letter of
+	 * @param text  the text to capitalise the first letter of
+	 * @return      the text with the first letter capitalised
 	 */
 	public static String capitaliseFirstLetter(String text)
 	{
@@ -246,14 +248,12 @@ public final class StringTools
 	 * <P>
 	 * As an example, a dashed line of length 5 can be created as:
 	 * <P>
-	 * <UL>
-	 *   <CODE>StringTools.createLineOfCharacters(5,'-')</CODE>
-	 * </UL>
+	 * <CODE>StringTools.createLineOfCharacters(5,'-')</CODE>
 	 * <P>
 	 * The result will be "-----".
 	 *
-	 * @param  length        the total length of the line
-	 * @param  lineCharacter the character that is used to create the line
+	 * @param length         the total length of the line
+	 * @param lineCharacter  the character that is used to create the line
 	 * @return               a line containing the repetition of the specified character
 	 */
 	public static String createLineOfCharacters(int length, char lineCharacter)
@@ -264,8 +264,8 @@ public final class StringTools
 	/**
 	 * Returns the optional indentation (i.e., any whitespace at the beginning) of a given <CODE>String</CODE>.
 	 *
-	 * @param stringToProcess the <CODE>String</CODE> to process
-	 * @return the optional indentation
+	 * @param stringToProcess  the <CODE>String</CODE> to process
+	 * @return                 the optional indentation
 	 */
 	public static String getIndentation(String stringToProcess)
 	{
@@ -289,7 +289,6 @@ public final class StringTools
 	 * Creates a string representation of the specified double.
 	 * <P>
 	 * Some examples:
-	 * <P>
 	 * <UL>
 	 *   <LI><CODE>StringTools.convertDoubleToString(5.2,3)</CODE> results in "5.200".</LI>
 	 *   <LI><CODE>StringTools.convertDoubleToString(5.6,0)</CODE> results in "6" (rounding occurs!).</LI>
@@ -298,9 +297,9 @@ public final class StringTools
 	 * The default locale to be is <CODE>Locale.UK</CODE>; this can be changed by specifying an optional <CODE>locale</CODE> parameter.
 	 * For example, to use the Belgian comma as a separator instead of the dot, specify <CODE>new Locale("be")</CODE> as a parameter.
 	 *
-	 * @param  number       the double to convert to a string
-	 * @param  nrOfDecimals the number of decimals in the resulting string
-	 * @param  locale       an optional parameter specifying the locale to be used (default is <CODE>Local.UK</CODE>)
+	 * @param number        the double to convert to a string
+	 * @param nrOfDecimals  the number of decimals in the resulting string
+	 * @param locale        an optional parameter specifying the locale to be used (default is <CODE>Local.UK</CODE>)
 	 * @return              a string representation of the specified double
 	 */
 	public static String convertDoubleToString(double number, int nrOfDecimals, Locale ... locale)
@@ -329,13 +328,13 @@ public final class StringTools
 	 * The default locale to be is <CODE>Locale.UK</CODE>; this can be changed by specifying an optional <CODE>locale</CODE> parameter.
 	 * For example, to use the Belgian comma as a separator instead of the dot, specify <CODE>new Locale("be")</CODE> as a parameter.
 	 *
-	 * @param  a            the real part of the complex number to convert to a string
-	 * @param  b            the imaginary part of the complex number to convert to a string
-	 * @param  nrOfDecimals the number of decimals in the resulting string
-	 * @param  locale       an optional parameter specifying the locale to be used (default is <CODE>Local.UK</CODE>)
+	 * @param a             the real part of the complex number to convert to a string
+	 * @param b             the imaginary part of the complex number to convert to a string
+	 * @param nrOfDecimals  the number of decimals in the resulting string
+	 * @param locale        an optional parameter specifying the locale to be used (default is <CODE>Local.UK</CODE>)
 	 * @return              a string representation of the specified complex number
 	 */
-	public static String convertComplexToString(double a, double b, int nrOfDecimals, Locale ... locale)
+	public static String convertComplexNumberToString(double a, double b, int nrOfDecimals, Locale ... locale)
 	{
 		String operator = "+";
 		if (b < 0.0) {
@@ -348,10 +347,42 @@ public final class StringTools
 	}
 
 	/**
+	 * Creates a string representation of the specified complex number.
+	 * <P>
+	 * The default locale to be is <CODE>Locale.UK</CODE>; this can be changed by specifying an optional <CODE>locale</CODE> parameter.
+	 * For example, to use the Belgian comma as a separator instead of the dot, specify <CODE>new Locale("be")</CODE> as a parameter.
+	 *
+	 * @param c             the complex number to convert to a string
+	 * @param nrOfDecimals  the number of decimals in the resulting string
+	 * @param locale        an optional parameter specifying the locale to be used (default is <CODE>Local.UK</CODE>)
+	 * @return              a string representation of the specified complex number
+	 */
+	public static String convertComplexNumberToString(ComplexNumber c, int nrOfDecimals, Locale ... locale)
+	{
+		return convertComplexNumberToString(c.getRealPart(),c.getImaginaryPart(),nrOfDecimals,locale);
+	}
+
+	/**
+	 * Creates a string representation of the specified big complex number (note that the real and imaginary parts are intermediately converted to <CODE>double</CODE>s).
+	 * <P>
+	 * The default locale to be is <CODE>Locale.UK</CODE>; this can be changed by specifying an optional <CODE>locale</CODE> parameter.
+	 * For example, to use the Belgian comma as a separator instead of the dot, specify <CODE>new Locale("be")</CODE> as a parameter.
+	 *
+	 * @param c             the big complex number to convert to a string
+	 * @param nrOfDecimals  the number of decimals in the resulting string
+	 * @param locale        an optional parameter specifying the locale to be used (default is <CODE>Local.UK</CODE>)
+	 * @return              a string representation of the specified complex number
+	 */
+	public static String convertBigComplexNumberToString(BigComplexNumber c, int nrOfDecimals, Locale ... locale)
+	{
+		return convertComplexNumberToString(c.getRealPart().doubleValue(),c.getImaginaryPart().doubleValue(),nrOfDecimals,locale);
+	}
+
+	/**
 	 * Returns the precision of the specified number, based on a leading zero and the number of zero decimals directly following the decimal point.
 	 *
-	 * @param x the number to calculate the precision of
-	 * @return the precision of the specified number
+	 * @param x  the number to calculate the precision of
+	 * @return   the precision of the specified number
 	 */
 	public static int getDoublePrecision(double x)
 	{
@@ -384,9 +415,9 @@ public final class StringTools
 	/**
 	 * Returns a <CODE>String</CODE> containing an <CODE>int</CODE> padded with leading zeros.
 	 *
-	 * @param  number the number to padd
-	 * @param  minFieldWidth the minimal number of characters in the field
-	 * @return a <CODE>String</CODE> containing the specified number padded with leading zeros
+	 * @param number         the number to padd
+	 * @param minFieldWidth  the minimal number of characters in the field
+	 * @return               a <CODE>String</CODE> containing the specified number padded with leading zeros
 	 */
 	public static String paddLeadingZeros(int number, int minFieldWidth)
 	{
@@ -396,8 +427,8 @@ public final class StringTools
 	/**
 	 * Converts all system-dependent end-of-line (EOL) character sequences into readable string representations of \r\n.
 	 * 
-	 * @param  input the <CODE>String</CODE> to convert all system-dependent EOL character sequences of
-	 * @return a <CODE>String</CODE> with all EOL character sequences converted into readable string representations of \r\n
+	 * @param input  the <CODE>String</CODE> to convert all system-dependent EOL character sequences of
+	 * @return       a <CODE>String</CODE> with all EOL character sequences converted into readable string representations of \r\n
 	 */
 	public static String convertEOLsToStrings(String input)
 	{
@@ -408,8 +439,8 @@ public final class StringTools
 	/**
 	 * Converts all readable string representations of \r\n into system-dependent end-of-line (EOL) character sequences.
 	 * 
-	 * @param  input the <CODE>String</CODE> with all readable string representations of \r\n to convert
-	 * @return a <CODE>String</CODE> with all string representations converted into character sequences of system-dependent end-of-line (EOL) character sequences
+	 * @param input  the <CODE>String</CODE> with all readable string representations of \r\n to convert
+	 * @return       a <CODE>String</CODE> with all string representations converted into character sequences of system-dependent end-of-line (EOL) character sequences
 	 */
 	public static String convertStringsToEOLs(String input)
 	{
@@ -422,8 +453,8 @@ public final class StringTools
 	 * <P>
 	 * Comments are preceeded by a hash-sign (#).
 	 * 
-	 * @param  input the <CODE>String</CODE> to check
-	 * @return a <CODE>boolean</CODE> indicating whether or not the line contains a comment
+	 * @param input  the <CODE>String</CODE> to check
+	 * @return       a <CODE>boolean</CODE> indicating whether or not the line contains a comment
 	 */
 	public static boolean isComment(String input)
 	{

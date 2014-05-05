@@ -28,7 +28,7 @@ import java.io.*;
 import java.util.*;
 import org.apache.log4j.*;
 import org.sm.smtools.exceptions.*;
-import org.sm.smtools.miscellaneous.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>I18NL10N</CODE> class provides a mechanism for implementing a
@@ -46,16 +46,14 @@ import org.sm.smtools.miscellaneous.*;
  * the <CODE>I18NL10N</CODE> class can easily handle different file locations. Use the
  * {@link I18NL10N#getFilename(String)} and {@link I18NL10N#getFilename(String,String)} methods to
  * specify a file location and an optional locale, for example:
- * <P>
- * <UL>
- *   <CODE>I18NL10N.load(I18NL10N.getFilename("locales-",I18NL10N.kLocaleBritishEnglish));</CODE>
- * </UL>
+ * <CODE>
+ *   I18NL10N.load(I18NL10N.getFilename("locales-",I18NL10N.kLocaleBritishEnglish));
+ * </CODE>
  * <P>
  * Translations are performed by the following lookup:
- * <P>
- * <UL>
- *   <CODE>String translation = I18NL10N.translate(key,parameters);</CODE>
- * </UL>
+ * <CODE>
+ *   String translation = I18NL10N.translate(key,parameters);
+ * </CODE>
  * <P>
  * The optional parameters are specified in the keys using <CODE>(^i)</CODE>
  * with <CODE>i</CODE> the number of the parameter. In order to get the caret itself,
@@ -65,34 +63,29 @@ import org.sm.smtools.miscellaneous.*;
  * <P>
  * The file should have the following structure: each line should contain at
  * most one (key,value) pair. They are specified as:
- * <P>
- * <UL>
- *   <CODE>key=value</CODE>
- * </UL>
+ * <CODE>
+ *   key=value
+ * </CODE>
  * <P>
  * Blank lines are allowed; comments are preceeded by a # character.
  * <UL>
- *   <LI>Consider the following database file:</LI>
- *   <P>
+ *   <LI>Consider the following database file:
  *   <UL>
- *     <CODE>my.First.Key=my first value</CODE><BR />
- *     <CODE>my.Second.Key=my ^1 value</CODE>
+ *     <LI><CODE>my.First.Key=my first value</CODE></LI>
+ *     <LI><CODE>my.Second.Key=my ^1 value</CODE></LI>
  *   </UL>
- *   <P>
- *   The following translations demonstrate its usage:
- *   <P>
+ *   </LI>
+ *   <LI>The following translations demonstrate its usage:
  *   <UL>
- *     <LI><CODE>I18NL10N.translate("my.First.Key")</CODE> will result in "
- *     <CODE>my first value</CODE>".</LI>
- *     <P>
+ *     <LI><CODE>I18NL10N.translate("my.First.Key")</CODE> will result in "<CODE>my first value</CODE>".</LI>
  *     <LI><CODE>I18NL10N.translate("my.Second.Key","second")</CODE> will result in "<CODE>my second value</CODE>".</LI>
  *   </UL>
- *   <P>
- *   <LI>A GUI is typically constructed with statements like the following one:</LI>
- *   <P>
- *   <PRE>
- *   JLabel label = new JLabel(I18NL10N.translate(&quot;labelKey&quot;,&quot;parameter 1&quot;,...,&quot;parameter N&quot;));
- *   </PRE>
+ *   </LI>
+ *   <LI>A GUI is typically constructed with statements like the following one: <BR>
+ *   <UL>
+ *     <LI><CODE>JLabel label = new JLabel(I18NL10N.translate(&quot;labelKey&quot;,&quot;parameter 1&quot;,...,&quot;parameter N&quot;));</CODE></LI>
+ *   </UL>
+ *   </LI>
  * </UL>
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
@@ -139,7 +132,9 @@ public final class I18NL10N {
 	 * CONSTRUCTORS *
 	 ****************/
 
-	// prevent instantiation
+	/**
+	 * Prevent instantiation.
+	 */
 	private I18NL10N()
 	{
 	}
@@ -153,13 +148,13 @@ public final class I18NL10N {
 	 * <P>
 	 * The system's default locale is used if <CODE>null</CODE> is assigned to the <CODE>localeSpecifier</CODE>. 
 	 * 
-	 * @param localeFilenamePrefix the path and prefix name of the file containing the database
-	 * @param localeSpecifier the locale to be used
-	 * @return a filename based on a prefix and locale
-	 * @throws FileDoesNotExistException if the file containing the database could not be opened or the locale was not found
-	 * @see I18NL10N#getFilename(String)
-	 * @see I18NL10N#load(String)
-	 * @see I18NL10N#load(InputStream)
+	 * @param localeFilenamePrefix        the path and prefix name of the file containing the database
+	 * @param localeSpecifier             the locale to be used
+	 * @return                            a filename based on a prefix and locale
+	 * @throws FileDoesNotExistException  if the file containing the database could not be opened or the locale was not found
+	 * @see                               I18NL10N#getFilename(String)
+	 * @see                               I18NL10N#load(String)
+	 * @see                               I18NL10N#load(InputStream)
 	 */
 	public static String getFilename(String localeFilenamePrefix, String localeSpecifier) throws FileDoesNotExistException
 	{
@@ -208,12 +203,12 @@ public final class I18NL10N {
 	/**
 	 * Returns a filename based on a prefix only (the system's default locale is assumed).
 	 * 
-	 * @param localeFilenamePrefix the path and prefix name of the file containing the database
-	 * @return a filename based on a prefix and the system's default locale
-	 * @throws FileDoesNotExistException if the file containing the database could not be opened or the locale was not found
-	 * @see I18NL10N#getFilename(String,String)
-	 * @see I18NL10N#load(String)
-	 * @see I18NL10N#load(InputStream)
+	 * @param localeFilenamePrefix        the path and prefix name of the file containing the database
+	 * @return                            a filename based on a prefix and the system's default locale
+	 * @throws FileDoesNotExistException  if the file containing the database could not be opened or the locale was not found
+	 * @see                               I18NL10N#getFilename(String,String)
+	 * @see                               I18NL10N#load(String)
+	 * @see                               I18NL10N#load(InputStream)
 	 */
 	public static String getFilename(String localeFilenamePrefix) throws FileDoesNotExistException
 	{
@@ -225,11 +220,11 @@ public final class I18NL10N {
 	 * <P>
 	 * Note: all existing keys will be overwritten with the new values.
 	 * 
-	 * @param localeFilename the name of the file containing the database
-	 * @throws FileDoesNotExistException if the file containing the database could not be opened
-	 * @see I18NL10N#getFilename(String)
-	 * @see I18NL10N#getFilename(String,String)
-	 * @see I18NL10N#load(InputStream)
+	 * @param localeFilename              the name of the file containing the database
+	 * @throws FileDoesNotExistException  if the file containing the database could not be opened
+	 * @see                               I18NL10N#getFilename(String)
+	 * @see                               I18NL10N#getFilename(String,String)
+	 * @see                               I18NL10N#load(InputStream)
 	 */
 	public static void load(String localeFilename) throws FileDoesNotExistException
 	{
@@ -250,11 +245,11 @@ public final class I18NL10N {
 	 * <P>
 	 * Note: all existing keys will be overwritten with the new values.
 	 * 
-	 * @param languageInputStream the <CODE>InputStream</CODE> containing the database
-	 * @throws FileReadException if an I/O error occurs during reading from the specified <CODE>InputStream</CODE>
-	 * @see I18NL10N#getFilename(String)
-	 * @see I18NL10N#getFilename(String,String)
-	 * @see I18NL10N#load(String)
+	 * @param languageInputStream  the <CODE>InputStream</CODE> containing the database
+	 * @throws FileReadException   if an I/O error occurs during reading from the specified <CODE>InputStream</CODE>
+	 * @see                        I18NL10N#getFilename(String)
+	 * @see                        I18NL10N#getFilename(String,String)
+	 * @see                        I18NL10N#load(String)
 	 */
 	public static void load(InputStream languageInputStream) throws FileReadException
 	{
@@ -292,6 +287,8 @@ public final class I18NL10N {
 
 	/**
 	 * Returns the short BCP 47 name of the currently used locale.
+	 * <P>
+	 * This refers to the IETF's Best Current Practice, see also http://en.wikipedia.org/wiki/IETF_language_tag.
 	 *
 	 * @return the short BCP 47 name of the currently used locale
 	 */
@@ -318,9 +315,9 @@ public final class I18NL10N {
 	 * Parameters are identified with a caret ^ (the caret itself is escaped as ^^).
 	 * Any redundant specified parameters are ignored.
 	 * 
-	 * @param languageKey the key to search for in the database
-	 * @param parameters the optional parameters to substitute in the translated value
-	 * @return the value corresponding to the <CODE>languageKey</CODE>
+	 * @param languageKey  the key to search for in the database
+	 * @param parameters   the optional parameters to substitute in the translated value
+	 * @return             the value corresponding to the <CODE>languageKey</CODE>
 	 */
 	public static String translate(String languageKey, String ... parameters)
 	{
@@ -382,8 +379,8 @@ public final class I18NL10N {
 	 * specified (only the first character is considered). So its convenient for
 	 * the caller to pass a <I>key</I> as parameter to this method.
 	 * 
-	 * @param mnemonic the mnemonic to retrieve the <CODE>KeyEvent</CODE> code from
-	 * @return the <CODE>KeyEvent</CODE> code associated with the specified mnemonic (<CODE>null</CODE> if the mnemonic was empty)
+	 * @param mnemonic  the mnemonic to retrieve the <CODE>KeyEvent</CODE> code from
+	 * @return          the <CODE>KeyEvent</CODE> code associated with the specified mnemonic (<CODE>null</CODE> if the mnemonic was empty)
 	 */
 	public static Integer translateMnemonic(final String mnemonic)
 	{
@@ -456,6 +453,7 @@ public final class I18NL10N {
 	 *******************/
 
 	/**
+	 * @param line  -
 	 */
 	private static void extractKeyValuePair(String line)
 	{

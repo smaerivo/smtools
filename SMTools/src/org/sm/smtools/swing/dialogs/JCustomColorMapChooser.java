@@ -31,16 +31,14 @@ import javax.swing.event.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
 import org.sm.smtools.math.*;
-import org.sm.smtools.miscellaneous.*;
 import org.sm.smtools.swing.util.*;
 import org.sm.smtools.swing.util.JGradientColorRamp.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JCustomColorMapChooser</CODE> class provides a dialog for creating a custom colour map:
  * <P>
- * <UL>
- *   <IMG src="doc-files/custom-color-map-chooser.png">
- * </UL>
+ * <IMG src="doc-files/custom-color-map-chooser.png" alt="">
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
@@ -74,7 +72,9 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	/**
 	 * Constructs an <CODE>IterationRangeChooser</CODE> object.
 	 *
-	 * @param owner the owning frame
+	 * @param owner                    the owning frame
+	 * @param nrOfColors               the number of colours
+	 * @param customColorMapComponents the color map components
 	 */
 	public JCustomColorMapChooser(JFrame owner, int nrOfColors, TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent> customColorMapComponents)
 	{

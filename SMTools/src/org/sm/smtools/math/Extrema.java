@@ -78,8 +78,8 @@ public final class Extrema
 	/**
 	 * Adds a local minimum.
 	 * 
-	 * @param index the index of the local minimum to set
-	 * @param value the value of the local minimum to set
+	 * @param index  the index of the local minimum to set
+	 * @param value  the value of the local minimum to set
 	 */
 	public void addLocalMinimum(int index, double value)
 	{
@@ -89,8 +89,8 @@ public final class Extrema
 	/**
 	 * Adds a local maximum.
 	 * 
-	 * @param index the index of the local maximum to set
-	 * @param value the value of the local maximum to set
+	 * @param index  the index of the local maximum to set
+	 * @param value  the value of the local maximum to set
 	 */
 	public void addLocalMaximum(int index, double value)
 	{
@@ -100,8 +100,8 @@ public final class Extrema
 	/**
 	 * Returns a local minimum.
 	 *
-	 * @param sequenceNumber the sequence number of the requested local minimum
-	 * @return               the requested local minimum
+	 * @param sequenceNumber  the sequence number of the requested local minimum
+	 * @return                the requested local minimum
 	 */
 	public Extremum getLocalMinimum(int sequenceNumber)
 	{
@@ -111,8 +111,8 @@ public final class Extrema
 	/**
 	 * Returns a local maximum.
 	 *
-	 * @param sequenceNumber the sequence number of the requested local maximum
-	 * @return               the requested local maximum
+	 * @param sequenceNumber  the sequence number of the requested local maximum
+	 * @return                the requested local maximum
 	 */
 	public Extremum getLocalMaximum(int sequenceNumber)
 	{

@@ -43,7 +43,7 @@ public final class FileDoesNotExistException extends Exception
 	/**
 	 * Constructs a <CODE>FileDoesNotExistException</CODE> object, based on the specified filename.
 	 *
-	 * @param filename the name of the file this exception corresponds to
+	 * @param filename  the name of the file this exception corresponds to
 	 */
 	public FileDoesNotExistException(String filename)
 	{

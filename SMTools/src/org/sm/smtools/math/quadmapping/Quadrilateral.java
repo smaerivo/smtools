@@ -30,9 +30,7 @@ import java.awt.geom.*;
  * <P>
  * Note that a <I>counter clockwise</I> specified quadrilateral is preferred:
  * <P>
- * <UL>
- *   <IMG src="doc-files/quadrilateral.png">
- * </UL>
+ * <IMG src="doc-files/quadrilateral.png" alt="">
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
@@ -87,13 +85,13 @@ public final class Quadrilateral
 	 * Note that internally, the four specified points are referenced; this means that any
 	 * changes to the specified points are reflected in the internal <CODE>Point2D.Double</CODE> objects.
 	 *
-	 * @param p1 the quadrilateral's first point (<B>shallow copy</B>)
-	 * @param p2 the quadrilateral's second point (<B>shallow copy</B>)
-	 * @param p3 the quadrilateral's third point (<B>shallow copy</B>)
-	 * @param p4 the quadrilateral's fourth point (<B>shallow copy</B>)
-	 * @see   Quadrilateral#Quadrilateral()
-	 * @see   Quadrilateral#Quadrilateral(Quadrilateral)
-	 * @see   Quadrilateral#set(Point2D.Double,Point2D.Double,Point2D.Double,Point2D.Double)
+	 * @param p1  the quadrilateral's first point (<B>shallow copy</B>)
+	 * @param p2  the quadrilateral's second point (<B>shallow copy</B>)
+	 * @param p3  the quadrilateral's third point (<B>shallow copy</B>)
+	 * @param p4  the quadrilateral's fourth point (<B>shallow copy</B>)
+	 * @see       Quadrilateral#Quadrilateral()
+	 * @see       Quadrilateral#Quadrilateral(Quadrilateral)
+	 * @see       Quadrilateral#set(Point2D.Double,Point2D.Double,Point2D.Double,Point2D.Double)
 	 */
 	public Quadrilateral(Point2D.Double p1, Point2D.Double p2, Point2D.Double p3, Point2D.Double p4)
 	{
@@ -108,10 +106,10 @@ public final class Quadrilateral
 	 * Note that internally, the four specified points are referenced; this means that any
 	 * changes to the specified points are reflected in the internal <CODE>Point2D.Double</CODE> objects.
 	 *
-	 * @param q the quadrilateral's 2D-datapoints to <B>shallow copy</B>
-	 * @see   Quadrilateral#Quadrilateral()
-	 * @see   Quadrilateral#Quadrilateral(Point2D.Double,Point2D.Double,Point2D.Double,Point2D.Double)
-	 * @see   Quadrilateral#set(Quadrilateral)
+	 * @param q  the quadrilateral's 2D-datapoints to <B>shallow copy</B>
+	 * @see      Quadrilateral#Quadrilateral()
+	 * @see      Quadrilateral#Quadrilateral(Point2D.Double,Point2D.Double,Point2D.Double,Point2D.Double)
+	 * @see      Quadrilateral#set(Quadrilateral)
 	 */
 	public Quadrilateral(Quadrilateral q)
 	{
@@ -139,11 +137,11 @@ public final class Quadrilateral
 	 * Note that internally, the four specified points are referenced; this means that any
 	 * changes to the specified points are reflected in the internal <CODE>Point2D</CODE> objects.
 	 *
-	 * @param p1 the quadrilateral's first point (<B>shallow copy</B>)
-	 * @param p2 the quadrilateral's second point (<B>shallow copy</B>)
-	 * @param p3 the quadrilateral's third point (<B>shallow copy</B>)
-	 * @param p4 the quadrilateral's fourth point (<B>shallow copy</B>)
-	 * @see   Quadrilateral#set(Quadrilateral)
+	 * @param p1  the quadrilateral's first point (<B>shallow copy</B>)
+	 * @param p2  the quadrilateral's second point (<B>shallow copy</B>)
+	 * @param p3  the quadrilateral's third point (<B>shallow copy</B>)
+	 * @param p4  the quadrilateral's fourth point (<B>shallow copy</B>)
+	 * @see       Quadrilateral#set(Quadrilateral)
 	 */
 	public void set(Point2D.Double p1, Point2D.Double p2, Point2D.Double p3, Point2D.Double p4)
 	{
@@ -159,8 +157,8 @@ public final class Quadrilateral
 	 * Note that internally, the four specified points are referenced; this means that any
 	 * changes to the specified points are reflected in the internal <CODE>Point2D.Double</CODE> objects.
 	 *
-	 * @param q the quadrilateral's 2D-data points to <B>shallow copy</B>
-	 * @see   Quadrilateral#set(Point2D.Double,Point2D.Double,Point2D.Double,Point2D.Double)
+	 * @param q  the quadrilateral's 2D-data points to <B>shallow copy</B>
+	 * @see      Quadrilateral#set(Point2D.Double,Point2D.Double,Point2D.Double,Point2D.Double)
 	 */
 	public void set(Quadrilateral q)
 	{
@@ -171,12 +169,11 @@ public final class Quadrilateral
 	 * Permutes all four 2D points of this <CODE>Quadrilateral</CODE> object counter clockwise.
 	 * <P>
 	 * After the operation, the 2D points have changed as follows:
-	 * <P>
 	 * <UL>
-	 *   <LI>fP1 -> fP2</LI>
-	 *   <LI>fP2 -> fP3</LI>
-	 *   <LI>fP3 -> fP4</LI>
-	 *   <LI>fP4 -> fP1</LI>
+	 *   <LI>fP1 &#8594; fP2</LI>
+	 *   <LI>fP2 &#8594; fP3</LI>
+	 *   <LI>fP3 &#8594; fP4</LI>
+	 *   <LI>fP4 &#8594; fP1</LI>
 	 * </UL>
 	 *
 	 * @see Quadrilateral#permuteVertical()
@@ -194,12 +191,11 @@ public final class Quadrilateral
 	 * Permutes all four 2D points of this <CODE>Quadrilateral</CODE> object vertically.
 	 * <P>
 	 * After the operation, the 2D points have changed as follows:
-	 * <P>
 	 * <UL>
-	 *   <LI>fP1 -> fP3</LI>
-	 *   <LI>fP2 -> fP4</LI>
-	 *   <LI>fP3 -> fP1</LI>
-	 *   <LI>fP4 -> fP2</LI>
+	 *   <LI>fP1 &#8594; fP3</LI>
+	 *   <LI>fP2 &#8594; fP4</LI>
+	 *   <LI>fP3 &#8594; fP1</LI>
+	 *   <LI>fP4 &#8594; fP2</LI>
 	 * </UL>
 	 * <P>
 	 * This corresponds to two consecutive counter clockwise permutations.
@@ -252,11 +248,23 @@ public final class Quadrilateral
 	 * PRIVATE METHODS *
 	 *******************/
 
+	/**
+	 * @param p1  -
+	 * @param p2  -
+	 * @param p3  -
+	 * @return    -
+	 */
 	private boolean isLeftOn(Point2D.Double p1, Point2D.Double p2, Point2D.Double p3)
 	{
 		return (computeTwiceTriangleArea(p1,p2,p3) >= 0.0);
 	}
 
+	/**
+	 * @param p1  -
+	 * @param p2  -
+	 * @param p3  -
+	 * @return    -
+	 */
 	private double computeTwiceTriangleArea(Point2D.Double p1, Point2D.Double p2, Point2D.Double p3)
 	{
 		return (((p1.x * p2.y) - (p1.y * p2.x)) + ((p1.y * p3.x) - (p1.x * p3.y)) + ((p2.x * p3.y) - (p3.x * p2.y)));

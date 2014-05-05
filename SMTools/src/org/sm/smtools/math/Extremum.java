@@ -52,8 +52,8 @@ public final class Extremum
 	/**
 	 * Constructs an empty <CODE>Extremum</CODE> object.
 	 *
-	 * @param index the extremum's index
-	 * @param value the extremum's value
+	 * @param index  the extremum's index
+	 * @param value  the extremum's value
 	 */
 	public Extremum(int index, double value)
 	{
@@ -66,6 +66,8 @@ public final class Extremum
 
 	/**
 	 * Getter method for the extremum's index.
+	 * 
+	 * @return the extremum's index
 	 */
 	public int getIndex()
 	{
@@ -74,6 +76,8 @@ public final class Extremum
 
 	/**
 	 * Getter method for the extremum's value.
+	 * 
+	 * @return the extremum's value
 	 */
 	public double getValue()
 	{
@@ -83,8 +87,8 @@ public final class Extremum
 	/**
 	 * General setter method for the extremum.
 	 *
-	 * @param index the extremum's index
-	 * @param value the extremum's value
+	 * @param index  the extremum's index
+	 * @param value  the extremum's value
 	 */
 	public void set(int index, double value)
 	{
@@ -95,7 +99,7 @@ public final class Extremum
 	/**
 	 * Setter method for the extremum's index.
 	 *
-	 * @param index the extremum's index
+	 * @param index  the extremum's index
 	 */
 	public void setIndex(int index)
 	{
@@ -105,7 +109,7 @@ public final class Extremum
 	/**
 	 * Setter method for the extremum's value.
 	 *
-	 * @param value the extremum's value
+	 * @param value  the extremum's value
 	 */
 	public void setValue(double value)
 	{

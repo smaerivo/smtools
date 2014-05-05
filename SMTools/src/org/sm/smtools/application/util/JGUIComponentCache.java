@@ -77,9 +77,9 @@ public final class JGUIComponentCache
 	/**
 	 * Adds an AWT <CODE>Component</CODE> to the cache.
 	 *
-	 * @param  component the AWT <CODE>Component</CODE> to add to the cache
-	 * @return           a unique identifier associated with the added component
-	 * @see    JGUIComponentCache#retrieveComponent(int)
+	 * @param  component  the AWT <CODE>Component</CODE> to add to the cache
+	 * @return            a unique identifier associated with the added component
+	 * @see               JGUIComponentCache#retrieveComponent(int)
 	 */
 	public int addComponent(Component component)
 	{
@@ -93,9 +93,9 @@ public final class JGUIComponentCache
 	/**
 	 * Retrieves a previously added AWT <CODE>Component</CODE> from the cache.
 	 *
-	 * @param  componentID the unique identifier of the AWT <CODE>Component</CODE> to retrieve
-	 * @return             the AWT <CODE>Component</CODE> associated with the requested identifier
-	 * @see    JGUIComponentCache#addComponent(Component)
+	 * @param  componentID  the unique identifier of the AWT <CODE>Component</CODE> to retrieve
+	 * @return              the AWT <CODE>Component</CODE> associated with the requested identifier
+	 * @see                 JGUIComponentCache#addComponent(Component)
 	 */
 	public Component retrieveComponent(int componentID)
 	{

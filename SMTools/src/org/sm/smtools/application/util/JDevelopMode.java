@@ -35,29 +35,25 @@ package org.sm.smtools.application.util;
  * the following manner:
  * <P>
  * <CODE>
- * <PRE>
- *   if (JDevelopMode.isActivated()) {
- *     ... // perform 'hacks'
+ *   if (JDevelopMode.isActivated()) {<BR>
+ *     ... // perform 'hacks'<BR>
  *   }
- * </PRE>
  * </CODE>
+ * <P>
  * Changing the status is done through direct assignment:
  * <P>
- * <UL>
  * <CODE>
  *   JDevelopMode.activate();
  * </CODE>
- * </UL>
  * <P>
  * If activation is required before any class initialisation, then use a static initialiser as follows:
  * <P>
  * <CODE>
- * <PRE>
- *   static {
- *     JDevelopMode.activate();
+ *   static {<BR>
+ *     JDevelopMode.activate();<BR>
  *   }
- * </PRE>
  * </CODE>
+ * <P>
  * Note that the default value is <CODE>false</CODE>.
  * <P>
  * <B>Note that this class cannot be subclassed, nor instantiated!</B>
@@ -74,7 +70,9 @@ public final class JDevelopMode
 	 * CONSTRUCTORS *
 	 ****************/
 
-	// prevent instantiation
+	/**
+	 * Prevent instantiation.
+	 */
 	private JDevelopMode()
 	{
 	}

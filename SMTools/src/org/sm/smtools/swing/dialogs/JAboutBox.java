@@ -30,7 +30,7 @@ import javax.swing.border.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
 import org.sm.smtools.math.*;
-import org.sm.smtools.miscellaneous.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JAboutBox</CODE> class provides a modal dialog box containing general
@@ -39,28 +39,20 @@ import org.sm.smtools.miscellaneous.*;
  * Note that a valid {@link I18NL10N} database must be available!
  * <P>
  * The dialog box is <I>modal</I>, <I>non-resizable</I> and contains an <I>"Ok" button</I>
- * to close it. Here's an example of a complete about box (Microsoft Windows L&F):
+ * to close it. Here's an example of a complete about box (Microsoft Windows L&amp;F):
  * <P>
- * <UL>
- *   <IMG src="doc-files/about-box-about-windows.png">
- * </UL>
+ * <IMG src="doc-files/about-box-about-windows.png" alt="">
  * <P>
  * As seen in the above image, there can be up to four different tabs: the first tab contains the
  * <B>application's logo and its accompanying about text</B>, the second tab contains a <B>copyright
  * notice</B> (see second image below), the third tab contains the <B>licence information</B> (see third
  * image below) and the fourth tab contains the <B>author's affiliations</B> (see third image below).
  * <P>
- * <UL>
- *   <IMG src="doc-files/about-box-copyright-windows.png">
- * </UL>
+ * <IMG src="doc-files/about-box-copyright-windows.png" alt="">
  * <P>
- * <UL>
- *   <IMG src="doc-files/about-box-licence-windows.png">
- * </UL>
+ * <IMG src="doc-files/about-box-licence-windows.png" alt="">
  * <P>
- * <UL>
- *   <IMG src="doc-files/about-box-affiliations-windows.png">
- * </UL>
+ * <IMG src="doc-files/about-box-affiliations-windows.png" alt="">
  * <P>
  * Typically, <CODE>JAboutBox</CODE> is subclassed, with several methods overridden, allow
  * customisation of each of the previously shown four tabs. The overrideable methods that control
@@ -125,10 +117,10 @@ public class JAboutBox extends JDefaultDialog
 	 * Constructs a <CODE>JAboutBox</CODE> object.
 	 * <P>
 	 * The about box is inactive at the end of the constructor, so it should explicitly
-	 * shown using the {@link JDefaultDialog#activate} method.<BR /> 
+	 * shown using the {@link JDefaultDialog#activate} method.<BR> 
 	 * It's also modal, has a fixed size and a standard "Ok" button.
 	 *
-	 * @param owner the owner of the frame in which this about box is to be displayed
+	 * @param owner  the owner of the frame in which this about box is to be displayed
 	 */
 	public JAboutBox(JFrame owner)
 	{
@@ -139,11 +131,11 @@ public class JAboutBox extends JDefaultDialog
 	 * Constructs a <CODE>JAboutBox</CODE> object.
 	 * <P>
 	 * The about box is inactive at the end of the constructor, so it should explicitly
-	 * shown using the {@link JDefaultDialog#activate} method.<BR /> 
+	 * shown using the {@link JDefaultDialog#activate} method.<BR> 
 	 * It's also modal, has a fixed size and a standard "Ok" button.
 	 *
-	 * @param owner     the owner of the frame in which this about box is to be displayed
-	 * @param resources the parent application's resources that can be accessed by this <CODE>JAboutBox</CODE>
+	 * @param owner      the owner of the frame in which this about box is to be displayed
+	 * @param resources  the parent application's resources that can be accessed by this <CODE>JAboutBox</CODE>
 	 */
 	public JAboutBox(JFrame owner, JARResources resources)
 	{
@@ -281,6 +273,8 @@ public class JAboutBox extends JDefaultDialog
 	 * Performs custom initialisation of the about box's member fields.
 	 * <P>
 	 * <B>Note that this method cannot be overridden!</B>
+	 *
+	 * @param parameters  internally fixed to the parent application's resources
 	 */
 	@Override
 	protected final void initialiseClass(Object[] parameters)
@@ -404,7 +398,7 @@ public class JAboutBox extends JDefaultDialog
 			String[] copyrightContent = setupCopyrightContent().toString().split(StringTools.kEOLCharacterSequence);
 			// convert plain text to HTML code
 			for (int lineNr = 0; lineNr < copyrightContent.length; ++lineNr) {
-				copyrightLabelText.append(copyrightContent[lineNr] + "<BR />");
+				copyrightLabelText.append(copyrightContent[lineNr] + "<BR>");
 			}
 			copyrightLabelText.append("</HTML>");
 			centerPanel.add(new JLabel(copyrightLabelText.toString()));
@@ -511,27 +505,27 @@ public class JAboutBox extends JDefaultDialog
 		// incorporate a custom about text
 		String aboutText = "<HTML>";
 		if (setupAboutText() != null) {
-			aboutText += setupAboutText() + "<BR />";
-			aboutText += "<BR />";
+			aboutText += setupAboutText() + "<BR>";
+			aboutText += "<BR>";
 		}
 
 		// update the JVM, OS, current locale and machine specifics
-		aboutText += "Java VM " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ")<BR />";
-		aboutText += I18NL10N.translate("text.OperatingSystem") + ": " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<BR />";
+		aboutText += "Java VM " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ")<BR>";
+		aboutText += I18NL10N.translate("text.OperatingSystem") + ": " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<BR>";
 		aboutText += I18NL10N.translate("text.CurrentLocale") + ": " + I18NL10N.getCurrentLocaleDescription() + "<BR/>";
 		int nrOfProcessors = JMemoryStatistics.getNrOfProcessors();
-		aboutText += I18NL10N.translate("text.NrOfProcessors") + ": " + String.valueOf(nrOfProcessors) + "<BR />";		
+		aboutText += I18NL10N.translate("text.NrOfProcessors") + ": " + String.valueOf(nrOfProcessors) + "<BR>";		
 
 		// update the available memory
 		long totalMemory = MathTools.round(MathTools.convertBToMiB(JMemoryStatistics.getTotalMemory()));
 		long usedMemory = MathTools.round(MathTools.convertBToMiB(JMemoryStatistics.getUsedMemory()));
 		long freeMemory = MathTools.round(MathTools.convertBToMiB(JMemoryStatistics.getFreeMemory()));
-		aboutText += I18NL10N.translate("text.MemoryTotal") + ": " + String.valueOf(totalMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR />";		
-		aboutText += I18NL10N.translate("text.MemoryUsed") + ": " + String.valueOf(usedMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR />";		
-		aboutText += I18NL10N.translate("text.MemoryFree") + ": " + String.valueOf(freeMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR />";		
+		aboutText += I18NL10N.translate("text.MemoryTotal") + ": " + String.valueOf(totalMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR>";		
+		aboutText += I18NL10N.translate("text.MemoryUsed") + ": " + String.valueOf(usedMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR>";		
+		aboutText += I18NL10N.translate("text.MemoryFree") + ": " + String.valueOf(freeMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR>";		
 
 		// update the used libraries
-		aboutText += "<BR />";
+		aboutText += "<BR>";
 		aboutText += I18NL10N.translate("text.UsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8, Java Native Access 3.5.1, Quaqua 8, BigDecimalMath 2012-03";
 		if (setupUsedLibrariesDescriptions() != null) {
 			aboutText += ", " + setupUsedLibrariesDescriptions();

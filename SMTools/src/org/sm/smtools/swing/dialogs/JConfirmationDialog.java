@@ -26,7 +26,7 @@ package org.sm.smtools.swing.dialogs;
 import java.awt.*;
 import javax.swing.*;
 import org.sm.smtools.application.util.*;
-import org.sm.smtools.miscellaneous.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JMessageDialog</CODE> class pops up a standard "Ok/Cancel" dialog box containing a question.
@@ -38,23 +38,17 @@ import org.sm.smtools.miscellaneous.*;
  * Depending on the application's current <I>look-and-feel</I>, the dialog box
  * looks as follows:
  * <P>
- * <UL>
- *   <B><U>Java Metal L&F</U></B><BR />
- *   <BR />
- *   <IMG src="doc-files/confirmation-dialog-metal.png">
- * </UL>
+ * <B><U>Java Metal L&amp;F</U></B><BR>
+ * <BR>
+ * <IMG src="doc-files/confirmation-dialog-metal.png" alt="">
  * <P>
- * <UL>
- *   <B><U>Microsoft Windows L&F</U></B><BR />
- *   <BR />
- *   <IMG src="doc-files/confirmation-dialog-windows.png">
- * </UL>
+ * <B><U>Microsoft Windows L&amp;F</U></B><BR>
+ * <BR>
+ * <IMG src="doc-files/confirmation-dialog-windows.png" alt="">
  * <P>
- * <UL>
- *   <B><U>Motif L&F</U></B><BR />
- *   <BR />
- *   <IMG src="doc-files/confirmation-dialog-motif.png">
- * </UL>
+ * <B><U>Motif L&amp;F</U></B><BR>
+ * <BR>
+ * <IMG src="doc-files/confirmation-dialog-motif.png" alt="">
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
@@ -67,7 +61,9 @@ public final class JConfirmationDialog
 	 * CONSTRUCTORS *
 	 ****************/
 
-	// prevent instantiation
+	/**
+	 * Prevent instantiation.
+	 */
 	private JConfirmationDialog()
 	{
 	}
@@ -81,14 +77,12 @@ public final class JConfirmationDialog
 	 * <P>
 	 * This method should be called as follows:
 	 * <P>
-	 * <UL>
-	 *   <CODE>boolean ok = JConfirmationDialog.confirm(parent,message);</CODE>
-	 * </UL>
+	 * <CODE>boolean ok = JConfirmationDialog.confirm(parent,message);</CODE>
 	 * <P>
 	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
-	 * @param  parentComponent the frame in which this dialog is to be displayed
-	 * @param  question        a string containing a specified question
+	 * @param parentComponent  the frame in which this dialog is to be displayed
+	 * @param question         a string containing a specified question
 	 * @return                 <CODE>true</CODE> when the user has agreed (i.e., "ok"), <CODE>false</CODE> otherwise
 	 */
 	public static boolean confirm(Component parentComponent, String question)

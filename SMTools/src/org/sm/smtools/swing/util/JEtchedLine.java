@@ -31,9 +31,8 @@ import javax.swing.*;
  * <P>
  * An etched line typically consists of a dark line, with a white
  * line slightly offset below it. Here's a close-up view:
- * <UL>
- *   <IMG src="doc-files/etched-line.png">
- * </UL>
+ * <P>
+ * <IMG src="doc-files/etched-line.png" alt="">
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
@@ -78,10 +77,10 @@ public final class JEtchedLine extends JPanel
 	 * <P>
 	 * The etched line has a horizontal orientation and a specified dark color.
 	 *
-	 * @param color the dark color to use (typically <CODE>Color.gray</CODE> or <CODE>Color.black</CODE>)
-	 * @see   JEtchedLine#JEtchedLine()
-	 * @see   JEtchedLine#JEtchedLine(EOrientation)
-	 * @see   JEtchedLine#JEtchedLine(Color,EOrientation)
+	 * @param color  the dark color to use (typically <CODE>Color.gray</CODE> or <CODE>Color.black</CODE>)
+	 * @see          JEtchedLine#JEtchedLine()
+	 * @see          JEtchedLine#JEtchedLine(EOrientation)
+	 * @see          JEtchedLine#JEtchedLine(Color,EOrientation)
 	 */
 	public JEtchedLine(Color color)
 	{
@@ -93,10 +92,10 @@ public final class JEtchedLine extends JPanel
 	 * <P>
 	 * The etched line has a specified orientation and gray as its default dark color.
 	 *
-	 * @param orientation the orientation of the etched line (see {@link JEtchedLine.EOrientation})
-	 * @see   JEtchedLine#JEtchedLine()
-	 * @see   JEtchedLine#JEtchedLine(Color)
-	 * @see   JEtchedLine#JEtchedLine(Color,EOrientation)
+	 * @param orientation  the orientation of the etched line (see {@link JEtchedLine.EOrientation})
+	 * @see                JEtchedLine#JEtchedLine()
+	 * @see                JEtchedLine#JEtchedLine(Color)
+	 * @see                JEtchedLine#JEtchedLine(Color,EOrientation)
 	 */
 	public JEtchedLine(EOrientation orientation)
 	{
@@ -108,11 +107,11 @@ public final class JEtchedLine extends JPanel
 	 * <P>
 	 * The etched line has a specified orientation and a specified dark color.
 	 *
-	 * @param color the dark color to use (typically <CODE>Color.gray</CODE> or <CODE>Color.black</CODE>)
-	 * @param orientation the orientation of the etched line (see {@link JEtchedLine.EOrientation})
-	 * @see   JEtchedLine#JEtchedLine()
-	 * @see   JEtchedLine#JEtchedLine(Color)
-	 * @see   JEtchedLine#JEtchedLine(EOrientation)
+	 * @param color        the dark color to use (typically <CODE>Color.gray</CODE> or <CODE>Color.black</CODE>)
+	 * @param orientation  the orientation of the etched line (see {@link JEtchedLine.EOrientation})
+	 * @see                JEtchedLine#JEtchedLine()
+	 * @see                JEtchedLine#JEtchedLine(Color)
+	 * @see                JEtchedLine#JEtchedLine(EOrientation)
 	 */
 	public JEtchedLine(Color color, EOrientation orientation)
 	{

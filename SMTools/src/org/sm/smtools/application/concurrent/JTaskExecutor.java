@@ -64,7 +64,7 @@ public class JTaskExecutor extends SwingWorker<Void,Void>
 	/**
 	 * Constructs a <CODE>JTaskExecutor</CODE> object with a specified progress update glasspane.
 	 *
-	 * @param progressUpdateGlassPane the progress update glasspane to use for task updates
+	 * @param progressUpdateGlassPane  the progress update glasspane to use for task updates
 	 */
 	public JTaskExecutor(JProgressUpdateGlassPane progressUpdateGlassPane)
 	{
@@ -92,7 +92,7 @@ public class JTaskExecutor extends SwingWorker<Void,Void>
 	/**
 	 * Adds a task to be executed.
 	 *
-	 * @param task the task to be executed
+	 * @param task  the task to be executed
 	 */
 	public final void addTask(AJTask task)
 	{
@@ -102,7 +102,7 @@ public class JTaskExecutor extends SwingWorker<Void,Void>
 	/**
 	 * Adds a series of tasks to be executed.
 	 *
-	 * @param tasks the tasks to be executed
+	 * @param tasks  the tasks to be executed
 	 */
 	public final void addTasks(ArrayList<AJTask> tasks)
 	{
@@ -143,6 +143,8 @@ public class JTaskExecutor extends SwingWorker<Void,Void>
 	}
 
 	/**
+	 *  @return            -
+	 *  @throws Exception  -
 	 */
 	@Override
 	protected final Void doInBackground() throws Exception

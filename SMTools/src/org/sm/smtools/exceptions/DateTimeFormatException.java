@@ -23,7 +23,7 @@
 
 package org.sm.smtools.exceptions;
 
-import org.sm.smtools.miscellaneous.*;
+import org.sm.smtools.util.*;
 
 /**
  * Indicates a malformed {@link java.util.Date} or {@link TimeStamp} object.
@@ -46,9 +46,9 @@ public final class DateTimeFormatException extends Exception
 	 * Constructs a <CODE>DateTimeFormatException</CODE> object, based on the string
 	 * representation of a malformed <CODE>DateStamp</CODE> or <CODE>TimeStamp</CODE> object.
 	 *
-	 * @param dateTimeString the string representation of a malformed <CODE>DateStamp</CODE> or <CODE>TimeStamp</CODE> object
-	 * @see   DateStamp
-	 * @see   TimeStamp
+	 * @param dateTimeString  the string representation of a malformed <CODE>DateStamp</CODE> or <CODE>TimeStamp</CODE> object
+	 * @see                   DateStamp
+	 * @see                   TimeStamp
 	 */
 	public DateTimeFormatException(String dateTimeString)
 	{

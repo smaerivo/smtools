@@ -54,7 +54,7 @@ public final class JDesktopAccess
 	/**
 	 * Executes the platform's default browser.
 	 * 
-	 * @param url the target URL to browse to
+	 * @param url  the target URL to browse to
 	 */
 	public static void executeBrowseApplication(String url)
 	{
@@ -78,8 +78,8 @@ public final class JDesktopAccess
 	 * all spaces are translated into "%20" character sequences
 	 * (specify <CODE>null</CODE> if no subject should be given).
 	 * 
-	 * @param recipient the recipient's e-mail address
-	 * @param subject   the subject line for the e-mail 
+	 * @param recipient  the recipient's e-mail address
+	 * @param subject    the subject line for the e-mail 
 	 */
 	public static void executeMailApplication(String recipient, String subject)
 	{
@@ -107,7 +107,7 @@ public final class JDesktopAccess
 	/**
 	 * Executes the platform's default application for opening a certain file.
 	 * 
-	 * @param file the file to open 
+	 * @param file  the file to open 
 	 */
 	public static void executeOpenApplication(File file)
 	{
@@ -131,7 +131,7 @@ public final class JDesktopAccess
 	 * <P>
 	 * If the specified file is a directory, the file manager of the current platform is launched to open it.
 	 *
-	 * @param file the file to edit 
+	 * @param file  the file to edit 
 	 */
 	public static void executeEditApplication(File file)
 	{
@@ -153,7 +153,7 @@ public final class JDesktopAccess
 	/**
 	 * Executes the platform's default application for printing a certain file.
 	 *
-	 * @param file the file to print
+	 * @param file  the file to print
 	 */
 	public static void executePrintApplication(File file)
 	{

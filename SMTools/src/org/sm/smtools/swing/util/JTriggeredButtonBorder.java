@@ -61,18 +61,18 @@ public final class JTriggeredButtonBorder extends AbstractBorder
 	/**
 	 * Creates a <CODE>JTriggeredButtonBorder</CODE> with specfied border colors.
 	 *
-	 * @param isBackgroundDark if the background is dark, this flag specifies the use of a light border color
-	 * @param isSinked         specifies whether or not the border is sinked or raised
-	 * @see   JTriggeredButtonBorder#JTriggeredButtonBorder()
-	 * @see   JTriggeredButton
+	 * @param isBackgroundDark  if the background is dark, this flag specifies the use of a light border color
+	 * @param isSunk            specifies whether or not the border is sunk or raised
+	 * @see                     JTriggeredButtonBorder#JTriggeredButtonBorder()
+	 * @see                     JTriggeredButton
 	 */
-	public JTriggeredButtonBorder(boolean isBackgroundDark, boolean isSinked)
+	public JTriggeredButtonBorder(boolean isBackgroundDark, boolean isSunk)
 	{
 		if (isBackgroundDark) {
 			kHighlightColor = Color.lightGray;
 		}
 
-		if (isSinked) {
+		if (isSunk) {
 			// swap normal and highlight colors
 			Color temp = kHighlightColor;
 			kHighlightColor = kNormalColor;
@@ -87,8 +87,8 @@ public final class JTriggeredButtonBorder extends AbstractBorder
 	/**
 	 * Sets the margins used by the border.
 	 *
-	 * @param insets the margins used by the border
-	 * @see   JTriggeredButtonBorder#getBorderInsets(Component)
+	 * @param insets  the margins used by the border
+	 * @see           JTriggeredButtonBorder#getBorderInsets(Component)
 	 */
 	public void setInsets(Insets insets)
 	{

@@ -28,7 +28,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 import org.sm.smtools.math.*;
-import org.sm.smtools.miscellaneous.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JProgressUpdateGlassPane</CODE> class provides the basic functionality for a progress updating glasspane.
@@ -39,25 +39,17 @@ import org.sm.smtools.miscellaneous.*;
  * <P>
  * The following visualisations are supported:
  * <P>
- * <UL>
- *   <B>Bar:</B><BR />
- *   <IMG src="doc-files/progress-update-bar.png">
- * </UL>
+ * <B>Bar:</B><BR>
+ * <IMG src="doc-files/progress-update-bar.png" alt="">
  * <P>
- * <UL>
- *   <B>Circles:</B><BR />
- *   <IMG src="doc-files/progress-update-circles.png">
- * </UL>
+ * <B>Circles:</B><BR>
+ * <IMG src="doc-files/progress-update-circles.png" alt="">
  * <P>
- * <UL>
- *   <B>Sector (fixed):</B><BR />
- *   <IMG src="doc-files/progress-update-sector-integral-fixed.png">
- * </UL>
+ * <B>Sector (fixed):</B><BR>
+ * <IMG src="doc-files/progress-update-sector-integral-fixed.png" alt="">
  * <P>
- * <UL>
- *   <B>Sector (rotating):</B><BR />
- *   <IMG src="doc-files/progress-update-sector-fractional-rotating.png">
- * </UL>
+ * <B>Sector (rotating):</B><BR>
+ * <IMG src="doc-files/progress-update-sector-fractional-rotating.png" alt="">
  * <P>
  *
  * @author  Sven Maerivoet

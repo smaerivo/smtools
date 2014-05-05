@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.miscellaneous;
+package org.sm.smtools.util;
 
 import java.io.*;
 import javazoom.jl.decoder.*;
@@ -107,9 +107,9 @@ public final class MP3Player extends Thread
 	/**
 	 * Constructs an <CODE>MP3Player</CODE> object based on a specified filename.
 	 *
-	 * @param  soundFilename             the name of the file containing the MP3 sound
-	 * @throws FileDoesNotExistException if the specified file could not be found or loaded
-	 * @throws SoundPlayingException     if something went wrong during playing
+	 * @param soundFilename               the name of the file containing the MP3 sound
+	 * @throws FileDoesNotExistException  if the specified file could not be found or loaded
+	 * @throws SoundPlayingException      if something went wrong during playing
 	 */
 	public MP3Player(String soundFilename) throws FileDoesNotExistException, SoundPlayingException
 	{
@@ -119,8 +119,8 @@ public final class MP3Player extends Thread
 	/**
 	 * Constructs an <CODE>MP3Player</CODE> object based on a specified <CODE>InputStream</CODE>.
 	 *
-	 * @param  soundInputStream      the <CODE>InputStream</CODE> containing the MP3 sound
-	 * @throws SoundPlayingException if something went wrong during playing
+	 * @param soundInputStream        the <CODE>InputStream</CODE> containing the MP3 sound
+	 * @throws SoundPlayingException  if something went wrong during playing
 	 */
 	public MP3Player(InputStream soundInputStream) throws SoundPlayingException
 	{
@@ -160,7 +160,8 @@ public final class MP3Player extends Thread
 	/**
 	 * Starts playing a loaded sound file or stream.
 	 *
-	 * @param playing specifies whether or not the application's execution should be blocked when playing the sound
+	 * @param playing                 specifies whether or not the application's execution should be blocked when playing the sound
+	 * @throws SoundPlayingException  when an exception occurs during the sound playing
 	 */
 	public void play(EPlaying playing) throws SoundPlayingException
 	{
@@ -209,7 +210,7 @@ public final class MP3Player extends Thread
 	 * <P>
 	 * Note that the application is not blocked.
 	 * 
-	 * @param soundFilename the filename of the system sound to play
+	 * @param soundFilename  the filename of the system sound to play
 	 */
 	public static void playSystemSound(String soundFilename)
 	{
@@ -219,8 +220,8 @@ public final class MP3Player extends Thread
 	/**
 	 * Plays a specified system sound.
 	 * 
-	 * @param soundFilename the filename of the system sound to play
-	 * @param playing specifies whether or not the application's execution should be blocked when playing the sound
+	 * @param soundFilename  the filename of the system sound to play
+	 * @param playing        specifies whether or not the application's execution should be blocked when playing the sound
 	 */
 	public static void playSystemSound(String soundFilename, EPlaying playing)
 	{
@@ -241,6 +242,11 @@ public final class MP3Player extends Thread
 	 * PRIVATE METHODS *
 	 *******************/
 
+	/**
+	 * @param soundFilename               -
+	 * @throws FileDoesNotExistException  -
+	 * @throws SoundPlayingException      -
+	 */
 	private void loadSoundFile(String soundFilename) throws FileDoesNotExistException, SoundPlayingException
 	{
 		try {
@@ -254,6 +260,10 @@ public final class MP3Player extends Thread
 		}		
 	}
 
+	/**
+	 * @param soundInputStream        -
+	 * @throws SoundPlayingException  -
+	 */
 	private void createPlayer(InputStream soundInputStream) throws SoundPlayingException
 	{
 		try {

@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.miscellaneous;
+package org.sm.smtools.util;
 
 import java.text.*;
 import java.util.*;
@@ -65,13 +65,13 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Constructs a <CODE>DateStamp</CODE> object corresponding to the specified values.
 	 *
-	 * @param day   the day component
-	 * @param month the month component
-	 * @param year  the year component
-	 * @see   DateStamp#DateStamp()
-	 * @see   DateStamp#DateStamp(int,int)
-	 * @see   DateStamp#DateStamp(String)
-	 * @see   DateStamp#DateStamp(DateStamp)
+	 * @param day    the day component
+	 * @param month  the month component
+	 * @param year   the year component
+	 * @see          DateStamp#DateStamp()
+	 * @see          DateStamp#DateStamp(int,int)
+	 * @see          DateStamp#DateStamp(String)
+	 * @see          DateStamp#DateStamp(DateStamp)
 	 */
 	public DateStamp(int day, int month, int year)
 	{
@@ -81,12 +81,12 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Constructs a <CODE>DateStamp</CODE> object corresponding to the specified values.
 	 *
-	 * @param weekOfYear the week of the year component
-	 * @param year       the year component
-	 * @see   DateStamp#DateStamp()
-	 * @see   DateStamp#DateStamp(int,int,int)
-	 * @see   DateStamp#DateStamp(String)
-	 * @see   DateStamp#DateStamp(DateStamp)
+	 * @param weekOfYear  the week of the year component
+	 * @param year        the year component
+	 * @see               DateStamp#DateStamp()
+	 * @see               DateStamp#DateStamp(int,int,int)
+	 * @see               DateStamp#DateStamp(String)
+	 * @see               DateStamp#DateStamp(DateStamp)
 	 */
 	public DateStamp(int weekOfYear, int year)
 	{
@@ -98,17 +98,15 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * <P>
 	 * The string has to have the following specific format:
 	 * <P>
-	 * <UL>
-	 *   <B>dd/MM/yyyy</B>, e.g., 11/04/1976
-	 * </UL>
+	 * <B>dd/MM/yyyy</B>, e.g., 11/04/1976
 	 *
-	 * @param  dateString the string representation of the date stamp (in the format dd/MM/yyyy)
-	 * @throws DateTimeFormatException if an error occurred during conversion
-	 * @see    DateStamp#DateStamp()
-	 * @see    DateStamp#DateStamp(int,int,int)
-	 * @see    DateStamp#DateStamp(int,int)
-	 * @see    DateStamp#DateStamp(DateStamp)
-	 * @see    java.text.SimpleDateFormat
+	 * @param dateString                the string representation of the date stamp (in the format dd/MM/yyyy)
+	 * @throws DateTimeFormatException  if an error occurred during conversion
+	 * @see                             DateStamp#DateStamp()
+	 * @see                             DateStamp#DateStamp(int,int,int)
+	 * @see                             DateStamp#DateStamp(int,int)
+	 * @see                             DateStamp#DateStamp(DateStamp)
+	 * @see                             java.text.SimpleDateFormat
 	 */
 	public DateStamp(String dateString) throws DateTimeFormatException
 	{
@@ -120,10 +118,10 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * <P>
 	 * This is the <B>copy constructor</B>.
 	 *
-	 * @param dateStamp the <CODE>DateStamp</CODE> object to <B>deep copy</B>
-	 * @see   DateStamp#DateStamp()
-	 * @see   DateStamp#DateStamp(int,int,int)
-	 * @see   DateStamp#DateStamp(String)
+	 * @param dateStamp  the <CODE>DateStamp</CODE> object to <B>deep copy</B>
+	 * @see              DateStamp#DateStamp()
+	 * @see              DateStamp#DateStamp(int,int,int)
+	 * @see              DateStamp#DateStamp(String)
 	 */
 	public DateStamp(DateStamp dateStamp)
 	{
@@ -137,9 +135,9 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Sets this <CODE>DateStamp</CODE> to the specified values.
 	 *
-	 * @param day   the day component
-	 * @param month the month component
-	 * @param year  the year component
+	 * @param day    the day component
+	 * @param month  the month component
+	 * @param year   the year component
 	 */
 	public void set(int day, int month, int year)
 	{
@@ -152,8 +150,8 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Sets this <CODE>DateStamp</CODE> to the specified values.
 	 *
-	 * @param weekOfYear the week of the year component
-	 * @param year       the year component
+	 * @param weekOfYear  the week of the year component
+	 * @param year        the year component
 	 */
 	public void set(int weekOfYear, int year)
 	{
@@ -166,7 +164,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Sets this <CODE>DateStamp</CODE> equal to another one.
 	 *
-	 * @param dateStamp the <CODE>DateStamp</CODE> to copy
+	 * @param dateStamp  the <CODE>DateStamp</CODE> to copy
 	 */
 	public void set(DateStamp dateStamp)
 	{
@@ -178,13 +176,11 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * <P>
 	 * The string has to have the following specific format:
 	 * <P>
-	 * <UL>
-	 *   <B>dd/MM/yyyy</B>, e.g., 11/04/1976
-	 * </UL>
+	 * <B>dd/MM/yyyy</B>, e.g., 11/04/1976
 	 *
-	 * @param  dateString the string representation of the date stamp (in the format dd/MM/yyyy)
-	 * @throws DateTimeFormatException if an error occurred during conversion
-	 * @see    java.text.SimpleDateFormat
+	 * @param dateString                the string representation of the date stamp (in the format dd/MM/yyyy)
+	 * @throws DateTimeFormatException  if an error occurred during conversion
+	 * @see                             java.text.SimpleDateFormat
 	 */
 	public void set(String dateString) throws DateTimeFormatException
 	{
@@ -210,13 +206,11 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * <P>
 	 * The string has to have the following specific format:
 	 * <P>
-	 * <UL>
-	 *   <B>yyyy-MM-dd</B>, e.g., 1976-04-11
-	 * </UL>
+	 * <B>yyyy-MM-dd</B>, e.g., 1976-04-11
 	 *
-	 * @param  dateString the string representation of the date stamp (in the format yyyy-MM-dd)
-	 * @throws DateTimeFormatException if an error occurred during conversion
-	 * @see    java.text.SimpleDateFormat
+	 * @param dateString                the string representation of the date stamp (in the format yyyy-MM-dd)
+	 * @throws DateTimeFormatException  if an error occurred during conversion
+	 * @see                             java.text.SimpleDateFormat
 	 */
 	public void setAdjusted(String dateString) throws DateTimeFormatException
 	{
@@ -240,7 +234,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Sets this <CODE>DateStamp</CODE> to the next day.
 	 * 
-	 * @param nrOfNextDays the number of days in the future
+	 * @param nrOfNextDays  the number of days in the future
 	 */
 	public void setToNextDay(int nrOfNextDays)
 	{
@@ -250,7 +244,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Sets this <CODE>DateStamp</CODE> to the previous day.
 	 * 
-	 * @param nrOfPreviousDays the number of days in the past
+	 * @param nrOfPreviousDays  the number of days in the past
 	 */
 	public void setToPreviousDay(int nrOfPreviousDays)
 	{
@@ -260,7 +254,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Sets this <CODE>DateStamp</CODE> to the next month.
 	 * 
-	 * @param nrOfNextMonths the number of months in the future
+	 * @param nrOfNextMonths  the number of months in the future
 	 */
 	public void setToNextMonth(int nrOfNextMonths)
 	{
@@ -270,7 +264,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Sets this <CODE>DateStamp</CODE> to the previous month.
 	 * 
-	 * @param nrOfPreviousMonths the number of months in the past
+	 * @param nrOfPreviousMonths  the number of months in the past
 	 */
 	public void setToPreviousMonth(int nrOfPreviousMonths)
 	{
@@ -280,7 +274,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Sets this <CODE>DateStamp</CODE> to the next year.
 	 * 
-	 * @param nrOfNextYears the number of years in the future
+	 * @param nrOfNextYears  the number of years in the future
 	 */
 	public void setToNextYear(int nrOfNextYears)
 	{
@@ -290,7 +284,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Sets this <CODE>DateStamp</CODE> to the previous year.
 	 * 
-	 * @param nrOfPreviousYears the number of years in the past
+	 * @param nrOfPreviousYears  the number of years in the past
 	 */
 	public void setToPreviousYear(int nrOfPreviousYears)
 	{
@@ -307,6 +301,8 @@ public final class DateStamp implements Comparable<DateStamp>
 
 	/**
 	 * Returns this <CODE>DateStamp</CODE>'s day of the month [1-31].
+	 * 
+	 * @return the day
 	 */
 	public int getDay()
 	{
@@ -356,9 +352,9 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Returns the number of days in a specified month [1-12] and a given year.
 	 *
-	 * @param month the specified month [1-12]
-	 * @param year the year for the month
-	 * @return the number of days in the specified month
+	 * @param month  the specified month [1-12]
+	 * @param year   the year for the month
+	 * @return       the number of days in the specified month
 	 */
 	public static int getNumberOfDaysInMonth(int month, int year)
 	{
@@ -401,6 +397,8 @@ public final class DateStamp implements Comparable<DateStamp>
 
 	/**
 	 * Returns this <CODE>DateStamp</CODE>'s month [1-12].
+	 * 
+	 * @return the month
 	 */
 	public int getMonth()
 	{
@@ -409,6 +407,8 @@ public final class DateStamp implements Comparable<DateStamp>
 
 	/**
 	 * Returns this <CODE>DateStamp</CODE>'s year.
+	 * 
+	 * @return the year
 	 */
 	public int getYear()
 	{
@@ -428,7 +428,8 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Checks whether or not a specified year is a leap year (assuming a Gregorian calendar).
 	 *
-	 * @return <CODE>true</CODE> if the specified year is leap year, <CODE>false</CODE> otherwise
+	 * @param year  the year to check
+	 * @return      <CODE>true</CODE> if the specified year is leap year, <CODE>false</CODE> otherwise
 	 */
 	public static boolean isLeapYear(int year)
 	{
@@ -492,9 +493,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * <P>
 	 * The string will have the following specific format:
 	 * <P>
-	 * <UL>
-	 *   <B>day-of-week dd month yyyy</B>, e.g., Sunday 11 April 1976
-	 * </UL>
+	 * <B>day-of-week dd month yyyy</B>, e.g., Sunday 11 April 1976
 	 * <P>
 	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
@@ -520,9 +519,9 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * <P>
 	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
-	 * @param  dayOfWeek the day-of-week index to convert [1-7]
-	 * @return a string corresponding to the weekday name
-	 * @see    I18NL10N
+	 * @param dayOfWeek  the day-of-week index to convert [1-7]
+	 * @return           a string corresponding to the weekday name
+	 * @see              I18NL10N
 	 */
 	public static String getDayOfWeekString(int dayOfWeek)
 	{
@@ -551,9 +550,9 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * <P>
 	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
-	 * @param  month the month index to convert
-	 * @return a string corresponding to the month name
-	 * @see    I18NL10N
+	 * @param month  the month index to convert
+	 * @return       a string corresponding to the month name
+	 * @see          I18NL10N
 	 */
 	public static String getMonthString(int month)
 	{
@@ -592,9 +591,9 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * <P>
 	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
-	 * @param  month the month name to convert
-	 * @return a number corresponding to the month index
-	 * @see    I18NL10N
+	 * @param month  the month name to convert
+	 * @return       a number corresponding to the month index
+	 * @see          I18NL10N
 	 */
 	public static int getMonth(String month)
 	{
@@ -639,7 +638,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	}
 
 	/**
-	 * The overloaded <CODE>Comparable<CODE> interface.
+	 * The overloaded <CODE>Comparable</CODE> interface.
 	 */
 	@Override
 	public int compareTo(DateStamp otherDateStamp)
@@ -672,7 +671,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	}
 	 
 	/**
-	 * Default overloaded <CODE>toString()<CODE> method.
+	 * Default overloaded <CODE>toString()</CODE> method.
 	 * 
 	 * @return a <CODE>String</CODE> representation of this <CODE>DateStamp</CODE> object in the format dd/MM/yyyy
 	 * @see    java.text.SimpleDateFormat

@@ -33,11 +33,9 @@ import org.sm.smtools.exceptions.*;
  * <P>
  * The <CODE>Registry</CODE> class is actually a <B>singleton</B> instance, and a local reference to it
  * should be obtained as follows:
- * <UL>
- * <CODE>
- *   Registry localReference = Registry.getInstance();
- * </CODE> 
- * </UL>
+ * <P>
+ * <CODE>Registry localReference = Registry.getInstance();</CODE>
+ * <P> 
  * The registry itself contains different hives (which are classes implementing the {@link Hive}
  * interface), such as for example the {@link Hive} implementation. From anywhere within the
  * application, the registry can be accessed using the aforementioned locally constructed
@@ -47,11 +45,8 @@ import org.sm.smtools.exceptions.*;
  * Each hive in the registry has a unique name, and can individually be saved to and removed
  * from the registry. Continuing the previous train of thought, we can for example obtain a
  * local reference to a hive as follows:
- * <UL>
- * <CODE>
- *   Hive hive = (Hive) localReference.getHive("hive");
- * </CODE>
- * </UL>
+ * <P>
+ * <CODE>Hive hive = (Hive) localReference.getHive("hive");</CODE>
  * <P>
  * When consecutively loading multiple registries, they are joined together in memory.
  * <P>
@@ -71,7 +66,9 @@ public final class Registry
 	 * CONSTRUCTORS *
 	 ****************/
 
-	// prevent arbitrary instantiation (we only allow a singleton instance) 
+	/**
+	 * Prevent arbitrary instantiation (we only allow a singleton instance)
+	 */ 
 	private Registry()
 	{
 		fHives = new Hashtable<>();
@@ -109,8 +106,9 @@ public final class Registry
 	 * <P>
 	 * If the hive is not found in the registry, <CODE>null</CODE> is returned.
 	 * 
-	 * @param hiveName the name of the hive to retrieve
-	 * @see   Hive
+	 * @param hiveName  the name of the hive to retrieve
+	 * @return          the retrieved <CODE>Hive</CODE>
+	 * @see             Hive
 	 */
 	public synchronized Hive getHive(String hiveName)
 	{
@@ -120,9 +118,9 @@ public final class Registry
 	/**
 	 * Adds a hive to the registry.
 	 * 
-	 * @param hiveName the name of the hive to add
-	 * @param hive     the hive to add
-	 * @see   Hive
+	 * @param hiveName  the name of the hive to add
+	 * @param hive      the hive to add
+	 * @see             Hive
 	 */
 	public synchronized void addHive(String hiveName, Hive hive)
 	{
@@ -132,9 +130,9 @@ public final class Registry
 	/**
 	 * Removes a hive from the registry.
 	 * 
-	 * @param  hiveName the name of the hive to remove
-	 * @throws RegistryException if the hive could not be found in the registry
-	 * @see    Hive
+	 * @param  hiveName            the name of the hive to remove
+	 * @throws RegistryException   if the hive could not be found in the registry
+	 * @see                        Hive
 	 */
 	public synchronized void removeHive(String hiveName) throws RegistryException
 	{
@@ -148,9 +146,9 @@ public final class Registry
 	/**
 	 * Loads a hive from a file using deserialisation.
 	 *
-	 * @param  filename          the name of the file to load the hive from
-	 * @return                   the hive loaded from the file
-	 * @throws RegistryException if an error occurred during the deserialisation process
+	 * @param  filename           the name of the file to load the hive from
+	 * @return                    the hive loaded from the file
+	 * @throws RegistryException  if an error occurred during the deserialisation process
 	 * @see    Hive
 	 */
 	public synchronized Hive loadHive(String filename) throws RegistryException
@@ -179,9 +177,9 @@ public final class Registry
 	 * <P>
 	 * Note that care should be taken that all the fields in the specified hive are serialisable.
 	 *
-	 * @param  hive              the hive to save
-	 * @param  filename          the name of the file to save the hive to
-	 * @throws RegistryException if an error occurred during the serialisation process
+	 * @param  hive               the hive to save
+	 * @param  filename           the name of the file to save the hive to
+	 * @throws RegistryException  if an error occurred during the serialisation process
 	 * @see    Hive
 	 */
 	public synchronized void saveHive(Hive hive, String filename) throws RegistryException
@@ -207,8 +205,8 @@ public final class Registry
 	/**
 	 * Loads all hives in the registry from a file using deserialisation.
 	 *
-	 * @param  filename          the name of the file to load the registry from
-	 * @throws RegistryException if an error occurred during the deserialisation process
+	 * @param  filename           the name of the file to load the registry from
+	 * @throws RegistryException  if an error occurred during the deserialisation process
 	 */
 	public synchronized void load(String filename) throws RegistryException
 	{
@@ -240,8 +238,8 @@ public final class Registry
 	 * <P>
 	 * Note that care should be taken that all the fields in all the hives are serialisable.
 	 *
-	 * @param  filename          the name of the file to save the registry to
-	 * @throws RegistryException if an error occurred during the serialisation process
+	 * @param  filename           the name of the file to save the registry to
+	 * @throws RegistryException  if an error occurred during the serialisation process
 	 */
 	public synchronized void save(String filename) throws RegistryException
 	{
@@ -267,6 +265,10 @@ public final class Registry
 	 * INNER CLASSES *
 	 *****************/
 
+	/**
+	 * @author  Sven Maerivoet
+	 * @version 28/04/2013
+	 */
 	private class HivesWrapper implements Serializable
 	{
 		private Hashtable<String,Hive> fHives;
@@ -275,6 +277,8 @@ public final class Registry
 		 * CONSTRUCTORS *
 		 ****************/
 
+		/**
+		 */
 		public HivesWrapper(Hashtable<String,Hive> hives)
 		{
 			fHives = hives;
@@ -284,6 +288,8 @@ public final class Registry
 		 * PUBLIC METHODS *
 		 ******************/
 
+		/**
+		 */
 		public Hashtable<String,Hive> getHives()
 		{
 			return fHives;
@@ -293,6 +299,8 @@ public final class Registry
 		 * PRIVATE METHODS *
 		 *******************/
 
+		/**
+		 */
 		private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
 		{
 			// load the number of hives
@@ -313,6 +321,8 @@ public final class Registry
 			}
 		}
 
+		/**
+		 */
 		private void writeObject(ObjectOutputStream out) throws IOException
 		{
 			// save the number of hives

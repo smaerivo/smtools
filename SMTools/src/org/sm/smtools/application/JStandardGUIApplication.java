@@ -32,37 +32,31 @@ import org.apache.log4j.*;
 import org.sm.smtools.application.registry.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
-import org.sm.smtools.miscellaneous.*;
 import org.sm.smtools.swing.dialogs.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JStandardGUIApplication</CODE> class provides a standard Swing based GUI framework.
  * <P>
  * By default, the <CODE>JStandardGUIApplication</CODE> class will result in the following GUI:
  * <P>
- * <UL>
- *   <IMG src="doc-files/standard-gui.png">
- * </UL>
+ * <IMG src="doc-files/standard-gui.png" alt="">
  * <P>
  * Typically, this <CODE>JStandardGUIApplication</CODE> is subclassed, with several methods overridden.
  * These methods control the application's settings, the visual layout of its GUI, and the actions that need to be
  * taken upon user input. 
  * <P>
  * The overridable methods that setup the GUI's form and behaviour are:
- * <P>
  * <UL>
  *   <LI><B><U>Java runtime environment version checking</U></B></LI>
- *   <P>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#setupRequiredMajorJavaVersion()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupRequiredMinorJavaVersion()}</LI>
  *   </UL>
- *   <P>
  *   <LI><B><U>Command-line parameter parsing</U></B></LI>
- *   <P>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#parseParameter(int,String)}</LI>
- *     <BR />
+ *     <BR>
  *     Already built-in command-line parameters are:
  *     <UL>
  *       <LI>-<B>locale</B>=<I>dutch</I>|<I>ukenglish</I>|<I>usenglish</I> (default is <I>ukenglish</I>)</LI>
@@ -74,9 +68,7 @@ import org.sm.smtools.swing.dialogs.*;
  *     </UL>
  *     <I>Note that the application is sized to fullscreen if either width or height or set to reflect this.</I>
  *   </UL>
- *   <P>
  *   <LI><B><U>Custom initialisation and clean-up</U></B></LI>
- *   <P>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#setupApplicationResourceArchiveFilename()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupApplicationLocalePrefix()}</LI>
@@ -84,17 +76,13 @@ import org.sm.smtools.swing.dialogs.*;
  *     <LI>{@link JStandardGUIApplication#postInitialise()}</LI>
  *     <LI>{@link JStandardGUIApplication#shutdown()}</LI>
  *   </UL>
- *   <P>
  *   <LI><B><U>Splash screen during startup</U></B></LI>
- *   <P>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#getSplashScreen()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupSplashScreenContent()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupSplashScreenSound()} [<I>see also {@link JSplashScreen} and {@link MP3Player}</I>]</LI>
  *   </UL>
- *   <P>
  *   <LI><B><U>Visual layout (window related)</U></B></LI>
- *   <P>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#setupInitialLookAndFeel()}</LI>
  *     <LI>{@link JStandardGUIApplication#lookAndFeelChanged()}</LI>
@@ -105,9 +93,7 @@ import org.sm.smtools.swing.dialogs.*;
  *     <LI>{@link JStandardGUIApplication#setupWindowTitle()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}</LI>
  *   </UL>
- *   <P>
  *   <LI><B><U>Visual layout (content related)</U></B></LI>
- *   <P>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#setupContentPane(JPanel)}</LI>
  *     <LI>{@link JStandardGUIApplication#setupMenus()}</LI>
@@ -123,9 +109,7 @@ import org.sm.smtools.swing.dialogs.*;
  *     <LI>{@link JStandardGUIApplication#setupIsClockEnabled()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
  *   </UL>
- *   <P>
  *   <LI><B><U>Reacting to user input</U></B></LI>
- *   <P>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#actionPerformed(ActionEvent)}</LI>
  *     <LI>{@link JStandardGUIApplication#windowResized()}</LI>
@@ -134,9 +118,7 @@ import org.sm.smtools.swing.dialogs.*;
  * <P>
  * Note that by default, a "<I>General</I>" menu is present, which looks as follows:
  * <P>
- * <UL>
- *   <IMG src="doc-files/standard-menu.png">
- * </UL>
+ * <IMG src="doc-files/standard-menu.png" alt="">
  * <P>
  * Note that if the underlying operating system allows for minimisation to the system tray,
  * then this options becomes available in the menu.
@@ -146,9 +128,7 @@ import org.sm.smtools.swing.dialogs.*;
  * <P>
  * When the user wants to quit the application, a confirmation dialog is shown:
  * <P>
- * <UL>
- *   <IMG src="doc-files/quit-dialog.png">
- * </UL>
+ * <IMG src="doc-files/quit-dialog.png" alt="">
  * <P>
  * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
  * 
@@ -216,7 +196,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	protected static final String klafSystem = "platform-dependent";
 
-	/*
+	/**
 	 * Access point to the application's own resources.
 	 */
 	protected JARResources fResources;
@@ -322,62 +302,41 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * Constructs a <CODE>JStandardGUIApplication</CODE> object.
 	 * <P>
 	 * During construction of the GUI, the following events take place:
-	 * <P>
 	 * <UL>
 	 *   <LI>The required version of the Java runtime engine is checked (see {@link JStandardGUIApplication#setupRequiredMajorJavaVersion()} and
 	 *       {@link JStandardGUIApplication#setupRequiredMinorJavaVersion()}).</LI>
-	 *   <P>
 	 *   <LI>The system {@link JARResources} are loaded.</LI>
-	 *   <P>
 	 *   <LI>The GUI is set to auto-size by default (see {@link JStandardGUIApplication#setupInitialGUISize()} and
 	 *       {@link JStandardGUIApplication#setupIsGUIResizable()}).</LI>
-	 *   <P>
 	 *   <LI>British English is the default language used.</LI>
-	 *   <P>
 	 *   <LI>The command-line parameters are parsed (see {@link JStandardGUIApplication#parseParameter(int,String)}).</LI>
-	 *   <P>
 	 *   <LI>The system's locale {@link I18NL10N} database is loaded.</LI>
-	 *   <P>
 	 *   <LI>The application's {@link JARResources} and locale {@link I18NL10N} database are loaded (if they are present).</LI>
-	 *   <P>
 	 *   <LI>The global system {@link Registry} is read from file.</LI>
-	 *   <P>
 	 *   <LI>The GUI's component cache is initialised (see {@link JGUIComponentCache}).</LI>
-	 *   <P>
 	 *   <LI>The look-and-feel of the operating system is used by default.</LI>
-	 *   <P>
 	 *   <LI>A optional splash screen is shown (see {@link JStandardGUIApplication#setupSplashScreenContent()} and
 	 *       {@link JStandardGUIApplication#setupSplashScreenSound()}).</LI>
-	 *   <P>
 	 *   <LI>Custom initialisation is performed (see {@link JStandardGUIApplication#initialiseClass(Object[])}).
 	 *       Note that the objects are specified as <CODE>new Object[] {object1,object2}</CODE>.</LI>
-	 *   <P>
 	 *   <LI>The window's icon and title are set (see {@link JStandardGUIApplication#setupIcon()} and
 	 *       {@link JStandardGUIApplication#setupWindowTitle()}).</LI>
-	 *   <P>
 	 *   <LI>The GUI's content pane is constructed (see {@link JStandardGUIApplication#setupContentPane(JPanel)}).</LI>
-	 *   <P>
 	 *   <LI>The GUI's status bar is constructed (see {@link JStandardGUIApplication#setupStatusBarCustomLabels()},
 	 *       {@link JStandardGUIApplication#setupIsStatusBarEnabled()}, and {@link JStandardGUIApplication#getStatusBar()}).</LI>
-	 *   <P>
 	 *   <LI>The GUI's menu bar is constructed (see {@link JStandardGUIApplication#setupMenus()} and
 	 *       {@link JStandardGUIApplication#setupRightHandMenu()}).</LI>
-	 *   <P>
 	 *   <LI>The about box is shown (see {@link JStandardGUIApplication#setupAboutBox()}).</LI>
-	 *   <P>
 	 *   <LI>The application checks if minimisation to the system tray is allowed (see {@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}).</LI>
-	 *   <P>
 	 *   <LI>The glass pane is constructed (see {@link JStandardGUIApplication#setupGlassPane()}).</LI>
-	 *   <P>
-	 *   <LI>Post initialisation is performed as the GUI is fully constructed</I> (see {@link JStandardGUIApplication#postInitialise()}).</LI>
+	 *   <LI>Post initialisation is performed as the GUI is fully constructed (see {@link JStandardGUIApplication#postInitialise()}).</LI>
 	 * </UL>
-	 * <P>
 	 * If no parameters are to be passed to the GUI, specify <CODE>null</CODE>
 	 * for <CODE>parameters</CODE>.
 	 *
-	 * @param argv       an array of strings containing the <B>command-line</B> parameters
-	 * @param parameters an array of objects containing the parameters to be passed to the GUI's
-	 *                   {@link JStandardGUIApplication#initialiseClass(Object[])} method
+	 * @param argv        an array of strings containing the <B>command-line</B> parameters
+	 * @param parameters  an array of objects containing the parameters to be passed to the GUI's
+	 *                    {@link JStandardGUIApplication#initialiseClass(Object[])} method
 	 */
 	public JStandardGUIApplication(String[] argv, Object[] parameters)
 	{
@@ -676,13 +635,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * the user's input:
 	 * <P>
 	 * <CODE>
-	 * <PRE>
-	 *   super.actionPerformed(e);
+	 *   super.actionPerformed(e);<BR>
 	 *   // rest of method's code
-	 * </PRE>
 	 * </CODE>
 	 *
-	 * @param e the <CODE>ActionEvent</CODE> that is received
+	 * @param e  the <CODE>ActionEvent</CODE> that is received
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -739,7 +696,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * A method from the dialog box's <B>component listener</B>.
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public void componentMoved(ComponentEvent e)
@@ -749,7 +706,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * A method from the dialog box's <B>component listener</B>.
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public void componentShown(ComponentEvent e)
@@ -759,7 +716,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * A method from the dialog box's <B>component listener</B>.
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public void componentHidden(ComponentEvent e)
@@ -769,7 +726,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * A method from the dialog box's <B>component listener</B>.
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public void componentResized(ComponentEvent e)
@@ -781,7 +738,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowActivated(WindowEvent e)
@@ -791,7 +748,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowClosed(WindowEvent e)
@@ -801,7 +758,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowClosing(WindowEvent e)
@@ -837,7 +794,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowDeactivated(WindowEvent e)
@@ -847,7 +804,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowDeiconified(WindowEvent e)
@@ -859,7 +816,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowIconified(WindowEvent e)
@@ -900,7 +857,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowOpened(WindowEvent e)
@@ -911,7 +868,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param e the <CODE>WindowEvent</CODE> that is received
+	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
 	public final void windowStateChanged(WindowEvent e)
@@ -925,15 +882,13 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * Note that this method should be overridden by a derived subclass:
 	 * <P>
 	 * <CODE>
-	 * <PRE>
-	 *   public static void main(String[] argv)
-	 *   {
-	 *     DerivedGUIApplication derivedGUIApplication = new DerivedGUIApplication(argv);
+	 *   public static void main(String[] argv)<BR>
+	 *   {<BR>
+	 *     DerivedGUIApplication derivedGUIApplication = new DerivedGUIApplication(argv);<BR>
 	 *   }
-	 * </PRE>
 	 * </CODE>
 	 *
-	 * @param argv an array of strings containing the <B>command-line</B> parameters
+	 * @param argv  an array of strings containing the <B>command-line</B> parameters
 	 */
 	public static void main(String[] argv)
 	{
@@ -1030,7 +985,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * the class's constructor (see {@link JStandardGUIApplication#JStandardGUIApplication(String[],Object[])}).
 	 * They are typically specified as <CODE>new Object[] {object1,object2}</CODE>.
 	 *
-	 * @param parameters an array of <CODE>Objects</CODE>
+	 * @param parameters  an array of <CODE>Objects</CODE>
 	 */
 	protected void initialiseClass(Object[] parameters)
 	{
@@ -1064,39 +1019,37 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * The following example shows the parsing of one custom parameter (with a custom option):
 	 * <CODE>
-	 * <PRE>
-	 *   final String kCustomParameter = "PARAMETER";
-	 *   final String kCustomOption    = "OPTION";
-	 *
-	 *   String upperCaseParameter = parameter.toUpperCase();
-	 *
-	 *   // parse parameter
-	 *   if (upperCaseParameter.startsWith(kCustomParameter &#43; "=")) {
-	 *
-	 *     String upperCaseOption = upperCaseParameter.substring(kCustomParameter.length() &#43; 1);
-	 *     // parse option
-	 *     if (upperCaseOption.equalsIgnoreCase(kCustomOption)) {
-	 *       // take action as parameter is parsed
-	 *     }
-	 *     else {
-	 *       showParameterWarning(paramNr,parameter,"not a valid option");
-	 *     }
-	 *
-	 *     // indicate that parameter was valid
-	 *     return true;
+	 *   final String kCustomParameter = "PARAMETER";<BR>
+	 *   final String kCustomOption    = "OPTION";<BR>
+	 *   <BR>
+	 *   String upperCaseParameter = parameter.toUpperCase();<BR>
+	 *   <BR>
+	 *   // parse parameter<BR>
+	 *   if (upperCaseParameter.startsWith(kCustomParameter &#43; "=")) {<BR>
+	 *   <BR>
+	 *     String upperCaseOption = upperCaseParameter.substring(kCustomParameter.length() &#43; 1);<BR>
+	 *     // parse option<BR>
+	 *     if (upperCaseOption.equalsIgnoreCase(kCustomOption)) {<BR>
+	 *       // take action as parameter is parsed<BR>
+	 *     }<BR>
+	 *     else {<BR>
+	 *       showParameterWarning(paramNr,parameter,"not a valid option");<BR>
+	 *     }<BR>
+	 *     <BR>
+	 *     // indicate that parameter was valid<BR>
+	 *     return true;<BR>
+	 *   }<BR>
+	 *   else {<BR>
+	 *     <BR>
+	 *     // indicate that parameter is unknown<BR>
+	 *     return false;<BR>
 	 *   }
-	 *   else {
-	 *
-	 *     // indicate that parameter is unknown
-	 *     return false;
-	 *   }
-	 * </PRE>
 	 * </CODE>
 	 *
-	 * @param  paramNr   the number of the parameter that is being parsed
-	 * @param  parameter the unmodified parameter as specified on the command-line
-	 * @return           <CODE>true</CODE> if the parameter was parsed successfully, <CODE>false</CODE> otherwise
-	 * @see    JStandardGUIApplication#showParameterWarning(int,String,String)
+	 * @param  paramNr    the number of the parameter that is being parsed
+	 * @param  parameter  the unmodified parameter as specified on the command-line
+	 * @return            <CODE>true</CODE> if the parameter was parsed successfully, <CODE>false</CODE> otherwise
+	 * @see               JStandardGUIApplication#showParameterWarning(int,String,String)
 	 */
 	protected boolean parseParameter(int paramNr, String parameter)
 	{
@@ -1106,10 +1059,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Logs a textual warning message.
 	 *
-	 * @param paramNr   the number of the parameter that failed to get parsed
-	 * @param parameter the unmodified parameter as specified on the command-line
-	 * @param message   the warning message to log
-	 * @see   JStandardGUIApplication#parseParameter(int,String)
+	 * @param paramNr    the number of the parameter that failed to get parsed
+	 * @param parameter  the unmodified parameter as specified on the command-line
+	 * @param message    the warning message to log
+	 * @see              JStandardGUIApplication#parseParameter(int,String)
 	 */
 	protected final void showParameterWarning(int paramNr, String parameter, String message)
 	{
@@ -1138,7 +1091,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return the MP3 sound to play during the splash screen
 	 * @see    org.sm.smtools.application.util.JSplashScreen
-	 * @see    org.sm.smtools.miscellaneous.MP3Player
+	 * @see    org.sm.smtools.util.MP3Player
 	 */
 	protected InputStream setupSplashScreenSound()
 	{
@@ -1159,8 +1112,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Sets up the application's initial look-and-feel.
 	 * <P>
-	 * The possible values that can be returned are:<BR />
-	 * <BR />
+	 * The possible values that can be returned are:<BR>
+	 * <BR>
 	 * <UL>
 	 *   <LI>the GTK look-and-feel ({@link JStandardGUIApplication#klafGTK})</LI>
 	 *   <LI>the Mac OS X look-and-feel ({@link JStandardGUIApplication#klafMac})</LI>
@@ -1195,7 +1148,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * A derived subclass should return a <CODE>Dimension</CODE> object containing the initial
 	 * width and height of the GUI's window. Their values are expressed in pixels, but the following
 	 * two special values are also accepted:
-	 * <P>
 	 * <UL>
 	 *   <LI>{@link JStandardGUIApplication#kAutoSizeGUI}</LI>
 	 *   <LI>{@link JStandardGUIApplication#kFullScreenGUI}</LI>
@@ -1203,9 +1155,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * An example:
 	 * <P>
-	 * <UL>
-	 *   <CODE>return (new Dimension(JStandardGUIApplication.kFullScreenGUI,250));</CODE>
-	 * </UL>
+	 * <CODE>return (new Dimension(JStandardGUIApplication.kFullScreenGUI,250));</CODE>
 	 * <P>
 	 * which specifies a GUI with full screen width and 250 pixels height.
 	 *
@@ -1295,7 +1245,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * A subclass thus sets the content pane's layout managers, adds components to it, ...
 	 *
-	 * @param contentPane the GUI's main content pane to modify
+	 * @param contentPane  the GUI's main content pane to modify
 	 */
 	protected void setupContentPane(JPanel contentPane)
 	{
@@ -1336,9 +1286,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param menuItemKey the key of the menu item
-	 * @param useMnemonic a flag indicating whether to use a mnemonic or not
-	 * @return a menu item object
+	 * @param menuItemKey  the key of the menu item
+	 * @param useMnemonic  a flag indicating whether to use a mnemonic or not
+	 * @return             a menu item object
 	 */
 	protected final JMenuItem constructMenuItem(String menuItemKey, boolean useMnemonic)
 	{
@@ -1364,8 +1314,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param menuItemKey the key of the menu item
-	 * @return a menu item object
+	 * @param menuItemKey  the key of the menu item
+	 * @return             a menu item object
 	 */
 	protected final JMenuItem constructMenuItem(String menuItemKey)
 	{
@@ -1377,9 +1327,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param checkBoxMenuItemKey the key of the menu item
-	 * @param useMnemonic a flag indicating whether to use a mnemonic or not
-	 * @return a check box menu item object
+	 * @param checkBoxMenuItemKey  the key of the menu item
+	 * @param useMnemonic          a flag indicating whether to use a mnemonic or not
+	 * @return                      a check box menu item object
 	 */
 	protected final JCheckBoxMenuItem constructCheckBoxMenuItem(String checkBoxMenuItemKey, boolean useMnemonic)
 	{
@@ -1404,8 +1354,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
-	 * @param checkBoxMenuItemKey the key of the menu item
-	 * @return a check box menu item object
+	 * @param checkBoxMenuItemKey  the key of the menu item
+	 * @return                     a check box menu item object
 	 */
 	protected final JCheckBoxMenuItem constructCheckBoxMenuItem(String checkBoxMenuItemKey)
 	{
@@ -1415,7 +1365,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Sets up custom labels that are shown to the right hand side of the status bar.
 	 *
-	 * @return an <CODE>ArrayList<CODE> of custom labels, or <CODE>null</CODE> if none are provided
+	 * @return an <CODE>ArrayList</CODE> of custom labels, or <CODE>null</CODE> if none are provided
 	 */
 	protected ArrayList<JLabel> setupStatusBarCustomLabels()
 	{
@@ -1497,8 +1447,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Immediately aborts the running application.
 	 *
-	 * @param abortMessage the message to display when aborting
-	 * @param appendLocale optional argument that, when set to <CODE>true</CODE>, appends a localised message that the application is aborted
+	 * @param abortMessage  the message to display when aborting
+	 * @param appendLocale  optional argument that, when set to <CODE>true</CODE>, appends a localised message that the application is aborted
 	 */
 	protected final void abortApplication(String abortMessage, boolean ... appendLocale)
 	{
@@ -1519,6 +1469,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *******************/
 
 	/**
+	 * @param lookAndFeel  -
+	 * @param silent       -
 	 */
 	private void setLookAndFeel(String lookAndFeel, boolean silent)
 	{
@@ -1594,6 +1546,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * @param lookAndFeel  -
 	 */
 	private void setInitialLookAndFeel(String lookAndFeel)
 	{
@@ -1606,6 +1559,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * @param  lookAndFeel  -
+	 * @return              -
 	 */
 	private String translateLookAndFeelName(String lookAndFeel)
 	{
@@ -1619,6 +1574,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * @param menuBar  -
 	 */
 	private void constructMenuBar(JMenuBar menuBar)
 	{
@@ -1777,6 +1733,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * @param argv  -
 	 */
 	private void parseCommandLine(String[] argv)
 	{

@@ -26,7 +26,7 @@ package org.sm.smtools.swing.dialogs;
 import java.awt.*;
 import javax.swing.*;
 import org.sm.smtools.application.util.*;
-import org.sm.smtools.miscellaneous.*;
+import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JIncompleteWarningDialog</CODE> class pops up a standard dialog box for incomplete implementations.
@@ -38,23 +38,17 @@ import org.sm.smtools.miscellaneous.*;
  * Depending on the application's current <I>look-and-feel</I>, the dialog box
  * looks as follows:
  * <P>
- * <UL>
- *   <B><U>Java Metal L&F</U></B><BR />
- *   <BR />
- *   <IMG src="doc-files/incomplete-warning-dialog-metal.png">
- * </UL>
+ * <B><U>Java Metal L&amp;F</U></B><BR>
+ * <BR>
+ *  <IMG src="doc-files/incomplete-warning-dialog-metal.png" alt="">
  * <P>
- * <UL>
- *   <B><U>Microsoft Windows L&F</U></B><BR />
- *   <BR />
- *   <IMG src="doc-files/incomplete-warning-dialog-windows.png">
- * </UL>
+ * <B><U>Microsoft Windows L&amp;F</U></B><BR>
+ * <BR>
+ * <IMG src="doc-files/incomplete-warning-dialog-windows.png" alt="">
  * <P>
- * <UL>
- *   <B><U>Motif L&F</U></B><BR />
- *   <BR />
- *   <IMG src="doc-files/incomplete-warning-dialog-motif.png">
- * </UL>
+ * <B><U>Motif L&amp;F</U></B><BR>
+ * <BR>
+ * <IMG src="doc-files/incomplete-warning-dialog-motif.png" alt="">
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
@@ -67,7 +61,9 @@ public final class JIncompleteWarningDialog
 	 * CONSTRUCTORS *
 	 ****************/
 
-	// prevent instantiation
+	/**
+	 * Prevent instantiation.
+	 */
 	private JIncompleteWarningDialog()
 	{
 	}
@@ -81,14 +77,12 @@ public final class JIncompleteWarningDialog
 	 * <P>
 	 * This method should be called as follows:
 	 * <P>
-	 * <UL>
-	 *   <CODE>JIncompleteWarningDialog.warn(parent,className);</CODE>
-	 * </UL>
+	 * <CODE>JIncompleteWarningDialog.warn(parent,className);</CODE>
 	 * <P>
 	 * Note that a valid {@link I18NL10N} database must be available!
 	 *
-	 * @param parentComponent the frame in which this dialog is to be displayed
-	 * @param className       the name of the not-yet-implemented package, class (and method) to warn about
+	 * @param parentComponent  the frame in which this dialog is to be displayed
+	 * @param className        the name of the not-yet-implemented package, class (and method) to warn about
 	 */
 	public static void warn(Component parentComponent, String className)
 	{

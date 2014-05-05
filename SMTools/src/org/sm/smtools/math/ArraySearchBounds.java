@@ -52,8 +52,8 @@ public final class ArraySearchBounds
 	/**
 	 * Constructs an <CODE>ArraySearchBounds</CODE> object with both bounds specified.
 	 *
-	 * @param lowerBound the lower bound
-	 * @param upperBound the upper bound
+	 * @param lowerBound  the lower bound
+	 * @param upperBound  the upper bound
 	 */
 	public ArraySearchBounds(int lowerBound, int upperBound)
 	{
@@ -66,7 +66,9 @@ public final class ArraySearchBounds
 	 ******************/
 
 	/**
-	 * Getter method.
+	 * Getter method for the lower bound.
+	 *
+	 * @return the lower bound
 	 */
 	public int getLowerBound()
 	{
@@ -74,7 +76,9 @@ public final class ArraySearchBounds
 	}
 
 	/**
-	 * Setter method.
+	 * Setter method for the lower bound.
+	 *
+	 * @param lowerBound  the lower bound
 	 */
 	public void setLowerBound(int lowerBound)
 	{
@@ -82,7 +86,9 @@ public final class ArraySearchBounds
 	}
 
 	/**
-	 * Getter method.
+	 * Getter method for the upper bound.
+	 *
+	 * @return the upper bound
 	 */
 	public int getUpperBound()
 	{
@@ -90,7 +96,9 @@ public final class ArraySearchBounds
 	}
 
 	/**
-	 * Setter method.
+	 * Setter method for the upper bound.
+	 *
+	 * @param upperBound  the upper bound
 	 */
 	public void setUpperBound(int upperBound)
 	{

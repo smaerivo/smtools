@@ -61,50 +61,50 @@ public class JTriggeredButton extends JButton
 	 */
 	public JTriggeredButton()
 	{
-		customize();
+		customise();
 	}
 
 	/**
 	 * Creates a <CODE>JTriggeredButton</CODE> with text.
 	 *
-	 * @param text the text of the button
-	 * @see   JTriggeredButton#JTriggeredButton()
-	 * @see   JTriggeredButton#JTriggeredButton(Icon)
-	 * @see   JTriggeredButton#JTriggeredButton(String,Icon)
+	 * @param text  the text of the button
+	 * @see         JTriggeredButton#JTriggeredButton()
+	 * @see         JTriggeredButton#JTriggeredButton(Icon)
+	 * @see         JTriggeredButton#JTriggeredButton(String,Icon)
 	 */
 	public JTriggeredButton(String text)
 	{
 		super(text);
-		customize();
+		customise();
 	}
 
 	/**
 	 * Creates a <CODE>JTriggeredButton</CODE> with an icon.
 	 *
-	 * @param icon the <CODE>Icon</CODE> image to display on the button
-	 * @see   JTriggeredButton#JTriggeredButton()
-	 * @see   JTriggeredButton#JTriggeredButton(String)
-	 * @see   JTriggeredButton#JTriggeredButton(String,Icon)
+	 * @param icon  the <CODE>Icon</CODE> image to display on the button
+	 * @see         JTriggeredButton#JTriggeredButton()
+	 * @see         JTriggeredButton#JTriggeredButton(String)
+	 * @see         JTriggeredButton#JTriggeredButton(String,Icon)
 	 */
 	public JTriggeredButton(Icon icon)
 	{
 		super(icon);
-		customize();
+		customise();
 	}
 
 	/**
 	 * Creates a <CODE>JTriggeredButton</CODE> with text and an icon.
 	 *
-	 * @param text the text of the button
-	 * @param icon the <CODE>Icon</CODE> image to display on the button
-	 * @see   JTriggeredButton#JTriggeredButton()
-	 * @see   JTriggeredButton#JTriggeredButton(String)
-	 * @see   JTriggeredButton#JTriggeredButton(Icon)
+	 * @param text  the text of the button
+	 * @param icon  the <CODE>Icon</CODE> image to display on the button
+	 * @see         JTriggeredButton#JTriggeredButton()
+	 * @see         JTriggeredButton#JTriggeredButton(String)
+	 * @see         JTriggeredButton#JTriggeredButton(Icon)
 	 */
 	public JTriggeredButton(String text, Icon icon)
 	{
 		super(text,icon);
-		customize();
+		customise();
 	}
 
 	/******************
@@ -114,7 +114,7 @@ public class JTriggeredButton extends JButton
 	/**
 	 * Sets the color used when the mouse pointer is over the button.
 	 *
-	 * @param color the color used when the mouse pointer is over the button
+	 * @param color  the color used when the mouse pointer is over the button
 	 */
 	public final void setHighlightColor(Color color)
 	{
@@ -124,7 +124,7 @@ public class JTriggeredButton extends JButton
 	/**
 	 * Sets the color used when the button is selected.
 	 *
-	 * @param color the color used when the button is selected
+	 * @param color  the color used when the button is selected
 	 */
 	public final void setSelectedColor(Color color)
 	{
@@ -154,7 +154,9 @@ public class JTriggeredButton extends JButton
 	 * PRIVATE METHODS *
 	 *******************/
 
-	private void customize()
+	/**
+	 */
+	private void customise()
 	{
 		fBorder.setInsets(new Insets(4,4,4,4));
 		fSinkBorder.setInsets(new Insets(5,6,4,4));

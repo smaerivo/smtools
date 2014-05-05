@@ -37,7 +37,9 @@ public final class JMemoryStatistics
 	 * CONSTRUCTORS *
 	 ****************/
 
-	// prevent instantiation
+	/**
+	 * Prevent instantiation.
+	 */
 	private JMemoryStatistics()
 	{
 	}

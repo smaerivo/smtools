@@ -30,7 +30,7 @@ package org.sm.smtools.exceptions;
  *
  * @author  Sven Maerivoet
  * @version 08/04/2011
- * @see     org.sm.smtools.miscellaneous.MP3Player
+ * @see     org.sm.smtools.util.MP3Player
  */
 public final class SoundPlayingException extends Exception
 {
@@ -41,7 +41,7 @@ public final class SoundPlayingException extends Exception
 	/**
 	 * Constructs a <CODE>SoundPlayingException</CODE> object, based on the specified filename.
 	 *
-	 * @see org.sm.smtools.miscellaneous.MP3Player
+	 * @see org.sm.smtools.util.MP3Player
 	 */
 	public SoundPlayingException()
 	{

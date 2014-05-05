@@ -29,8 +29,7 @@ import org.sm.smtools.math.*;
 
 /**
  * The <CODE>EmpiricalDistribution</CODE> class offers a means to calculate the empirical cumulative distribution (CDF) and probability density (PDF) functions, including percentiles.
- * <P>
- * Other available statistics are the expected value, the variance, the standard deviation, the median, and the interquartile range (IQR).
+ * After the distribution is created, a user will typically call the {@link EmpiricalDistribution#analyse()} method to estimate the various statistical quantities.
  * <P>
  * The distribution can only contain <CODE>Integer.MAX_VALUE</CODE> samples.
  * <P>
@@ -95,9 +94,7 @@ public final class EmpiricalDistribution
 	 * <P>
 	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
 	 * <P>
-	 * <UL>
-	 *   bin width = 2 * IQR / n^1/3
-	 * </UL>
+	 * bin width = 2 * IQR / n^1/3
 	 * 
 	 * @param x the array of values to estimate the empirical distribution for
 	 */
@@ -109,8 +106,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Constructs an <CODE>EmpiricalDistribution</CODE> object for a given array of values and a user-specified number of histogram bins.
 	 * 
-	 * @param x the array of values to estimate the empirical distribution for
-	 * @param nrOfHistogramBins the user-specified number of histogram bins
+	 * @param x                  the array of values to estimate the empirical distribution for
+	 * @param nrOfHistogramBins  the user-specified number of histogram bins
 	 */
 	public EmpiricalDistribution(double[] x, int nrOfHistogramBins)
 	{
@@ -120,8 +117,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Constructs an <CODE>EmpiricalDistribution</CODE> object for a given array of values and user-specified histogram bin right edges.
 	 * 
-	 * @param x the array of values to estimate the empirical distribution for
-	 * @param histogramBinRightEdges the array of values containing the histogram bin right edges
+	 * @param x                       the array of values to estimate the empirical distribution for
+	 * @param histogramBinRightEdges  the array of values containing the histogram bin right edges
 	 */
 	public EmpiricalDistribution(double[] x, double[] histogramBinRightEdges)
 	{
@@ -130,6 +127,10 @@ public final class EmpiricalDistribution
 
 	/**
 	 * Private constructor that is invoked in case a number of histograms was specified or requested.
+	 *
+	 * @param x                            -
+	 * @param useOptimalNrOfHistogramBins  -
+	 * @param nrOfHistogramBins            -
 	 */
 	private EmpiricalDistribution(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins)
 	{
@@ -167,11 +168,9 @@ public final class EmpiricalDistribution
 	 * <P>
 	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
 	 * <P>
-	 * <UL>
-	 *   bin width = 2 * IQR / n^1/3
-	 * </UL>
+	 * bin width = 2 * IQR / n^1/3
 	 * 
-	 * @param x the array of values to estimate the empirical distribution for
+	 * @param x  the array of values to estimate the empirical distribution for
 	 */
 	public void setData(double[] x)
 	{
@@ -181,8 +180,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Sets the source data for the empirical distribution, as well as a user-specified number of histogram bins.
 	 * 
-	 * @param x the array of values to estimate the empirical distribution for
-	 * @param nrOfHistogramBins the user-specified number of histogram bins
+	 * @param x                  the array of values to estimate the empirical distribution for
+	 * @param nrOfHistogramBins  the user-specified number of histogram bins
 	 */
 	public void setData(double[] x, int nrOfHistogramBins)
 	{
@@ -334,8 +333,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Returns the value of the cumulative distribution function (CDF) evaluated at <CODE>x</CODE>.
 	 *
-	 * @param x the value to evaluate the cumulative distribution function at
-	 * @return the value of the cumulative distribution function evaluated at <CODE>x</CODE>
+	 * @param x  the value to evaluate the cumulative distribution function at
+	 * @return   the value of the cumulative distribution function evaluated at <CODE>x</CODE>
 	 */
 	public double getCDF(double x)
 	{
@@ -362,8 +361,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Returns the given percentile.
 	 * 
-	 * @param percentile the requested percentile (in the interval [0,100])
-	 * @return the requested percentile value
+	 * @param percentile  the requested percentile (in the interval [0,100])
+	 * @return            the requested percentile value
 	 */
 	public double getPercentile(int percentile)
 	{
@@ -469,9 +468,7 @@ public final class EmpiricalDistribution
 	 * <P>
 	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
 	 * <P>
-	 * <UL>
-	 *   bin width = 2 * IQR / n^1/3
-	 * </UL>
+	 * bin width = 2 * IQR / n^1/3
 	 */
 	public void recalculatePDF()
 	{
@@ -482,7 +479,7 @@ public final class EmpiricalDistribution
 	/**
 	 * Recalculates the probability density function (PDF) using a user-specified number of histogram bins.
 	 *
-	 * @param nrOfHistogramBins the user-specified number of histogram bins
+	 * @param nrOfHistogramBins  the user-specified number of histogram bins
 	 */
 	public void recalculatePDF(int nrOfHistogramBins)
 	{
@@ -494,8 +491,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Calculates the bandwidth for kernel density estimation (KDE) based on Silverman's Rule-of-Thumb.
 	 *
-	 * @param  kernelType the type of kernel function to use in the calculation
-	 * @return an estimation of the bandwidth
+	 * @param  kernelType  the type of kernel function to use in the calculation
+	 * @return             an estimation of the bandwidth
 	 */
 	public double calculateKDEPDFBandwidth(MathTools.EKernelType kernelType)
 	{
@@ -532,11 +529,11 @@ public final class EmpiricalDistribution
 	/**
 	 * Estimates the probability distribution function (PDF) using a specified kernel function.
 	 *
-	 * @param  kernelType the type of kernel function to use
-	 * @param  bandwidth the bandwidth of the kernel function
-	 * @param  nrOfSupportPoints the number of (X,Y) values to use for the smoothened 1D function
-	 * @param  minSupport the minimum value for the support
-	 * @param  maxSupport the maximum value for the support
+	 * @param  kernelType         the type of kernel function to use
+	 * @param  bandwidth          the bandwidth of the kernel function
+	 * @param  nrOfSupportPoints  the number of (X,Y) values to use for the smoothened 1D function
+	 * @param  minSupport         the minimum value for the support
+	 * @param  maxSupport         the maximum value for the support
 	 */
 	public void estimateKDEPDF(MathTools.EKernelType kernelType, double bandwidth, int nrOfSupportPoints, double minSupport, double maxSupport)
 	{
@@ -601,8 +598,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Returns the count associated with a specified histogram bin.
 	 *
-	 * @param histogramBin the histogram bin to lookup the count for
-	 * @return the count associated with the specified histogram bin
+	 * @param histogramBin  the histogram bin to lookup the count for
+	 * @return              the count associated with the specified histogram bin
 	 */
 	public double getHistogramBinCount(int histogramBin)
 	{
@@ -626,8 +623,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Returns the frequency associated with a specified histogram bin.
 	 *
-	 * @param histogramBin the histogram bin to lookup the frequency for
-	 * @return the frequency associated with the specified histogram bin
+	 * @param histogramBin  the histogram bin to lookup the frequency for
+	 * @return              the frequency associated with the specified histogram bin
 	 */
 	public double getHistogramBinFrequency(int histogramBin)
 	{
@@ -651,8 +648,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Returns the centre of a specified histogram bin.
 	 *
-	 * @param histogramBin the histogram bin to lookup the centre for
-	 * @return the centre of the specified histogram bin
+	 * @param histogramBin  the histogram bin to lookup the centre for
+	 * @return              the centre of the specified histogram bin
 	 */
 	public double getHistogramBinCentre(int histogramBin)
 	{
@@ -686,8 +683,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Returns the value of the probability density function (PDF) evaluated at <CODE>x</CODE> (based on a histogram).
 	 *
-	 * @param x the value to evaluate the probability density function at
-	 * @return the value of the probability density function evaluated at <CODE>x</CODE>
+	 * @param x  the value to evaluate the probability density function at
+	 * @return   the value of the probability density function evaluated at <CODE>x</CODE>
 	 */
 	public double getPDF(double x)
 	{
@@ -737,8 +734,8 @@ public final class EmpiricalDistribution
 	/**
 	 * Returns the value of the probability density function (PDF) evaluated at <CODE>x</CODE> (based on kernel density estimation, KDE).
 	 *
-	 * @param x the value to evaluate the probability density function at
-	 * @return the value of the probability density function evaluated at <CODE>x</CODE>
+	 * @param x  the value to evaluate the probability density function at
+	 * @return   the value of the probability density function evaluated at <CODE>x</CODE>
 	 */
 	public double getKDEPDF(double x)
 	{
@@ -816,8 +813,9 @@ public final class EmpiricalDistribution
 	 * This is the trimmed (or truncated) mean, which corresponds to the mean calculated
 	 * after symmetrically discarding a certain percentage of data points at the high and low end (without interpolation).
 	 * 
-	 * @return the trimmed mean
-	 * @see    EmpiricalDistribution#getMean()
+	 * @param percentageToTrim  the percentage to trim (left and right combined)
+	 * @return                  the trimmed mean
+	 * @see                     EmpiricalDistribution#getMean()
 	 */
 	public double getTrimmedMean(double percentageToTrim)
 	{
@@ -874,18 +872,16 @@ public final class EmpiricalDistribution
 	 * Returns the sample skewness (using an unbiased estimator).
 	 * <P>
 	 * Skewness implies:
-	 * <P>
 	 * <UL>
 	 *   <LI><B>Positive skew</B>: longer right tail, density mass constrained to the left.</LI>
 	 *   <LI><B>Negative skew</B>: longer left tail, density mass constrained to the right.</LI>
 	 * </UL>
 	 * <P>
 	 * Note that the amount of skewness is determined as follows:
-	 * <P>
 	 * <UL>
-	 *   <LI>-0.5 <= skewness <= +0.5: approximately symmetric distribution.</LI> 
-	 *   <LI>-1 <= skewness < -0.5, or +0.5 < skewness <= +1: moderately skewed distribution.</LI> 
-	 *   <LI>skewness < -1, or skewness > +1: highly skewed distribution.</LI> 
+	 *   <LI>-0.5 &le; skewness &le; +0.5: approximately symmetric distribution.</LI> 
+	 *   <LI>-1 &le; skewness &lt; -0.5, or +0.5 &lt; skewness &le; +1: moderately skewed distribution.</LI> 
+	 *   <LI>skewness &lt; -1, or skewness &gt; +1: highly skewed distribution.</LI> 
 	 * </UL>
 	 * 
 	 * @return the sample skewness (using an unbiased estimator)
@@ -907,11 +903,10 @@ public final class EmpiricalDistribution
 
 	/**
 	 * Returns a two-tailed test statistic <I>Z</I> of skewness (different from zero) with a 5% significance level.
-	 * <P>
 	 * <UL>
-	 *   <LI><B><I>Z</I> > +2</B>: population is very likely positively skewed.</LI>
-	 *   <LI><B><I>Z</I> < -2</B>: population is very likely negatively skewed.</LI>
-	 *   <LI><B>-2 <= <I>Z</I> <= +2</B>: inconclusive (might be symmetric, might be skewed).</LI>
+	 *   <LI><B><I>Z</I> &gt; +2</B>: population is very likely positively skewed.</LI>
+	 *   <LI><B><I>Z</I> &lt; -2</B>: population is very likely negatively skewed.</LI>
+	 *   <LI><B>-2 &le; <I>Z</I> &le; +2</B>: inconclusive (might be symmetric, might be skewed).</LI>
 	 * </UL>
 	 * <P>
 	 * The larger <I>Z</I>, the higher the probability.
@@ -927,7 +922,6 @@ public final class EmpiricalDistribution
 	 * Returns the sample kurtosis (using an unbiased estimator).
 	 * <P>
 	 * The value returned is the <I>excess kurtosis</I>, such that it is zero for a normal distribution:
-	 * <P>
 	 * <UL>
 	 *   <LI><B>Mesokurtic</B>: has zero excess (e.g., normal distribution).</LI>
 	 *   <LI><B>Leptokurtic</B>: has positive excess, higher and sharper central peak, with longer and fatter tails (i.e., more extreme values).</LI>
@@ -945,11 +939,10 @@ public final class EmpiricalDistribution
 
 	/**
 	 * Returns a two-tailed test statistic <I>Z</I> of kurtosis (different from zero) with a 5% significance level.
-	 * <P>
 	 * <UL>
-	 *   <LI><B><I>Z</I> > +2</B>: population has very likely positive kurtosis (leptokurtic).</LI>
-	 *   <LI><B><I>Z</I> < -2</B>: population has very likely negative kurtosis (platykurtic).</LI>
-	 *   <LI><B>-2 <= <I>Z</I> <= +2</B>: inconclusive (might be negative, zero, or positive kurtosis).</LI>
+	 *   <LI><B><I>Z</I> &gt; +2</B>: population has very likely positive kurtosis (leptokurtic).</LI>
+	 *   <LI><B><I>Z</I> &lt; -2</B>: population has very likely negative kurtosis (platykurtic).</LI>
+	 *   <LI><B>-2 &le; <I>Z</I> &le; +2</B>: inconclusive (might be negative, zero, or positive kurtosis).</LI>
 	 * </UL>
 	 * <P>
 	 * The larger <I>Z</I>, the higher the probability.
@@ -986,10 +979,10 @@ public final class EmpiricalDistribution
 	 * <P>
 	 * Alpha levels can be 0.995, 0.99, 0.975, 0.95, 0.90, 0.10, 0.05, 0.025, 0.01, or 0.005.
 	 * 
-	 * @param  alpha the alpha level 
-	 * @return <CODE>true</CODE> if the test is accepted, <CODE>false</CODE> if it is rejected
-	 * @see    EmpiricalDistribution#getJarqueBeraTestStatistic()
-	 * @see    EmpiricalDistribution#getChiSquare(double,int)
+	 * @param  alpha  the alpha level 
+	 * @return        <CODE>true</CODE> if the test is accepted, <CODE>false</CODE> if it is rejected
+	 * @see           EmpiricalDistribution#getJarqueBeraTestStatistic()
+	 * @see           EmpiricalDistribution#getChiSquare(double,int)
 	 */
 	public boolean isJarqueBeraTestAccepted(double alpha)
 	{
@@ -1003,11 +996,11 @@ public final class EmpiricalDistribution
 	 * <P>
 	 * The number of degrees of freedom is clipped between 1 and 100.
 	 *
-	 * @param alpha            the alpha level
-	 * @param degreesOfFreedom the number of degrees of freedom
-	 * @return                 the chi-square value corresponding to the specified alpha level and number of degrees of freedom
-	 * @see                    EmpiricalDistribution#getJarqueBeraTestStatistic()
-	 * @see                    EmpiricalDistribution#isJarqueBeraTestAccepted(double)
+	 * @param alpha             the alpha level
+	 * @param degreesOfFreedom  the number of degrees of freedom
+	 * @return                  the chi-square value corresponding to the specified alpha level and number of degrees of freedom
+	 * @see                     EmpiricalDistribution#getJarqueBeraTestStatistic()
+	 * @see                     EmpiricalDistribution#isJarqueBeraTestAccepted(double)
 	 */
 	public static double getChiSquare(double alpha, int degreesOfFreedom)
 	{
@@ -1221,6 +1214,10 @@ public final class EmpiricalDistribution
 	 *******************/
 
 	/**
+	 * @param x                            -
+	 * @param useOptimalNrOfHistogramBins  -
+	 * @param nrOfHistogramBins            -
+	 * @param histogramBinRightEdges       -
 	 */
 	private void setData(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins, double histogramBinRightEdges[])
 	{

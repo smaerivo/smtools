@@ -23,7 +23,7 @@
 
 package org.sm.smtools.exceptions;
 
-import org.sm.smtools.miscellaneous.*;
+import org.sm.smtools.util.*;
 
 /**
  * Indicates that an attempt to parse a line in the file denoted by the
@@ -50,10 +50,10 @@ public final class FileParseException extends Exception
 	 * the incorrect value that was read and the number of the line at which the
 	 * parse error occurred.
 	 *
-	 * @param filename the name of the file this exception corresponds to
-	 * @param value the incorrect value that was read
-	 * @param lineNr the number of the line at which the parse error occurred
-	 * @see   TextFileParser
+	 * @param filename  the name of the file this exception corresponds to
+	 * @param value     the incorrect value that was read
+	 * @param lineNr    the number of the line at which the parse error occurred
+	 * @see             TextFileParser
 	 */
 	public FileParseException(String filename, String value, int lineNr)
 	{
@@ -66,9 +66,9 @@ public final class FileParseException extends Exception
 	 * Constructs a <CODE>FileParseException</CODE> object, based on the specified filename
 	 * and the incorrect value that was read.
 	 *
-	 * @param filename the name of the file this exception corresponds to
-	 * @param value the incorrect value that was read
-	 * @see   TextFileParser
+	 * @param filename  the name of the file this exception corresponds to
+	 * @param value     the incorrect value that was read
+	 * @see             TextFileParser
 	 */
 	public FileParseException(String filename, String value)
 	{
@@ -80,9 +80,9 @@ public final class FileParseException extends Exception
 	 * Constructs a <CODE>FileParseException</CODE>, based on the incorrect value that was read
 	 * and the number of the line at which the parse error occurred.
 	 *
-	 * @param value the incorrect value that was read
-	 * @param lineNr the number of the line at which the parse error occurred
-	 * @see   TextFileParser
+	 * @param value   the incorrect value that was read
+	 * @param lineNr  the number of the line at which the parse error occurred
+	 * @see           TextFileParser
 	 */
 	public FileParseException(String value, int lineNr)
 	{
