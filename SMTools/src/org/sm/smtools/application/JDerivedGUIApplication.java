@@ -90,7 +90,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 *************************/
 
 	static {
-		DevelopMode.activate();
+		DevelopMode.deactivate();
 	}
 
 	/****************
@@ -192,7 +192,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 					// setup a task with custom input
 					MyTask task = new MyTask(taskID);
 					task.setID(taskID);
-					task.setNrOfSubTasks(1000);
+					task.setNrOfSubTasks(100);
 					fTaskExecutor.addTask(task);
 				}
 
