@@ -1,12 +1,12 @@
 // ------------------------------
-// Filename      : AJTask.java
+// Filename      : ATask.java
 // Author        : Sven Maerivoet
 // Last modified : 26/12/2013
-// Target        : Java VM (1.6)
+// Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2013 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,20 +28,20 @@ import javax.swing.*;
 import org.sm.smtools.swing.util.*;
 
 /**
- * The <CODE>AJTask</CODE> class provides the basic functionality for a task.
+ * The <CODE>ATask</CODE> class provides the basic functionality for a task.
  * <P>
- * Each <CODE>AJTask</CODE> can consist of multiple subtasks that are all executed within the same task's thread.
+ * Each <CODE>ATask</CODE> can consist of multiple subtasks that are all executed within the same task's thread.
  * <P>
- * A user must implement the {@link AJTask#executeSubTask(int)} and {@link AJTask#finishTask} methods. The former is called for each subtask, whereas the latter is called
+ * A user must implement the {@link ATask#executeSubTask(int)} and {@link ATask#finishTask} methods. The former is called for each subtask, whereas the latter is called
  * upon completion of all the subtasks.
  * <P>
  * <B>Note that this is an abstract class.</B>
  *
  * @author  Sven Maerivoet
  * @version 02/02/2013
- * @see     JTaskExecutor
+ * @see     TaskExecutor
  */
-public abstract class AJTask extends SwingWorker<Void,Integer>
+public abstract class ATask extends SwingWorker<Void,Integer>
 {
 	/**
 	 * The ID of this task.
@@ -58,9 +58,9 @@ public abstract class AJTask extends SwingWorker<Void,Integer>
 	 ****************/
 
 	/**
-	 * Constructs an <CODE>AJTask</CODE> object for 1 task.
+	 * Constructs an <CODE>ATask</CODE> object for 1 task.
 	 */
-	public AJTask()
+	public ATask()
 	{
 		super();
 		setNrOfSubTasks(1);

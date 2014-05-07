@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 04/05/2014
+// Last modified : 07/05/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -48,7 +48,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 04/05/2014
+ * @version 07/05/2014
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -90,7 +90,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 *************************/
 
 	static {
-		JDevelopMode.deactivate();
+		DevelopMode.activate();
 	}
 
 	/****************
@@ -173,7 +173,6 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			if (!fTaskExecutor.isBusy()) {
 				// cycle to the next visualisation type
 				fVisualisationType = (fVisualisationType + 1) % 4;
-
 				switch (fVisualisationType) {
 					case 0:
 						fProgressUpdateGlassPane.setVisualisationType(JProgressUpdateGlassPane.EVisualisationType.kBar);
@@ -375,6 +374,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	protected JPanel setupGlassPane()
 	{
 		fProgressUpdateGlassPane = new JProgressUpdateGlassPane();
+		fProgressUpdateGlassPane.setBlocking(true);
 		fVisualisationType = 0;
 		return fProgressUpdateGlassPane;
 	}
@@ -474,104 +474,6 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	/*****************
 	 * INNER CLASSES *
 	 *****************/
-
-	/**
-	 * @author  Sven Maerivoet
-	 * @version 02/02/2013
-	 */
-	private class MyTaskExecutor extends JTaskExecutor
-	{
-		// internal datastructures
-		private Component fMainWindow;
-
-		/****************
-		 * CONSTRUCTORS *
-		 ****************/
-
-		/**
-		 */
-		public MyTaskExecutor(JProgressUpdateGlassPane progressUpdateGlassPane, Component mainWindow)
-		{
-			super(progressUpdateGlassPane);
-			fMainWindow = mainWindow;
-		}
-
-		/*********************
-		 * PROTECTED METHODS *
-		 *********************/
-
-		/**
-		 */
-		@Override
-		protected void finishTasks()
-		{
-			int result = 0;
-			for (AJTask task : getTasks()) {
-				result += ((MyTask) task).getResult();
-			}
-
-			JMessageDialog.show(fMainWindow,I18NL10N.translate("text.TaskCompleted",String.valueOf(result)));
-		}
-	}
-
-	/**
-	 * @author  Sven Maerivoet
-	 * @version 02/02/2013
-	 */
-	private class MyTask extends AJTask
-	{
-		// internal datastructures
-		private int fTaskID;
-		private ArrayList<Integer> fSubTaskResults;
-		private int fTaskResult;
-
-		/****************
-		 * CONSTRUCTORS *
-		 ****************/
-
-		/**
-		 */
-		public MyTask(int taskID)
-		{
-			fTaskID = taskID;
-			fSubTaskResults = new ArrayList<Integer>();
-		}
-
-		/******************
-		 * PUBLIC METHODS *
-		 ******************/
-
-		/**
-		 */
-		public int getResult()
-		{
-			return fTaskResult;
-		}
-
-		/*********************
-		 * PROTECTED METHODS *
-		 *********************/
-
-		/**
-		 */
-		@Override
-		protected void executeSubTask(int subTaskID)
-		{
-			fSubTaskResults.add(fTaskID);
-			Chrono.wait(5);
-		}
-
-		/**
-		 */
-		@Override
-		protected void finishTask()
-		{
-			fTaskResult = 0;
-			for (int subTaskResult : fSubTaskResults) {
-				fTaskResult += subTaskResult;
-			}
-		}
-	}
 
 	/**
 	 * This class contains an example about box.
@@ -751,6 +653,104 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			affiliationsLabels.get(3).addMouseListener(browserLauncher);
 
 			return affiliationsLabels;
+		}
+	}
+
+	/**
+	 * @author  Sven Maerivoet
+	 * @version 02/02/2013
+	 */
+	private class MyTaskExecutor extends TaskExecutor
+	{
+		// internal datastructures
+		private Component fMainWindow;
+
+		/****************
+		 * CONSTRUCTORS *
+		 ****************/
+
+		/**
+		 */
+		public MyTaskExecutor(JProgressUpdateGlassPane progressUpdateGlassPane, Component mainWindow)
+		{
+			super(progressUpdateGlassPane);
+			fMainWindow = mainWindow;
+		}
+
+		/*********************
+		 * PROTECTED METHODS *
+		 *********************/
+
+		/**
+		 */
+		@Override
+		protected void finishTasks()
+		{
+			int result = 0;
+			for (ATask task : getTasks()) {
+				result += ((MyTask) task).getResult();
+			}
+	
+			JMessageDialog.show(fMainWindow,I18NL10N.translate("text.TaskCompleted",String.valueOf(result)));
+		}
+	}
+
+	/**
+	 * @author  Sven Maerivoet
+	 * @version 02/02/2013
+	 */
+	private class MyTask extends ATask
+	{
+		// internal datastructures
+		private int fTaskID;
+		private ArrayList<Integer> fSubTaskResults;
+		private int fTaskResult;
+
+		/****************
+		 * CONSTRUCTORS *
+		 ****************/
+
+		/**
+		 */
+		public MyTask(int taskID)
+		{
+			fTaskID = taskID;
+			fSubTaskResults = new ArrayList<Integer>();
+		}
+
+		/******************
+		 * PUBLIC METHODS *
+		 ******************/
+
+		/**
+		 */
+		public int getResult()
+		{
+			return fTaskResult;
+		}
+
+		/*********************
+		 * PROTECTED METHODS *
+		 *********************/
+
+		/**
+		 */
+		@Override
+		protected void executeSubTask(int subTaskID)
+		{
+			fSubTaskResults.add(fTaskID);
+			Chrono.wait(1);
+		}
+
+		/**
+		 */
+		@Override
+		protected void finishTask()
+		{
+			fTaskResult = 0;
+			for (int subTaskResult : fSubTaskResults) {
+				fTaskResult += subTaskResult;
+			}
 		}
 	}
 }

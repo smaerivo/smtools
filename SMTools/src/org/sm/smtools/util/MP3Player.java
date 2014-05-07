@@ -2,11 +2,11 @@
 // Filename      : MP3Player.java
 // Author        : Sven Maerivoet
 // Last modified : 04/12/2012
-// Target        : Java VM (1.6)
+// Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -225,7 +225,7 @@ public final class MP3Player extends Thread
 	 */
 	public static void playSystemSound(String soundFilename, EPlaying playing)
 	{
-		if (!JDevelopMode.isActivated() && (fSystemSoundsEnabled)) {
+		if (!DevelopMode.isActivated() && (fSystemSoundsEnabled)) {
 			try {
 				(new MP3Player(JARResources.fSystemResources.getInputStream(soundFilename))).play(playing);
 			}

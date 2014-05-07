@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : ComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 03/05/2014
+// Last modified : 06/05/2014
 // Target        : Java VM (1.8)
 // ----------------------------------
 
@@ -31,7 +31,7 @@ package org.sm.smtools.math;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 03/05/2014
+ * @version 06/05/2014
  */
 public final class ComplexNumber implements Comparable<ComplexNumber>
 {
@@ -247,7 +247,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 */
 	public ComplexNumber cbrt()
 	{
-		return power(1.0 / 3.0);
+		return pow(1.0 / 3.0);
 	}
 
 	/**
@@ -280,7 +280,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 * @param n  the power for the exponentiation
 	 * @return   a reference to this exponentiated complex number 
 	 */
-	public ComplexNumber power(double n)
+	public ComplexNumber pow(double n)
 	{
 		return convertPolarToComplex(
 			Math.pow(fModulus,n),

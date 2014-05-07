@@ -291,10 +291,10 @@ public final class JStatusBar extends JPanel
 		}
 
 		// update the memory usage label
-		double percentageFree = ((double) JMemoryStatistics.getFreeMemory() / (double) JMemoryStatistics.getTotalMemory()) * 100;
+		double percentageFree = ((double) MemoryStatistics.getFreeMemory() / (double) MemoryStatistics.getTotalMemory()) * 100;
 		fMemoryUsageLabel.setText(
 			I18NL10N.translate("text.MemoryFree") + ": " +
-			StringTools.convertDoubleToString(MathTools.convertBToMiB(JMemoryStatistics.getFreeMemory()),0) + " " +
+			StringTools.convertDoubleToString(MathTools.convertBToMiB(MemoryStatistics.getFreeMemory()),0) + " " +
 			I18NL10N.translate("text.MiBAbbreviation") + " (" + StringTools.convertDoubleToString(percentageFree,0) + "%)");
 	}
 

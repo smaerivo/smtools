@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 04/05/2014
+// Last modified : 07/05/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -73,7 +73,6 @@ import org.sm.smtools.util.*;
  *     <LI>{@link JStandardGUIApplication#setupApplicationResourceArchiveFilename()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupApplicationLocalePrefix()}</LI>
  *     <LI>{@link JStandardGUIApplication#initialiseClass(Object[])}</LI>
- *     <LI>{@link JStandardGUIApplication#postInitialise()}</LI>
  *     <LI>{@link JStandardGUIApplication#shutdown()}</LI>
  *   </UL>
  *   <LI><B><U>Splash screen during startup</U></B></LI>
@@ -130,10 +129,10 @@ import org.sm.smtools.util.*;
  * <P>
  * <IMG src="doc-files/quit-dialog.png" alt="">
  * <P>
- * Note that this confirmation can be skipped if {@link JDevelopMode#isActivated} is <CODE>true</CODE>.
+ * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 04/05/2014
+ * @version 07/05/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
 {
@@ -206,7 +205,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 	// the required Java version for the SMTools package
 	private static final int kRequiredMajorJavaVersion = 1;
-	private static final int kRequiredMinorJavaVersion = 6;
+	private static final int kRequiredMinorJavaVersion = 7;
 
 	// the location of the JAR archive containing all the resources
 	private static final String kResourceArchiveFilename = "smtools.jar";
@@ -329,7 +328,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *   <LI>The about box is shown (see {@link JStandardGUIApplication#setupAboutBox()}).</LI>
 	 *   <LI>The application checks if minimisation to the system tray is allowed (see {@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}).</LI>
 	 *   <LI>The glass pane is constructed (see {@link JStandardGUIApplication#setupGlassPane()}).</LI>
-	 *   <LI>Post initialisation is performed as the GUI is fully constructed (see {@link JStandardGUIApplication#postInitialise()}).</LI>
 	 * </UL>
 	 * If no parameters are to be passed to the GUI, specify <CODE>null</CODE>
 	 * for <CODE>parameters</CODE>.
@@ -606,7 +604,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		kLogger.info(I18NL10N.translate("text.ApplicationReady"));
 
-		if ((!JDevelopMode.isActivated()) && (aboutBox != null)) {
+		if ((!DevelopMode.isActivated()) && (aboutBox != null)) {
 			aboutBox.activate();
 		}
 
@@ -617,9 +615,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			fGlassPane.setVisible(false);
 			fGlassPane.setOpaque(false);
 		}
-
-		// allow for custom post initialisation
-		postInitialise();
 	}
 
 	/******************
@@ -763,7 +758,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	@Override
 	public final void windowClosing(WindowEvent e)
 	{
-		if (!JDevelopMode.isActivated()) {
+		if (!DevelopMode.isActivated()) {
 
 			if (JConfirmationDialog.confirm(this,I18NL10N.translate("text.ConfirmExitApplication"))) {
 
@@ -931,7 +926,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Sets up the required major version of the Java runtime engine that wants to run this application.
 	 * <P>
-	 * <B>The default is 1 (for JRE 1.6.0).</B>
+	 * <B>The default is 1 (for JRE 1.7.0).</B>
 	 *
 	 * @return the required major version of the Java runtime engine
 	 */
@@ -943,7 +938,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Sets up the required minor version of the Java runtime engine that wants to run this application.
 	 * <P>
-	 * <B>The default is 6 (for JRE 1.6.0).</B>
+	 * <B>The default is 7 (for JRE 1.7.0).</B>
 	 *
 	 * @return the required minor version of the Java runtime engine
 	 */
@@ -988,13 +983,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @param parameters  an array of <CODE>Objects</CODE>
 	 */
 	protected void initialiseClass(Object[] parameters)
-	{
-	}
-
-	/**
-	 * Allows post initialisation (i.e., when the GUI is fully constructed).
-	 */
-	protected void postInitialise()
 	{
 	}
 
@@ -1771,7 +1759,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 						}
 					}
 					else if (upperCaseParameter.equalsIgnoreCase(kParamDevelopMode)) {
-						JDevelopMode.activate();
+						DevelopMode.activate();
 					}
 					else if (upperCaseParameter.startsWith(kParamWidth + "=")) {
 

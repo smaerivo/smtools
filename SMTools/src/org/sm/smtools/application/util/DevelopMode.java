@@ -1,12 +1,12 @@
-// ---------------------------------
-// Filename      : JDevelopMode.java
+// --------------------------------
+// Filename      : DevelopMode.java
 // Author        : Sven Maerivoet
 // Last modified : 14/03/2011
-// Target        : Java VM (1.6)
-// ---------------------------------
+// Target        : Java VM (1.8)
+// --------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 package org.sm.smtools.application.util;
 
 /**
- * The <CODE>JDevelopMode</CODE> class allows a global specification of
+ * The <CODE>DevelopMode</CODE> class allows a global specification of
  * an application's status.
  * <P>
  * This class can be used to check whether or not an application should use
@@ -35,7 +35,7 @@ package org.sm.smtools.application.util;
  * the following manner:
  * <P>
  * <CODE>
- *   if (JDevelopMode.isActivated()) {<BR>
+ *   if (DevelopMode.isActivated()) {<BR>
  *     ... // perform 'hacks'<BR>
  *   }
  * </CODE>
@@ -43,14 +43,14 @@ package org.sm.smtools.application.util;
  * Changing the status is done through direct assignment:
  * <P>
  * <CODE>
- *   JDevelopMode.activate();
+ *   DevelopMode.activate();
  * </CODE>
  * <P>
  * If activation is required before any class initialisation, then use a static initialiser as follows:
  * <P>
  * <CODE>
  *   static {<BR>
- *     JDevelopMode.activate();<BR>
+ *     DevelopMode.activate();<BR>
  *   }
  * </CODE>
  * <P>
@@ -61,7 +61,7 @@ package org.sm.smtools.application.util;
  * @author  Sven Maerivoet
  * @version 14/03/2011
  */
-public final class JDevelopMode
+public final class DevelopMode
 {
 	// internal datastructures
 	private static boolean fModeActivated = false;
@@ -73,7 +73,7 @@ public final class JDevelopMode
 	/**
 	 * Prevent instantiation.
 	 */
-	private JDevelopMode()
+	private DevelopMode()
 	{
 	}
 

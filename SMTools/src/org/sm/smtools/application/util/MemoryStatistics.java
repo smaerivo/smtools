@@ -1,12 +1,12 @@
-// --------------------------------------
-// Filename      : JMemoryStatistics.java
+// -------------------------------------
+// Filename      : MemoryStatistics.java
 // Author        : Sven Maerivoet
 // Last modified : 03/11/2012
-// Target        : Java VM (1.6)
-// --------------------------------------
+// Target        : Java VM (1.8)
+// -------------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,14 +24,14 @@
 package org.sm.smtools.application.util;
 
 /**
- * The <CODE>JMemoryStatistics</CODE> class allows gathering of some Java VM memory statistics.
+ * The <CODE>MemoryStatistics</CODE> class allows gathering of some Java VM memory statistics.
  * <P>
  * <B>Note that this class cannot be subclassed, nor instantiated!</B>
  * 
  * @author  Sven Maerivoet
  * @version 03/11/2012
  */
-public final class JMemoryStatistics
+public final class MemoryStatistics
 {
 	/****************
 	 * CONSTRUCTORS *
@@ -40,7 +40,7 @@ public final class JMemoryStatistics
 	/**
 	 * Prevent instantiation.
 	 */
-	private JMemoryStatistics()
+	private MemoryStatistics()
 	{
 	}
 

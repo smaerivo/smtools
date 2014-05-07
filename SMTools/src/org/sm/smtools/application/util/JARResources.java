@@ -2,11 +2,11 @@
 // Filename      : JARResources.java
 // Author        : Sven Maerivoet
 // Last modified : 28/04/2013
-// Target        : Java VM (1.6)
+// Target        : Java VM (1.8)
 // ---------------------------------
 
 /**
- * Copyright 2003-2013 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

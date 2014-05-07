@@ -1,12 +1,12 @@
 // ---------------------------------------------
 // Filename      : JProgressUpdateGlassPane.java
 // Author        : Sven Maerivoet
-// Last modified : 21/02/2013
-// Target        : Java VM (1.6)
+// Last modified : 07/05/2014
+// Target        : Java VM (1.8)
 // ---------------------------------------------
 
 /**
- * Copyright 2003-2013 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,9 @@ import org.sm.smtools.util.*;
  * {@link JProgressUpdateGlassPane#setTotalNrOfProgressUpdates(int)}. Each time an update is done, the user should call {@link JProgressUpdateGlassPane#signalProgressUpdate()}
  * which repaints the glasspane.
  * <P>
+ * If needed, the glasspane can block the mouse and keyboard input to the GUI via the {@link JProgressUpdateGlassPane#setBlocking(boolean)} method.
+ * Note that the menubar can still be accessed via its defined accelerator controls.
+ * <P>
  * The following visualisations are supported:
  * <P>
  * <B>Bar:</B><BR>
@@ -53,9 +56,9 @@ import org.sm.smtools.util.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 21/02/2013
+ * @version 07/05/2014
  */
-public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener
+public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener, KeyListener
 {
 	/**
 	 * The different types of progress update visualisations.
@@ -126,7 +129,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	}
 
 	/**
-	 * Sets whether or not fractions are shown in the percentage completed
+	 * Sets whether or not fractions are shown in the percentage completed (not shown by default).
 	 *
 	 * @param showFractions a <CODE>boolean</CODE> indicating whether or not fractions are shown in the percentage completed
 	 */
@@ -136,7 +139,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	}
 
 	/**
-	 * Returns whether or not fractions are shown in the percentage completed
+	 * Returns whether or not fractions are shown in the percentage completed (not shown by default).
 	 *
 	 * @return a <CODE>boolean</CODE> indicating whether or not fractions are shown in the percentage completed
 	 */
@@ -219,11 +222,17 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 				addMouseListener(this);
 				addMouseMotionListener(this);
 			}
+			if (getKeyListeners().length == 0) {
+				addKeyListener(this);
+			}
 		}
 		else {
 			if (getMouseListeners().length > 0) {
 				removeMouseListener(this);
 				removeMouseMotionListener(this);
+			}
+			if (getKeyListeners().length > 0) {
+				removeKeyListener(this);
 			}
 		}
 	}
@@ -455,6 +464,34 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	 */
 	@Override
 	public final void mouseDragged(MouseEvent e)
+	{
+		// block event
+		e.consume();
+	}
+
+	// the key-listener
+	/**
+	 */
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		// block event
+		e.consume();
+	}
+
+	/**
+	 */
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		// block event
+		e.consume();
+	}
+
+	/**
+	 */
+	@Override
+	public void keyTyped(KeyEvent e)
 	{
 		// block event
 		e.consume();

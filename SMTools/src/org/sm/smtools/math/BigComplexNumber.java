@@ -1,7 +1,7 @@
 // -------------------------------------
 // Filename      : BigComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 03/05/2014
+// Last modified : 06/05/2014
 // Target        : Java VM (1.8)
 // -------------------------------------
 
@@ -36,7 +36,7 @@ import org.nevec.rjm.*;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 03/05/2014
+ * @version 06/05/2014
  */
 public final class BigComplexNumber implements Comparable<BigComplexNumber>
 {
@@ -323,7 +323,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 */
 	public BigComplexNumber cbrt()
 	{
-		return power(1.0 / 3.0);
+		return pow(1.0 / 3.0);
 	}
 
 	/**
@@ -356,7 +356,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 * @param n  the power for the exponentiation
 	 * @return   a reference to this exponentiated complex number 
 	 */
-	public BigComplexNumber power(double n)
+	public BigComplexNumber pow(double n)
 	{
 		BigDecimal nPower = (new BigDecimal(n)).setScale(kDefaultPrecision,kDefaultRoundingMode);
 		return convertPolarToComplex(

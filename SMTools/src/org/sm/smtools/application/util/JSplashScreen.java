@@ -2,11 +2,11 @@
 // Filename      : JSplashScreen.java
 // Author        : Sven Maerivoet
 // Last modified : 04/12/2012
-// Target        : Java VM (1.6)
+// Target        : Java VM (1.8)
 // ----------------------------------
 
 /**
- * Copyright 2003-2012 Sven Maerivoet
+ * Copyright 2003-2014 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ public final class JSplashScreen extends JWindow
 	public JSplashScreen(JLabel customSplashScreenContent, InputStream mp3SoundInputStream)
 	{
 		fStatusWaitTime = 0;
-		fAvailable = (customSplashScreenContent != null) && (!JDevelopMode.isActivated());
+		fAvailable = (customSplashScreenContent != null) && (!DevelopMode.isActivated());
 
 		if (fAvailable) {
 
@@ -232,7 +232,7 @@ public final class JSplashScreen extends JWindow
 		if (fAvailable) {
 			fStatusLabel.setText(statusMessage);
 
-			if (!JDevelopMode.isActivated()) {
+			if (!DevelopMode.isActivated()) {
 				Chrono.wait(fStatusWaitTime);
 			}
 		}
