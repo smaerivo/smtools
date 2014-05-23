@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : TaskExecutor.java
 // Author        : Sven Maerivoet
-// Last modified : 07/05/2014
+// Last modified : 23/05/2014
 // Target        : Java VM (1.8)
 // ---------------------------------
 
@@ -33,8 +33,7 @@ import org.sm.smtools.swing.util.*;
  * The <CODE>TaskExecutor</CODE> class provides a facility for concurrently executing a number of <CODE>ATask</CODE>s.
  * <P>
  * The class executes a certain number of tasks simultaneously, each one starting in its own thread.<BR>
- * It then waits until all tasks have completed.<BR>
- * Each task can consist of multiple subtasks that are all executed within the same task's thread.
+ * It then waits until all tasks have completed.
  * <P>
  * Tasks are added via the {@link TaskExecutor#addTask(ATask)} or {@link TaskExecutor#addTasks(ArrayList)} methods;
  * results can be collected via the {@link TaskExecutor#finishTasks()} method.
@@ -45,7 +44,7 @@ import org.sm.smtools.swing.util.*;
  * Progress of the tasks' executions is shown via an optional progress update glasspane.
  * 
  * @author  Sven Maerivoet
- * @version 07/05/2014
+ * @version 23/05/2014
  * @see     ATask
  */
 public class TaskExecutor extends SwingWorker<Void,Void>
@@ -79,19 +78,13 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 
 	/**
 	 * Constructs a <CODE>TaskExecutor</CODE> object with a specified progress update glasspane
-	 * and with as meany threads as there are processors..
+	 * and with as meany threads as there are processors.
 	 *
 	 * @param progressUpdateGlassPane  the progress update glasspane to use for task updates
 	 */
 	public TaskExecutor(JProgressUpdateGlassPane progressUpdateGlassPane)
 	{
-		super();
-		fProgressUpdateGlassPane = progressUpdateGlassPane;
-		fTasks = new ArrayList<ATask>();
-		fBusy = false;
-
-		// override Swing's internal fixed number of worker threads
-		sun.awt.AppContext.getAppContext().put(SwingWorker.class,Executors.newFixedThreadPool(MemoryStatistics.getNrOfProcessors()));
+		this(progressUpdateGlassPane,MemoryStatistics.getNrOfProcessors());
 	}
 
 	/**
@@ -170,16 +163,14 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 		fBusy = true;
 
 		// setup the synchronisation and progress updating mechanisms
-		int totalNrOfProgressUpdates = 0;
 		fCountDownLatch = new CountDownLatch(fTasks.size());
 		for (ATask task : fTasks) {
 			task.installCountDownLatch(fCountDownLatch);
 			task.installProgressUpdateGlassPane(fProgressUpdateGlassPane);
-			totalNrOfProgressUpdates += task.getNrOfSubTasks();
 		}
 		if (fProgressUpdateGlassPane != null) {
 			fProgressUpdateGlassPane.reset();
-			fProgressUpdateGlassPane.setTotalNrOfProgressUpdates(totalNrOfProgressUpdates);
+			fProgressUpdateGlassPane.setTotalNrOfProgressUpdates(fTasks.size());
 		}
 
 		// execute all tasks
@@ -204,11 +195,25 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 	protected final void done()
 	{
 		if (!isCancelled()) {
+			cancelTasks();
 			finishTasks();
 			if (fProgressUpdateGlassPane != null) {
 				fProgressUpdateGlassPane.done();
 			}
 			fBusy = false;
+		}
+	}
+
+	/*******************
+	 * PRIVATE METHODS *
+	 *******************/
+
+	/**
+	 */
+	private void cancelTasks()
+	{
+		for (ATask task : fTasks) {
+			task.cancel(true);
 		}
 	}
 }

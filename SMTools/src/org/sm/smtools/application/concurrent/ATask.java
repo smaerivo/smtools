@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : ATask.java
 // Author        : Sven Maerivoet
-// Last modified : 26/12/2013
+// Last modified : 23/05/2014
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -30,26 +30,17 @@ import org.sm.smtools.swing.util.*;
 /**
  * The <CODE>ATask</CODE> class provides the basic functionality for a task.
  * <P>
- * Each <CODE>ATask</CODE> can consist of multiple subtasks that are all executed within the same task's thread.
- * <P>
- * A user must implement the {@link ATask#executeSubTask(int)} and {@link ATask#finishTask} methods. The former is called for each subtask, whereas the latter is called
- * upon completion of all the subtasks.
+ * Derived classes must implement the {@link ATask#executeTask()} and {@link ATask#finishTask} methods.
  * <P>
  * <B>Note that this is an abstract class.</B>
  *
  * @author  Sven Maerivoet
- * @version 02/02/2013
+ * @version 23/05/2014
  * @see     TaskExecutor
  */
 public abstract class ATask extends SwingWorker<Void,Integer>
 {
-	/**
-	 * The ID of this task.
-	 */
-	protected int fID;
-
 	// internal datastructures
-	private int fNrOfSubTasks;
 	private CountDownLatch fCountDownLatch;
 	private JProgressUpdateGlassPane fProgressUpdateGlassPane;
 
@@ -58,54 +49,33 @@ public abstract class ATask extends SwingWorker<Void,Integer>
 	 ****************/
 
 	/**
-	 * Constructs an <CODE>ATask</CODE> object for 1 task.
+	 * Constructs an <CODE>ATask</CODE> object.
 	 */
 	public ATask()
 	{
 		super();
-		setNrOfSubTasks(1);
 	}
 
-	/******************
-	 * PUBLIC METHODS *
-	 ******************/
-
-	/**
-	 * Sets the ID of this task.
-	 *
-	 * @param id  the ID of this task
-	 */
-	public final void setID(int id)
-	{
-		fID = id;
-	}
+	/*********************
+	 * PROTECTED METHODS *
+	 *********************/
 
 	/**
-	 * Sets the number of subtasks.
-	 *
-	 * @param nrOfSubTasks  the number of subtasks
+	 * This method is called when the task is executed.
 	 */
-	public final void setNrOfSubTasks(int nrOfSubTasks)
-	{
-		fNrOfSubTasks = nrOfSubTasks;
-	}
+	protected abstract void executeTask();
 
 	/**
-	 * Returns the number of subtasks.
-	 *
-	 * @return the number of subtasks
+	 * This method is called when the task has finished.
 	 */
-	public final int getNrOfSubTasks()
-	{
-		return fNrOfSubTasks;
-	}
+	protected abstract void finishTask();
 
 	/**
 	 * Installs the <CODE>CountDownLatch</CODE> that is used to synchronise this task.
 	 *
 	 * @param countDownLatch  the <CODE>CountDownLatch</CODE> to use for synchronisation
 	 */
-	public final void installCountDownLatch(CountDownLatch countDownLatch)
+	protected final void installCountDownLatch(CountDownLatch countDownLatch)
 	{
 		fCountDownLatch = countDownLatch;
 	}
@@ -115,26 +85,10 @@ public abstract class ATask extends SwingWorker<Void,Integer>
 	 *
 	 * @param progressUpdateGlassPane  the <CODE>JProgressUpdateGlassPane</CODE> to use for progress updates of this task
 	 */
-	public final void installProgressUpdateGlassPane(JProgressUpdateGlassPane progressUpdateGlassPane)
+	protected final void installProgressUpdateGlassPane(JProgressUpdateGlassPane progressUpdateGlassPane)
 	{
 		fProgressUpdateGlassPane = progressUpdateGlassPane;
 	}
-
-	/*********************
-	 * PROTECTED METHODS *
-	 *********************/
-
-	/**
-	 * This method is called when a subtask is executed.
-	 *
-	 * @param subTaskID  the ID of the subtask (between 0 and the number of subtasks - 1)
-	 */
-	protected abstract void executeSubTask(int subTaskID);
-
-	/**
-	 * This method is called when all subtasks have finished.
-	 */
-	protected abstract void finishTask();
 
 	/**
 	 * @return            -
@@ -143,8 +97,8 @@ public abstract class ATask extends SwingWorker<Void,Integer>
 	@Override
 	protected final Void doInBackground() throws Exception
 	{
-		for (int subTaskID = 0; subTaskID < fNrOfSubTasks; ++subTaskID) {
-			executeSubTask(subTaskID);
+		if (!isCancelled()) {
+			executeTask();
 			publish(0);
 		}
 		return null;

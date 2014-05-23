@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 07/05/2014
+// Last modified : 23/05/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -48,7 +48,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 07/05/2014
+ * @version 23/05/2014
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -166,6 +166,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			JIncompleteWarningDialog.warn(this,"smtools.application.DerivedGUIApplication.actionPerformed()");
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTaskRunner)) {
+			// create or refresh a task executor if necessary
 			if ((fTaskExecutor == null) || (!fTaskExecutor.isBusy())) {
 				fTaskExecutor = new MyTaskExecutor(fProgressUpdateGlassPane,this);
 			}
@@ -190,15 +191,13 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 				for (int taskID = 0; taskID < 100; ++taskID) {
 					// setup a task with custom input
-					MyTask task = new MyTask(taskID);
-					task.setID(taskID);
-					task.setNrOfSubTasks(100);
+					MyTask task = new MyTask();
 					fTaskExecutor.addTask(task);
 				}
 
 				// schedule asynchronous execution
 				fTaskExecutor.execute();
-			}
+			} // if (!fTaskExecutor.isBusy())
 		}
 	}
 
@@ -686,11 +685,11 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		@Override
 		protected void finishTasks()
 		{
+			super.finishTasks();
 			int result = 0;
 			for (ATask task : getTasks()) {
 				result += ((MyTask) task).getResult();
 			}
-	
 			JMessageDialog.show(fMainWindow,I18NL10N.translate("text.TaskCompleted",String.valueOf(result)));
 		}
 	}
@@ -702,9 +701,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	private class MyTask extends ATask
 	{
 		// internal datastructures
-		private int fTaskID;
-		private ArrayList<Integer> fSubTaskResults;
-		private int fTaskResult;
+		private int fResult;
 
 		/****************
 		 * CONSTRUCTORS *
@@ -712,10 +709,8 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 		/**
 		 */
-		public MyTask(int taskID)
+		public MyTask()
 		{
-			fTaskID = taskID;
-			fSubTaskResults = new ArrayList<Integer>();
 		}
 
 		/******************
@@ -726,7 +721,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		 */
 		public int getResult()
 		{
-			return fTaskResult;
+			return fResult;
 		}
 
 		/*********************
@@ -736,10 +731,10 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		/**
 		 */
 		@Override
-		protected void executeSubTask(int subTaskID)
+		protected void executeTask()
 		{
-			fSubTaskResults.add(fTaskID);
-			Chrono.wait(1);
+			fResult = (int) (Math.random() * 100.0);
+			Chrono.wait(50);
 		}
 
 		/**
@@ -747,10 +742,6 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		@Override
 		protected void finishTask()
 		{
-			fTaskResult = 0;
-			for (int subTaskResult : fSubTaskResults) {
-				fTaskResult += subTaskResult;
-			}
 		}
 	}
 }
