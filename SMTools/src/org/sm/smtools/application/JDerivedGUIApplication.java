@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 23/05/2014
+// Last modified : 25/05/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -48,7 +48,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 23/05/2014
+ * @version 25/05/2014
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -209,6 +209,38 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
+	protected boolean parseParameter(int paramNr, String parameter)
+	{
+		final String kCustomParameter = "PARAMETER";
+		final String kCustomOption = "OPTION";
+
+		String upperCaseParameter = parameter.toUpperCase();
+
+		// parse parameter
+		if (upperCaseParameter.startsWith(kCustomParameter + "=")) {
+			String upperCaseOption = upperCaseParameter.substring(kCustomParameter.length() + 1);
+
+			// parse option
+			if (upperCaseOption.equalsIgnoreCase(kCustomOption)) {
+				System.out.println("Parameter parsed.");
+			}
+			else {
+				showParameterWarning(paramNr,parameter,"not a valid option");
+			}
+
+			// indicate that parameter was valid
+			return true;
+		}
+		else {
+			// indicate that parameter is unknown
+			return false;
+		}
+	}
+
+	/**
+	 * See {@link JStandardGUIApplication}.
+	 */
+	@Override
 	protected String setupApplicationResourceArchiveFilename()
 	{
 		return kResourceArchiveFilename;
@@ -254,38 +286,6 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			JTimeChooser.EDigitalClock.kShown,
 			JDefaultDialog.EActivation.kPostponed);
 		fTimeChooserID = getGUIComponentCache().addComponent(timeChooser);
-	}
-
-	/**
-	 * See {@link JStandardGUIApplication}.
-	 */
-	@Override
-	protected boolean parseParameter(int paramNr, String parameter)
-	{
-		final String kCustomParameter = "PARAMETER";
-		final String kCustomOption = "OPTION";
-
-		String upperCaseParameter = parameter.toUpperCase();
-
-		// parse parameter
-		if (upperCaseParameter.startsWith(kCustomParameter + "=")) {
-			String upperCaseOption = upperCaseParameter.substring(kCustomParameter.length() + 1);
-
-			// parse option
-			if (upperCaseOption.equalsIgnoreCase(kCustomOption)) {
-				System.out.println("Parameter parsed.");
-			}
-			else {
-				showParameterWarning(paramNr,parameter,"not a valid option");
-			}
-
-			// indicate that parameter was valid
-			return true;
-		}
-		else {
-			// indicate that parameter is unknown
-			return false;
-		}
 	}
 
 	/**
@@ -370,18 +370,6 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JPanel setupGlassPane()
-	{
-		fProgressUpdateGlassPane = new JProgressUpdateGlassPane();
-		fProgressUpdateGlassPane.setBlocking(true);
-		fVisualisationType = 0;
-		return fProgressUpdateGlassPane;
-	}
-
-	/**
-	 * See {@link JStandardGUIApplication}.
-	 */
-	@Override
 	protected ArrayList<JMenu> setupMenus()
 	{
 		ArrayList<JMenu> menus = new ArrayList<JMenu>();
@@ -450,6 +438,18 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	protected boolean setupIsStatusBarEnabled()
 	{
 		return true;
+	}
+
+	/**
+	 * See {@link JStandardGUIApplication}.
+	 */
+	@Override
+	protected JPanel setupGlassPane()
+	{
+		fProgressUpdateGlassPane = new JProgressUpdateGlassPane();
+		fProgressUpdateGlassPane.setBlocking(true);
+		fVisualisationType = 0;
+		return fProgressUpdateGlassPane;
 	}
 
 	/**
