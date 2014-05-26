@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 07/05/2014
+// Last modified : 27/05/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -132,9 +132,9 @@ import org.sm.smtools.util.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 07/05/2014
+ * @version 27/05/2014
  */
-public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener, WindowStateListener
+public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
 	// the different window-sizes
 	/**
@@ -548,35 +548,31 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		// we will handle the window-actions ourselves
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
-		addWindowStateListener(this);
-
-		pack();
 
 		// determine the requested GUI's screensize
-		if (fGUIWidth == kAutoSizeGUI) {
-			// fit tightly around all the components' natural widths
+		if ((fGUIWidth == kAutoSizeGUI) || (fGUIHeight == kAutoSizeGUI)) {
+			// fit tightly around all the components' natural widths and heights
+			pack();
 			fGUIWidth = getSize().width;
-		}
-		if (fGUIHeight == kAutoSizeGUI) {
-			// fit tightly around all the components' natural heights
 			fGUIHeight = getSize().height;
 		}
+		else {
+			boolean fullScreenGUISelected = ((fGUIWidth == kFullScreenGUI) || (fGUIHeight == kFullScreenGUI));
+			if (fullScreenGUISelected) {
+				// determine the GUI's maximum screensize
+				Dimension screenSize = getScreenSize();
+				Insets screenInsets = getScreenInsets();
+				// take into account all the space that a possible OS taskbar tasks
+				fGUIWidth = (int) Math.round(screenSize.getWidth() - screenInsets.left - screenInsets.right);
+				fGUIHeight = (int) Math.round(screenSize.getHeight() - screenInsets.top - screenInsets.bottom);
+			}
 
-		// determine the GUI's maximum screensize
-		Dimension screenSize = getScreenSize();
-		Insets screenInsets = getScreenInsets();
-		boolean fullScreenGUISelected = ((fGUIWidth == kFullScreenGUI) || (fGUIHeight == kFullScreenGUI));
-		if (fullScreenGUISelected) {
-			// take into account all the space that a possible OS taskbar tasks
-			fGUIWidth = (int) Math.round(screenSize.getWidth() - screenInsets.left - screenInsets.right);
-			fGUIHeight = (int) Math.round(screenSize.getHeight() - screenInsets.top - screenInsets.bottom);
-		}
+			setSize(new Dimension(fGUIWidth,fGUIHeight));
 
-		setSize(new Dimension(fGUIWidth,fGUIHeight));
-
-		if (fullScreenGUISelected) {
-			if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
-				setExtendedState(Frame.MAXIMIZED_BOTH);
+			if (fullScreenGUISelected) {
+				if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
+					setExtendedState(Frame.MAXIMIZED_BOTH);
+				}
 			}
 		}
 
@@ -585,10 +581,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			fSplashScreen.dispose();
 		}
 
+		setVisible(true);
+
 		// install the callback method for when the window is resized
 		addComponentListener(this);
-
-		setVisible(true);
 
 		// restore the cursor
 		setCursor(Cursor.getDefaultCursor());
@@ -689,48 +685,58 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 	// the component-listener
 	/**
-	 * A method from the dialog box's <B>component listener</B>.
+	 * This method does nothing.
+	 * <P>
+	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
-	public void componentMoved(ComponentEvent e)
+	public final void componentMoved(ComponentEvent e)
 	{
 	}
 
 	/**
-	 * A method from the dialog box's <B>component listener</B>.
+	 * This method does nothing.
+	 * <P>
+	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
-	public void componentShown(ComponentEvent e)
+	public final void componentShown(ComponentEvent e)
 	{
 	}
 
 	/**
-	 * A method from the dialog box's <B>component listener</B>.
+	 * This method does nothing.
+	 * <P>
+	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
-	public void componentHidden(ComponentEvent e)
+	public final void componentHidden(ComponentEvent e)
 	{
 	}
 
 	/**
-	 * A method from the dialog box's <B>component listener</B>.
+	 * This method calls the callback function {@link JStandardGUIApplication#windowResized()}.
+	 * <P>
+	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
-	public void componentResized(ComponentEvent e)
+	public final void componentResized(ComponentEvent e)
 	{
 		windowResized();
 	}
 
 	// the window-listener
 	/**
+	 * This method does nothing.
+	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
@@ -741,6 +747,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * This method does nothing.
+	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
@@ -751,6 +759,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * Gracefully ends the application by running the shutdown sequence and saving the registry.
+	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
@@ -787,6 +797,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * This method does nothing.
+	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
@@ -797,6 +809,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * Plays a sound.
+	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
@@ -805,10 +819,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	public final void windowDeiconified(WindowEvent e)
 	{
 		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSWindowEvent);
-		windowResized();
 	}
 
 	/**
+	 * Plays a sound and if necessary creates an icon in the system tray.
+	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
@@ -850,6 +865,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * This method does nothing.
+	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
@@ -857,18 +874,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	@Override
 	public final void windowOpened(WindowEvent e)
 	{
-	}
-
-	// the windowstate-listener
-	/**
-	 * Note that this method cannot be overridden!
-	 *
-	 * @param e  the <CODE>WindowEvent</CODE> that is received
-	 */
-	@Override
-	public final void windowStateChanged(WindowEvent e)
-	{
-		windowResized();
 	}
 
 	/**
@@ -1180,7 +1185,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * A callback method for when the GUI's window is resized.
+	 * A callback function for when the GUI's window is resized.
 	 */
 	protected void windowResized()
 	{
