@@ -66,7 +66,8 @@ import org.sm.smtools.util.*;
  *       <LI>-<B>silent</B></LI>
  *       <LI>-<B>help</B></LI>
  *     </UL>
- *     <I>Note that the application is sized to fullscreen if either width or height or set to reflect this.</I>
+ *     <I>Note that the application is sized to fullscreen if either width or height or set to reflect this. Fullscreen is this case
+ *     this implies window-mode (which is maximised if the OS allows it).</I>
  *   </UL>
  *   <LI><B><U>Custom initialisation and clean-up</U></B></LI>
  *   <UL>
@@ -567,14 +568,18 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 				// take into account all the space that a possible OS taskbar tasks
 				fGUIWidth = (int) Math.round(screenSize.getWidth() - screenInsets.left - screenInsets.right);
 				fGUIHeight = (int) Math.round(screenSize.getHeight() - screenInsets.top - screenInsets.bottom);
-			}
 
-			setSize(new Dimension(fGUIWidth,fGUIHeight));
-
-			if (fullScreenGUISelected) {
+				// check if the OS can set the window to a maximised state
 				if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
 					setExtendedState(Frame.MAXIMIZED_BOTH);
 				}
+				else {
+					// we approximate the fullscreen GUI ourselves
+					setSize(new Dimension(fGUIWidth,fGUIHeight));
+				}
+			}
+			else {
+				setSize(new Dimension(fGUIWidth,fGUIHeight));
 			}
 		}
 
