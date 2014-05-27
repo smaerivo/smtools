@@ -284,6 +284,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private boolean fMinimiseToSystemTray;
 	private TrayIcon fTrayIcon;
 	private JPanel fGlassPane;
+	private int fWindowWidth;
+	private int fWindowHeight;
 
 	/*************************
 	 * STATIC INITIALISATION *
@@ -581,10 +583,12 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			fSplashScreen.dispose();
 		}
 
-		setVisible(true);
-
 		// install the callback method for when the window is resized
+		fWindowWidth = 0;
+		fWindowHeight = 0;
 		addComponentListener(this);
+
+		setVisible(true);
 
 		// restore the cursor
 		setCursor(Cursor.getDefaultCursor());
@@ -730,7 +734,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	@Override
 	public final void componentResized(ComponentEvent e)
 	{
-		windowResized();
+		// only execute when the window has physically changed in size
+		if ((fWindowWidth != getWidth()) || (fWindowHeight != getHeight())) {
+			fWindowWidth = getWidth();
+			fWindowHeight = getHeight();
+
+			// activate the callback
+			windowResized();
+		}
 	}
 
 	// the window-listener
