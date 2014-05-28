@@ -4,6 +4,7 @@ org.sm.smtools.application.registry
 org.sm.smtools.application.util
 org.sm.smtools.exceptions
 org.sm.smtools.math
+org.sm.smtools.math.complex
 org.sm.smtools.math.lslr
 org.sm.smtools.math.quadmapping
 org.sm.smtools.math.statistics

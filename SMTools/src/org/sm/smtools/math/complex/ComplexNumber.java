@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : ComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 06/05/2014
+// Last modified : 28/05/2014
 // Target        : Java VM (1.8)
 // ----------------------------------
 
@@ -21,7 +21,9 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.math;
+package org.sm.smtools.math.complex;
+
+import org.sm.smtools.math.MathTools;
 
 /**
  * The <CODE>ComplexNumber</CODE> class provides mathematical operations on complex numbers.
@@ -31,9 +33,9 @@ package org.sm.smtools.math;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 06/05/2014
+ * @version 28/05/2014
  */
-public final class ComplexNumber implements Comparable<ComplexNumber>
+public final class ComplexNumber extends AComplexNumber<Double>
 {
 	// internal datastructures
 	private final double fRealPart;
@@ -88,7 +90,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return the real part of this complex number
 	 */
-	public double getRealPart()
+	@Override
+	public Double getRealPart()
 	{
 		return fRealPart;
 	}
@@ -98,7 +101,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return the imaginary part of this complex number
 	 */
-	public double getImaginaryPart()
+	@Override
+	public Double getImaginaryPart()
 	{
 		return fImaginaryPart;
 	}
@@ -108,6 +112,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return the negative of this complex number
 	 */
+	@Override
 	public ComplexNumber negate()
 	{
 		return (new ComplexNumber(
@@ -121,7 +126,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 * @param c  the complex number to add
 	 * @return   a reference to the result
 	 */
-	public ComplexNumber add(ComplexNumber c)
+	@Override
+	public ComplexNumber add(AComplexNumber<Double> c)
 	{
 		return (new ComplexNumber(
 			fRealPart + c.getRealPart(),
@@ -134,7 +140,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 * @param c  the complex number to subtract
 	 * @return   a reference to the subtraction
 	 */
-	public ComplexNumber subtract(ComplexNumber c)
+	@Override
+	public ComplexNumber subtract(AComplexNumber<Double> c)
 	{
 		return (new ComplexNumber(
 			fRealPart - c.getRealPart(),
@@ -147,7 +154,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 * @param c  the complex number to multiply with
 	 * @return   a reference to the multiplication
 	 */
-	public ComplexNumber multiply(ComplexNumber c)
+	@Override
+	public ComplexNumber multiply(AComplexNumber<Double> c)
 	{
 		return (new ComplexNumber(
 			(fRealPart * c.getRealPart()) - (fImaginaryPart * c.getImaginaryPart()),
@@ -159,7 +167,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return the modulus of this complex number
 	 */
-	public double modulus()
+	@Override
+	public Double modulus()
 	{
 		return fModulus;
 	}
@@ -169,7 +178,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return the squared modulus of this complex number
 	 */
-	public double modulusSquared()
+	@Override
+	public Double modulusSquared()
 	{
 		return fModulusSquared;
 	}
@@ -179,7 +189,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return the argument (phase) of this complex number
 	 */
-	public double argument()
+	@Override
+	public Double argument()
 	{
 		return fArgument;
 	}
@@ -189,6 +200,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a reference to the conjugate
 	 */
+	@Override
 	public ComplexNumber conjugate()
 	{
 		return (new ComplexNumber(
@@ -201,6 +213,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a reference to the reciprocal
 	 */
+	@Override
 	public ComplexNumber reciprocal()
 	{
 		ComplexNumber conjugate = conjugate();
@@ -215,7 +228,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 * @param c  the complex number to divide by
 	 * @return   a reference to the division
 	 */
-	public ComplexNumber divide(ComplexNumber c)
+	@Override
+	public ComplexNumber divide(AComplexNumber<Double> c)
 	{
 		double cModulusSquared = c.modulusSquared();
 		if (cModulusSquared == 0.0) {
@@ -233,6 +247,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a reference to the absolute value of the square root of this complex number
 	 */
+	@Override
 	public ComplexNumber sqrt()
 	{
 		return (new ComplexNumber(
@@ -241,20 +256,11 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	}
 
 	/**
-	 * Calculates the cubic root of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the cubic root of this complex number
-	 */
-	public ComplexNumber cbrt()
-	{
-		return pow(1.0 / 3.0);
-	}
-
-	/**
 	 * Returns a reference to the square of this complex number.
 	 *
 	 * @return a reference to the square of this complex number
 	 */
+	@Override
 	public ComplexNumber sqr()
 	{
 		return (new ComplexNumber(
@@ -267,6 +273,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a reference to the cube of this complex number
 	 */
+	@Override
 	public ComplexNumber cube()
 	{
 		return (new ComplexNumber(
@@ -280,6 +287,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 * @param n  the power for the exponentiation
 	 * @return   a reference to this exponentiated complex number 
 	 */
+	@Override
 	public ComplexNumber pow(double n)
 	{
 		return convertPolarToComplex(
@@ -292,6 +300,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a reference to the natural logarithm of this complex number 
 	 */
+	@Override
 	public ComplexNumber ln()
 	{
 		return new ComplexNumber(
@@ -304,6 +313,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a reference to the base 10 logarithm of this complex number 
 	 */
+	@Override
 	public ComplexNumber log()
 	{
 		return logBase(new ComplexNumber(10.0));
@@ -315,7 +325,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 * @param base  the base of the custom logarithm
 	 * @return      a reference to the custom logarithm of this complex number 
 	 */
-	public ComplexNumber logBase(ComplexNumber base)
+	@Override
+	public ComplexNumber logBase(AComplexNumber<Double> base)
 	{
 		return (ln().divide(base.ln()));
 	}
@@ -325,6 +336,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a reference to the exponential of this complex number 
 	 */
+	@Override
 	public ComplexNumber exp()
 	{
 		return (new ComplexNumber(
@@ -337,6 +349,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a reference to the cosine of this complex number 
 	 */
+	@Override
 	public ComplexNumber cos()
 	{
 		return 
@@ -349,6 +362,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a reference to the sine of this complex number 
 	 */
+	@Override
 	public ComplexNumber sin()
 	{
 		return 
@@ -357,50 +371,11 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	}
 
 	/**
-	 * Takes the tangens (= sin/cos) of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the tangens of this complex number 
-	 */
-	public ComplexNumber tan()
-	{
-		return sin().divide(cos());
-	}
-
-	/**
-	 * Takes the cotangens (= cos/sin) of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the cotangens of this complex number 
-	 */
-	public ComplexNumber cot()
-	{
-		return cos().divide(sin());
-	}
-
-	/**
-	 * Takes the secans (= 1/cos) of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the secans of this complex number 
-	 */
-	public ComplexNumber sec()
-	{
-		return cos().reciprocal();
-	}
-
-	/**
-	 * Takes the cosecans (= 1/sin) of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the cosecans of this complex number 
-	 */
-	public ComplexNumber cosec()
-	{
-		return sin().reciprocal();
-	}
-
-	/**
 	 * Returns 0 + 0i.
 	 *
 	 * @return 0 + 0i
 	 */
+	@Override
 	public ComplexNumber zero()
 	{
 		return (new ComplexNumber());
@@ -411,6 +386,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return 1 + 0i
 	 */
+	@Override
 	public ComplexNumber one()
 	{
 		return (new ComplexNumber(1.0));
@@ -421,6 +397,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return e + 0i
 	 */
+	@Override
 	public ComplexNumber e()
 	{
 		return (new ComplexNumber(Math.E));
@@ -431,6 +408,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return 1 + 0i
 	 */
+	@Override
 	public ComplexNumber i()
 	{
 		return (new ComplexNumber(0.0,1.0));
@@ -441,6 +419,7 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 *
 	 * @return a <CODE>String</CODE> representation of this complex number
 	 */
+	@Override
 	public String toString()
 	{
 		if (fImaginaryPart >= 0.0) {
@@ -452,17 +431,18 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	}
 
 	/**
-	 * Helper method for converting from polar to complex form.
+	 * Converts from polar to complex form.
 	 *
-	 * @param  modulus   the modulus
-	 * @param  argument  the argument
-	 * @return           a complex number corresponding to the specified polar form
+	 * @param modulus   the modulus of the specified polar form
+	 * @param argument  the argument of the specified polar form
+	 * @return          a complex number corresponding to the specified polar form
 	 */
-	public static ComplexNumber convertPolarToComplex(double modulus, double argument)
+	@Override
+	public ComplexNumber convertPolarToComplex(Double modulus, Double argument)
 	{
 		return (new ComplexNumber(
-			modulus * Math.cos(argument),
-			modulus * Math.sin(argument)));
+			fModulus * Math.cos(fArgument),
+			fModulus * Math.sin(fArgument)));
 	}
 
 	/**
@@ -471,7 +451,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 * @param c  the complex number to compare to
 	 * @return   -1, 0, or 1 as this complex number's modulus is numerically less than, equal to, or greater than that of c
 	 */
-	public int compareTo(ComplexNumber c)
+	@Override
+	public int compareTo(AComplexNumber<Double> c)
 	{
 		double cModulus = c.modulus();
 		if (fModulus < cModulus) {
@@ -491,7 +472,8 @@ public final class ComplexNumber implements Comparable<ComplexNumber>
 	 * @param c  the complex number to compare to
 	 * @return   <CODE>true</CODE> if both complex numbers are equal, <CODE>false</CODE> otherwise
 	 */
-	public boolean equals(ComplexNumber c)
+	@Override
+	public boolean equals(AComplexNumber<Double> c)
 	{
 		if (c instanceof ComplexNumber) {
 			return ((fRealPart == c.getRealPart()) && (fImaginaryPart == c.getImaginaryPart()));

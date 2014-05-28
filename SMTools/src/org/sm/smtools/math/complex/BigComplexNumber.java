@@ -1,7 +1,7 @@
 // -------------------------------------
 // Filename      : BigComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 06/05/2014
+// Last modified : 28/05/2014
 // Target        : Java VM (1.8)
 // -------------------------------------
 
@@ -21,7 +21,7 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.math;
+package org.sm.smtools.math.complex;
 
 import java.math.*;
 import org.nevec.rjm.*;
@@ -36,9 +36,9 @@ import org.nevec.rjm.*;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 06/05/2014
+ * @version 28/05/2014
  */
-public final class BigComplexNumber implements Comparable<BigComplexNumber>
+public final class BigComplexNumber extends AComplexNumber<BigDecimal>
 {
 	/**
 	 * Constant for specifying 32-bits precision.
@@ -160,6 +160,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return the real part of this complex number
 	 */
+	@Override
 	public BigDecimal getRealPart()
 	{
 		return fRealPart;
@@ -170,6 +171,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return the imaginary part of this complex number
 	 */
+	@Override
 	public BigDecimal getImaginaryPart()
 	{
 		return fImaginaryPart;
@@ -180,6 +182,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return the negative of this complex number
 	 */
+	@Override
 	public BigComplexNumber negate()
 	{
 		return (new BigComplexNumber(
@@ -193,7 +196,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 * @param c  the complex number to add
 	 * @return   a reference to the result
 	 */
-	public BigComplexNumber add(BigComplexNumber c)
+	@Override
+	public BigComplexNumber add(AComplexNumber<BigDecimal> c)
 	{
 		return (new BigComplexNumber(
 			fRealPart.add(c.getRealPart()),
@@ -206,7 +210,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 * @param c  the complex number to subtract
 	 * @return   a reference to the subtraction
 	 */
-	public BigComplexNumber subtract(BigComplexNumber c)
+	@Override
+	public BigComplexNumber subtract(AComplexNumber<BigDecimal> c)
 	{
 		return (new BigComplexNumber(
 			fRealPart.subtract(c.getRealPart()),
@@ -219,7 +224,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 * @param c  the complex number to multiply with
 	 * @return   a reference to the multiplication
 	 */
-	public BigComplexNumber multiply(BigComplexNumber c)
+	@Override
+	public BigComplexNumber multiply(AComplexNumber<BigDecimal> c)
 	{
 		return (new BigComplexNumber(
 			(fRealPart.multiply(c.getRealPart())).subtract(fImaginaryPart.multiply(c.getImaginaryPart())),
@@ -231,6 +237,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return the modulus of this complex number
 	 */
+	@Override
 	public BigDecimal modulus()
 	{
 		return fModulus;
@@ -241,6 +248,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return the squared modulus of this complex number
 	 */
+	@Override
 	public BigDecimal modulusSquared()
 	{
 		return fModulusSquared;
@@ -251,6 +259,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return the argument (phase) of this complex number
 	 */
+	@Override
 	public BigDecimal argument()
 	{
 		return fArgument;
@@ -261,6 +270,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a reference to the conjugate
 	 */
+	@Override
 	public BigComplexNumber conjugate()
 	{
 		return (new BigComplexNumber(
@@ -273,6 +283,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a reference to the reciprocal
 	 */
+	@Override
 	public BigComplexNumber reciprocal()
 	{
 		BigComplexNumber conjugate = conjugate();
@@ -287,7 +298,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 * @param c  the complex number to divide by
 	 * @return   a reference to the division
 	 */
-	public BigComplexNumber divide(BigComplexNumber c)
+	@Override
+	public BigComplexNumber divide(AComplexNumber<BigDecimal> c)
 	{
 		BigDecimal cModulusSquared = c.modulusSquared();
 		if (cModulusSquared.compareTo(kBD0) == 0) {
@@ -305,6 +317,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a reference to the absolute value of the square root of this complex number
 	 */
+	@Override
 	public BigComplexNumber sqrt()
 	{
 		BigDecimal signum = kBD1;
@@ -317,20 +330,11 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	}
 
 	/**
-	 * Calculates the cubic root of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the cubic root of this complex number
-	 */
-	public BigComplexNumber cbrt()
-	{
-		return pow(1.0 / 3.0);
-	}
-
-	/**
 	 * Returns a reference to the square of this complex number.
 	 *
 	 * @return a reference to the square of this complex number
 	 */
+	@Override
 	public BigComplexNumber sqr()
 	{
 		return (new BigComplexNumber(
@@ -343,6 +347,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a reference to the cube of this complex number
 	 */
+	@Override
 	public BigComplexNumber cube()
 	{
 		return (new BigComplexNumber(
@@ -356,6 +361,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 * @param n  the power for the exponentiation
 	 * @return   a reference to this exponentiated complex number 
 	 */
+	@Override
 	public BigComplexNumber pow(double n)
 	{
 		BigDecimal nPower = (new BigDecimal(n)).setScale(kDefaultPrecision,kDefaultRoundingMode);
@@ -369,6 +375,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a reference to the natural logarithm of this complex number 
 	 */
+	@Override
 	public BigComplexNumber ln()
 	{
 		return new BigComplexNumber(
@@ -381,6 +388,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a reference to the base 10 logarithm of this complex number 
 	 */
+	@Override
 	public BigComplexNumber log()
 	{
 		return logBase(new BigComplexNumber(kBD10));
@@ -392,7 +400,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 * @param base  the base of the custom logarithm
 	 * @return      a reference to the custom logarithm of this complex number 
 	 */
-	public BigComplexNumber logBase(BigComplexNumber base)
+	@Override
+	public BigComplexNumber logBase(AComplexNumber<BigDecimal> base)
 	{
 		return (ln().divide(base.ln()));
 	}
@@ -402,6 +411,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a reference to the exponential of this complex number 
 	 */
+	@Override
 	public BigComplexNumber exp()
 	{
 		return (new BigComplexNumber(
@@ -414,6 +424,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a reference to the cosine of this complex number 
 	 */
+	@Override
 	public BigComplexNumber cos()
 	{
 		return 
@@ -426,6 +437,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a reference to the sine of this complex number 
 	 */
+	@Override
 	public BigComplexNumber sin()
 	{
 		return 
@@ -434,50 +446,11 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	}
 
 	/**
-	 * Takes the tangens (= sin/cos) of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the tangens of this complex number 
-	 */
-	public BigComplexNumber tan()
-	{
-		return sin().divide(cos());
-	}
-
-	/**
-	 * Takes the cotangens (= cos/sin) of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the cotangens of this complex number 
-	 */
-	public BigComplexNumber cot()
-	{
-		return cos().divide(sin());
-	}
-
-	/**
-	 * Takes the secans (= 1/cos) of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the secans of this complex number 
-	 */
-	public BigComplexNumber sec()
-	{
-		return cos().reciprocal();
-	}
-
-	/**
-	 * Takes the cosecans (= 1/sin) of this complex number and returns a reference to the result.
-	 *
-	 * @return a reference to the cosecans of this complex number 
-	 */
-	public BigComplexNumber cosec()
-	{
-		return sin().reciprocal();
-	}
-
-	/**
 	 * Returns 0 + 0i.
 	 *
 	 * @return 0 + 0i
 	 */
+	@Override
 	public BigComplexNumber zero()
 	{
 		return (new BigComplexNumber());
@@ -488,6 +461,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return 1 + 0i
 	 */
+	@Override
 	public BigComplexNumber one()
 	{
 		return (new BigComplexNumber(kBD1.setScale(kDefaultPrecision,kDefaultRoundingMode)));
@@ -498,6 +472,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return e + 0i
 	 */
+	@Override
 	public BigComplexNumber e()
 	{
 		return (new BigComplexNumber(BigDecimalMath.exp(kDefaultMathContext)));
@@ -508,6 +483,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return 0 + i
 	 */
+	@Override
 	public BigComplexNumber i()
 	{
 		return (new BigComplexNumber(kBD0,kBD1));
@@ -518,6 +494,7 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 *
 	 * @return a <CODE>String</CODE> representation of this complex number
 	 */
+	@Override
 	public String toString()
 	{
 		if (fImaginaryPart.compareTo(kBD0) >= 0) {
@@ -529,17 +506,18 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	}
 
 	/**
-	 * Helper method for converting from polar to complex form.
+	 * Converts from polar to complex form.
 	 *
-	 * @param  modulus   the modulus
-	 * @param  argument  the argument
-	 * @return           a complex number corresponding to the specified polar form
+	 * @param modulus   the modulus of the specified polar form
+	 * @param argument  the argument of the specified polar form
+	 * @return          a complex number corresponding to the specified polar form
 	 */
-	public static BigComplexNumber convertPolarToComplex(BigDecimal modulus, BigDecimal argument)
+	@Override
+	public BigComplexNumber convertPolarToComplex(BigDecimal modulus, BigDecimal argument)
 	{
 		return (new BigComplexNumber(
-			modulus.multiply(BigDecimalMath.cos(argument)),
-			modulus.multiply(BigDecimalMath.sin(argument))));
+			fModulus.multiply(BigDecimalMath.cos(fArgument)),
+			fModulus.multiply(BigDecimalMath.sin(fArgument))));
 	}
 
 	/**
@@ -548,7 +526,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 * @param c  the complex number to compare to
 	 * @return   -1, 0, or 1 as this complex number's modulus is numerically less than, equal to, or greater than that of c
 	 */
-	public int compareTo(BigComplexNumber c)
+	@Override
+	public int compareTo(AComplexNumber<BigDecimal> c)
 	{
 		BigDecimal cModulus = c.modulus();
 		if (fModulus.compareTo(cModulus) < 0) {
@@ -568,7 +547,8 @@ public final class BigComplexNumber implements Comparable<BigComplexNumber>
 	 * @param c  the complex number to compare to
 	 * @return   <CODE>true</CODE> if both complex numbers are equal, <CODE>false</CODE> otherwise
 	 */
-	public boolean equals(BigComplexNumber c)
+	@Override
+	public boolean equals(AComplexNumber<BigDecimal> c)
 	{
 		if (c instanceof BigComplexNumber) {
 			return ((fRealPart.equals(c.getRealPart())) && (fImaginaryPart.equals(c.getImaginaryPart())));

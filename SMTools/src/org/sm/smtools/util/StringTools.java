@@ -25,7 +25,10 @@ package org.sm.smtools.util;
 
 import java.text.*;
 import java.util.*;
+
 import org.sm.smtools.math.*;
+import org.sm.smtools.math.complex.BigComplexNumber;
+import org.sm.smtools.math.complex.ComplexNumber;
 
 /**
  * The <CODE>StringTools</CODE> class is mainly intended for string alignment operations.
