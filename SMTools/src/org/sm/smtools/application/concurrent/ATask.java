@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : ATask.java
 // Author        : Sven Maerivoet
-// Last modified : 23/05/2014
+// Last modified : 17/06/2014
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -25,7 +25,7 @@ package org.sm.smtools.application.concurrent;
 
 import java.util.concurrent.*;
 import javax.swing.*;
-import org.sm.smtools.swing.util.*;
+import org.sm.smtools.application.util.*;
 
 /**
  * The <CODE>ATask</CODE> class provides the basic functionality for a task.
@@ -35,7 +35,7 @@ import org.sm.smtools.swing.util.*;
  * <B>Note that this is an abstract class.</B>
  *
  * @author  Sven Maerivoet
- * @version 23/05/2014
+ * @version 17/06/2014
  * @see     TaskExecutor
  */
 public abstract class ATask extends SwingWorker<Void,Integer>
@@ -56,6 +56,30 @@ public abstract class ATask extends SwingWorker<Void,Integer>
 		super();
 	}
 
+	/******************
+	 * PUBLIC METHODS *
+	 ******************/
+
+	/**
+	 * Installs the <CODE>CountDownLatch</CODE> that is used to synchronise this task.
+	 *
+	 * @param countDownLatch  the <CODE>CountDownLatch</CODE> to use for synchronisation
+	 */
+	public final void installCountDownLatch(CountDownLatch countDownLatch)
+	{
+		fCountDownLatch = countDownLatch;
+	}
+
+	/**
+	 * Installs the <CODE>AJProgressUpdateGlassPane</CODE> that is used for progress updates of this task.
+	 *
+	 * @param progressUpdateGlassPane  the <CODE>JProgressUpdateGlassPane</CODE> to use for progress updates of this task
+	 */
+	public final void installProgressUpdateGlassPane(JProgressUpdateGlassPane progressUpdateGlassPane)
+	{
+		fProgressUpdateGlassPane = progressUpdateGlassPane;
+	}
+
 	/*********************
 	 * PROTECTED METHODS *
 	 *********************/
@@ -71,36 +95,14 @@ public abstract class ATask extends SwingWorker<Void,Integer>
 	protected abstract void finishTask();
 
 	/**
-	 * Installs the <CODE>CountDownLatch</CODE> that is used to synchronise this task.
-	 *
-	 * @param countDownLatch  the <CODE>CountDownLatch</CODE> to use for synchronisation
-	 */
-	protected final void installCountDownLatch(CountDownLatch countDownLatch)
-	{
-		fCountDownLatch = countDownLatch;
-	}
-
-	/**
-	 * Installs the <CODE>AJProgressUpdateGlassPane</CODE> that is used for progress updates of this task.
-	 *
-	 * @param progressUpdateGlassPane  the <CODE>JProgressUpdateGlassPane</CODE> to use for progress updates of this task
-	 */
-	protected final void installProgressUpdateGlassPane(JProgressUpdateGlassPane progressUpdateGlassPane)
-	{
-		fProgressUpdateGlassPane = progressUpdateGlassPane;
-	}
-
-	/**
 	 * @return            -
 	 * @throws Exception  -
 	 */
 	@Override
 	protected final Void doInBackground() throws Exception
 	{
-		if (!isCancelled()) {
-			executeTask();
-			publish(0);
-		}
+		executeTask();
+		publish(0);
 		return null;
 	}
 
@@ -122,8 +124,7 @@ public abstract class ATask extends SwingWorker<Void,Integer>
 	@Override
 	protected final void done()
 	{
-		if (!isCancelled()) {
-			finishTask();
+		if (fCountDownLatch != null) {
 			fCountDownLatch.countDown();
 		}
 	}

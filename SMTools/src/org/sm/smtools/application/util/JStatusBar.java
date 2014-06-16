@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : JStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 04/05/2014
+// Last modified : 15/06/2014
 // Target        : Java VM (1.8)
 // -------------------------------
 
@@ -40,17 +40,19 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/05/2014
+ * @version 15/06/2014
  */
 public final class JStatusBar extends JPanel
 {
 	/**
 	 * The battery level and memory usage labels' update period in milliseconds.
 	 */
-	public static final int kUpdatePeriod = 1 * 1000;
+	public static final int kUpdatePeriod = 5 * 1000;
 
-	// the vertical size of the status bar
-	private static final int kHeight = 23;
+	/**
+	 * The height of the status bar (expressed in pixels).
+	 */
+	public static final int kHeight = 23;
 
 	// the separation offset
 	private static final int kSeparationOffset = 5;

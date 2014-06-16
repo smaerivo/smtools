@@ -1149,6 +1149,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	protected void lookAndFeelChanged()
 	{
+		windowResized();
 	}
 
 	/**

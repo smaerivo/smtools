@@ -1,7 +1,7 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 05/05/2014
+// Last modified : 03/06/2014
 // Target        : Java VM (1.8)
 // --------------------------------
 
@@ -25,10 +25,7 @@ package org.sm.smtools.util;
 
 import java.text.*;
 import java.util.*;
-
-import org.sm.smtools.math.*;
-import org.sm.smtools.math.complex.BigComplexNumber;
-import org.sm.smtools.math.complex.ComplexNumber;
+import org.sm.smtools.math.complex.*;
 
 /**
  * The <CODE>StringTools</CODE> class is mainly intended for string alignment operations.
@@ -46,7 +43,7 @@ import org.sm.smtools.math.complex.ComplexNumber;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 05/05/2014
+ * @version 03/06/2014
  */
 public final class StringTools
 {
@@ -346,7 +343,7 @@ public final class StringTools
 		}
 		return (convertDoubleToString(a,nrOfDecimals,locale) +
 			" " + operator + " " +
-			convertDoubleToString(b,nrOfDecimals,locale) + " i");
+			convertDoubleToString(b,nrOfDecimals,locale) + "i");
 	}
 
 	/**

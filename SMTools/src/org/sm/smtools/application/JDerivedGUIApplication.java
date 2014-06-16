@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 25/05/2014
+// Last modified : 05/06/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -48,7 +48,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 25/05/2014
+ * @version 05/06/2014
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -90,7 +90,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 *************************/
 
 	static {
-		DevelopMode.deactivate();
+		DevelopMode.activate();
 	}
 
 	/****************
@@ -189,7 +189,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 						break;
 				}
 
-				for (int taskID = 0; taskID < 100; ++taskID) {
+				for (int taskID = 0; taskID < 10000; ++taskID) {
 					// setup a task with custom input
 					MyTask task = new MyTask();
 					fTaskExecutor.addTask(task);
@@ -655,6 +655,10 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		}
 	}
 
+	/*****************
+	 * INNER CLASSES *
+	 *****************/
+
 	/**
 	 * @author  Sven Maerivoet
 	 * @version 02/02/2013
@@ -734,7 +738,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		protected void executeTask()
 		{
 			fResult = (int) (Math.random() * 100.0);
-			Chrono.wait(50);
+			Chrono.wait(100);
 		}
 
 		/**

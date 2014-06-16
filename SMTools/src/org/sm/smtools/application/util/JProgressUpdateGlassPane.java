@@ -1,7 +1,7 @@
 // ---------------------------------------------
 // Filename      : JProgressUpdateGlassPane.java
 // Author        : Sven Maerivoet
-// Last modified : 07/05/2014
+// Last modified : 17/06/2014
 // Target        : Java VM (1.8)
 // ---------------------------------------------
 
@@ -21,13 +21,14 @@
  * limitations under the License.
  */
 
-package org.sm.smtools.swing.util;
+package org.sm.smtools.application.util;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 import org.sm.smtools.math.*;
+import org.sm.smtools.swing.util.*;
 import org.sm.smtools.util.*;
 
 /**
@@ -56,7 +57,7 @@ import org.sm.smtools.util.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 07/05/2014
+ * @version 17/06/2014
  */
 public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener, KeyListener
 {
@@ -69,11 +70,13 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	private static final int kTotalNrOfCircles = 16;
 
 	// internal datastructures
+	private boolean fFading;
 	private EVisualisationType fVisualisationType;
 	private boolean fShowFractions;
 	private int fTotalNrOfProgressUpdates;
 	private int fNrOfProgressUpdatesCompleted;
 	private double fPercentageCompleted;
+	private String fMessageText;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -100,6 +103,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 		super();
 		setVisualisationType(visualisationType);
 		setShowFractions(showFractions);
+		setFading(true);
 		reset();
 		setBlocking(false);
 	}
@@ -107,6 +111,16 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	/******************
 	 * PUBLIC METHODS *
 	 ******************/
+
+	/**
+	 * Sets whether or not fading is enabled.
+	 *
+	 * @param fading a <CODE>boolean</CODE> specifying whether fading is enabled or not
+	 */
+	public final void setFading(boolean fading)
+	{
+		fFading = fading;
+	}
 
 	/**
 	 * Sets the visualisation type to use.
@@ -149,12 +163,23 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	}
 
 	/**
+	 * Sets the optional message text.
+	 * 
+	 * @param messageText  the message text to show
+	 */
+	public final void setMessageText(String messageText)
+	{
+		fMessageText = messageText;
+	}
+
+	/**
 	 * Resets the progress update glasspane, by setting the percentage completed to zero and making the glasspane visible.
 	 */
 	public final void reset()
 	{
 		fNrOfProgressUpdatesCompleted = 0;
 		setPercentageCompleted(0.0);
+		setMessageText("");
 		setVisible(true);
 	}
 
@@ -251,17 +276,19 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 
 		// paint a dark blue translucent veil, fade in at the beginning and out at the end
-		double alphaLevel = 0.5;
-		if (percentageCompleted < 15.0) {
-			alphaLevel *= (percentageCompleted / 15.0);
-		}
-		else if (percentageCompleted > 75.0) {
-			alphaLevel *= ((100.0 - percentageCompleted) / 25.0);
+		double alphaLevel = 0.75;
+		if (fFading) {
+			if (percentageCompleted < 25.0) {
+				alphaLevel *= (percentageCompleted /25.0);
+			}
+			else if (percentageCompleted > 75.0) {
+				alphaLevel *= ((100.0 - percentageCompleted) / 25.0);
+			}
 		}
 		int alpha = (int) (alphaLevel * 255);
-		Rectangle2D r = new Rectangle2D.Double(0,0,width,height);
 		Color veilC1 = new Color(0,0,64,alpha);
 		Color veilC2 = new Color(0,0,255,alpha);
+		Rectangle2D r = new Rectangle2D.Double(0,0,width,height);
 		GradientPaint veilGP = new GradientPaint(0,0,veilC1,0,height,veilC2);
 		g2.setPaint(veilGP);
 		g2.fill(r);
@@ -401,6 +428,18 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 			JGradientColorRamp gcr = new JGradientColorRamp(JGradientColorRamp.EColorMap.kBlue);
 			g2.setColor(gcr.interpolate(0.25 + (percentageCompleted / 75.0)));
 			g2.draw(progressCircle);
+		}
+
+		// optionally show the label at the bottom of the glasspane
+		if (fMessageText != null) {
+			if (fMessageText.length() > 0) {
+				textWidth = fontMetrics.stringWidth(fMessageText);
+
+				g2.setColor(Color.BLACK);
+				g2.drawString(fMessageText,(width / 2) - (textWidth / 2) + kTextOffset,height - (textHeight / 2) - fontMetrics.getAscent() - kTextOffset);
+				g2.setColor(Color.WHITE);
+				g2.drawString(fMessageText,(width / 2) - (textWidth / 2),height - (textHeight / 2) - fontMetrics.getAscent());
+			}
 		}
 	}
 
