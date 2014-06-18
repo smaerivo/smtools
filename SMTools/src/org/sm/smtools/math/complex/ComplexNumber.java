@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : ComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 28/05/2014
+// Last modified : 17/06/2014
 // Target        : Java VM (1.8)
 // ----------------------------------
 
@@ -33,7 +33,7 @@ import org.sm.smtools.math.MathTools;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 28/05/2014
+ * @version 17/06/2014
  */
 public final class ComplexNumber extends AComplexNumber<Double>
 {
@@ -79,6 +79,16 @@ public final class ComplexNumber extends AComplexNumber<Double>
 		fModulusSquared = (realPart * realPart) + (imaginaryPart * imaginaryPart);
 		fModulus = Math.sqrt(fModulusSquared);
 		fArgument = MathTools.atan(fRealPart,fImaginaryPart);
+	}
+
+	/**
+	 * The <I>copy-constructor</I>.
+	 *
+	 * @param c  the complex number to copy
+	 */
+	public ComplexNumber(ComplexNumber c)
+	{
+		this(c.getRealPart(),c.getImaginaryPart());
 	}
 
 	/******************

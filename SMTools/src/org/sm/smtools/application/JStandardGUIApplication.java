@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 27/05/2014
+// Last modified : 18/06/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -73,7 +73,7 @@ import org.sm.smtools.util.*;
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#setupApplicationResourceArchiveFilename()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupApplicationLocalePrefix()}</LI>
- *     <LI>{@link JStandardGUIApplication#initialiseClass(Object[])}</LI>
+ *     <LI>{@link JStandardGUIApplication#initialise(Object[])}</LI>
  *     <LI>{@link JStandardGUIApplication#shutdown()}</LI>
  *   </UL>
  *   <LI><B><U>Splash screen during startup</U></B></LI>
@@ -133,7 +133,7 @@ import org.sm.smtools.util.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 27/05/2014
+ * @version 18/06/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -319,7 +319,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *   <LI>The look-and-feel of the operating system is used by default.</LI>
 	 *   <LI>A optional splash screen is shown (see {@link JStandardGUIApplication#setupSplashScreenContent()} and
 	 *       {@link JStandardGUIApplication#setupSplashScreenSound()}).</LI>
-	 *   <LI>Custom initialisation is performed (see {@link JStandardGUIApplication#initialiseClass(Object[])}).
+	 *   <LI>Custom initialisation is performed (see {@link JStandardGUIApplication#initialise(Object[])}).
 	 *       Note that the objects are specified as <CODE>new Object[] {object1,object2}</CODE>.</LI>
 	 *   <LI>The window's icon and title are set (see {@link JStandardGUIApplication#setupIcon()} and
 	 *       {@link JStandardGUIApplication#setupWindowTitle()}).</LI>
@@ -337,7 +337,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @param argv        an array of strings containing the <B>command-line</B> parameters
 	 * @param parameters  an array of objects containing the parameters to be passed to the GUI's
-	 *                    {@link JStandardGUIApplication#initialiseClass(Object[])} method
+	 *                    {@link JStandardGUIApplication#initialise(Object[])} method
 	 */
 	public JStandardGUIApplication(String[] argv, Object[] parameters)
 	{
@@ -476,7 +476,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		// allow custom initialisation
 		kLogger.info(I18NL10N.translate("text.PerformingCustomInitialisation"));
-		initialiseClass(parameters);
+		initialise(parameters);
 
 		kLogger.info(I18NL10N.translate("text.CreatingGUIComponents"));
 
@@ -1003,7 +1003,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @param parameters  an array of <CODE>Objects</CODE>
 	 */
-	protected void initialiseClass(Object[] parameters)
+	protected void initialise(Object[] parameters)
 	{
 	}
 

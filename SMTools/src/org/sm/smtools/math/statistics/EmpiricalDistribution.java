@@ -1,7 +1,7 @@
 // ------------------------------------------
 // Filename      : EmpiricalDistribution.java
 // Author        : Sven Maerivoet
-// Last modified : 01/05/2014
+// Last modified : 17/06/2014
 // Target        : Java VM (1.8)
 // ------------------------------------------
 
@@ -38,10 +38,13 @@ import org.sm.smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 01/05/2014
+ * @version 17/06/2014
  */
 public final class EmpiricalDistribution
 {
+	// the minimum number of histogram bins
+	private static final int kMinNrOfHistogramBins = 10;
+
 	// internal datastructures
 	private int fN;
 	private double[] fX;
@@ -1317,6 +1320,11 @@ public final class EmpiricalDistribution
 				// apply the Freedman-Diaconis rule for finding the optimal histogram bin width
 				double optimalBinWidth = (2.0 * fInterquartileRange) / Math.cbrt(fN);
 				fNrOfHistogramBins = ((int) Math.round((fXMax - fXMin) / optimalBinWidth));
+			}
+
+			// fail-safe
+			if (fNrOfHistogramBins < kMinNrOfHistogramBins) {
+				fNrOfHistogramBins = kMinNrOfHistogramBins;
 			}
 
 			fHistogramBinWidth = (fXMax - fXMin) / fNrOfHistogramBins;

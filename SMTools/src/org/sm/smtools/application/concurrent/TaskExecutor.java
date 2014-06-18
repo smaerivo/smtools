@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : TaskExecutor.java
 // Author        : Sven Maerivoet
-// Last modified : 17/06/2014
+// Last modified : 18/06/2014
 // Target        : Java VM (1.8)
 // ---------------------------------
 
@@ -38,12 +38,13 @@ import org.sm.smtools.application.util.*;
  * results can be collected via the {@link TaskExecutor#finishTasks()} method.
  * <P>
  * Once all tasks are defined, a user calls the <CODE>TaskExecutor.execute()</CODE> method; the class can only be used once.
- * The current state of execution can be queried via the {@link TaskExecutor#isBusy()} method.
+ * The current state of execution can be queried via the {@link TaskExecutor#isBusy()} method. Threading is executed with
+ * a fixed thread pool based on the number of available cores.
  * <P>
  * Progress of the tasks' executions is shown via an optional progress update glasspane.
  * 
  * @author  Sven Maerivoet
- * @version 17/06/2014
+ * @version 18/06/2014
  * @see     ATask
  */
 public class TaskExecutor extends SwingWorker<Void,Void>
@@ -53,6 +54,7 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 	private ArrayList<ATask> fTasks;
 	private CountDownLatch fCountDownLatch;
 	private ExecutorService fExecutor;
+	private int fNrOfThreadsToUse;
 	private boolean fBusy;
 
 	/****************
@@ -60,7 +62,8 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 	 ****************/
 
 	/**
-	 * Constructs a <CODE>TaskExecutor</CODE> object with a specified progress update glasspane and a cached thread pool.
+	 * Constructs a <CODE>TaskExecutor</CODE> object with a specified progress update glasspane and a fixed thread pool
+	 * based on the number of available cores.
 	 *
 	 * @param progressUpdateGlassPane  the progress update glasspane to use for task updates
 	 */
@@ -71,14 +74,7 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 		fTasks = new ArrayList<ATask>();
 		fBusy = false;
 
-		// setup the thread pool
-		if (MemoryStatistics.getNrOfProcessors() > 1) {
-			fExecutor = Executors.newCachedThreadPool();
-		}
-		else {
-			// default to 1 core
-			fExecutor = Executors.newSingleThreadExecutor();
-		}
+		setNrOfThreadsToUse(MemoryStatistics.getNrOfProcessors());
 	}
 
 	/**
@@ -92,6 +88,37 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 	/******************
 	 * PUBLIC METHODS *
 	 ******************/
+
+	/**
+	 * Sets the number of threads to use by creating a fixed thread pool.
+	 * <P>
+	 * Note that this number is bound by the number of available processor cores in the system.
+	 * 
+	 * @param nrOfThreadsToUse  the number of threads to use for the fixed thread pool
+	 */
+	public final void setNrOfThreadsToUse(int nrOfThreadsToUse)
+	{
+		// setup the thread pool
+		int nrOfProcessors = MemoryStatistics.getNrOfProcessors();
+		if (nrOfThreadsToUse < 1) {
+			nrOfThreadsToUse = 1;
+		}
+		else if (nrOfThreadsToUse > nrOfProcessors) {
+			nrOfThreadsToUse = nrOfProcessors;
+		}
+		fNrOfThreadsToUse = nrOfThreadsToUse;
+		fExecutor = Executors.newFixedThreadPool(fNrOfThreadsToUse);
+	}
+
+	/**
+	 * Returns the number of threads that is used.
+	 * 
+	 * @return the number of threads that is used
+	 */
+	public final int getNrOfThreadsToUse()
+	{
+		return fNrOfThreadsToUse;
+	}
 
 	/**
 	 * Adds a task to be executed.
