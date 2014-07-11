@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 18/06/2014
+// Last modified : 19/06/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -133,7 +133,7 @@ import org.sm.smtools.util.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 18/06/2014
+ * @version 19/06/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -752,25 +752,21 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	// the window-listener
 	/**
 	 * This method does nothing.
-	 * <P>
-	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
-	public final void windowActivated(WindowEvent e)
+	public void windowActivated(WindowEvent e)
 	{
 	}
 
 	/**
 	 * This method does nothing.
-	 * <P>
-	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
-	public final void windowClosed(WindowEvent e)
+	public void windowClosed(WindowEvent e)
 	{
 	}
 
@@ -814,13 +810,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 	/**
 	 * This method does nothing.
-	 * <P>
-	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
-	public final void windowDeactivated(WindowEvent e)
+	public void windowDeactivated(WindowEvent e)
 	{
 	}
 
@@ -882,13 +876,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 	/**
 	 * This method does nothing.
-	 * <P>
-	 * Note that this method cannot be overridden!
 	 *
 	 * @param e  the <CODE>WindowEvent</CODE> that is received
 	 */
 	@Override
-	public final void windowOpened(WindowEvent e)
+	public void windowOpened(WindowEvent e)
 	{
 	}
 

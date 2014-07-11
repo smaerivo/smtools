@@ -90,7 +90,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 *************************/
 
 	static {
-		DevelopMode.activate();
+		DevelopMode.deactivate();
 	}
 
 	/****************
