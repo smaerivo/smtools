@@ -92,7 +92,7 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 	/**
 	 * Sets the number of threads to use by creating a fixed thread pool.
 	 * <P>
-	 * Note that this number is bound by the number of available processor cores - 1 in the system.
+	 * Note that this number is bound by the number of available processor cores in the system.
 	 * 
 	 * @param nrOfThreadsToUse  the number of threads to use for the fixed thread pool
 	 */
@@ -103,8 +103,8 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 		if (nrOfThreadsToUse < 1) {
 			nrOfThreadsToUse = 1;
 		}
-		else if (nrOfThreadsToUse > (nrOfProcessors - 1)) {
-			nrOfThreadsToUse = nrOfProcessors - 1;
+		else if (nrOfThreadsToUse > nrOfProcessors) {
+			nrOfThreadsToUse = nrOfProcessors;
 		}
 		fNrOfThreadsToUse = nrOfThreadsToUse;
 		fExecutor = Executors.newFixedThreadPool(fNrOfThreadsToUse);
