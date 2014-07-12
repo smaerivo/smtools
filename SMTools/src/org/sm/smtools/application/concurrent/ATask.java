@@ -124,6 +124,8 @@ public abstract class ATask extends SwingWorker<Void,Integer>
 	@Override
 	protected final void done()
 	{
+		finishTask();
+
 		if (fCountDownLatch != null) {
 			fCountDownLatch.countDown();
 		}

@@ -1,7 +1,7 @@
 // ---------------------------------------------
 // Filename      : JProgressUpdateGlassPane.java
 // Author        : Sven Maerivoet
-// Last modified : 18/06/2014
+// Last modified : 13/07/2014
 // Target        : Java VM (1.8)
 // ---------------------------------------------
 
@@ -57,7 +57,7 @@ import org.sm.smtools.util.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 18/06/2014
+ * @version 13/07/2014
  */
 public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener, KeyListener
 {
@@ -71,11 +71,13 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 
 	// internal datastructures
 	private boolean fFading;
+	private boolean fShowTimeEstimation;
 	private EVisualisationType fVisualisationType;
 	private boolean fShowFractions;
 	private int fTotalNrOfProgressUpdates;
 	private int fNrOfProgressUpdatesCompleted;
 	private double fPercentageCompleted;
+	private Chrono fChrono;
 	private String fMessageText;
 
 	/****************
@@ -95,15 +97,17 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	/**
 	 * Constructs an unblocking <CODE>JProgressUpdateGlassPane</CODE> object and resets it.
 	 *
-	 * @param visualisationType the type of the visualisation to show
-	 * @param showFractions a <CODE>boolean</CODE> indicating whether or not fractions are shown in the percentage completed
+	 * @param visualisationType  the type of the visualisation to show
+	 * @param showFractions      a <CODE>boolean</CODE> indicating whether or not fractions are shown in the percentage completed
 	 */
 	public JProgressUpdateGlassPane(EVisualisationType visualisationType, boolean showFractions)
 	{
 		super();
+		fChrono = new Chrono();
 		setVisualisationType(visualisationType);
 		setShowFractions(showFractions);
 		setFading(true);
+		setShowTimeEstimation(false);
 		reset();
 		setBlocking(false);
 	}
@@ -115,7 +119,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	/**
 	 * Sets whether or not fading is enabled.
 	 *
-	 * @param fading a <CODE>boolean</CODE> specifying whether fading is enabled or not
+	 * @param fading  a <CODE>boolean</CODE> specifying whether fading is enabled or not
 	 */
 	public final void setFading(boolean fading)
 	{
@@ -123,9 +127,19 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	}
 
 	/**
+	 * Sets whether or not an estimation of the time left should be shown.
+	 *
+	 * @param showTimeEstimation  a <CODE>boolean</CODE> specifying whether or not an estimation of the time left should be shown
+	 */
+	public final void setShowTimeEstimation(boolean showTimeEstimation)
+	{
+		fShowTimeEstimation = showTimeEstimation;
+	}
+
+	/**
 	 * Sets the visualisation type to use.
 	 *
-	 * @param visualisationType the type of the visualisation to use
+	 * @param visualisationType  the type of the visualisation to use
 	 */
 	public final void setVisualisationType(EVisualisationType visualisationType)
 	{
@@ -145,7 +159,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	/**
 	 * Sets whether or not fractions are shown in the percentage completed (not shown by default).
 	 *
-	 * @param showFractions a <CODE>boolean</CODE> indicating whether or not fractions are shown in the percentage completed
+	 * @param showFractions  a <CODE>boolean</CODE> indicating whether or not fractions are shown in the percentage completed
 	 */
 	public final void setShowFractions(boolean showFractions)
 	{
@@ -181,16 +195,18 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 		setPercentageCompleted(0.0);
 		setMessageText("");
 		setVisible(true);
+		fChrono.reset();
 	}
 
 	/**
 	 * Sets the total number of progress updates expected, corresponding to 100% completion.
 	 *
-	 * @param totalNrOfProgressUpdates the total number of progress updates expected
+	 * @param totalNrOfProgressUpdates  the total number of progress updates expected
 	 */
 	public final void setTotalNrOfProgressUpdates(int totalNrOfProgressUpdates)
 	{
 		fTotalNrOfProgressUpdates = totalNrOfProgressUpdates;
+		fChrono.start();
 	}
 
 	/**
@@ -205,7 +221,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	/**
 	 * Directly sets the percentage completed.
 	 *
-	 * @param percentageCompleted the percentage completed
+	 * @param percentageCompleted  the percentage completed
 	 */
 	public final void setPercentageCompleted(double percentageCompleted)
 	{
@@ -238,7 +254,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	/**
 	 * Sets whether or not the glasspane should block all user mouse-input.
 	 *
-	 * @param blocking a <CODE>boolean</CODE> that indicates whether or not the glasspane should block all user mouse-input
+	 * @param blocking  a <CODE>boolean</CODE> that indicates whether or not the glasspane should block all user mouse-input
 	 */
 	public final void setBlocking(boolean blocking)
 	{
@@ -267,6 +283,18 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	@Override
 	public void paintComponent(Graphics g)
 	{
+		// estimate the remaining time to completion
+		long timeLeftMs = 0;
+		long elapsedTimeMs = 0;
+		long totalTimeMs = 0;
+		if (fPercentageCompleted > 0.0) {
+			elapsedTimeMs = fChrono.getElapsedTimeInMilliseconds();
+			totalTimeMs = (long) Math.round(((double) elapsedTimeMs / fPercentageCompleted) * 100.0);
+			timeLeftMs = totalTimeMs - elapsedTimeMs;
+		}
+		TimeStamp totalTime = new TimeStamp(totalTimeMs);
+		TimeStamp timeLeft = new TimeStamp(timeLeftMs);
+
 		int width = getWidth();
 		int height = getHeight();
 		double percentageCompleted = getPercentageCompleted();
@@ -317,6 +345,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 		g2.drawString(percentageCompletedDesc,(width / 2) - (textWidth / 2) + kTextOffset,(height / 2) - (textHeight / 2) + fontMetrics.getAscent() + kTextOffset);
 		g2.setColor(Color.WHITE);
 		g2.drawString(percentageCompletedDesc,(width / 2) - (textWidth / 2),(height / 2) - (textHeight / 2) + fontMetrics.getAscent());
+		int textBottom = (height / 2) - (textHeight / 2) + fontMetrics.getAscent() + textHeight;
 
 		if (fVisualisationType == EVisualisationType.kBar) {
 			// determine bar dimensions
@@ -421,6 +450,24 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 			JGradientColorRamp gcr = new JGradientColorRamp(JGradientColorRamp.EColorMap.kBlue);
 			g2.setColor(gcr.interpolate(0.25 + (percentageCompleted / 75.0)));
 			g2.draw(progressCircle);
+		}
+
+		// show the time left
+		if (fShowTimeEstimation && (timeLeftMs > 0)) {
+			String timeDesc = timeLeft.getMSString() + " (" + totalTime.getMSString() + ")";
+
+			font = new Font(getFont().getFontName(),Font.ITALIC,(int) Math.round(diameter / 20.0));
+			g2.setFont(font);
+			fontMetrics = g2.getFontMetrics();
+			textWidth = fontMetrics.stringWidth(timeDesc);
+			textHeight = fontMetrics.getHeight();
+			if (fVisualisationType == EVisualisationType.kBar) {
+				textBottom += (height / 10) * 2;
+			}
+			g2.setColor(Color.BLACK);
+			g2.drawString(timeDesc,(width / 2) - (textWidth / 2) + kTextOffset,textBottom + (textHeight / 2) + kTextOffset);
+			g2.setColor(Color.WHITE);
+			g2.drawString(timeDesc,(width / 2) - (textWidth / 2),textBottom + (textHeight / 2));
 		}
 
 		// optionally show the label at the bottom of the glasspane

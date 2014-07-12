@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : TimeStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 07/04/2013
+// Last modified : 12/07/2013
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -35,7 +35,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 07/04/2013
+ * @version 12/07/2013
  */
 public final class TimeStamp implements Comparable<TimeStamp>
 {
@@ -374,6 +374,50 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	public String getHMString()
 	{
 		return (new SimpleDateFormat("HH:mm")).format(fTimeStamp.getTime());
+	}
+
+	/**
+	 * Returns a <CODE>String</CODE> representation of this <CODE>TimeStamp</CODE> object in the format mm:ss.
+	 *
+	 * @return a <CODE>String</CODE> representation of this <CODE>TimeStamp</CODE> object in the format mm:ss
+	 * @see    java.text.SimpleDateFormat
+	 */
+	public String getMSString()
+	{
+		return (new SimpleDateFormat("mm:ss")).format(fTimeStamp.getTime());
+	}
+
+	/**
+	 * Returns a <CODE>String</CODE> representation of this <CODE>TimeStamp</CODE> object in the format mm:ss.SSS.
+	 *
+	 * @return a <CODE>String</CODE> representation of this <CODE>TimeStamp</CODE> object in the format mm:ss.SSS
+	 * @see    java.text.SimpleDateFormat
+	 */
+	public String getMSMsString()
+	{
+		return (new SimpleDateFormat("mm:ss.SSS")).format(fTimeStamp.getTime());
+	}
+
+	/**
+	 * Returns a <CODE>String</CODE> representation of this <CODE>TimeStamp</CODE> object in the format ss.SSS.
+	 *
+	 * @return a <CODE>String</CODE> representation of this <CODE>TimeStamp</CODE> object in the format ss.SSS
+	 * @see    java.text.SimpleDateFormat
+	 */
+	public String getSMsString()
+	{
+		return (new SimpleDateFormat("ss.SSS")).format(fTimeStamp.getTime());
+	}
+
+	/**
+	 * Returns a <CODE>String</CODE> representation of this <CODE>TimeStamp</CODE> object in the format ss.
+	 *
+	 * @return a <CODE>String</CODE> representation of this <CODE>TimeStamp</CODE> object in the format ss
+	 * @see    java.text.SimpleDateFormat
+	 */
+	public String getSString()
+	{
+		return (new SimpleDateFormat("ss")).format(fTimeStamp.getTime());
 	}
 
 	/**

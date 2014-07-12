@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : TaskExecutor.java
 // Author        : Sven Maerivoet
-// Last modified : 18/06/2014
+// Last modified : 13/07/2014
 // Target        : Java VM (1.8)
 // ---------------------------------
 
@@ -44,7 +44,7 @@ import org.sm.smtools.application.util.*;
  * Progress of the tasks' executions is shown via an optional progress update glasspane.
  * 
  * @author  Sven Maerivoet
- * @version 18/06/2014
+ * @version 13/07/2014
  * @see     ATask
  */
 public class TaskExecutor extends SwingWorker<Void,Void>
@@ -92,7 +92,7 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 	/**
 	 * Sets the number of threads to use by creating a fixed thread pool.
 	 * <P>
-	 * Note that this number is bound by the number of available processor cores in the system.
+	 * Note that this number is bound by the number of available processor cores - 1 in the system.
 	 * 
 	 * @param nrOfThreadsToUse  the number of threads to use for the fixed thread pool
 	 */
@@ -103,8 +103,8 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 		if (nrOfThreadsToUse < 1) {
 			nrOfThreadsToUse = 1;
 		}
-		else if (nrOfThreadsToUse > nrOfProcessors) {
-			nrOfThreadsToUse = nrOfProcessors;
+		else if (nrOfThreadsToUse > (nrOfProcessors - 1)) {
+			nrOfThreadsToUse = nrOfProcessors - 1;
 		}
 		fNrOfThreadsToUse = nrOfThreadsToUse;
 		fExecutor = Executors.newFixedThreadPool(fNrOfThreadsToUse);
