@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 18/06/2014
+// Last modified : 13/07/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -48,7 +48,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 18/06/2014
+ * @version 13/07/2014
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -189,7 +189,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 						break;
 				}
 
-				for (int taskID = 0; taskID < 10000; ++taskID) {
+				for (int taskID = 0; taskID < 500; ++taskID) {
 					// setup a task with custom input
 					MyTask task = new MyTask();
 					fTaskExecutor.addTask(task);
@@ -448,6 +448,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	{
 		fProgressUpdateGlassPane = new JProgressUpdateGlassPane();
 		fProgressUpdateGlassPane.setBlocking(true);
+		fProgressUpdateGlassPane.setShowTimeEstimation(true);
 		fVisualisationType = 0;
 		return fProgressUpdateGlassPane;
 	}
