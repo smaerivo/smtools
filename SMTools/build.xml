@@ -19,9 +19,15 @@
 	<target name="compile" depends="initialise">
 		<javac srcdir="${srcDir}" destdir="${binDir}" includeantruntime="false">
 			<classpath>
-	    	<pathelement location="D:/Eclipse Workspace/Software Development/Log4j/log4j-all-1.3alpha-8.jar" />
-	    	<pathelement location="D:/Eclipse Workspace/Software Development/JLayer/jl1.0.1.jar" />
-			</classpath>
+		    <pathelement location="D:/Eclipse Workspace/Software Development/Log4j/log4j-all-1.3alpha-8.jar" />
+		   	<pathelement location="D:/Eclipse Workspace/Software Development/JUnit 3.8.1/junit.jar" />
+		    <pathelement location="D:/Eclipse Workspace/Software Development/JFreeChart-1.0.13/lib/jcommon-1.0.16.jar" />
+		    <pathelement location="D:/Eclipse Workspace/Software Development/JFreeChart-1.0.13/lib/jfreechart-1.0.13.jar" />
+		    <pathelement location="D:/Eclipse Workspace/Software Development/JLayer/jl1.0.1.jar" />
+	    	<pathelement location="D:/Eclipse Workspace/Software Development/Java Native Access 3.5.1/jna-3.5.1.jar" />
+	    	<pathelement location="D:/Eclipse Workspace/Software Development/Java Native Access 3.5.1/platform-3.5.1.jar" />
+	    	<pathelement location="D:/Eclipse Workspace/Software Development/BigDecimalMath/bigdecimalmath.jar" />
+	    </classpath>
 			<compilerarg value="-Xlint:deprecation" />
 			<compilerarg value="-Xlint:unchecked" />
 			<compilerarg value="-deprecation" />
@@ -36,7 +42,7 @@
 			<manifest>
 			  <attribute name="Built-By" value="Sven Maerivoet" />
 	      <attribute name="Implementation-Title" value="SMTools" />
-	      <attribute name="Implementation-Version" value="1.4" />
+	      <attribute name="Implementation-Version" value="1.5" />
 				<attribute name="Main-Class" value="smtools.application.JStandardGUIApplication" />
 			</manifest>
 		</jar>
@@ -48,7 +54,7 @@
 		<javadoc
 			sourcepath="${srcDir}"
 			destdir="${docDir}"
-			doctitle="SMTools v1.4 API Documentation"
+			doctitle="SMTools v1.5 API Documentation"
 			header="&lt;B&gt;SMTools&lt;/B&gt;&lt;BR&gt;&lt;I&gt;Sven Maerivoet&lt;/I&gt;"
 			windowtitle="Sven Maerivoet - Java Tools"
 			splitindex="true"
@@ -56,24 +62,25 @@
 			package="true"
 			author="true"
 			version="true"
-			overview="${srcDir}/smtools/overview.html" >
-			<group title="Application GUI development" packages="smtools.application:smtools.application.registry:smtools.application.util" />
+			overview="${srcDir}/org/sm/smtools/overview.html" >
+			<group title="Application GUI development" packages="smtools.application:smtools.application.concurrent:smtools.application.registry:smtools.application.util" />
 			<group title="Exception handling" packages="smtools.exceptions" />
 			<group title="Mathematical utilities" packages="smtools.math:smtools.math.lslr:smtools.math.quadmapping:smtools.math.statistics" />
-			<group title="Miscellaneous" packages="smtools.miscellaneous" />
+			<group title="Utilities" packages="smtools.util" />
 			<group title="Swing related" packages="smtools.swing.dialogs:smtools.swing.util" />
 		  <classpath>
 		    <pathelement path="${classpath}"/>
 		    <pathelement location="D:/Eclipse Workspace/Software Development/SMTools/smtools.jar" />
 		    <pathelement location="D:/Eclipse Workspace/Software Development/Log4j/log4j-all-1.3alpha-8.jar" />
-		    <pathelement location="D:/Eclipse Workspace/Software Development/JUnit 3.8.1/junit.jar" />
+		   	<pathelement location="D:/Eclipse Workspace/Software Development/JUnit 3.8.1/junit.jar" />
 		    <pathelement location="D:/Eclipse Workspace/Software Development/JFreeChart-1.0.13/lib/jcommon-1.0.16.jar" />
 		    <pathelement location="D:/Eclipse Workspace/Software Development/JFreeChart-1.0.13/lib/jfreechart-1.0.13.jar" />
 		    <pathelement location="D:/Eclipse Workspace/Software Development/JLayer/jl1.0.1.jar" />
-		  </classpath>
+	    	<pathelement location="D:/Eclipse Workspace/Software Development/Java Native Access 3.5.1/jna-3.5.1.jar" />
+	    	<pathelement location="D:/Eclipse Workspace/Software Development/Java Native Access 3.5.1/platform-3.5.1.jar" />
+	    	<pathelement location="D:/Eclipse Workspace/Software Development/BigDecimalMath/bigdecimalmath.jar" />
+		   </classpath>
 		</javadoc>
-		<delete file="${docDir}/index.html" />
-		<copy file="${srcDir}/doc-index.html" tofile="${docDir}/index.html" />
 	</target>
 
 	<target name="zip">
