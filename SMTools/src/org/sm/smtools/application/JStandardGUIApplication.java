@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 19/06/2014
+// Last modified : 17/07/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -100,6 +100,8 @@ import org.sm.smtools.util.*;
  *     <LI>{@link JStandardGUIApplication#setupRightHandMenu()}</LI>
  *     <LI>{@link JStandardGUIApplication#constructMenuItem(String,boolean)}</LI>
  *     <LI>{@link JStandardGUIApplication#constructMenuItem(String)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructRadioButtonMenuItem(String,boolean)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructRadioButtonMenuItem(String)}</LI>
  *     <LI>{@link JStandardGUIApplication#constructCheckBoxMenuItem(String,boolean)}</LI>
  *     <LI>{@link JStandardGUIApplication#constructCheckBoxMenuItem(String)}</LI>
  *     <LI>{@link JStandardGUIApplication#setupStatusBarCustomLabels()}</LI>
@@ -133,7 +135,7 @@ import org.sm.smtools.util.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 19/06/2014
+ * @version 17/07/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -1322,6 +1324,46 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	protected final JMenuItem constructMenuItem(String menuItemKey)
 	{
 		return constructMenuItem(menuItemKey,true);
+	}
+
+	/**
+	 * Helper method for constructing a radio button menu item object; an optional mnemonic can be used if it is found.
+	 * <P>
+	 * Note that this method cannot be overridden!
+	 *
+	 * @param radioButtonMenuItemKey  the key of the menu item
+	 * @param useMnemonic             a flag indicating whether to use a mnemonic or not
+	 * @return                        a radio button menu item object
+	 */
+	protected final JRadioButtonMenuItem constructRadioButtonMenuItem(String radioButtonMenuItemKey, boolean useMnemonic)
+	{
+		String translation = I18NL10N.translate(radioButtonMenuItemKey.trim());
+		String indentation = StringTools.getIndentation(radioButtonMenuItemKey);
+
+		JRadioButtonMenuItem radioButtonMenuItem = new JRadioButtonMenuItem(indentation + translation);
+
+		if (useMnemonic) {
+			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(radioButtonMenuItemKey.trim() + ".Mnemonic"));
+
+			if (mnemonic != null) {
+				radioButtonMenuItem.setMnemonic(mnemonic);
+			}
+		}
+
+		return radioButtonMenuItem;
+	}
+
+	/**
+	 * Helper method for constructing a radio button menu item object; a mnemonic is used if it is found.
+	 * <P>
+	 * Note that this method cannot be overridden!
+	 *
+	 * @param radioButtonMenuItemKey  the key of the menu item
+	 * @return                        a radio button menu item object
+	 */
+	protected final JRadioButtonMenuItem constructRadioButtonMenuItem(String radioButtonMenuItemKey)
+	{
+		return constructRadioButtonMenuItem(radioButtonMenuItemKey,true);
 	}
 
 	/**

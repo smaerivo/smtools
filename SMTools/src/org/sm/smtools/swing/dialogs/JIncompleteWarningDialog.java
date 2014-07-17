@@ -1,7 +1,7 @@
 // ---------------------------------------------
 // Filename      : JIncompleteWarningDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 16/07/2014
 // Target        : Java VM (1.8)
 // ---------------------------------------------
 
@@ -53,7 +53,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 16/07/2014
  */
 public final class JIncompleteWarningDialog
 {
@@ -90,7 +90,7 @@ public final class JIncompleteWarningDialog
 		Object[] options = {I18NL10N.translate("button.Ok")};
 
 		JOptionPane.showOptionDialog(parentComponent,className + " : " +
-				I18NL10N.translate("text.ImplementationNotYetCompleted") + " !",
+				I18NL10N.translate("text.ImplementationNotYetCompleted") + "!",
 				I18NL10N.translate("text.ImportantNotice"),JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,
 				options,options[0]);
 	}
