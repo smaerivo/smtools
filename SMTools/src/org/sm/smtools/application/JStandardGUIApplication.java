@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 17/07/2014
+// Last modified : 23/07/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -25,6 +25,7 @@ package org.sm.smtools.application;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
@@ -135,7 +136,7 @@ import org.sm.smtools.util.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 17/07/2014
+ * @version 23/07/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -912,6 +913,16 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	public final void beep()
 	{
 		Toolkit.getDefaultToolkit().beep();
+	}
+
+	/**
+	 * Emulates hiding the mouse cursor.
+	 */
+	public void hideMouseCursor()
+	{
+		int[] emptyImageData = new int[16 * 16];
+		Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(16,16,emptyImageData,0,16));
+		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(image,new Point(0,0),"invisibleCursor"));
 	}
 
 	/**
