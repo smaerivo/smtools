@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 13/07/2014
+// Last modified : 23/07/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -48,7 +48,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 13/07/2014
+ * @version 23/07/2014
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -135,7 +135,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		if (command.equalsIgnoreCase(kActionCommandMenuItemDateChooser)) {
 			fStatusBarCustomLabel.setText("64-bit FP");
 			getStatusBar().setStatusText(I18NL10N.translate("text.ChooseDateDialogTitle"));
-			JDateChooser dateChooser = (JDateChooser) getGUIComponentCache().retrieveComponent(fDateChooserID);
+			JDateChooser dateChooser = (JDateChooser) getGUIComponentCache().getComponent(fDateChooserID);
 			dateChooser.setDefaultDate(new DateStamp(11,4,1976));
 			dateChooser.activate();
 			getStatusBar().clearStatusText();
@@ -150,7 +150,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTimeChooser)) {
 			fStatusBarCustomLabel.setText("128-bit FP");
 			getStatusBar().setStatusText(I18NL10N.translate("text.ChooseTimeDialogTitle"));
-			JTimeChooser timeChooser = (JTimeChooser) getGUIComponentCache().retrieveComponent(fTimeChooserID);
+			JTimeChooser timeChooser = (JTimeChooser) getGUIComponentCache().getComponent(fTimeChooserID);
 			timeChooser.setDefaultTime(new TimeStamp(12,25,20,10));
 			timeChooser.activate();
 

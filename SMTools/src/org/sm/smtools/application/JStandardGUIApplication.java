@@ -608,7 +608,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		fMinimiseToSystemTray = (SystemTray.isSupported() && setupMinimiseToSystemTrayAllowed());
 
 		// show the aboutbox
-		aboutBox = (JDefaultDialog) fGUIComponentCache.retrieveComponent(fAboutBoxID);
+		aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
 
 		kLogger.info(I18NL10N.translate("text.ApplicationReady"));
 
@@ -654,7 +654,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemAbout)) {
 
-			JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.retrieveComponent(fAboutBoxID);
+			JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
 
 			if (aboutBox != null) {
 				aboutBox.activate();
@@ -1643,7 +1643,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		menu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.General.Mnemonic")));
 		menuBar.add(menu);
 
-		JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.retrieveComponent(fAboutBoxID);
+		JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
 		if (aboutBox != null) {
 			menuItem = constructMenuItem(kActionCommandMenuItemAbout);
 			menuItem.setActionCommand(kActionCommandMenuItemAbout);
