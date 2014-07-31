@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : JDefaultDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 04/05/2014
+// Last modified : 23/07/2014
 // Target        : Java VM (1.8)
 // -----------------------------------
 
@@ -94,7 +94,7 @@ import org.sm.smtools.util.*;
  * during the reactivation process, can be performed by overriding the {@link JDefaultDialog#initialiseDuringActivation} method.
  *
  * @author  Sven Maerivoet
- * @version 04/05/2014
+ * @version 23/07/2014
  */
 public class JDefaultDialog extends JDialog implements ActionListener, WindowListener
 {
@@ -359,36 +359,30 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 
 	/**
 	 * Displays the dialog box on the screen, thereby 'activating' it.
-	 * <P>
-	 * This method only has an effect when the dialog box is not immediately activated
-	 * at the time of the constructor.
 	 * 
 	 * @see JDefaultDialog#initialiseDuringActivation
 	 */
 	public final void activate()
 	{
-		if (fActivation == EActivation.kPostponed) {
+		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSMessageDialog);
 
-			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSMessageDialog);
+		fIsShown = true;
 
-			fIsShown = true;
+		// allow custom initialisation during activation
+		initialiseDuringActivation();
 
-			// allow custom initialisation during activation
-			initialiseDuringActivation();
+		// reset the dialog box's cancel status
+		fCancelled = (fType == EType.kOkCancel);
 
-			// reset the dialog box's cancel status
-			fCancelled = (fType == EType.kOkCancel);
+		// resize the GUI
+		pack();
 
-			// resize the GUI
-			pack();
-
-			if (fAutoPositioning) {
-				reposition();
-			}
-
-			// enable the dialog box
-			setVisible(true);
+		if (fAutoPositioning) {
+			reposition();
 		}
+
+		// enable the dialog box
+		setVisible(true);
 	}
 
 	/**

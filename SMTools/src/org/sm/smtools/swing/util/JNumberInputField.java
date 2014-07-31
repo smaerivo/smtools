@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : JNumberInputField.java
 // Author        : Sven Maerivoet
-// Last modified : 05/02/2004
+// Last modified : 15/07/2014
 // Target        : Java VM (1.8)
 // --------------------------------------
 
@@ -31,7 +31,7 @@ import javax.swing.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 05/02/2004
+ * @version 15/07/2014
  */
 public class JNumberInputField extends JTextField implements ActionListener
 {
@@ -79,8 +79,7 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 *                                    to the next component in the GUI after pressing the &lt;ENTER&gt; key in the textfield
 	 * @see                               JNumberInputField#JNumberInputField(int,boolean)
 	 */
-	public JNumberInputField(double doubleValue, int nrOfFPDecimals,
-			boolean transferFocusAfterEntering)
+	public JNumberInputField(double doubleValue, int nrOfFPDecimals, boolean transferFocusAfterEntering)
 	{
 		fNumberType = kDouble;
 		fDoubleValue = doubleValue;
@@ -112,7 +111,7 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 * to the specified number of floating point decimals (base 10).
 	 * <P>
 	 * If the &lt;ENTER&gt; key is pressed in the textfield, the focus may transfer to the next
-	 * GUI component (if this behavior is specified).
+	 * GUI component (if this behaviour is specified).
 	 *
 	 * @param e  the <CODE>ActionEvent</CODE> that is received.
 	 */
@@ -195,6 +194,9 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 */
 	public final int getIntegerValue()
 	{
+		// obtain the current value from the textfield
+		fireActionPerformed();
+
 		return fIntegerValue;
 	}
 
@@ -222,6 +224,9 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 */
 	public final double getDoubleValue()
 	{
+		// obtain the current value from the textfield
+		fireActionPerformed();
+
 		return fDoubleValue;
 	}
 

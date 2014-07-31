@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : ComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 17/06/2014
+// Last modified : 22/07/2014
 // Target        : Java VM (1.8)
 // ----------------------------------
 
@@ -33,7 +33,7 @@ import org.sm.smtools.math.MathTools;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 17/06/2014
+ * @version 22/07/2014
  */
 public final class ComplexNumber extends AComplexNumber<Double>
 {
@@ -451,8 +451,8 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	public ComplexNumber convertPolarToComplex(Double modulus, Double argument)
 	{
 		return (new ComplexNumber(
-			fModulus * Math.cos(fArgument),
-			fModulus * Math.sin(fArgument)));
+			modulus * Math.cos(argument),
+			modulus * Math.sin(argument)));
 	}
 
 	/**

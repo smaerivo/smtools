@@ -1,7 +1,7 @@
 // -------------------------------------
 // Filename      : BigComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 28/05/2014
+// Last modified : 22/07/2014
 // Target        : Java VM (1.8)
 // -------------------------------------
 
@@ -36,7 +36,7 @@ import org.nevec.rjm.*;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 28/05/2014
+ * @version 22/07/2014
  */
 public final class BigComplexNumber extends AComplexNumber<BigDecimal>
 {
@@ -516,8 +516,8 @@ public final class BigComplexNumber extends AComplexNumber<BigDecimal>
 	public BigComplexNumber convertPolarToComplex(BigDecimal modulus, BigDecimal argument)
 	{
 		return (new BigComplexNumber(
-			fModulus.multiply(BigDecimalMath.cos(fArgument)),
-			fModulus.multiply(BigDecimalMath.sin(fArgument))));
+			modulus.multiply(BigDecimalMath.cos(argument)),
+			modulus.multiply(BigDecimalMath.sin(argument))));
 	}
 
 	/**

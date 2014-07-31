@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JGUIComponentCache.java
 // Author        : Sven Maerivoet
-// Last modified : 20/01/2012
+// Last modified : 23/07/2014
 // Target        : Java VM (1.8)
 // ---------------------------------------
 
@@ -38,7 +38,7 @@ import javax.swing.*;
  * a cache (using the {@link JGUIComponentCache#addComponent(Component)} method). This way, the
  * waiting time is transferred to the application's startup (instead of during its execution).
  * Later on, when a GUI component is needed, the application can just retrieve it from the
- * cache (using the {@link JGUIComponentCache#retrieveComponent(int)} method).
+ * cache (using the {@link JGUIComponentCache#getComponent(int)} method).
  * <P>
  * <B><U>Important remark</U></B>
  * <P>
@@ -50,7 +50,7 @@ import javax.swing.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 20/01/2012
+ * @version 23/07/2014
  */
 public final class JGUIComponentCache
 {
@@ -79,7 +79,7 @@ public final class JGUIComponentCache
 	 *
 	 * @param  component  the AWT <CODE>Component</CODE> to add to the cache
 	 * @return            a unique identifier associated with the added component
-	 * @see               JGUIComponentCache#retrieveComponent(int)
+	 * @see               JGUIComponentCache#getComponent(int)
 	 */
 	public int addComponent(Component component)
 	{
@@ -97,7 +97,7 @@ public final class JGUIComponentCache
 	 * @return              the AWT <CODE>Component</CODE> associated with the requested identifier
 	 * @see                 JGUIComponentCache#addComponent(Component)
 	 */
-	public Component retrieveComponent(int componentID)
+	public Component getComponent(int componentID)
 	{
 		return fGUIComponentCache.get(new Integer(componentID));
 	}
@@ -128,6 +128,6 @@ public final class JGUIComponentCache
 		// initialise GUI component cache (with an initial capacity of 10 components)
 		// a HashMap is used because we need the capability to store null values
 		fGUIComponentCache = new HashMap<>(10);
-		fLastComponentID = -1;
+		fLastComponentID = 0;
 	}
 }

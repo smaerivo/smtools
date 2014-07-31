@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 19/06/2014
+// Last modified : 23/07/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -25,6 +25,7 @@ package org.sm.smtools.application;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
@@ -100,6 +101,8 @@ import org.sm.smtools.util.*;
  *     <LI>{@link JStandardGUIApplication#setupRightHandMenu()}</LI>
  *     <LI>{@link JStandardGUIApplication#constructMenuItem(String,boolean)}</LI>
  *     <LI>{@link JStandardGUIApplication#constructMenuItem(String)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructRadioButtonMenuItem(String,boolean)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructRadioButtonMenuItem(String)}</LI>
  *     <LI>{@link JStandardGUIApplication#constructCheckBoxMenuItem(String,boolean)}</LI>
  *     <LI>{@link JStandardGUIApplication#constructCheckBoxMenuItem(String)}</LI>
  *     <LI>{@link JStandardGUIApplication#setupStatusBarCustomLabels()}</LI>
@@ -133,7 +136,7 @@ import org.sm.smtools.util.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 19/06/2014
+ * @version 23/07/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -605,7 +608,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		fMinimiseToSystemTray = (SystemTray.isSupported() && setupMinimiseToSystemTrayAllowed());
 
 		// show the aboutbox
-		aboutBox = (JDefaultDialog) fGUIComponentCache.retrieveComponent(fAboutBoxID);
+		aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
 
 		kLogger.info(I18NL10N.translate("text.ApplicationReady"));
 
@@ -651,7 +654,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemAbout)) {
 
-			JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.retrieveComponent(fAboutBoxID);
+			JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
 
 			if (aboutBox != null) {
 				aboutBox.activate();
@@ -910,6 +913,16 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	public final void beep()
 	{
 		Toolkit.getDefaultToolkit().beep();
+	}
+
+	/**
+	 * Emulates hiding the mouse cursor.
+	 */
+	public void hideMouseCursor()
+	{
+		int[] emptyImageData = new int[16 * 16];
+		Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(16,16,emptyImageData,0,16));
+		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(image,new Point(0,0),"invisibleCursor"));
 	}
 
 	/**
@@ -1325,6 +1338,46 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * Helper method for constructing a radio button menu item object; an optional mnemonic can be used if it is found.
+	 * <P>
+	 * Note that this method cannot be overridden!
+	 *
+	 * @param radioButtonMenuItemKey  the key of the menu item
+	 * @param useMnemonic             a flag indicating whether to use a mnemonic or not
+	 * @return                        a radio button menu item object
+	 */
+	protected final JRadioButtonMenuItem constructRadioButtonMenuItem(String radioButtonMenuItemKey, boolean useMnemonic)
+	{
+		String translation = I18NL10N.translate(radioButtonMenuItemKey.trim());
+		String indentation = StringTools.getIndentation(radioButtonMenuItemKey);
+
+		JRadioButtonMenuItem radioButtonMenuItem = new JRadioButtonMenuItem(indentation + translation);
+
+		if (useMnemonic) {
+			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(radioButtonMenuItemKey.trim() + ".Mnemonic"));
+
+			if (mnemonic != null) {
+				radioButtonMenuItem.setMnemonic(mnemonic);
+			}
+		}
+
+		return radioButtonMenuItem;
+	}
+
+	/**
+	 * Helper method for constructing a radio button menu item object; a mnemonic is used if it is found.
+	 * <P>
+	 * Note that this method cannot be overridden!
+	 *
+	 * @param radioButtonMenuItemKey  the key of the menu item
+	 * @return                        a radio button menu item object
+	 */
+	protected final JRadioButtonMenuItem constructRadioButtonMenuItem(String radioButtonMenuItemKey)
+	{
+		return constructRadioButtonMenuItem(radioButtonMenuItemKey,true);
+	}
+
+	/**
 	 * Helper method for constructing a check box menu item object; an optional mnemonic can be used if it is found.
 	 * <P>
 	 * Note that this method cannot be overridden!
@@ -1590,7 +1643,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		menu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.General.Mnemonic")));
 		menuBar.add(menu);
 
-		JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.retrieveComponent(fAboutBoxID);
+		JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
 		if (aboutBox != null) {
 			menuItem = constructMenuItem(kActionCommandMenuItemAbout);
 			menuItem.setActionCommand(kActionCommandMenuItemAbout);
