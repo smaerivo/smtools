@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 23/07/2014
+// Last modified : 03/09/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -31,10 +31,10 @@ import java.util.*;
 import javax.swing.*;
 import org.apache.log4j.*;
 import org.sm.smtools.application.registry.*;
+import org.sm.smtools.util.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
 import org.sm.smtools.swing.dialogs.*;
-import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JStandardGUIApplication</CODE> class provides a standard Swing based GUI framework.
@@ -136,7 +136,7 @@ import org.sm.smtools.util.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 23/07/2014
+ * @version 03/09/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -246,18 +246,20 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private static final String klafInitialLaF = klafSystem;
 
 	// the action commands for the default menu
-	private static final String kActionCommandMenuItemAbout = "menuItem.About";
-	private static final String kActionCommandMenuItemGTKLAF = "menuItem.GTKLAF";
-	private static final String kActionCommandMenuItemMacLAF = "menuItem.MacLAF";
 	private static final String kActionCommandMenuItemMetalLAF = "menuItem.MetalLAF";
-	private static final String kActionCommandMenuItemMinimiseToSystemTray = "menuItem.MinimiseToSystemTray";
-	private static final String kActionCommandMenuItemMotifLAF = "menuItem.MotifLAF";
 	private static final String kActionCommandMenuItemNimbusLAF = "menuItem.NimbusLAF";
-	private static final String kActionCommandMenuItemQuaquaLAF = "menuItem.QuaquaLAF";
-	private static final String kActionCommandMenuItemQuit = "menuItem.Quit";
-	private static final String kActionCommandMenuItemSystemLAF = "menuItem.SystemLAF";
+	private static final String kActionCommandMenuItemMotifLAF = "menuItem.MotifLAF";
+	private static final String kActionCommandMenuItemGTKLAF = "menuItem.GTKLAF";
 	private static final String kActionCommandMenuItemWindowsLAF = "menuItem.WindowsLAF";
 	private static final String kActionCommandMenuItemWindowsClassicLAF = "menuItem.WindowsClassicLAF";
+	private static final String kActionCommandMenuItemMacLAF = "menuItem.MacLAF";
+	private static final String kActionCommandMenuItemQuaquaLAF = "menuItem.QuaquaLAF";
+	private static final String kActionCommandMenuItemSystemLAF = "menuItem.SystemLAF";
+	private static final String kActionCommandMenuItemMinimiseToSystemTray = "menuItem.MinimiseToSystemTray";
+	private static final String kActionCommandMenuItemEnableWindowResizing = "menuItem.EnableWindowResizing";
+	private static final String kActionCommandMenuItemAbout = "menuItem.About";
+	private static final String kActionCommandMenuItemSystemSoundsEnabled = "menuItem.SystemSoundsEnabled";
+	private static final String kActionCommandMenuItemQuit = "menuItem.Quit";
 
 	// set the clock's update period to half a second
 	private static final int kClockUpdatePeriod = 500;
@@ -278,6 +280,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private JRadioButtonMenuItem frbQuaqua;
 	private JRadioButtonMenuItem frbWindows;
 	private JRadioButtonMenuItem frbWindowsClassic;
+	private JCheckBoxMenuItem fcbEnableWindowResizing;
+	private boolean fSystemSoundsEnabled;
+	private JCheckBoxMenuItem fcbSystemSoundsEnabled;
 	private JStatusBar fStatusBar;
 	private JLabel fClockLabel;
 	private String fLocale;
@@ -384,6 +389,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		fLocale = I18NL10N.kLocaleBritishEnglish;
+		fSystemSoundsEnabled = true;
 		parseCommandLine(argv);
 
 		// load the system's locale database
@@ -689,6 +695,17 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemMinimiseToSystemTray)) {
 			fMinimiseToSystemTray = !fMinimiseToSystemTray; 
+		}
+		else if (command.equalsIgnoreCase(kActionCommandMenuItemEnableWindowResizing)) {
+			setResizable(fcbEnableWindowResizing.isSelected());
+		}
+		else if (command.equalsIgnoreCase(kActionCommandMenuItemSystemSoundsEnabled)) {
+			if (fcbSystemSoundsEnabled.isSelected()) {
+				MP3Player.enableSystemSounds();
+			}
+			else {
+				MP3Player.disableSystemSounds();
+			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemQuit)) {
 			windowClosing(null);
@@ -1384,7 +1401,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @param checkBoxMenuItemKey  the key of the menu item
 	 * @param useMnemonic          a flag indicating whether to use a mnemonic or not
-	 * @return                      a check box menu item object
+	 * @return                     a check box menu item object
 	 */
 	protected final JCheckBoxMenuItem constructCheckBoxMenuItem(String checkBoxMenuItemKey, boolean useMnemonic)
 	{
@@ -1645,10 +1662,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
 		if (aboutBox != null) {
-			menuItem = constructMenuItem(kActionCommandMenuItemAbout);
-			menuItem.setActionCommand(kActionCommandMenuItemAbout);
-			menuItem.addActionListener(this);
-			menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'A',java.awt.event.InputEvent.CTRL_DOWN_MASK));
+				menuItem = constructMenuItem(kActionCommandMenuItemAbout);
+				menuItem.setActionCommand(kActionCommandMenuItemAbout);
+				menuItem.addActionListener(this);
+				menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'A',java.awt.event.InputEvent.CTRL_DOWN_MASK));
 			menu.add(menuItem);
 		}
 
@@ -1656,100 +1673,119 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		subMenu = new JMenu(I18NL10N.translate("menu.LookAndFeel"));
 		subMenu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.LookAndFeel.Mnemonic")));
 
-		buttonGroup = new ButtonGroup();
-		frbMetal = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMetalLAF));
-		frbMetal.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMetalLAF + ".Mnemonic")));
-		frbMetal.setSelected(false);
-		frbMetal.setActionCommand(kActionCommandMenuItemMetalLAF);
-		frbMetal.addActionListener(this);
-		buttonGroup.add(frbMetal);
+			buttonGroup = new ButtonGroup();
+			frbMetal = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMetalLAF));
+			frbMetal.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMetalLAF + ".Mnemonic")));
+			frbMetal.setSelected(false);
+			frbMetal.setActionCommand(kActionCommandMenuItemMetalLAF);
+			frbMetal.addActionListener(this);
+			buttonGroup.add(frbMetal);
 		subMenu.add(frbMetal);
 
-		frbNimbus = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemNimbusLAF));
-		frbNimbus.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemNimbusLAF + ".Mnemonic")));
-		frbNimbus.setSelected(false);
-		frbNimbus.setActionCommand(kActionCommandMenuItemNimbusLAF);
-		frbNimbus.addActionListener(this);
-		buttonGroup.add(frbNimbus);
+			frbNimbus = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemNimbusLAF));
+			frbNimbus.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemNimbusLAF + ".Mnemonic")));
+			frbNimbus.setSelected(false);
+			frbNimbus.setActionCommand(kActionCommandMenuItemNimbusLAF);
+			frbNimbus.addActionListener(this);
+			buttonGroup.add(frbNimbus);
 		subMenu.add(frbNimbus);
 
-		frbMotif = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMotifLAF));
-		frbMotif.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMotifLAF + ".Mnemonic")));
-		frbMotif.setSelected(false);
-		frbMotif.setActionCommand(kActionCommandMenuItemMotifLAF);
-		frbMotif.addActionListener(this);
-		buttonGroup.add(frbMotif);
+			frbMotif = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMotifLAF));
+			frbMotif.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMotifLAF + ".Mnemonic")));
+			frbMotif.setSelected(false);
+			frbMotif.setActionCommand(kActionCommandMenuItemMotifLAF);
+			frbMotif.addActionListener(this);
+			buttonGroup.add(frbMotif);
 		subMenu.add(frbMotif);
 
-		frbGTK = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemGTKLAF));
-		frbGTK.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemGTKLAF + ".Mnemonic")));
-		frbGTK.setSelected(false);
-		frbGTK.setActionCommand(kActionCommandMenuItemGTKLAF);
-		frbGTK.addActionListener(this);
-		buttonGroup.add(frbGTK);
+			frbGTK = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemGTKLAF));
+			frbGTK.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemGTKLAF + ".Mnemonic")));
+			frbGTK.setSelected(false);
+			frbGTK.setActionCommand(kActionCommandMenuItemGTKLAF);
+			frbGTK.addActionListener(this);
+			buttonGroup.add(frbGTK);
 		subMenu.add(frbGTK);
 
-		frbWindows = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemWindowsLAF));
-		frbWindows.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemWindowsLAF + ".Mnemonic")));
-		frbWindows.setSelected(false);
-		frbWindows.setActionCommand(kActionCommandMenuItemWindowsLAF);
-		frbWindows.addActionListener(this);
-		buttonGroup.add(frbWindows);
+			frbWindows = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemWindowsLAF));
+			frbWindows.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemWindowsLAF + ".Mnemonic")));
+			frbWindows.setSelected(false);
+			frbWindows.setActionCommand(kActionCommandMenuItemWindowsLAF);
+			frbWindows.addActionListener(this);
+			buttonGroup.add(frbWindows);
 		subMenu.add(frbWindows);
 
-		frbWindowsClassic = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemWindowsClassicLAF));
-		frbWindowsClassic.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemWindowsClassicLAF + ".Mnemonic")));
-		frbWindowsClassic.setSelected(false);
-		frbWindowsClassic.setActionCommand(kActionCommandMenuItemWindowsClassicLAF);
-		frbWindowsClassic.addActionListener(this);
-		buttonGroup.add(frbWindowsClassic);
+			frbWindowsClassic = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemWindowsClassicLAF));
+			frbWindowsClassic.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemWindowsClassicLAF + ".Mnemonic")));
+			frbWindowsClassic.setSelected(false);
+			frbWindowsClassic.setActionCommand(kActionCommandMenuItemWindowsClassicLAF);
+			frbWindowsClassic.addActionListener(this);
+			buttonGroup.add(frbWindowsClassic);
 		subMenu.add(frbWindowsClassic);
 
-		frbMac = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMacLAF));
-		frbMac.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMacLAF + ".Mnemonic")));
-		frbMac.setSelected(false);
-		frbMac.setActionCommand(kActionCommandMenuItemMacLAF);
-		frbMac.addActionListener(this);
-		buttonGroup.add(frbMac);
+			frbMac = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMacLAF));
+			frbMac.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMacLAF + ".Mnemonic")));
+			frbMac.setSelected(false);
+			frbMac.setActionCommand(kActionCommandMenuItemMacLAF);
+			frbMac.addActionListener(this);
+			buttonGroup.add(frbMac);
 		subMenu.add(frbMac);
 
-		frbQuaqua = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemQuaquaLAF));
-		frbQuaqua.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemQuaquaLAF + ".Mnemonic")));
-		frbQuaqua.setSelected(false);
-		frbQuaqua.setActionCommand(kActionCommandMenuItemQuaquaLAF);
-		frbQuaqua.addActionListener(this);
-		buttonGroup.add(frbQuaqua);
+			frbQuaqua = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemQuaquaLAF));
+			frbQuaqua.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemQuaquaLAF + ".Mnemonic")));
+			frbQuaqua.setSelected(false);
+			frbQuaqua.setActionCommand(kActionCommandMenuItemQuaquaLAF);
+			frbQuaqua.addActionListener(this);
+			buttonGroup.add(frbQuaqua);
 		subMenu.add(frbQuaqua);
 
 		subMenu.addSeparator();
 
-		menuItem = constructMenuItem(kActionCommandMenuItemSystemLAF);
-		menuItem.setActionCommand(kActionCommandMenuItemSystemLAF);
-		menuItem.addActionListener(this);
+			menuItem = constructMenuItem(kActionCommandMenuItemSystemLAF);
+			menuItem.setActionCommand(kActionCommandMenuItemSystemLAF);
+			menuItem.addActionListener(this);
 		subMenu.add(menuItem);
 
 		if (SystemTray.isSupported()) {
 			subMenu.addSeparator();
 
-			JCheckBoxMenuItem checkBoxMenuItem = constructCheckBoxMenuItem(kActionCommandMenuItemMinimiseToSystemTray);
-			checkBoxMenuItem.setState(true);
-			checkBoxMenuItem.setActionCommand(kActionCommandMenuItemMinimiseToSystemTray);
-			checkBoxMenuItem.addActionListener(this);
-			if (!setupMinimiseToSystemTrayAllowed()) {
-				checkBoxMenuItem.setState(false);
-				checkBoxMenuItem.setEnabled(false);
-			}
+				JCheckBoxMenuItem checkBoxMenuItem = constructCheckBoxMenuItem(kActionCommandMenuItemMinimiseToSystemTray);
+				checkBoxMenuItem.setState(true);
+				checkBoxMenuItem.setActionCommand(kActionCommandMenuItemMinimiseToSystemTray);
+				checkBoxMenuItem.addActionListener(this);
+				if (!setupMinimiseToSystemTrayAllowed()) {
+					checkBoxMenuItem.setState(false);
+					checkBoxMenuItem.setEnabled(false);
+				}
 			subMenu.add(checkBoxMenuItem);
+		}
+
+		if (setupIsGUIResizable()) {
+			if (!SystemTray.isSupported()) {
+				subMenu.addSeparator();
+			}
+				fcbEnableWindowResizing = constructCheckBoxMenuItem(kActionCommandMenuItemEnableWindowResizing);
+				fcbEnableWindowResizing.setState(true);
+				fcbEnableWindowResizing.setActionCommand(kActionCommandMenuItemEnableWindowResizing);
+				fcbEnableWindowResizing.addActionListener(this);
+			subMenu.add(fcbEnableWindowResizing);
 		}
 
 		menu.add(subMenu);
 
 		menu.addSeparator();
 
-		menuItem = constructMenuItem(kActionCommandMenuItemQuit);
-		menuItem.setActionCommand(kActionCommandMenuItemQuit);
-		menuItem.addActionListener(this);
-		menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'Q',java.awt.event.InputEvent.CTRL_DOWN_MASK));
+			fcbSystemSoundsEnabled = constructCheckBoxMenuItem(kActionCommandMenuItemSystemSoundsEnabled);
+			fcbSystemSoundsEnabled.setState(fSystemSoundsEnabled);
+			fcbSystemSoundsEnabled.setActionCommand(kActionCommandMenuItemSystemSoundsEnabled);
+			fcbSystemSoundsEnabled.addActionListener(this);
+		menu.add(fcbSystemSoundsEnabled);
+
+		menu.addSeparator();
+
+			menuItem = constructMenuItem(kActionCommandMenuItemQuit);
+			menuItem.setActionCommand(kActionCommandMenuItemQuit);
+			menuItem.addActionListener(this);
+			menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'Q',java.awt.event.InputEvent.CTRL_DOWN_MASK));
 		menu.add(menuItem);
 
 		// if necessary, add other menus
@@ -1868,6 +1904,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 					}
 					else if (upperCaseParameter.startsWith(kParamSilent)) {
 						MP3Player.disableSystemSounds();
+						fSystemSoundsEnabled = false;
 					}
 					else if (upperCaseParameter.startsWith(kParamHelp)) {
 						kLogger.info(

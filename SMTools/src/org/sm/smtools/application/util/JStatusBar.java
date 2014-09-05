@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : JStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 15/06/2014
+// Last modified : 06/09/2014
 // Target        : Java VM (1.8)
 // -------------------------------
 
@@ -40,7 +40,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 15/06/2014
+ * @version 06/09/2014
  */
 public final class JStatusBar extends JPanel
 {
@@ -274,12 +274,25 @@ public final class JStatusBar extends JPanel
 			if (batteryLifeTimeSeconds > 0) {
 				int batteryLifeTimeHours = batteryLifeTimeSeconds / 3600;
 				int batteryLifeTimeMinutes = (batteryLifeTimeSeconds - (batteryLifeTimeHours * 3600)) / 60;
+
+				String batteryUsageTooltipText = "";
 				if (batteryLifeTimeHours > 0) {
-					fBatteryUsageLabel.setToolTipText(I18NL10N.translate("tooltip.BatteryLifeRemaining",String.valueOf(batteryLifeTimeHours),String.valueOf(batteryLifeTimeMinutes)));
+					if (batteryLifeTimeHours == 1) {
+						batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingHour");
+					}
+					else {
+						batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingHours",String.valueOf(batteryLifeTimeHours));
+					}
+					batteryUsageTooltipText += ", ";
+				}
+				if (batteryLifeTimeMinutes == 1) {
+					batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingMinute");
 				}
 				else {
-					fBatteryUsageLabel.setToolTipText(I18NL10N.translate("tooltip.BatteryLifeRemainingShort",String.valueOf(batteryLifeTimeMinutes)));
+					batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingMinutes",String.valueOf(batteryLifeTimeMinutes));
 				}
+				
+				fBatteryUsageLabel.setToolTipText(batteryUsageTooltipText);
 			}
 			else {
 				fBatteryUsageLabel.setToolTipText(null);

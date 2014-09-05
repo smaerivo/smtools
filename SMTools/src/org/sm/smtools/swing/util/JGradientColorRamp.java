@@ -1,7 +1,7 @@
 // ---------------------------------------
 // Filename      : JGradientColorRamp.java
 // Author        : Sven Maerivoet
-// Last modified : 02/01/2013
+// Last modified : 20/08/2014
 // Target        : Java VM (1.8)
 // ---------------------------------------
 
@@ -64,6 +64,9 @@ import org.sm.smtools.util.*;
  * <B>Hue/saturation/brightness (HSB):</B><BR>
  * <IMG src="doc-files/gradient-color-ramp-huesaturationbrightness.png" alt="">
  * <P>
+ * <B>Separated red/green/blue:</B><BR>
+ * <IMG src="doc-files/gradient-color-ramp-separatedredgreenblue.png" alt="">
+ * <P>
  * <B>Red:</B><BR>
  * <IMG src="doc-files/gradient-color-ramp-red.png" alt="">
  * <P>
@@ -110,7 +113,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 02/01/2013
+ * @version 20/08/2014
  */
 public final class JGradientColorRamp extends JPanel
 {
@@ -123,9 +126,10 @@ public final class JGradientColorRamp extends JPanel
 	 * The various supported colour maps.
 	 */
 	public static enum EColorMap
-		{kGrayScale, kJet, kCopper, kBone, kGreenRedDiverging, kHot,
+		{kGrayScale,kJet, kCopper, kBone, kGreenRedDiverging, kHot,
 		 kDiscontinuousBlueWhiteGreen, kDiscontinuousDarkRedYellow,
 		 kBlackAndWhite, kHueSaturationBrightness,
+		 kSeparatedRGB,
 		 kRed, kGreen, kBlue, kYellow, kCyan, kMagenta,
 		 kCustom};
 
@@ -543,6 +547,26 @@ public final class JGradientColorRamp extends JPanel
 	}
 
 	/**
+	 * Converts the current colour map to a specified number of components.
+	 *
+	 * @param nrOfComponents  the specified number of components
+	 * @return                the converted colour map
+	 */
+	public TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent> convertToComponents(int nrOfComponents)
+	{
+		TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent> colorMapComponents = new TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent>();
+
+		for (int componentNr = 0; componentNr < nrOfComponents; ++componentNr) {
+			double u = (double) componentNr / ((double) nrOfComponents - 1.0);
+			
+			CustomColorMapComponent colorMapComponent = new CustomColorMapComponent(u,interpolate(u));
+			colorMapComponents.put(componentNr,colorMapComponent);
+		}
+
+		return colorMapComponents;
+	}
+
+	/**
 	 * Derives a <CODE>Color</CODE> that is linearly interpolated across a spectrum.
 	 * <P>
 	 * Note that the value of <CODE>u</CODE> is clipped in the interval [0,1].
@@ -694,6 +718,56 @@ public final class JGradientColorRamp extends JPanel
 		else if (fColorMap == EColorMap.kHueSaturationBrightness) {
 			return Color.getHSBColor(t,1.0f,1.0f);
 		}
+		else if (fColorMap == EColorMap.kSeparatedRGB) {
+			if (t < 0.125f) {
+				// white to black
+				red = 1.0f - (8.0f * t);
+				green = 1.0f - (8.0f * t);
+				blue = 1.0f - (8.0f * t);
+			}
+			else if (t < 0.250f) {
+				// black to red
+				red = 8.0f * (t - 0.125f);
+				green = 0.0f;
+				blue = 0.0f;
+			}
+			else if (t < 0.375f) {
+				// red to black
+				red = 1.0f - (8.0f * (t - 0.250f));
+				green = 0.0f;
+				blue = 0.0f;
+			}
+			else if (t < 0.500f) {
+				// black to green
+				red = 0.0f;
+				green = 8.0f * (t - 0.375f);
+				blue = 0.0f;
+			}
+			else if (t < 0.625f) {
+				// green to black
+				red = 0.0f;
+				green = 1.0f - (8.0f * (t - 0.500f));
+				blue = 0.0f;
+			}
+			else if (t < 0.750f) {
+				// black to blue
+				red = 0.0f;
+				green = 0.0f;
+				blue = 8.0f * (t - 0.625f);
+			}
+			else if (t < 0.875f) {
+				// blue to black
+				red = 0.0f;
+				green = 0.0f;
+				blue = 1.0f - (8.0f * (t - 0.750f));
+			}
+			else if (t <= 1.0f) {
+				// black to white
+				red = 8.0f * (t - 0.875f);
+				green = 8.0f * (t - 0.875f);
+				blue = 8.0f * (t - 0.875f);
+			}
+		}
 		else if (fColorMap == EColorMap.kRed) {
 			red = t;
 		}
@@ -782,3 +856,14 @@ public final class JGradientColorRamp extends JPanel
 		}
 	}
 }
+
+/*
+	CODE IN JStandardGUIApplication::setupContentPane()
+	===================================================
+
+	import org.sm.smtools.swing.util.*;
+
+		JGradientColorRamp gcr = new JGradientColorRamp(JGradientColorRamp.EColorMap.kSeparatedRGB);
+		gcr.setPreferredSize(new Dimension(1200,600));
+		contentPane.add(gcr);
+*/

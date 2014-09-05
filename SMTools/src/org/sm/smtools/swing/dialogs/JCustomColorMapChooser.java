@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 04/05/2014
+// Last modified : 20/08/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -43,7 +43,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/05/2014
+ * @version 20/08/2014
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
@@ -407,7 +407,6 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 		mainPanel.add(lowerPanel);
 
 		mainPanel.add(Box.createVerticalStrut(10));
-//		adjustControls();
 	}
 
 	/*******************

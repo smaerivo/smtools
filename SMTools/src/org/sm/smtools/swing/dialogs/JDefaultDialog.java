@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : JDefaultDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 23/07/2014
+// Last modified : 05/09/2014
 // Target        : Java VM (1.8)
 // -----------------------------------
 
@@ -92,9 +92,11 @@ import org.sm.smtools.util.*;
  * If the dialog box's activation was postponed (using the {@link JDefaultDialog#JDefaultDialog(JFrame,EModality,ESize,EType,Object[],EActivation)}
  * constructor) for example for storing in the GUI's component cache, it should be reactivated using the {@link JDefaultDialog#activate} method. Any initialisation that needs to occur
  * during the reactivation process, can be performed by overriding the {@link JDefaultDialog#initialiseDuringActivation} method.
+ * <P>
+ * Note that there are two callback functions provided for when the ok- and cancel-buttons are selected: {@link JDefaultDialog#okSelected()} and {@link JDefaultDialog#cancelSelected()}.
  *
  * @author  Sven Maerivoet
- * @version 23/07/2014
+ * @version 05/09/2014
  */
 public class JDefaultDialog extends JDialog implements ActionListener, WindowListener
 {
@@ -242,11 +244,13 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 		String command = e.getActionCommand();
 
 		if (command.equalsIgnoreCase(I18NL10N.translate("button.Ok"))) {
+			okSelected();
 			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
 			fCancelled = false;
 			windowClosing(null);
 		}
 		else if (command.equalsIgnoreCase(I18NL10N.translate("button.Cancel"))) {
+			cancelSelected();
 			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
 			windowClosing(null);
 		}
@@ -470,28 +474,17 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	}
 
 	/**
-	 * Returns a location that guarantees that a dialog is fully shown within the screen's boundaries.
-	 *
-	 * @param requestedLocation  the requested location to position the dialog
-	 * @param size               the size of the dialog
-	 * @return                   a location that guarantees that a dialog is fully shown within the screen's boundaries
+	 * A callback function for when the ok-button is selected.
 	 */
-	public static Point getOnScreenLocation(Point requestedLocation, Dimension size)
+	protected void okSelected()
 	{
-		// leave a certain margin with respect to the screen's edges
-		final int kMargin = 50;
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	}
 
-		Point location = new Point(requestedLocation);
-
-		if ((location.x + size.width) > (screenSize.width - kMargin)) {
-			location.x = screenSize.width - kMargin - size.width;
-		}
-		if ((location.y + size.height) > (screenSize.height - kMargin)) {
-			location.y = screenSize.height - kMargin - size.height;
-		}
-
-		return location;
+	/**
+	 * A callback function for when the cancel-button is selected.
+	 */
+	protected void cancelSelected()
+	{
 	}
 
 	/*******************
@@ -566,3 +559,29 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 		setLocation(xPos,yPos);
 	}
 }
+
+/**
+ * Returns a location that guarantees that a dialog is fully shown within the screen's boundaries.
+ *
+ * @param requestedLocation  the requested location to position the dialog
+ * @param size               the size of the dialog
+ * @return                   a location that guarantees that a dialog is fully shown within the screen's boundaries
+ * /
+private static Point getOnScreenLocation(Point requestedLocation, Dimension size)
+{
+	// leave a certain margin with respect to the screen's edges
+	final int kMargin = 50;
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+	Point location = new Point(requestedLocation);
+
+	if ((location.x + size.width) > (screenSize.width - kMargin)) {
+		location.x = screenSize.width - kMargin - size.width;
+	}
+	if ((location.y + size.height) > (screenSize.height - kMargin)) {
+		location.y = screenSize.height - kMargin - size.height;
+	}
+
+	return location;
+}
+*/

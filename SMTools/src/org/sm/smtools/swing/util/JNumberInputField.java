@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : JNumberInputField.java
 // Author        : Sven Maerivoet
-// Last modified : 15/07/2014
+// Last modified : 05/09/2014
 // Target        : Java VM (1.8)
 // --------------------------------------
 
@@ -29,9 +29,10 @@ import javax.swing.*;
 /**
  * The <CODE>JNumberInputField</CODE> class provides a input textfield for <CODE>int</CODE> and <CODE>double</CODE> datatypes.
  * <P>
+ * Validation of the input is done via a {@link ANumberFilter} class and the {@link JNumberInputField#setNumberFilter(ANumberFilter)} method.
  *
  * @author  Sven Maerivoet
- * @version 15/07/2014
+ * @version 05/09/2014
  */
 public class JNumberInputField extends JTextField implements ActionListener
 {
@@ -43,9 +44,8 @@ public class JNumberInputField extends JTextField implements ActionListener
 	private int fNumberType;
 	private int fIntegerValue;
 	private double fDoubleValue;
-	private int fNrOfFPDecimals;
-	private double fRoundingFactor;
 	private boolean fTransferFocusAfterEntering;
+	private ANumberFilter fNumberFilter;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -57,7 +57,7 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 * @param integerValue                the initial <CODE>int</CODE> value in the input textfield
 	 * @param transferFocusAfterEntering  a <CODE>boolean</CODE> to indicate whether or not the focus should be transferred
 	 *                                    to the next component in the GUI after pressing the &lt;ENTER&gt; key in the textfield
-	 * @see                               JNumberInputField#JNumberInputField(double,int,boolean)
+	 * @see                               JNumberInputField#JNumberInputField(double,boolean)
 	 */
 	public JNumberInputField(int integerValue, boolean transferFocusAfterEntering)
 	{
@@ -74,22 +74,15 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 * Constructs a <CODE>JNumberInputField</CODE> for editing a <CODE>double</CODE> value.
 	 *
 	 * @param doubleValue                 the initial <CODE>double</CODE> value in the input textfield
-	 * @param nrOfFPDecimals              the number of floating point decimals (base 10) to use in the input textfield
 	 * @param transferFocusAfterEntering  a <CODE>boolean</CODE> to indicate whether or not the focus should be transferred
 	 *                                    to the next component in the GUI after pressing the &lt;ENTER&gt; key in the textfield
 	 * @see                               JNumberInputField#JNumberInputField(int,boolean)
 	 */
-	public JNumberInputField(double doubleValue, int nrOfFPDecimals, boolean transferFocusAfterEntering)
+	public JNumberInputField(double doubleValue, boolean transferFocusAfterEntering)
 	{
 		fNumberType = kDouble;
 		fDoubleValue = doubleValue;
-		fNrOfFPDecimals = nrOfFPDecimals;
 		fTransferFocusAfterEntering = transferFocusAfterEntering;
-
-		fRoundingFactor = 1.0;
-		for (int i = 1; i < (fNrOfFPDecimals + 1); ++i) {
-			fRoundingFactor *= 10.0;
-		}
 
 		setHorizontalAlignment(JTextField.RIGHT);
 		update();
@@ -100,15 +93,22 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 * PUBLIC METHODS *
 	 ******************/
 
+	/**
+	 * Sets the filter to use for validation of the input.
+	 *
+	 * @param numberFilter a reference to the filter to use for validation of the input
+	 */
+	public void setNumberFilter(ANumberFilter numberFilter)
+	{
+		fNumberFilter = numberFilter;
+	}
+
 	// the action-listener
 	/**
 	 * The <CODE>JNumberInputField</CODE>'s <B>action listener</B>.
 	 * <P>
 	 * Note that when an invalid number is entered in the textfield, this method automatically
 	 * reverts to the textfield's previous value.
-	 * <P>
-	 * For <CODE>double</CODE> datatypes, the entered value is automatically rounded according
-	 * to the specified number of floating point decimals (base 10).
 	 * <P>
 	 * If the &lt;ENTER&gt; key is pressed in the textfield, the focus may transfer to the next
 	 * GUI component (if this behaviour is specified).
@@ -145,8 +145,7 @@ public class JNumberInputField extends JTextField implements ActionListener
 		}
 		else if (fNumberType == kDouble) {
 			if (validateDouble(dummyDouble)) {
-				// round the last digits after the decimal point
-				fDoubleValue = Math.round(dummyDouble * fRoundingFactor) / fRoundingFactor;
+				fDoubleValue = dummyDouble;
 			}
 		}
 
@@ -230,45 +229,35 @@ public class JNumberInputField extends JTextField implements ActionListener
 		return fDoubleValue;
 	}
 
-	/*********************
-	 * PROTECTED METHODS *
-	 *********************/
+	/*******************
+	 * PRIVATE METHODS *
+	 *******************/
 
 	/**
-	 * Checks whether or not an <CODE>int</CODE> value is valid.
-	 * <P>
-	 * A subclass can override this method, thereby specifying its own acceptable
-	 * range for the <CODE>int</CODE> value. For example, to accept only strictly
-	 * positive numbers, the following code can be used:
-	 * <P>
-	 * <CODE>
-	 *   return (i &gt; 0);
-	 * </CODE>
-	 *
-	 * @param i  the <CODE>int</CODE> value to check
-	 * @return   <CODE>true</CODE> when the specified <CODE>int</CODE> value is accepted, <CODE>false</CODE> otherwise
+	 * @param i  -
+	 * @return   -
 	 */
-	protected boolean validateInteger(int i)
+	private boolean validateInteger(int i)
 	{
-		return true;
+		if (fNumberFilter == null) {
+			return true;
+		}
+		else {
+			return fNumberFilter.validateInteger(i);
+		}
 	}
 
 	/**
-	 * Checks whether or not a <CODE>double</CODE> value is valid.
-	 * <P>
-	 * A subclass can override this method, thereby specifying its own acceptable
-	 * range for the <CODE>double</CODE> value. For example, to accept only strictly
-	 * positive numbers, the following code can be used:
-	 * <P>
-	 * <CODE>
-	 *   return (d &gt; 0.0);
-	 * </CODE>
-	 *
-	 * @param d  the <CODE>double</CODE> value to check
-	 * @return   <CODE>true</CODE> when the specified <CODE>double</CODE> value is accepted, <CODE>false</CODE> otherwise
+	 * @param d  -
+	 * @return   -
 	 */
-	protected boolean validateDouble(double d)
+	private boolean validateDouble(double d)
 	{
-		return true;
+		if (fNumberFilter == null) {
+			return true;
+		}
+		else {
+			return fNumberFilter.validateDouble(d);
+		}
 	}
 }
