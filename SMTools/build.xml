@@ -48,6 +48,13 @@
 		</jar>
 	</target>
 
+	<target name="zip">
+		<delete file="application-resources.zip" />
+		<zip destfile="application-resources.zip">
+			<fileset dir="application-resources" />
+		</zip>
+	</target>
+
 	<target name="javadoc" depends="initialise">
 		<delete dir="${docDir}" />
 		<mkdir dir="${docDir}" />
@@ -81,13 +88,6 @@
 	    	<pathelement location="D:/Eclipse Workspace/Software Development/BigDecimalMath/bigdecimalmath.jar" />
 		   </classpath>
 		</javadoc>
-	</target>
-
-	<target name="zip">
-		<delete file="application-resources.zip" />
-		<zip destfile="application-resources.zip">
-			<fileset dir="application-resources" />
-		</zip>
 	</target>
 
 	<target name="build">

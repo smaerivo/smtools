@@ -118,7 +118,8 @@ public final class I18NL10N {
 	private static final String kLocaleFilenameExtension = ".properties";
 
 	// internal datastructures
-	private static Properties fTranslationTable;
+//	private 
+	public static Properties fTranslationTable;
 
 	/*************************
 	 * STATIC INITIALISATION *

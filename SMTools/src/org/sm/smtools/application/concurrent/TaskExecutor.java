@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : TaskExecutor.java
 // Author        : Sven Maerivoet
-// Last modified : 13/07/2014
+// Last modified : 19/09/2014
 // Target        : Java VM (1.8)
 // ---------------------------------
 
@@ -37,14 +37,14 @@ import org.sm.smtools.application.util.*;
  * Tasks are added via the {@link TaskExecutor#addTask(ATask)} or {@link TaskExecutor#addTasks(ArrayList)} methods;
  * results can be collected via the {@link TaskExecutor#finishTasks()} method.
  * <P>
- * Once all tasks are defined, a user calls the <CODE>TaskExecutor.execute()</CODE> method; the class can only be used once.
+ * Once all tasks are defined, a user calls the <CODE>TaskExecutor.execute()</CODE> method; <B>the class can only be used once</B>.
  * The current state of execution can be queried via the {@link TaskExecutor#isBusy()} method. Threading is executed with
  * a fixed thread pool based on the number of available cores.
  * <P>
  * Progress of the tasks' executions is shown via an optional progress update glasspane.
  * 
  * @author  Sven Maerivoet
- * @version 13/07/2014
+ * @version 19/09/2014
  * @see     ATask
  */
 public class TaskExecutor extends SwingWorker<Void,Void>

@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : JDefaultDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 05/09/2014
+// Last modified : 20/09/2014
 // Target        : Java VM (1.8)
 // -----------------------------------
 
@@ -96,7 +96,7 @@ import org.sm.smtools.util.*;
  * Note that there are two callback functions provided for when the ok- and cancel-buttons are selected: {@link JDefaultDialog#okSelected()} and {@link JDefaultDialog#cancelSelected()}.
  *
  * @author  Sven Maerivoet
- * @version 05/09/2014
+ * @version 20/09/2014
  */
 public class JDefaultDialog extends JDialog implements ActionListener, WindowListener
 {
@@ -465,6 +465,13 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	}
 
 	/**
+	 * Updates the main GUI controls.
+	 */
+	protected void updateGUI()
+	{
+	}
+
+	/**
 	 * Allows custom initialisation to be performed during the dialog box's reactivation.
 	 *
 	 * @see JDefaultDialog#activate
@@ -506,6 +513,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 		// construct the main panel
 		JPanel mainPanel = new JPanel();
 		setupMainPanel(mainPanel);
+		updateGUI();
 		contentPane.add(mainPanel,BorderLayout.CENTER);
 
 		if ((fType == EType.kOk) || (fType == EType.kOkCancel)) {
