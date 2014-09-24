@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 23/07/2014
+// Last modified : 24/09/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -48,7 +48,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 23/07/2014
+ * @version 24/09/2014
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -79,8 +79,6 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 	// internal datastructures
 	private JLabel fStatusBarCustomLabel;
-	private int fDateChooserID;
-	private int fTimeChooserID;
 	private JProgressUpdateGlassPane fProgressUpdateGlassPane;
 	private MyTaskExecutor fTaskExecutor;
 	private int fVisualisationType;
@@ -135,11 +133,14 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		if (command.equalsIgnoreCase(kActionCommandMenuItemDateChooser)) {
 			fStatusBarCustomLabel.setText("64-bit FP");
 			getStatusBar().setStatusText(I18NL10N.translate("text.ChooseDateDialogTitle"));
-			JDateChooser dateChooser = (JDateChooser) getGUIComponentCache().getComponent(fDateChooserID);
-			dateChooser.setDefaultDate(new DateStamp(11,4,1976));
-			dateChooser.activate();
+			JDateChooser dateChooser = new JDateChooser(
+				this,
+				I18NL10N.translate("text.ChooseDateDialogTitle"),
+				JDefaultDialog.EType.kOkCancel,
+				new DateStamp(11,4,1976),
+				JDateChooser.EUseDefaultDate.kEnabled,
+				JDefaultDialog.EActivation.kImmediately);
 			getStatusBar().clearStatusText();
-
 			if (dateChooser.isCancelled()) {
 				JWarningDialog.warn(this,I18NL10N.translate("text.ChoiceCancelled"));
 			}
@@ -150,10 +151,16 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTimeChooser)) {
 			fStatusBarCustomLabel.setText("128-bit FP");
 			getStatusBar().setStatusText(I18NL10N.translate("text.ChooseTimeDialogTitle"));
-			JTimeChooser timeChooser = (JTimeChooser) getGUIComponentCache().getComponent(fTimeChooserID);
-			timeChooser.setDefaultTime(new TimeStamp(12,25,20,10));
-			timeChooser.activate();
-
+			JTimeChooser timeChooser = new JTimeChooser(
+				this,
+				I18NL10N.translate("text.ChooseTimeDialogTitle"),
+				JDefaultDialog.EType.kOkCancel,
+				new TimeStamp(12,25,20,10),
+				JTimeChooser.EType.kHourMinuteSecondMillisecond,
+				JTimeChooser.EClockDigits.kUse12Hour,
+				JTimeChooser.EUpdating.kDiscrete,
+				JTimeChooser.EDigitalClock.kShown,
+				JDefaultDialog.EActivation.kImmediately);
 			getStatusBar().clearStatusText();
 			if (timeChooser.isCancelled()) {
 				JWarningDialog.warn(this,I18NL10N.translate("text.ChoiceCancelled"));
@@ -262,30 +269,6 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	protected void initialise(Object[] parameters)
 	{
 		getSplashScreen().setStatusMessageWaitTime(kSplashScreenStatusMessageWaitTime);
-
-		getSplashScreen().setStatusMessage(I18NL10N.translate("text.CachingCustomGUIComponents"));
-
-		// cache custom GUI components
-		JDateChooser dateChooser = new JDateChooser(
-			this,
-			I18NL10N.translate("text.ChooseDateDialogTitle"),
-			JDefaultDialog.EType.kOkCancel,
-			new DateStamp(),
-			JDateChooser.EUseDefaultDate.kEnabled,
-			JDefaultDialog.EActivation.kPostponed);
-		fDateChooserID = getGUIComponentCache().addComponent(dateChooser);
-
-		JTimeChooser timeChooser = new JTimeChooser(
-			this,
-			I18NL10N.translate("text.ChooseTimeDialogTitle"),
-			JDefaultDialog.EType.kOkCancel,
-			new TimeStamp(),
-			JTimeChooser.EType.kHourMinuteSecondMillisecond,
-			JTimeChooser.EClockDigits.kUse12Hour,
-			JTimeChooser.EUpdating.kDiscrete,
-			JTimeChooser.EDigitalClock.kShown,
-			JDefaultDialog.EActivation.kPostponed);
-		fTimeChooserID = getGUIComponentCache().addComponent(timeChooser);
 	}
 
 	/**

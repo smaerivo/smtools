@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 03/09/2014
+// Last modified : 24/09/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -136,7 +136,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 03/09/2014
+ * @version 24/09/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -288,8 +288,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private String fLocale;
 	private JSplashScreen fSplashScreen;
 	private Image fIcon;
-	private JGUIComponentCache fGUIComponentCache;
-	private int fAboutBoxID;
 	private boolean fMinimiseToSystemTray;
 	private TrayIcon fTrayIcon;
 	private JPanel fGlassPane;
@@ -323,7 +321,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *   <LI>The system's locale {@link I18NL10N} database is loaded.</LI>
 	 *   <LI>The application's {@link JARResources} and locale {@link I18NL10N} database are loaded (if they are present).</LI>
 	 *   <LI>The global system {@link Registry} is read from file.</LI>
-	 *   <LI>The GUI's component cache is initialised (see {@link JGUIComponentCache}).</LI>
 	 *   <LI>The look-and-feel of the operating system is used by default.</LI>
 	 *   <LI>A optional splash screen is shown (see {@link JStandardGUIApplication#setupSplashScreenContent()} and
 	 *       {@link JStandardGUIApplication#setupSplashScreenSound()}).</LI>
@@ -460,10 +457,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			}
 		}
 
-		// initialise GUI component cache
-		kLogger.info(I18NL10N.translate("text.InitialiseGUIComponentCache"));
-		fGUIComponentCache = new JGUIComponentCache();
-
 		// make the contents of windows dynamic (e.g., resizing background images, ...)
 		if (setupIsGUIRepaintedWhenResizing() && ((boolean) Toolkit.getDefaultToolkit().getDesktopProperty("awt.dynamicLayoutSupported"))) {
 			Toolkit.getDefaultToolkit().setDynamicLayout(true);
@@ -488,12 +481,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		initialise(parameters);
 
 		kLogger.info(I18NL10N.translate("text.CreatingGUIComponents"));
-
-		// add about box to the GUI component cache
-		getSplashScreen().setStatusMessage(I18NL10N.translate("text.CachingAboutBox"));
-		JDefaultDialog aboutBox = setupAboutBox();
-		fAboutBoxID = fGUIComponentCache.addComponent(aboutBox);
-
 		getSplashScreen().setStatusMessage(I18NL10N.translate("text.ConstructingGUI"));
 
 		// load the application's icon
@@ -613,11 +600,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		// check whether or not minimising to the system tray is supported
 		fMinimiseToSystemTray = (SystemTray.isSupported() && setupMinimiseToSystemTrayAllowed());
 
-		// show the aboutbox
-		aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
-
 		kLogger.info(I18NL10N.translate("text.ApplicationReady"));
 
+		// show the aboutbox
+		JDefaultDialog aboutBox = setupAboutBox();
 		if ((!DevelopMode.isActivated()) && (aboutBox != null)) {
 			aboutBox.activate();
 		}
@@ -659,9 +645,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemAbout)) {
-
-			JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
-
+			JDefaultDialog aboutBox = setupAboutBox();
 			if (aboutBox != null) {
 				aboutBox.activate();
 			}
@@ -1258,17 +1242,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * Returns a handle to the GUI's internal component cache.
-	 *
-	 * @return a handle to the GUI's internal component cache
-	 * @see    org.sm.smtools.application.util.JGUIComponentCache
-	 */
-	protected final JGUIComponentCache getGUIComponentCache()
-	{
-		return fGUIComponentCache;
-	}
-
-	/**
 	 * Sets up the GUI's content pane.
 	 * <P>
 	 * A derived subclass typically overrides this method. The subclass can
@@ -1555,7 +1528,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 				MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSChangeLookAndFeel,MP3Player.EPlaying.kBlocked);
 			}
 			SwingUtilities.updateComponentTreeUI(this);
-			fGUIComponentCache.updateComponentTreeUI();
 			repaint();
 			String message = I18NL10N.translate("text.GUILookAndFeelAdjusted",fCurrentLAF);
 			kLogger.info(message);
@@ -1660,7 +1632,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		menu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.General.Mnemonic")));
 		menuBar.add(menu);
 
-		JDefaultDialog aboutBox = (JDefaultDialog) fGUIComponentCache.getComponent(fAboutBoxID);
+		JAboutBox aboutBox = setupAboutBox();
 		if (aboutBox != null) {
 				menuItem = constructMenuItem(kActionCommandMenuItemAbout);
 				menuItem.setActionCommand(kActionCommandMenuItemAbout);
