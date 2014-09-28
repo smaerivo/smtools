@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 23/09/2014
+// Last modified : 28/09/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -43,7 +43,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 23/09/2014
+ * @version 28/09/2014
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
@@ -128,7 +128,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandLoadCustomColorMap)) {
-			JFileChooser fileChooser = new JFileChooser();
+			JFileChooser fileChooser = new JFileChooser(".");
 			fileChooser.setDialogTitle(I18NL10N.translate("text.CustomColorMap.LoadTitle"));
 			fileChooser.setFileFilter(new JFileFilter("CSV",I18NL10N.translate("text.File.CSVDescription")));
 			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
@@ -181,7 +181,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandSaveCustomColorMap)) {
-			JFileChooser fileChooser = new JFileChooser();
+			JFileChooser fileChooser = new JFileChooser(".");
 			fileChooser.setDialogTitle(I18NL10N.translate("text.CustomColorMap.SaveTitle"));
 			fileChooser.setFileFilter(new JFileFilter("CSV",I18NL10N.translate("text.File.CSVDescription")));
 			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
