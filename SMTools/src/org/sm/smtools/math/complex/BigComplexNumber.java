@@ -1,7 +1,7 @@
 // -------------------------------------
 // Filename      : BigComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 22/07/2014
+// Last modified : 01/10/2014
 // Target        : Java VM (1.8)
 // -------------------------------------
 
@@ -36,7 +36,7 @@ import org.nevec.rjm.*;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 22/07/2014
+ * @version 01/10/2014
  */
 public final class BigComplexNumber extends AComplexNumber<BigDecimal>
 {
@@ -178,6 +178,26 @@ public final class BigComplexNumber extends AComplexNumber<BigDecimal>
 	}
 
 	/**
+	 * Returns whether or not this complex number is only real.
+	 * 
+	 * @return whether or not this complex number is only real
+	 */
+	public boolean isReal()
+	{
+		return (fImaginaryPart.compareTo(kBD0) >= 0);
+	}
+
+	/**
+	 * Returns whether or not this complex number is only imaginary.
+	 * 
+	 * @return whether or not this complex number is only imaginary
+	 */
+	public boolean isImaginary()
+	{
+		return (fRealPart.compareTo(kBD0) >= 0);
+	}
+
+	/**
 	 * Returns the negative of this complex number.
 	 *
 	 * @return the negative of this complex number
@@ -230,6 +250,24 @@ public final class BigComplexNumber extends AComplexNumber<BigDecimal>
 		return (new BigComplexNumber(
 			(fRealPart.multiply(c.getRealPart())).subtract(fImaginaryPart.multiply(c.getImaginaryPart())),
 			(fImaginaryPart.multiply(c.getRealPart())).add(fRealPart.multiply(c.getImaginaryPart()))));
+	}
+
+	/**
+	 * Returns the multiplicative inverse and returns a reference to the result.
+	 *
+	 * @return a reference to the multiplicative inverse
+	 */
+	@Override
+	public BigComplexNumber inverse()
+	{
+		if (fModulusSquared.equals(zero())) {
+			return (new BigComplexNumber());
+		}
+		else {
+			return (new BigComplexNumber(
+				fRealPart.divide(fModulusSquared,kDefaultMathContext).setScale(kDefaultPrecision,kDefaultRoundingMode),
+				fImaginaryPart.negate().divide(fModulusSquared,kDefaultMathContext).setScale(kDefaultPrecision,kDefaultRoundingMode)));
+		}
 	}
 
 	/**
@@ -368,6 +406,27 @@ public final class BigComplexNumber extends AComplexNumber<BigDecimal>
 		return convertPolarToComplex(
 			BigDecimalMath.pow(fModulus,nPower),
 			nPower.multiply(fArgument));
+	}
+
+	/**
+	 * Exponentiates this complex number to a specified complex power and returns a reference to the result.
+	 *
+	 * @param n  the complex power for the exponentiation
+	 * @return   a reference to this exponentiated complex number 
+	 */
+	@Override
+	public BigComplexNumber pow(AComplexNumber<BigDecimal> n)
+	{
+		BigComplexNumber result = null;
+		if (fModulus.equals(zero())) {
+			final double kEpsilon = 1E-100;
+			result = (new BigComplexNumber(new BigDecimal(kEpsilon),new BigDecimal(kEpsilon))).ln().multiply(n).exp();
+		}
+		else {
+			result = ln().multiply(n).exp();
+		}
+
+		return result;
 	}
 
 	/**

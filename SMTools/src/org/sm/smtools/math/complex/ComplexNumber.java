@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : ComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 22/07/2014
+// Last modified : 30/09/2014
 // Target        : Java VM (1.8)
 // ----------------------------------
 
@@ -23,8 +23,6 @@
 
 package org.sm.smtools.math.complex;
 
-import org.sm.smtools.math.MathTools;
-
 /**
  * The <CODE>ComplexNumber</CODE> class provides mathematical operations on complex numbers.
  * <P>
@@ -33,7 +31,7 @@ import org.sm.smtools.math.MathTools;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 22/07/2014
+ * @version 30/09/2014
  */
 public final class ComplexNumber extends AComplexNumber<Double>
 {
@@ -78,7 +76,7 @@ public final class ComplexNumber extends AComplexNumber<Double>
 		fImaginaryPart = imaginaryPart;
 		fModulusSquared = (realPart * realPart) + (imaginaryPart * imaginaryPart);
 		fModulus = Math.sqrt(fModulusSquared);
-		fArgument = MathTools.atan(fRealPart,fImaginaryPart);
+		fArgument = Math.atan2(fImaginaryPart,fRealPart);
 	}
 
 	/**
@@ -115,6 +113,26 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	public Double getImaginaryPart()
 	{
 		return fImaginaryPart;
+	}
+
+	/**
+	 * Returns whether or not this complex number is only real.
+	 * 
+	 * @return whether or not this complex number is only real
+	 */
+	public boolean isReal()
+	{
+		return (fImaginaryPart == 0.0);
+	}
+
+	/**
+	 * Returns whether or not this complex number is only imaginary.
+	 * 
+	 * @return whether or not this complex number is only imaginary
+	 */
+	public boolean isImaginary()
+	{
+		return (fRealPart == 0.0);
 	}
 
 	/**
@@ -170,6 +188,24 @@ public final class ComplexNumber extends AComplexNumber<Double>
 		return (new ComplexNumber(
 			(fRealPart * c.getRealPart()) - (fImaginaryPart * c.getImaginaryPart()),
 			(fImaginaryPart * c.getRealPart()) + (fRealPart * c.getImaginaryPart())));
+	}
+
+	/**
+	 * Returns the multiplicative inverse and returns a reference to the result.
+	 *
+	 * @return a reference to the multiplicative inverse
+	 */
+	@Override
+	public ComplexNumber inverse()
+	{
+		if (fModulusSquared == 0.0) {
+			return (new ComplexNumber());
+		}
+		else {
+			return (new ComplexNumber(
+				fRealPart / fModulusSquared,
+				-fImaginaryPart / fModulusSquared));
+		}
 	}
 
 	/**
@@ -292,17 +328,43 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	}
 
 	/**
-	 * Exponentiates this complex number to a specified power and returns a reference to the result.
+	 * Exponentiates this complex number to a specified real power and returns a reference to the result.
+	 * <P>
+	 * If the modulus is 0, then the result is 0 + 0i.
 	 *
-	 * @param n  the power for the exponentiation
+	 * @param n  the real power for the exponentiation
 	 * @return   a reference to this exponentiated complex number 
 	 */
 	@Override
 	public ComplexNumber pow(double n)
 	{
-		return convertPolarToComplex(
-			Math.pow(fModulus,n),
-			n * fArgument);
+		if (fModulus == 0.0) {
+			return (new ComplexNumber());
+		}
+		else {
+			return convertPolarToComplex(
+				Math.pow(fModulus,n),
+				n * fArgument);
+		}
+	}
+
+	/**
+	 * Exponentiates this complex number to a specified complex power and returns a reference to the result.
+	 * <P>
+	 * If the modulus is 0, then the result is 0 + 0i.
+	 *
+	 * @param n  the complex power for the exponentiation
+	 * @return   a reference to this exponentiated complex number 
+	 */
+	@Override
+	public ComplexNumber pow(AComplexNumber<Double> n)
+	{
+		if (fModulus == 0.0) {
+			return (new ComplexNumber());
+		}
+		else {
+			return ln().multiply(n).exp();
+		}
 	}
 
 	/**

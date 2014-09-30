@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : AComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 28/05/2014
+// Last modified : 30/09/2014
 // Target        : Java VM (1.8)
 // -----------------------------------
 
@@ -27,7 +27,7 @@ package org.sm.smtools.math.complex;
  * The <CODE>AComplexNumber&lt;T&gt;</CODE> class provides the abstract base class for complex numbers.
  * 
  * @author  Sven Maerivoet
- * @version 28/05/2014
+ * @version 30/09/2014
  */
 public abstract class AComplexNumber<T> implements Comparable<AComplexNumber<T>>
 {
@@ -48,6 +48,20 @@ public abstract class AComplexNumber<T> implements Comparable<AComplexNumber<T>>
 	 * @return the imaginary part of this complex number
 	 */
 	public abstract T getImaginaryPart();
+
+	/**
+	 * Returns whether or not this complex number is only real.
+	 * 
+	 * @return whether or not this complex number is only real
+	 */
+	public abstract boolean isReal();
+
+	/**
+	 * Returns whether or not this complex number is only imaginary.
+	 * 
+	 * @return whether or not this complex number is only imaginary
+	 */
+	public abstract boolean isImaginary();
 
 	/**
 	 * Returns the negative of this complex number.
@@ -79,6 +93,13 @@ public abstract class AComplexNumber<T> implements Comparable<AComplexNumber<T>>
 	 * @return   a reference to the multiplication
 	 */
 	public abstract AComplexNumber<T> multiply(AComplexNumber<T> c);
+
+	/**
+	 * Returns the multiplicative inverse and returns a reference to the result.
+	 *
+	 * @return a reference to the multiplicative inverse
+	 */
+	public abstract AComplexNumber<T> inverse();
 
 	/**
 	 * Returns the modulus of this complex number.
@@ -155,12 +176,20 @@ public abstract class AComplexNumber<T> implements Comparable<AComplexNumber<T>>
 	public abstract AComplexNumber<T> cube();
 
 	/**
-	 * Exponentiates this complex number to a specified power and returns a reference to the result.
+	 * Exponentiates this complex number to a specified real power and returns a reference to the result.
 	 *
-	 * @param n  the power for the exponentiation
+	 * @param n  the real power for the exponentiation
 	 * @return   a reference to this exponentiated complex number 
 	 */
 	public abstract AComplexNumber<T> pow(double n);
+
+	/**
+	 * Exponentiates this complex number to a specified complex power and returns a reference to the result.
+	 *
+	 * @param n  the complex power for the exponentiation
+	 * @return   a reference to this exponentiated complex number 
+	 */
+	public abstract AComplexNumber<T> pow(AComplexNumber<T> n);
 
 	/**
 	 * Takes the natural logarithm of this complex number and returns a reference to the result.
