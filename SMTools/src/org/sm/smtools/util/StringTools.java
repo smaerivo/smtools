@@ -1,7 +1,7 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 03/06/2014
+// Last modified : 10/10/2014
 // Target        : Java VM (1.8)
 // --------------------------------
 
@@ -43,7 +43,7 @@ import org.sm.smtools.math.complex.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 03/06/2014
+ * @version 10/10/2014
  */
 public final class StringTools
 {
@@ -359,23 +359,7 @@ public final class StringTools
 	 */
 	public static String convertComplexNumberToString(ComplexNumber c, int nrOfDecimals, Locale ... locale)
 	{
-		return convertComplexNumberToString(c.getRealPart(),c.getImaginaryPart(),nrOfDecimals,locale);
-	}
-
-	/**
-	 * Creates a string representation of the specified big complex number (note that the real and imaginary parts are intermediately converted to <CODE>double</CODE>s).
-	 * <P>
-	 * The default locale to be is <CODE>Locale.UK</CODE>; this can be changed by specifying an optional <CODE>locale</CODE> parameter.
-	 * For example, to use the Belgian comma as a separator instead of the dot, specify <CODE>new Locale("be")</CODE> as a parameter.
-	 *
-	 * @param c             the big complex number to convert to a string
-	 * @param nrOfDecimals  the number of decimals in the resulting string
-	 * @param locale        an optional parameter specifying the locale to be used (default is <CODE>Local.UK</CODE>)
-	 * @return              a string representation of the specified complex number
-	 */
-	public static String convertBigComplexNumberToString(BigComplexNumber c, int nrOfDecimals, Locale ... locale)
-	{
-		return convertComplexNumberToString(c.getRealPart().doubleValue(),c.getImaginaryPart().doubleValue(),nrOfDecimals,locale);
+		return convertComplexNumberToString(c.realPart(),c.imaginaryPart(),nrOfDecimals,locale);
 	}
 
 	/**

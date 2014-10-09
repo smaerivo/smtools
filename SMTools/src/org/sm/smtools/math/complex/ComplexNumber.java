@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : ComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 30/09/2014
+// Last modified : 10/10/2014
 // Target        : Java VM (1.8)
 // ----------------------------------
 
@@ -31,16 +31,36 @@ package org.sm.smtools.math.complex;
  * <B>Note that this class is immutable and cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 30/09/2014
+ * @version 10/10/2014
  */
-public final class ComplexNumber extends AComplexNumber<Double>
+public final class ComplexNumber
 {
+	/**
+	 * The constant zero.
+	 */
+	public final static ComplexNumber kZero = new ComplexNumber();
+
+	/**
+	 * The constant one.
+	 */
+	public final static ComplexNumber kOne = new ComplexNumber(1.0);
+
+	/**
+	 * The constant e.
+	 */
+	public final static ComplexNumber kE = new ComplexNumber(Math.E);
+
+	/**
+	 * The constant i.
+	 */
+	public final static ComplexNumber kI = new ComplexNumber(0.0,1.0);
+
 	// internal datastructures
-	private final double fRealPart;
-	private final double fImaginaryPart;
-	private final double fModulusSquared;
-	private final double fModulus;
-	private final double fArgument;
+	private double fRealPart;
+	private double fImaginaryPart;
+	private double fModulusSquared;
+	private double fModulus;
+	private double fArgument;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -72,11 +92,7 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 */
 	public ComplexNumber(double realPart, double imaginaryPart)
 	{
-		fRealPart = realPart;
-		fImaginaryPart = imaginaryPart;
-		fModulusSquared = (realPart * realPart) + (imaginaryPart * imaginaryPart);
-		fModulus = Math.sqrt(fModulusSquared);
-		fArgument = Math.atan2(fImaginaryPart,fRealPart);
+		set(realPart,imaginaryPart);
 	}
 
 	/**
@@ -86,7 +102,7 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 */
 	public ComplexNumber(ComplexNumber c)
 	{
-		this(c.getRealPart(),c.getImaginaryPart());
+		this(c.realPart(),c.imaginaryPart());
 	}
 
 	/******************
@@ -94,12 +110,26 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 ******************/
 
 	/**
+	 * Explicitly sets the real and imaginary parts of the complex number.
+	 * 
+	 * @param realPart       the real part
+	 * @param imaginaryPart  the imaginaryPart
+	 */
+	public void set(double realPart, double imaginaryPart)
+	{
+		fRealPart = realPart;
+		fImaginaryPart = imaginaryPart;
+		fModulusSquared = (realPart * realPart) + (imaginaryPart * imaginaryPart);
+		fModulus = Math.sqrt(fModulusSquared);
+		fArgument = Math.atan2(fImaginaryPart,fRealPart);
+	}
+
+	/**
 	 * Returns the real part of this complex number.
 	 *
 	 * @return the real part of this complex number
 	 */
-	@Override
-	public Double getRealPart()
+	public Double realPart()
 	{
 		return fRealPart;
 	}
@@ -109,8 +139,7 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return the imaginary part of this complex number
 	 */
-	@Override
-	public Double getImaginaryPart()
+	public Double imaginaryPart()
 	{
 		return fImaginaryPart;
 	}
@@ -140,7 +169,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return the negative of this complex number
 	 */
-	@Override
 	public ComplexNumber negate()
 	{
 		return (new ComplexNumber(
@@ -154,12 +182,11 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param c  the complex number to add
 	 * @return   a reference to the result
 	 */
-	@Override
-	public ComplexNumber add(AComplexNumber<Double> c)
+	public ComplexNumber add(ComplexNumber c)
 	{
 		return (new ComplexNumber(
-			fRealPart + c.getRealPart(),
-			fImaginaryPart + c.getImaginaryPart()));
+			fRealPart + c.realPart(),
+			fImaginaryPart + c.imaginaryPart()));
 	}
 
 	/**
@@ -168,12 +195,11 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param c  the complex number to subtract
 	 * @return   a reference to the subtraction
 	 */
-	@Override
-	public ComplexNumber subtract(AComplexNumber<Double> c)
+	public ComplexNumber subtract(ComplexNumber c)
 	{
 		return (new ComplexNumber(
-			fRealPart - c.getRealPart(),
-			fImaginaryPart - c.getImaginaryPart()));
+			fRealPart - c.realPart(),
+			fImaginaryPart - c.imaginaryPart()));
 	}
 
 	/**
@@ -182,12 +208,11 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param c  the complex number to multiply with
 	 * @return   a reference to the multiplication
 	 */
-	@Override
-	public ComplexNumber multiply(AComplexNumber<Double> c)
+	public ComplexNumber multiply(ComplexNumber c)
 	{
 		return (new ComplexNumber(
-			(fRealPart * c.getRealPart()) - (fImaginaryPart * c.getImaginaryPart()),
-			(fImaginaryPart * c.getRealPart()) + (fRealPart * c.getImaginaryPart())));
+			(fRealPart * c.realPart()) - (fImaginaryPart * c.imaginaryPart()),
+			(fImaginaryPart * c.realPart()) + (fRealPart * c.imaginaryPart())));
 	}
 
 	/**
@@ -195,7 +220,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the multiplicative inverse
 	 */
-	@Override
 	public ComplexNumber inverse()
 	{
 		if (fModulusSquared == 0.0) {
@@ -213,7 +237,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return the modulus of this complex number
 	 */
-	@Override
 	public Double modulus()
 	{
 		return fModulus;
@@ -224,7 +247,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return the squared modulus of this complex number
 	 */
-	@Override
 	public Double modulusSquared()
 	{
 		return fModulusSquared;
@@ -235,7 +257,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return the argument (phase) of this complex number
 	 */
-	@Override
 	public Double argument()
 	{
 		return fArgument;
@@ -246,7 +267,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the conjugate
 	 */
-	@Override
 	public ComplexNumber conjugate()
 	{
 		return (new ComplexNumber(
@@ -259,13 +279,12 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the reciprocal
 	 */
-	@Override
 	public ComplexNumber reciprocal()
 	{
 		ComplexNumber conjugate = conjugate();
 		return (new ComplexNumber(
-			conjugate.getRealPart() / fModulusSquared,
-			conjugate.getImaginaryPart() / fModulusSquared));
+			conjugate.realPart() / fModulusSquared,
+			conjugate.imaginaryPart() / fModulusSquared));
 	}
 
 	/**
@@ -274,8 +293,7 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param c  the complex number to divide by
 	 * @return   a reference to the division
 	 */
-	@Override
-	public ComplexNumber divide(AComplexNumber<Double> c)
+	public ComplexNumber divide(ComplexNumber c)
 	{
 		double cModulusSquared = c.modulusSquared();
 		if (cModulusSquared == 0.0) {
@@ -283,8 +301,8 @@ public final class ComplexNumber extends AComplexNumber<Double>
 		}
 		else {
 			return (new ComplexNumber(
-				((fRealPart * c.getRealPart()) + (fImaginaryPart * c.getImaginaryPart())) / cModulusSquared,
-				((fImaginaryPart * c.getRealPart()) - (fRealPart * c.getImaginaryPart())) / cModulusSquared));
+				((fRealPart * c.realPart()) + (fImaginaryPart * c.imaginaryPart())) / cModulusSquared,
+				((fImaginaryPart * c.realPart()) - (fRealPart * c.imaginaryPart())) / cModulusSquared));
 		}
 	}
 
@@ -293,7 +311,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the absolute value of the square root of this complex number
 	 */
-	@Override
 	public ComplexNumber sqrt()
 	{
 		return (new ComplexNumber(
@@ -302,11 +319,20 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	}
 
 	/**
+	 * Calculates the cubic root of this complex number and returns a reference to the result.
+	 *
+	 * @return a reference to the cubic root of this complex number
+	 */
+	public final ComplexNumber cbrt()
+	{
+		return pow(1.0 / 3.0);
+	}
+
+	/**
 	 * Returns a reference to the square of this complex number.
 	 *
 	 * @return a reference to the square of this complex number
 	 */
-	@Override
 	public ComplexNumber sqr()
 	{
 		return (new ComplexNumber(
@@ -319,7 +345,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the cube of this complex number
 	 */
-	@Override
 	public ComplexNumber cube()
 	{
 		return (new ComplexNumber(
@@ -335,7 +360,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param n  the real power for the exponentiation
 	 * @return   a reference to this exponentiated complex number 
 	 */
-	@Override
 	public ComplexNumber pow(double n)
 	{
 		if (fModulus == 0.0) {
@@ -356,8 +380,7 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param n  the complex power for the exponentiation
 	 * @return   a reference to this exponentiated complex number 
 	 */
-	@Override
-	public ComplexNumber pow(AComplexNumber<Double> n)
+	public ComplexNumber pow(ComplexNumber n)
 	{
 		if (fModulus == 0.0) {
 			return (new ComplexNumber());
@@ -372,7 +395,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the natural logarithm of this complex number 
 	 */
-	@Override
 	public ComplexNumber ln()
 	{
 		return new ComplexNumber(
@@ -385,7 +407,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the base 10 logarithm of this complex number 
 	 */
-	@Override
 	public ComplexNumber log()
 	{
 		return logBase(new ComplexNumber(10.0));
@@ -397,8 +418,7 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param base  the base of the custom logarithm
 	 * @return      a reference to the custom logarithm of this complex number 
 	 */
-	@Override
-	public ComplexNumber logBase(AComplexNumber<Double> base)
+	public ComplexNumber logBase(ComplexNumber base)
 	{
 		return (ln().divide(base.ln()));
 	}
@@ -408,7 +428,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the exponential of this complex number 
 	 */
-	@Override
 	public ComplexNumber exp()
 	{
 		return (new ComplexNumber(
@@ -421,7 +440,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the cosine of this complex number 
 	 */
-	@Override
 	public ComplexNumber cos()
 	{
 		return 
@@ -434,7 +452,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 *
 	 * @return a reference to the sine of this complex number 
 	 */
-	@Override
 	public ComplexNumber sin()
 	{
 		return 
@@ -443,47 +460,43 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	}
 
 	/**
-	 * Returns 0 + 0i.
+	 * Takes the tangens (= sin/cos) of this complex number and returns a reference to the result.
 	 *
-	 * @return 0 + 0i
+	 * @return a reference to the tangens of this complex number 
 	 */
-	@Override
-	public ComplexNumber zero()
+	public final ComplexNumber tan()
 	{
-		return (new ComplexNumber());
+		return sin().divide(cos());
 	}
 
 	/**
-	 * Returns 1 + 0i.
+	 * Takes the cotangens (= cos/sin) of this complex number and returns a reference to the result.
 	 *
-	 * @return 1 + 0i
+	 * @return a reference to the cotangens of this complex number 
 	 */
-	@Override
-	public ComplexNumber one()
+	public final ComplexNumber cot()
 	{
-		return (new ComplexNumber(1.0));
+		return cos().divide(sin());
 	}
 
 	/**
-	 * Returns e + 0i.
+	 * Takes the secans (= 1/cos) of this complex number and returns a reference to the result.
 	 *
-	 * @return e + 0i
+	 * @return a reference to the secans of this complex number 
 	 */
-	@Override
-	public ComplexNumber e()
+	public final ComplexNumber sec()
 	{
-		return (new ComplexNumber(Math.E));
+		return cos().reciprocal();
 	}
-	
+
 	/**
-	 * Returns 1 + 0i.
+	 * Takes the cosecans (= 1/sin) of this complex number and returns a reference to the result.
 	 *
-	 * @return 1 + 0i
+	 * @return a reference to the cosecans of this complex number 
 	 */
-	@Override
-	public ComplexNumber i()
+	public final ComplexNumber cosec()
 	{
-		return (new ComplexNumber(0.0,1.0));
+		return sin().reciprocal();
 	}
 
 	/**
@@ -509,7 +522,6 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param argument  the argument of the specified polar form
 	 * @return          a complex number corresponding to the specified polar form
 	 */
-	@Override
 	public ComplexNumber convertPolarToComplex(Double modulus, Double argument)
 	{
 		return (new ComplexNumber(
@@ -523,8 +535,7 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param c  the complex number to compare to
 	 * @return   -1, 0, or 1 as this complex number's modulus is numerically less than, equal to, or greater than that of c
 	 */
-	@Override
-	public int compareTo(AComplexNumber<Double> c)
+	public int compareTo(ComplexNumber c)
 	{
 		double cModulus = c.modulus();
 		if (fModulus < cModulus) {
@@ -544,14 +555,45 @@ public final class ComplexNumber extends AComplexNumber<Double>
 	 * @param c  the complex number to compare to
 	 * @return   <CODE>true</CODE> if both complex numbers are equal, <CODE>false</CODE> otherwise
 	 */
-	@Override
-	public boolean equals(AComplexNumber<Double> c)
+	public boolean equals(ComplexNumber c)
 	{
-		if (c instanceof ComplexNumber) {
-			return ((fRealPart == c.getRealPart()) && (fImaginaryPart == c.getImaginaryPart()));
+		return ((fRealPart == c.realPart()) && (fImaginaryPart == c.imaginaryPart()));
+	}
+
+	/**
+	 */
+	@Override
+	public Object clone()
+	{
+		return (new ComplexNumber(fRealPart,fImaginaryPart));
+	}
+
+	/**
+	 * Forces a partial order on two complex numbers c1 and c2 such that (Re1',Im1') &le; (Re2',Im2').
+	 *
+	 * @param c1  the first complex number
+	 * @param c2  the second complex number
+	 */	
+	public static void forcePartialOrder(ComplexNumber c1, ComplexNumber c2)
+	{
+		double c1Re = c1.realPart();
+		double c1Im = c1.imaginaryPart();
+		double c2Re = c2.realPart();
+		double c2Im = c2.imaginaryPart();
+
+		if (c1Re > c2Re) {
+			double temp = c1Re;
+			c1Re = c2Re;
+			c2Re = temp;
 		}
-		else {
-			return false;
+
+		if (c1Im > c2Im) {
+			double temp = c1Im;
+			c1Im = c2Im;
+			c2Im = temp;
 		}
+
+		c1.set(c1Re,c1Im);
+		c2.set(c2Re,c2Im);
 	}
 }

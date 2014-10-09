@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : JStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 06/09/2014
+// Last modified : 03/10/2014
 // Target        : Java VM (1.8)
 // -------------------------------
 
@@ -35,19 +35,20 @@ import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JStatusBar</CODE> class constructs a <CODE>JPanel</CODE> that provides an application with a status bar.
- * The status bar contains an indicator of the battery level as well as the current memory usage.
+ * The status bar contains an indicator of the battery level as well as the current memory usage (they are automatically
+ * updated every 30 seconds).
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 06/09/2014
+ * @version 03/10/2014
  */
 public final class JStatusBar extends JPanel
 {
 	/**
 	 * The battery level and memory usage labels' update period in milliseconds.
 	 */
-	public static final int kUpdatePeriod = 5 * 1000;
+	public static final int kUpdatePeriod = 30 * 1000;
 
 	/**
 	 * The height of the status bar (expressed in pixels).
