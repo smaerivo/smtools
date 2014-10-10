@@ -359,7 +359,7 @@ public final class StringTools
 	 */
 	public static String convertComplexNumberToString(ComplexNumber c, int nrOfDecimals, Locale ... locale)
 	{
-		return convertComplexNumberToString(c.realPart(),c.imaginaryPart(),nrOfDecimals,locale);
+		return convertComplexNumberToString(c.realComponent(),c.imaginaryComponent(),nrOfDecimals,locale);
 	}
 
 	/**

@@ -56,8 +56,8 @@ public final class ComplexNumber
 	public final static ComplexNumber kI = new ComplexNumber(0.0,1.0);
 
 	// internal datastructures
-	private double fRealPart;
-	private double fImaginaryPart;
+	private double fRealComponent;
+	private double fImaginaryComponent;
 	private double fModulusSquared;
 	private double fModulus;
 	private double fArgument;
@@ -75,24 +75,24 @@ public final class ComplexNumber
 	}
 
 	/**
-	 * Constructs a complex number as a real number with a zero imaginary part.
+	 * Constructs a complex number as a real number with a zero imaginary component.
 	 *
-	 * @param realPart  the real part
+	 * @param realComponent  the real component
 	 */
-	public ComplexNumber(double realPart)
+	public ComplexNumber(double realComponent)
 	{
-		this(realPart,0.0);
+		this(realComponent,0.0);
 	}
 
 	/**
 	 * Constructs a complex number with a specified value.
 	 *
-	 * @param realPart       the real part
-	 * @param imaginaryPart  the imaginaryPart
+	 * @param realComponent       the real component
+	 * @param imaginaryComponent  the imaginary component
 	 */
-	public ComplexNumber(double realPart, double imaginaryPart)
+	public ComplexNumber(double realComponent, double imaginaryComponent)
 	{
-		set(realPart,imaginaryPart);
+		set(realComponent,imaginaryComponent);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public final class ComplexNumber
 	 */
 	public ComplexNumber(ComplexNumber c)
 	{
-		this(c.realPart(),c.imaginaryPart());
+		this(c.realComponent(),c.imaginaryComponent());
 	}
 
 	/******************
@@ -110,38 +110,38 @@ public final class ComplexNumber
 	 ******************/
 
 	/**
-	 * Explicitly sets the real and imaginary parts of the complex number.
+	 * Explicitly sets the real and imaginary components of the complex number.
 	 * 
-	 * @param realPart       the real part
-	 * @param imaginaryPart  the imaginaryPart
+	 * @param realComponent       the real component
+	 * @param imaginaryComponent  the imaginary component
 	 */
-	public void set(double realPart, double imaginaryPart)
+	public void set(double realComponent, double imaginaryComponent)
 	{
-		fRealPart = realPart;
-		fImaginaryPart = imaginaryPart;
-		fModulusSquared = (realPart * realPart) + (imaginaryPart * imaginaryPart);
+		fRealComponent = realComponent;
+		fImaginaryComponent = imaginaryComponent;
+		fModulusSquared = (realComponent * realComponent) + (imaginaryComponent * imaginaryComponent);
 		fModulus = Math.sqrt(fModulusSquared);
-		fArgument = Math.atan2(fImaginaryPart,fRealPart);
+		fArgument = Math.atan2(fImaginaryComponent,fRealComponent);
 	}
 
 	/**
-	 * Returns the real part of this complex number.
+	 * Returns the real component of this complex number.
 	 *
-	 * @return the real part of this complex number
+	 * @return the real component of this complex number
 	 */
-	public Double realPart()
+	public Double realComponent()
 	{
-		return fRealPart;
+		return fRealComponent;
 	}
 
 	/**
-	 * Returns the imaginary part of this complex number.
+	 * Returns the imaginary component of this complex number.
 	 *
-	 * @return the imaginary part of this complex number
+	 * @return the imaginary component of this complex number
 	 */
-	public Double imaginaryPart()
+	public Double imaginaryComponent()
 	{
-		return fImaginaryPart;
+		return fImaginaryComponent;
 	}
 
 	/**
@@ -151,7 +151,7 @@ public final class ComplexNumber
 	 */
 	public boolean isReal()
 	{
-		return (fImaginaryPart == 0.0);
+		return (fImaginaryComponent == 0.0);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public final class ComplexNumber
 	 */
 	public boolean isImaginary()
 	{
-		return (fRealPart == 0.0);
+		return (fRealComponent == 0.0);
 	}
 
 	/**
@@ -172,8 +172,8 @@ public final class ComplexNumber
 	public ComplexNumber negate()
 	{
 		return (new ComplexNumber(
-			-fRealPart,
-			-fImaginaryPart));
+			-fRealComponent,
+			-fImaginaryComponent));
 	}
 
 	/**
@@ -185,8 +185,8 @@ public final class ComplexNumber
 	public ComplexNumber add(ComplexNumber c)
 	{
 		return (new ComplexNumber(
-			fRealPart + c.realPart(),
-			fImaginaryPart + c.imaginaryPart()));
+			fRealComponent + c.realComponent(),
+			fImaginaryComponent + c.imaginaryComponent()));
 	}
 
 	/**
@@ -198,8 +198,8 @@ public final class ComplexNumber
 	public ComplexNumber subtract(ComplexNumber c)
 	{
 		return (new ComplexNumber(
-			fRealPart - c.realPart(),
-			fImaginaryPart - c.imaginaryPart()));
+			fRealComponent - c.realComponent(),
+			fImaginaryComponent - c.imaginaryComponent()));
 	}
 
 	/**
@@ -211,8 +211,8 @@ public final class ComplexNumber
 	public ComplexNumber multiply(ComplexNumber c)
 	{
 		return (new ComplexNumber(
-			(fRealPart * c.realPart()) - (fImaginaryPart * c.imaginaryPart()),
-			(fImaginaryPart * c.realPart()) + (fRealPart * c.imaginaryPart())));
+			(fRealComponent * c.realComponent()) - (fImaginaryComponent * c.imaginaryComponent()),
+			(fImaginaryComponent * c.realComponent()) + (fRealComponent * c.imaginaryComponent())));
 	}
 
 	/**
@@ -227,8 +227,8 @@ public final class ComplexNumber
 		}
 		else {
 			return (new ComplexNumber(
-				fRealPart / fModulusSquared,
-				-fImaginaryPart / fModulusSquared));
+				fRealComponent / fModulusSquared,
+				-fImaginaryComponent / fModulusSquared));
 		}
 	}
 
@@ -270,8 +270,8 @@ public final class ComplexNumber
 	public ComplexNumber conjugate()
 	{
 		return (new ComplexNumber(
-			fRealPart,
-			-fImaginaryPart));
+			fRealComponent,
+			-fImaginaryComponent));
 	}
 
 	/**
@@ -283,8 +283,8 @@ public final class ComplexNumber
 	{
 		ComplexNumber conjugate = conjugate();
 		return (new ComplexNumber(
-			conjugate.realPart() / fModulusSquared,
-			conjugate.imaginaryPart() / fModulusSquared));
+			conjugate.realComponent() / fModulusSquared,
+			conjugate.imaginaryComponent() / fModulusSquared));
 	}
 
 	/**
@@ -301,8 +301,8 @@ public final class ComplexNumber
 		}
 		else {
 			return (new ComplexNumber(
-				((fRealPart * c.realPart()) + (fImaginaryPart * c.imaginaryPart())) / cModulusSquared,
-				((fImaginaryPart * c.realPart()) - (fRealPart * c.imaginaryPart())) / cModulusSquared));
+				((fRealComponent * c.realComponent()) + (fImaginaryComponent * c.imaginaryComponent())) / cModulusSquared,
+				((fImaginaryComponent * c.realComponent()) - (fRealComponent * c.imaginaryComponent())) / cModulusSquared));
 		}
 	}
 
@@ -314,8 +314,8 @@ public final class ComplexNumber
 	public ComplexNumber sqrt()
 	{
 		return (new ComplexNumber(
-			Math.sqrt((fRealPart + fModulus) / 2.0),
-			Math.signum(fImaginaryPart) * Math.sqrt((-fRealPart + fModulus) / 2.0)));
+			Math.sqrt((fRealComponent + fModulus) / 2.0),
+			Math.signum(fImaginaryComponent) * Math.sqrt((-fRealComponent + fModulus) / 2.0)));
 	}
 
 	/**
@@ -336,8 +336,8 @@ public final class ComplexNumber
 	public ComplexNumber sqr()
 	{
 		return (new ComplexNumber(
-			(fRealPart * fRealPart) - (fImaginaryPart * fImaginaryPart),
-			2.0 * fRealPart * fImaginaryPart));
+			(fRealComponent * fRealComponent) - (fImaginaryComponent * fImaginaryComponent),
+			2.0 * fRealComponent * fImaginaryComponent));
 	}
 
 	/**
@@ -348,8 +348,8 @@ public final class ComplexNumber
 	public ComplexNumber cube()
 	{
 		return (new ComplexNumber(
-			(fRealPart * fRealPart * fRealPart) - (3.0 * fRealPart * fImaginaryPart * fImaginaryPart),
-			(3.0 * fRealPart * fRealPart * fImaginaryPart) - (fImaginaryPart * fImaginaryPart * fImaginaryPart)));
+			(fRealComponent * fRealComponent * fRealComponent) - (3.0 * fRealComponent * fImaginaryComponent * fImaginaryComponent),
+			(3.0 * fRealComponent * fRealComponent * fImaginaryComponent) - (fImaginaryComponent * fImaginaryComponent * fImaginaryComponent)));
 	}
 
 	/**
@@ -431,8 +431,8 @@ public final class ComplexNumber
 	public ComplexNumber exp()
 	{
 		return (new ComplexNumber(
-			Math.exp(fRealPart) * Math.cos(fImaginaryPart),
-			Math.exp(fRealPart) * Math.sin(fImaginaryPart)));
+			Math.exp(fRealComponent) * Math.cos(fImaginaryComponent),
+			Math.exp(fRealComponent) * Math.sin(fImaginaryComponent)));
 	}
 	
 	/**
@@ -443,8 +443,8 @@ public final class ComplexNumber
 	public ComplexNumber cos()
 	{
 		return 
-			(new ComplexNumber(-fImaginaryPart,fRealPart)).exp().add(
-				(new ComplexNumber(fImaginaryPart,-fRealPart)).exp()).divide(new ComplexNumber(2.0,0.0));
+			(new ComplexNumber(-fImaginaryComponent,fRealComponent)).exp().add(
+				(new ComplexNumber(fImaginaryComponent,-fRealComponent)).exp()).divide(new ComplexNumber(2.0,0.0));
 	}
 
 	/**
@@ -455,8 +455,8 @@ public final class ComplexNumber
 	public ComplexNumber sin()
 	{
 		return 
-			(new ComplexNumber(-fImaginaryPart,fRealPart)).exp().subtract(
-				(new ComplexNumber(fImaginaryPart,-fRealPart)).exp()).divide(new ComplexNumber(0.0,2.0));
+			(new ComplexNumber(-fImaginaryComponent,fRealComponent)).exp().subtract(
+				(new ComplexNumber(fImaginaryComponent,-fRealComponent)).exp()).divide(new ComplexNumber(0.0,2.0));
 	}
 
 	/**
@@ -507,11 +507,11 @@ public final class ComplexNumber
 	@Override
 	public String toString()
 	{
-		if (fImaginaryPart >= 0.0) {
-			return (fRealPart + " + " + fImaginaryPart + "i");
+		if (fImaginaryComponent >= 0.0) {
+			return (fRealComponent + " + " + fImaginaryComponent + "i");
 		}
 		else {
-			return (fRealPart + " - " + (-fImaginaryPart) + "i");
+			return (fRealComponent + " - " + (-fImaginaryComponent) + "i");
 		}
 	}
 
@@ -557,7 +557,7 @@ public final class ComplexNumber
 	 */
 	public boolean equals(ComplexNumber c)
 	{
-		return ((fRealPart == c.realPart()) && (fImaginaryPart == c.imaginaryPart()));
+		return ((fRealComponent == c.realComponent()) && (fImaginaryComponent == c.imaginaryComponent()));
 	}
 
 	/**
@@ -565,7 +565,7 @@ public final class ComplexNumber
 	@Override
 	public Object clone()
 	{
-		return (new ComplexNumber(fRealPart,fImaginaryPart));
+		return (new ComplexNumber(fRealComponent,fImaginaryComponent));
 	}
 
 	/**
@@ -576,10 +576,10 @@ public final class ComplexNumber
 	 */	
 	public static void forcePartialOrder(ComplexNumber c1, ComplexNumber c2)
 	{
-		double c1Re = c1.realPart();
-		double c1Im = c1.imaginaryPart();
-		double c2Re = c2.realPart();
-		double c2Im = c2.imaginaryPart();
+		double c1Re = c1.realComponent();
+		double c1Im = c1.imaginaryComponent();
+		double c2Re = c2.realComponent();
+		double c2Im = c2.imaginaryComponent();
 
 		if (c1Re > c2Re) {
 			double temp = c1Re;
