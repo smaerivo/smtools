@@ -177,6 +177,20 @@ public final class ComplexNumber
 	}
 
 	/**
+	 * Returns the complex absolute of this complex number.
+	 * <P>
+	 * It is defined as abs(real) + i abs(imaginary).
+	 *
+	 * @return the complex absolute of this complex number
+	 */
+	public ComplexNumber cabs()
+	{
+		return (new ComplexNumber(
+			Math.abs(fRealComponent),
+			Math.abs(fImaginaryComponent)));
+	}
+
+	/**
 	 * Add the specified complex number to this one and returns a reference to the result.
 	 *
 	 * @param c  the complex number to add
