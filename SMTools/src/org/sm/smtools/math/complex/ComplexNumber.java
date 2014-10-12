@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : ComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 10/10/2014
+// Last modified : 12/10/2014
 // Target        : Java VM (1.8)
 // ----------------------------------
 
@@ -28,22 +28,32 @@ package org.sm.smtools.math.complex;
  * <P>
  * The class has a <U>partial ordering</U> imposed, which is measured via the modulus.
  * <P>
- * <B>Note that this class is immutable and cannot be subclassed!</B>
+ * <B>Note that this class is final cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 10/10/2014
+ * @version 12/10/2014
  */
 public final class ComplexNumber
 {
 	/**
-	 * The constant zero.
+	 * The constant 0 + 0i.
 	 */
 	public final static ComplexNumber kZero = new ComplexNumber();
 
 	/**
-	 * The constant one.
+	 * The constant 1 + 0i.
 	 */
 	public final static ComplexNumber kOne = new ComplexNumber(1.0);
+
+	/**
+	 * The constant 2 + 0i.
+	 */
+	public final static ComplexNumber kTwo = new ComplexNumber(2.0);
+
+	/**
+	 * The constant 3 + 0i.
+	 */
+	public final static ComplexNumber kThree = new ComplexNumber(3.0);
 
 	/**
 	 * The constant e.
@@ -121,7 +131,8 @@ public final class ComplexNumber
 		fImaginaryComponent = imaginaryComponent;
 		fModulusSquared = (realComponent * realComponent) + (imaginaryComponent * imaginaryComponent);
 		fModulus = Math.sqrt(fModulusSquared);
-		fArgument = Math.atan2(fImaginaryComponent,fRealComponent);
+		// convert the argument to an angle between 0 and 2PI
+		fArgument = Math.atan2(-fImaginaryComponent,-fRealComponent) + Math.PI;
 	}
 
 	/**
