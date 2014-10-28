@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : ComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 12/10/2014
+// Last modified : 28/10/2014
 // Target        : Java VM (1.8)
 // ----------------------------------
 
@@ -31,7 +31,7 @@ package org.sm.smtools.math.complex;
  * <B>Note that this class is final cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 12/10/2014
+ * @version 28/10/2014
  */
 public final class ComplexNumber
 {
@@ -131,8 +131,7 @@ public final class ComplexNumber
 		fImaginaryComponent = imaginaryComponent;
 		fModulusSquared = (realComponent * realComponent) + (imaginaryComponent * imaginaryComponent);
 		fModulus = Math.sqrt(fModulusSquared);
-		// convert the argument to an angle between 0 and 2PI
-		fArgument = Math.atan2(-fImaginaryComponent,-fRealComponent) + Math.PI;
+		fArgument = Math.atan2(fImaginaryComponent,fRealComponent);
 	}
 
 	/**
