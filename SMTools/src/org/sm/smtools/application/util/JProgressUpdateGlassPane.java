@@ -1,7 +1,7 @@
 // ---------------------------------------------
 // Filename      : JProgressUpdateGlassPane.java
 // Author        : Sven Maerivoet
-// Last modified : 13/07/2014
+// Last modified : 07/11s/2014
 // Target        : Java VM (1.8)
 // ---------------------------------------------
 
@@ -57,7 +57,7 @@ import org.sm.smtools.util.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 13/07/2014
+ * @version 07/11/2014
  */
 public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener, KeyListener
 {
@@ -447,7 +447,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 			strokeWidth *= 1.05f;
 			Arc2D progressCircle = new Arc2D.Double(x1,y1,diameter,diameter,startAngle,angle,Arc2D.OPEN);
 			g2.setStroke(new BasicStroke(strokeWidth,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER));
-			JGradientColorRamp gcr = new JGradientColorRamp(JGradientColorRamp.EColorMap.kBlue);
+			JGradientColorMap gcr = new JGradientColorMap(JGradientColorMap.EColorMap.kBlue);
 			g2.setColor(gcr.interpolate(0.25 + (percentageCompleted / 75.0)));
 			g2.draw(progressCircle);
 		}

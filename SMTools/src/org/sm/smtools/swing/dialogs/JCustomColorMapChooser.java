@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 28/09/2014
+// Last modified : 07/11/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -32,7 +32,7 @@ import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
 import org.sm.smtools.math.*;
 import org.sm.smtools.swing.util.*;
-import org.sm.smtools.swing.util.JGradientColorRamp.*;
+import org.sm.smtools.swing.util.JGradientColorMap.*;
 import org.sm.smtools.util.*;
 
 /**
@@ -43,7 +43,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 28/09/2014
+ * @version 07/11/2014
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
@@ -59,7 +59,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 
 	// internal datastructures
 	private int fNrOfColors;
-	private JGradientColorRamp fColorMap;
+	private JGradientColorMap fColorMap;
 	private JButton[] fColorButtons;
 	private JSlider[] fColorSliders;
 	private JCheckBox[] fColorCheckBoxes;
@@ -76,7 +76,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	 * @param nrOfColors               the number of colours
 	 * @param customColorMapComponents the color map components
 	 */
-	public JCustomColorMapChooser(JFrame owner, int nrOfColors, TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent> customColorMapComponents)
+	public JCustomColorMapChooser(JFrame owner, int nrOfColors, TreeMap<Integer,JGradientColorMap.CustomColorMapComponent> customColorMapComponents)
 	{
 		super(owner,
 			JDefaultDialog.EModality.kModal,
@@ -260,7 +260,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	 *
 	 * @return the selected custom colour map components
 	 */
-	public TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent> getSelectedCustomColorMapComponents()
+	public TreeMap<Integer,JGradientColorMap.CustomColorMapComponent> getSelectedCustomColorMapComponents()
 	{
 		return fColorMap.getAllCustomColorMapComponents();
 	}
@@ -278,8 +278,8 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	{
 		fClearControls = false;
 		fNrOfColors = (int) parameters[0];
-		fColorMap = new JGradientColorRamp(JGradientColorRamp.EOrientation.kVerticalTopToBottom,JGradientColorRamp.EColorMap.kCustom,50,400);
-		fColorMap.setAllCustomColorMapComponents((TreeMap<Integer,JGradientColorRamp.CustomColorMapComponent>) parameters[1]);
+		fColorMap = new JGradientColorMap(JGradientColorMap.EOrientation.kVerticalTopToBottom,JGradientColorMap.EColorMap.kCustom,50,400);
+		fColorMap.setAllCustomColorMapComponents((TreeMap<Integer,JGradientColorMap.CustomColorMapComponent>) parameters[1]);
 	}
 
 	/**
