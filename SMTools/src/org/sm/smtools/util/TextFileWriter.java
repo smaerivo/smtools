@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : TextFileWriter.java
 // Author        : Sven Maerivoet
-// Last modified : 04/05/2014
+// Last modified : 10/11/2014
 // Target        : Java VM (1.8)
 // -----------------------------------
 
@@ -45,7 +45,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/05/2014
+ * @version 10/11/2014
  */
 public final class TextFileWriter
 {
@@ -60,7 +60,7 @@ public final class TextFileWriter
 	/**
 	 * Sets up a text file writer for the specified file.
 	 *
-	 * @param filename                     the name of the file to create
+	 * @param  filename                    the name of the file to create
 	 * @throws FileCantBeCreatedException  if the file cannot be created
 	 */
 	public TextFileWriter(String filename) throws FileCantBeCreatedException
@@ -71,8 +71,8 @@ public final class TextFileWriter
 	/**
 	 * Sets up a text file writer for the specified file.
 	 *
-	 * @param filename                     the name of the file to create
-	 * @param append                       whether or not the (existing) file should be appended
+	 * @param  filename                    the name of the file to create
+	 * @param  append                      whether or not the (existing) file should be appended
 	 * @throws FileCantBeCreatedException  if the file cannot be created
 	 */
 	public TextFileWriter(String filename, boolean append) throws FileCantBeCreatedException
@@ -122,10 +122,10 @@ public final class TextFileWriter
 	/**
 	 * Writes a string representation of an <CODE>int</CODE> to the file.
 	 *
-	 * @param i                    the <CODE>int</CODE> to write to the file
+	 * @param  i                   the <CODE>int</CODE> to write to the file
 	 * @throws FileWriteException  if the <CODE>int</CODE> could not be written to the file
 	 */
-	public final void writeInt(int i) throws FileWriteException
+	public final void writeInteger(int i) throws FileWriteException
 	{
 		fFileWriter.print(i);
 
@@ -137,7 +137,7 @@ public final class TextFileWriter
 	/**
 	 * Writes a string representation of a <CODE>double</CODE> to the file.
 	 *
-	 * @param d                    the <CODE>double</CODE> to write to the file
+	 * @param  d                   the <CODE>double</CODE> to write to the file
 	 * @throws FileWriteException  if the <CODE>double</CODE> could not be written to the file
 	 */
 	public final void writeDouble(double d) throws FileWriteException
@@ -152,7 +152,7 @@ public final class TextFileWriter
 	/**
 	 * Writes a string to the file.
 	 *
-	 * @param s                    the <CODE>String</CODE> to write to the file
+	 * @param  s                   the <CODE>String</CODE> to write to the file
 	 * @throws FileWriteException  if the <CODE>String</CODE> could not be written to the file
 	 */
 	public final void writeString(String s) throws FileWriteException
@@ -169,7 +169,7 @@ public final class TextFileWriter
 	 * <P>
 	 * The string representation is either <B>TRUE</B> or <B>FALSE</B>.
 	 *
-	 * @param b                    the <CODE>boolean</CODE> to write to the file
+	 * @param  b                   the <CODE>boolean</CODE> to write to the file
 	 * @throws FileWriteException  if the <CODE>boolean</CODE> could not be written to the file
 	 */
 	public final void writeBoolean(boolean b) throws FileWriteException
@@ -191,7 +191,7 @@ public final class TextFileWriter
 	 * The string representation of the <CODE>DateStamp</CODE> object is
 	 * <B>dd/mm/yyyy</B>, e.g., "11/04/1976".
 	 *
-	 * @param dateStamp            the <CODE>DateStamp</CODE> object to write to the file
+	 * @param  dateStamp           the <CODE>DateStamp</CODE> object to write to the file
 	 * @throws FileWriteException  if the <CODE>DateStamp</CODE> object could not be written to the file
 	 */
 	public final void writeDate(DateStamp dateStamp) throws FileWriteException
@@ -210,7 +210,7 @@ public final class TextFileWriter
 	 * The string representation of the <CODE>TimeStamp</CODE> object is
 	 * <B>hh:mm:ss.ms</B>, e.g., "12:45:16.154".
 	 *
-	 * @param timeStamp            the <CODE>TimeStamp</CODE> object to write to the file
+	 * @param  timeStamp           the <CODE>TimeStamp</CODE> object to write to the file
 	 * @throws FileWriteException  if the <CODE>TimeStamp</CODE> object could not be written to the file
 	 */
 	public final void writeTimeStamp(TimeStamp timeStamp) throws FileWriteException
@@ -228,7 +228,7 @@ public final class TextFileWriter
 	 * <P>
 	 * Note that all strings are automatically quoted.
 	 *
-	 * @param csvValues            the comma-separated values to write to the file
+	 * @param  csvValues           the comma-separated values to write to the file
 	 * @throws FileWriteException  if the <CODE>TimeStamp</CODE> object could not be written to the file
 	 */
 	public final void writeCSV(String[] csvValues) throws FileWriteException

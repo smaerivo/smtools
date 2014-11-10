@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 07/11/2014
+// Last modified : 10/11/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -43,7 +43,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 07/11/2014
+ * @version 10/11/2014
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
@@ -199,7 +199,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 						CustomColorMapComponent colorMapComponent = colorMapComponents.get(colorIndex);
 
 						// save ID
-						tfw.writeInt(colorIndex);
+						tfw.writeInteger(colorIndex);
 						tfw.writeString(kFieldSeparator);
 
 						// save level
@@ -207,11 +207,11 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 						tfw.writeString(kFieldSeparator);
 
 						// save color components
-						tfw.writeInt(colorMapComponent.fColor.getRed());
+						tfw.writeInteger(colorMapComponent.fColor.getRed());
 						tfw.writeString(kFieldSeparator);
-						tfw.writeInt(colorMapComponent.fColor.getGreen());
+						tfw.writeInteger(colorMapComponent.fColor.getGreen());
 						tfw.writeString(kFieldSeparator);
-						tfw.writeInt(colorMapComponent.fColor.getBlue());
+						tfw.writeInteger(colorMapComponent.fColor.getBlue());
 
 						tfw.writeLn();
 					}
