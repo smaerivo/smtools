@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : JGradientColorMap.java
 // Author        : Sven Maerivoet
-// Last modified : 07/11/2014
+// Last modified : 17/11/2014
 // Target        : Java VM (1.8)
 // --------------------------------------
 
@@ -85,8 +85,14 @@ import org.sm.smtools.util.*;
  * <B>Magenta:</B><BR>
  * <IMG src="doc-files/gradient-color-map-magenta.png" alt="">
  * <P>
- * <B>Pastel:</B><BR>
- * <IMG src="doc-files/gradient-color-map-pastel.png" alt="">
+ * <B>Ultralight pastel:</B><BR>
+ * <IMG src="doc-files/gradient-color-map-ultralightpastel.png" alt="">
+ * <P>
+ * <B>Light pastel:</B><BR>
+ * <IMG src="doc-files/gradient-color-map-lightpastel.png" alt="">
+ * <P>
+ * <B>Dark pastel:</B><BR>
+ * <IMG src="doc-files/gradient-color-map-darkpastel.png" alt="">
  * <P>
  * <B>Greens:</B><BR>
  * <IMG src="doc-files/gradient-color-map-greens.png" alt="">
@@ -131,7 +137,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 07/11/2014
+ * @version 17/11/2014
  */
 public final class JGradientColorMap extends JPanel
 {
@@ -161,7 +167,9 @@ public final class JGradientColorMap extends JPanel
 		 kYellow,
 		 kCyan,
 		 kMagenta,
-		 kPastel,
+		 kUltraLightPastel,
+		 kLightPastel,
+		 kDarkPastel,
 		 kGreens,
 		 kBlues,
 		 kYellowBrowns,
@@ -196,7 +204,9 @@ public final class JGradientColorMap extends JPanel
 	private double fValueToIndicate;
 	private TreeMap<Integer,CustomColorMapComponent> fCustomColorMapComponents;
 	private TreeMap<Double,Color> fCustomColorMap;
-	private TreeMap<Double,Color> fPastelColorMap;
+	private TreeMap<Double,Color> fUltraLightPastelColorMap;
+	private TreeMap<Double,Color> fLightPastelColorMap;
+	private TreeMap<Double,Color> fDarkPastelColorMap;
 	private TreeMap<Double,Color> fGreensColorMap;
 	private TreeMap<Double,Color> fBluesColorMap;
 	private TreeMap<Double,Color> fYellowBrownsColorMap;
@@ -282,8 +292,14 @@ public final class JGradientColorMap extends JPanel
 	{
 		fColorMap = colorMap;
 
-		if (fColorMap == EColorMap.kPastel) {
-			fCustomColorMap = fPastelColorMap;
+		if (fColorMap == EColorMap.kUltraLightPastel) {
+			fCustomColorMap = fUltraLightPastelColorMap;
+		}
+		if (fColorMap == EColorMap.kLightPastel) {
+			fCustomColorMap = fLightPastelColorMap;
+		}
+		if (fColorMap == EColorMap.kDarkPastel) {
+			fCustomColorMap = fDarkPastelColorMap;
 		}
 		else if (fColorMap == EColorMap.kGreens) {
 			fCustomColorMap = fGreensColorMap;
@@ -853,7 +869,9 @@ public final class JGradientColorMap extends JPanel
 			blue = t;
 		}
 		else if ((fColorMap == EColorMap.kCustom) ||
-						(fColorMap == EColorMap.kPastel) ||
+						(fColorMap == EColorMap.kUltraLightPastel) ||
+						(fColorMap == EColorMap.kLightPastel) ||
+						(fColorMap == EColorMap.kDarkPastel) ||
 						(fColorMap == EColorMap.kGreens) ||
 						(fColorMap == EColorMap.kBlues) ||
 						(fColorMap == EColorMap.kYellowBrowns) ||
@@ -900,28 +918,48 @@ public final class JGradientColorMap extends JPanel
 	 */
 	private void setupCustomColorMaps()
 	{
-		fPastelColorMap = new TreeMap<Double,Color>();
-		fPastelColorMap.put(0.0,new Color(230,230,230));
-		fPastelColorMap.put(0.05,new Color(248,248,255));
-		fPastelColorMap.put(0.1,new Color(240,248,255));
-		fPastelColorMap.put(0.15,new Color(245,255,250));
-		fPastelColorMap.put(0.2,new Color(240,255,240));
-		fPastelColorMap.put(0.25,new Color(250,250,210));
-		fPastelColorMap.put(0.3,new Color(255,250,205));
-		fPastelColorMap.put(0.35,new Color(255,248,220));
-		fPastelColorMap.put(0.4,new Color(255,255,224));
-		fPastelColorMap.put(0.45,new Color(255,255,240));
-		fPastelColorMap.put(0.5,new Color(255,250,240));
-		fPastelColorMap.put(0.55,new Color(250,240,230));
-		fPastelColorMap.put(0.6,new Color(253,245,230));
-		fPastelColorMap.put(0.65,new Color(250,235,215));
-		fPastelColorMap.put(0.7,new Color(255,228,196));
-		fPastelColorMap.put(0.75,new Color(255,218,185));
-		fPastelColorMap.put(0.8,new Color(255,239,213));
-		fPastelColorMap.put(0.85,new Color(255,245,238));
-		fPastelColorMap.put(0.9,new Color(255,240,245));
-		fPastelColorMap.put(0.95,new Color(255,228,225));
-		fPastelColorMap.put(1.0,new Color(255,250,250));
+		fUltraLightPastelColorMap = new TreeMap<Double,Color>();
+		fUltraLightPastelColorMap.put(0.0,new Color(230,230,230));
+		fUltraLightPastelColorMap.put(0.05,new Color(248,248,255));
+		fUltraLightPastelColorMap.put(0.1,new Color(240,248,255));
+		fUltraLightPastelColorMap.put(0.15,new Color(245,255,250));
+		fUltraLightPastelColorMap.put(0.2,new Color(240,255,240));
+		fUltraLightPastelColorMap.put(0.25,new Color(250,250,210));
+		fUltraLightPastelColorMap.put(0.3,new Color(255,250,205));
+		fUltraLightPastelColorMap.put(0.35,new Color(255,248,220));
+		fUltraLightPastelColorMap.put(0.4,new Color(255,255,224));
+		fUltraLightPastelColorMap.put(0.45,new Color(255,255,240));
+		fUltraLightPastelColorMap.put(0.5,new Color(255,250,240));
+		fUltraLightPastelColorMap.put(0.55,new Color(250,240,230));
+		fUltraLightPastelColorMap.put(0.6,new Color(253,245,230));
+		fUltraLightPastelColorMap.put(0.65,new Color(250,235,215));
+		fUltraLightPastelColorMap.put(0.7,new Color(255,228,196));
+		fUltraLightPastelColorMap.put(0.75,new Color(255,218,185));
+		fUltraLightPastelColorMap.put(0.8,new Color(255,239,213));
+		fUltraLightPastelColorMap.put(0.85,new Color(255,245,238));
+		fUltraLightPastelColorMap.put(0.9,new Color(255,240,245));
+		fUltraLightPastelColorMap.put(0.95,new Color(255,228,225));
+		fUltraLightPastelColorMap.put(1.0,new Color(255,250,250));
+
+		fLightPastelColorMap = new TreeMap<Double,Color>();
+		fLightPastelColorMap.put(0.0,new Color(255,190,190));
+		fLightPastelColorMap.put(0.2,new Color(255,255,190));
+		fLightPastelColorMap.put(0.4,new Color(190,255,190));
+		fLightPastelColorMap.put(0.6,new Color(190,255,255));
+		fLightPastelColorMap.put(0.8,new Color(190,190,255));
+		fLightPastelColorMap.put(1.0,new Color(255,190,255));
+
+		fDarkPastelColorMap = new TreeMap<Double,Color>();
+		fDarkPastelColorMap.put(0.0,new Color(130,182,222));
+		fDarkPastelColorMap.put(0.11111111111,new Color(147,148,204));
+		fDarkPastelColorMap.put(0.22222222222,new Color(160,205,179));
+		fDarkPastelColorMap.put(0.33333333333,new Color(173,177,178));
+		fDarkPastelColorMap.put(0.44444444444,new Color(209,179,145));
+		fDarkPastelColorMap.put(0.55555555556,new Color(254,213,2));
+		fDarkPastelColorMap.put(0.66666666667,new Color(230,105,103));
+		fDarkPastelColorMap.put(0.77777777778,new Color(242,126,68));
+		fDarkPastelColorMap.put(0.88888888889,new Color(175,113,176));
+		fDarkPastelColorMap.put(1.0,new Color(13,107,182));
 
 		fGreensColorMap = new TreeMap<Double,Color>();
 		fGreensColorMap.put(0.0,new Color(127,155,212));
