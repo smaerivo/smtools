@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 29/04/2014
+// Last modified : 19/11/2014
 // Target        : Java VM (1.8)
 // -------------------------------
 
@@ -36,7 +36,7 @@ import java.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 29/04/2014
+ * @version 19/11/2014
  */
 public final class MathTools
 {
@@ -44,6 +44,11 @@ public final class MathTools
 	 * The different kernel types.
 	 */
 	public static enum EKernelType {kRectangular, kTriangular, kEpanechnikov, kQuartic, kGaussian, kLanczos};
+
+	/**
+	 * The number of decimals in a double, equal to log10(2^(#bits_mantissa)) with #bits_mantissa = #bits_total - #bits_exponent - #bits_sign.
+	 */
+	public static final int kNrOfDoubleDecimals = (int) Math.round(Math.log10(Math.pow(2.0,64.0 - 11.0 - 1.0)));
 
 	// the a parameter of the Lanczos kernel
 	private static double kLanczosA = 2.0;
