@@ -1,7 +1,7 @@
 // --------------------------------
 // Filename      : JImagePanel.java
 // Author        : Sven Maerivoet
-// Last modified : 23/04/2011
+// Last modified : 19/11/2011
 // Target        : Java VM (1.8)
 // --------------------------------
 
@@ -35,7 +35,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 23/04/2011
+ * @version 19/11/2011
  */
 public final class JImagePanel extends JPanel
 {
@@ -61,9 +61,6 @@ public final class JImagePanel extends JPanel
 	{
 		fBackgroundImage = JImageLoader.loadImageIcon(imageFilename,this).getImage();
 		fRetainAspectRatio = false;
-
-		// set the panel's size equal to the image's size
-		setPreferredSize(new Dimension(fBackgroundImage.getWidth(this),fBackgroundImage.getHeight(this)));
 	}
 
 	/**
@@ -77,9 +74,6 @@ public final class JImagePanel extends JPanel
 	{
 		fBackgroundImage = backgroundImage;
 		fRetainAspectRatio = false;
-
-		// set the panel's size equal to the image's size
-		setPreferredSize(new Dimension(fBackgroundImage.getWidth(this),fBackgroundImage.getHeight(this)));
 	}
 
 	/******************
