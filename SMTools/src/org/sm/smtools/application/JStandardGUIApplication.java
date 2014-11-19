@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 24/09/2014
+// Last modified : 19/11/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -93,6 +93,7 @@ import org.sm.smtools.swing.dialogs.*;
  *     <LI>{@link JStandardGUIApplication#setupIcon()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupWindowTitle()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}</LI>
+ *     <LI>{@link JStandardGUIApplication#setDynamicLayout(boolean)}</LI>
  *   </UL>
  *   <LI><B><U>Visual layout (content related)</U></B></LI>
  *   <UL>
@@ -136,7 +137,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 24/09/2014
+ * @version 19/11/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -334,6 +335,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *   <LI>The GUI's menu bar is constructed (see {@link JStandardGUIApplication#setupMenus()} and
 	 *       {@link JStandardGUIApplication#setupRightHandMenu()}).</LI>
 	 *   <LI>The about box is shown (see {@link JStandardGUIApplication#setupAboutBox()}).</LI>
+	 *   <LI>The repainting behaviour when resizing is set to dynamic layout (see {@link JStandardGUIApplication#setDynamicLayout(boolean)}).</LI>
 	 *   <LI>The application checks if minimisation to the system tray is allowed (see {@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}).</LI>
 	 *   <LI>The glass pane is constructed (see {@link JStandardGUIApplication#setupGlassPane()}).</LI>
 	 * </UL>
@@ -607,6 +609,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		if ((!DevelopMode.isActivated()) && (aboutBox != null)) {
 			aboutBox.activate();
 		}
+
+		// allows real-time repainting of the window's contents upon resizing
+		setDynamicLayout(true);
 
 		// setup glass pane
 		fGlassPane = setupGlassPane();
@@ -919,11 +924,27 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Emulates hiding the mouse cursor.
 	 */
-	public void hideMouseCursor()
+	public final void hideMouseCursor()
 	{
 		int[] emptyImageData = new int[16 * 16];
 		Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(16,16,emptyImageData,0,16));
 		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(image,new Point(0,0),"invisibleCursor"));
+	}
+
+	/**
+	 * Sets the use of dynamic layout (i.e., real-time repainting of the <CODE>JFrame</CODE>'s components when resizing).
+	 * 
+	 * @param dynamicLayout  a <CODE>boolean</CODE> indicating whether or not dynamic layout should be activated
+	 */
+	public final void setDynamicLayout(boolean dynamicLayout)
+	{
+		// check if dynamic layout is currently active and supported by the underlying operating system and/or window manager
+		if (dynamicLayout && Toolkit.getDefaultToolkit().isDynamicLayoutActive()) {
+			Toolkit.getDefaultToolkit().setDynamicLayout(true);
+		}
+		else {
+			Toolkit.getDefaultToolkit().setDynamicLayout(false);
+		}
 	}
 
 	/**
