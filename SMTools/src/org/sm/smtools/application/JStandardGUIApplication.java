@@ -29,12 +29,18 @@ import java.awt.image.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.PlainDocument;
 import org.apache.log4j.*;
 import org.sm.smtools.application.registry.*;
 import org.sm.smtools.util.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
 import org.sm.smtools.swing.dialogs.*;
+import org.sm.smtools.swing.util.ANumberFilter;
+import org.sm.smtools.swing.util.JNumberInputField;
 
 /**
  * The <CODE>JStandardGUIApplication</CODE> class provides a standard Swing based GUI framework.

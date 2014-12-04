@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : JNumberInputField.java
 // Author        : Sven Maerivoet
-// Last modified : 05/09/2014
+// Last modified : 04/12/2014
 // Target        : Java VM (1.8)
 // --------------------------------------
 
@@ -23,6 +23,7 @@
 
 package org.sm.smtools.swing.util;
 
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -30,11 +31,13 @@ import javax.swing.*;
  * The <CODE>JNumberInputField</CODE> class provides a input textfield for <CODE>int</CODE> and <CODE>double</CODE> datatypes.
  * <P>
  * Validation of the input is done via a {@link ANumberFilter} class and the {@link JNumberInputField#setNumberFilter(ANumberFilter)} method.
+ * <P>
+ * Any time focus is transferred, the field is validated; an action listener can be defined to catch these events.
  *
  * @author  Sven Maerivoet
- * @version 05/09/2014
+ * @version 04/12/2014
  */
-public class JNumberInputField extends JTextField implements ActionListener
+public final class JNumberInputField extends JTextField implements ActionListener
 {
 	// the different supported numbers-types
 	private static final int kInteger = 0;
@@ -44,8 +47,11 @@ public class JNumberInputField extends JTextField implements ActionListener
 	private int fNumberType;
 	private int fIntegerValue;
 	private double fDoubleValue;
-	private boolean fTransferFocusAfterEntering;
+	private boolean fAutoCorrect;
+	private String fErrorMessage;
 	private ANumberFilter fNumberFilter;
+	private boolean fInputIsValid = true;
+	private FieldVerifier fFieldVerifier;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -54,38 +60,48 @@ public class JNumberInputField extends JTextField implements ActionListener
 	/**
 	 * Constructs a <CODE>JNumberInputField</CODE> for editing an <CODE>int</CODE> value.
 	 *
-	 * @param integerValue                the initial <CODE>int</CODE> value in the input textfield
-	 * @param transferFocusAfterEntering  a <CODE>boolean</CODE> to indicate whether or not the focus should be transferred
-	 *                                    to the next component in the GUI after pressing the &lt;ENTER&gt; key in the textfield
-	 * @see                               JNumberInputField#JNumberInputField(double,boolean)
+	 * @param integerValue  the initial <CODE>int</CODE> value in the input textfield
+	 * @param fieldWidth    the field width
+	 * @param autoCorrect   a <CODE>boolean</CODE> indicating whether or not the value should revert to the previous correct one in case of input error
+	 * @param errorMessage  an optional error message that is displayed when an input error occurred
+	 * @see                 JNumberInputField#JNumberInputField(double,int,boolean,String)
 	 */
-	public JNumberInputField(int integerValue, boolean transferFocusAfterEntering)
+	public JNumberInputField(int integerValue, int fieldWidth, boolean autoCorrect, String errorMessage)
 	{
+		super(String.valueOf(integerValue),fieldWidth);
 		fNumberType = kInteger;
 		fIntegerValue = integerValue;
-		fTransferFocusAfterEntering = transferFocusAfterEntering;
+		fAutoCorrect = autoCorrect;
+		fErrorMessage = errorMessage;
+		fInputIsValid = true;
 
 		setHorizontalAlignment(JTextField.RIGHT);
-		update();
+		fFieldVerifier = new FieldVerifier();
+		setInputVerifier(fFieldVerifier);
 		addActionListener(this);
 	}
 
 	/**
 	 * Constructs a <CODE>JNumberInputField</CODE> for editing a <CODE>double</CODE> value.
 	 *
-	 * @param doubleValue                 the initial <CODE>double</CODE> value in the input textfield
-	 * @param transferFocusAfterEntering  a <CODE>boolean</CODE> to indicate whether or not the focus should be transferred
-	 *                                    to the next component in the GUI after pressing the &lt;ENTER&gt; key in the textfield
-	 * @see                               JNumberInputField#JNumberInputField(int,boolean)
+	 * @param doubleValue  the initial <CODE>double</CODE> value in the input textfield
+	 * @param fieldWidth    the field width
+	 * @param autoCorrect   a <CODE>boolean</CODE> indicating whether or not the value should revert to the previous correct one in case of input error
+	 * @param errorMessage  an optional error message that is displayed when an input error occurred
+	 * @see                JNumberInputField#JNumberInputField(int,int,boolean,String)
 	 */
-	public JNumberInputField(double doubleValue, boolean transferFocusAfterEntering)
+	public JNumberInputField(double doubleValue, int fieldWidth, boolean autoCorrect, String errorMessage)
 	{
+		super(String.valueOf(doubleValue),fieldWidth);
 		fNumberType = kDouble;
 		fDoubleValue = doubleValue;
-		fTransferFocusAfterEntering = transferFocusAfterEntering;
+		fAutoCorrect = autoCorrect;
+		fErrorMessage = errorMessage;
+		fInputIsValid = true;
 
 		setHorizontalAlignment(JTextField.RIGHT);
-		update();
+		fFieldVerifier = new FieldVerifier();
+		setInputVerifier(fFieldVerifier);
 		addActionListener(this);
 	}
 
@@ -103,86 +119,6 @@ public class JNumberInputField extends JTextField implements ActionListener
 		fNumberFilter = numberFilter;
 	}
 
-	// the action-listener
-	/**
-	 * The <CODE>JNumberInputField</CODE>'s <B>action listener</B>.
-	 * <P>
-	 * Note that when an invalid number is entered in the textfield, this method automatically
-	 * reverts to the textfield's previous value.
-	 * <P>
-	 * If the &lt;ENTER&gt; key is pressed in the textfield, the focus may transfer to the next
-	 * GUI component (if this behaviour is specified).
-	 *
-	 * @param e  the <CODE>ActionEvent</CODE> that is received.
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		int dummyInteger = 0;
-		double dummyDouble = 0.0;
-
-		try {
-			if (fNumberType == kInteger) {
-				dummyInteger = (int) Math.round((new Double(e.getActionCommand())).doubleValue());
-			}
-			else if (fNumberType == kDouble) {
-				dummyDouble = (new Double(e.getActionCommand())).doubleValue();
-			}
-		}
-		catch (NumberFormatException exc) {
-			if (fNumberType == kInteger) {
-				dummyInteger = fIntegerValue;
-			}
-			else if (fNumberType == kDouble) {
-				dummyDouble = fDoubleValue;
-			}
-		}
-
-		if (fNumberType == kInteger) {
-			if (validateInteger(dummyInteger)) {
-				fIntegerValue = dummyInteger;
-			}
-		}
-		else if (fNumberType == kDouble) {
-			if (validateDouble(dummyDouble)) {
-				fDoubleValue = dummyDouble;
-			}
-		}
-
-		update();
-
-		if (fTransferFocusAfterEntering) {
-			transferFocus();
-		}
-	}
-
-	/**
-	 * Updates the value of the textfield.
-	 */
-	public final void update()
-	{
-		if (fNumberType == kInteger) {
-			setText(String.valueOf(fIntegerValue));
-		}
-		else if (fNumberType == kDouble) {
-			setText(String.valueOf(fDoubleValue));
-		}
-	}
-
-	/**
-	 * Changes the numerical <CODE>int</CODE> value of the textfield.
-	 * <P>
-	 * Note that this method has no effect when the <CODE>JNumberInputField</CODE> object
-	 * operates on a <CODE>double</CODE>.
-	 *
-	 * @param newIntegerValue  the new <CODE>int</CODE> value for the textfield
-	 */
-	public final void setIntegerValue(int newIntegerValue)
-	{
-		fIntegerValue = newIntegerValue;
-		update();
-	}
-
 	/**
 	 * Retrieves the numerical <CODE>int</CODE> value of the textfield.
 	 * <P>
@@ -191,26 +127,9 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 *
 	 * @return the <CODE>int</CODE> value of the textfield
 	 */
-	public final int getIntegerValue()
+	public int getIntegerValue()
 	{
-		// obtain the current value from the textfield
-		fireActionPerformed();
-
 		return fIntegerValue;
-	}
-
-	/**
-	 * Changes the numerical <CODE>double</CODE> value of the textfield.
-	 * <P>
-	 * Note that this method has no effect when the <CODE>JNumberInputField</CODE> object
-	 * operates on a <CODE>int</CODE>.
-	 *
-	 * @param newDoubleValue  the new <CODE>double</CODE> value for the textfield
-	 */
-	public final void setDoubleValue(double newDoubleValue)
-	{
-		fDoubleValue = newDoubleValue;
-		update();
 	}
 
 	/**
@@ -221,43 +140,77 @@ public class JNumberInputField extends JTextField implements ActionListener
 	 *
 	 * @return the <CODE>double</CODE> value of the textfield
 	 */
-	public final double getDoubleValue()
+	public double getDoubleValue()
 	{
-		// obtain the current value from the textfield
-		fireActionPerformed();
-
 		return fDoubleValue;
 	}
 
-	/*******************
-	 * PRIVATE METHODS *
-	 *******************/
-
+	// the action-listener
 	/**
-	 * @param i  -
-	 * @return   -
+	 * The <CODE>JNumberInputField</CODE>'s <B>action listener</B>.
+	 * <P>
+	 * This method always tries to transfer the focus to the next GUI component.
+	 *
+	 * @param e  the <CODE>ActionEvent</CODE> that is received.
 	 */
-	private boolean validateInteger(int i)
+	@Override
+	public void actionPerformed(ActionEvent e)
 	{
-		if (fNumberFilter == null) {
-			return true;
-		}
-		else {
-			return fNumberFilter.validateInteger(i);
-		}
+		transferFocus();
 	}
 
+	/*****************
+	 * INNER CLASSES *
+	 *****************/
+
 	/**
-	 * @param d  -
-	 * @return   -
+	 * @author  Sven Maerivoet
+	 * @version 04/12/2014
 	 */
-	private boolean validateDouble(double d)
+	private class FieldVerifier extends InputVerifier
 	{
-		if (fNumberFilter == null) {
-			return true;
-		}
-		else {
-			return fNumberFilter.validateDouble(d);
+		@Override
+		public boolean verify(JComponent inputComponent)
+		{
+			JTextField inputTextField = (JTextField) inputComponent;
+			try {
+				if (fNumberType == kInteger) {
+					fIntegerValue = Integer.parseInt(inputTextField.getText());
+					if ((fNumberFilter != null) && (!fNumberFilter.validateInteger(fIntegerValue))) {
+						throw (new NumberFormatException());
+					}
+				}
+				else if (fNumberType == kDouble) {
+					fDoubleValue = Double.parseDouble(inputTextField.getText());
+					if ((fNumberFilter != null) && (!fNumberFilter.validateDouble(fDoubleValue))) {
+						throw (new NumberFormatException());
+					}
+				}
+				setBackground( UIManager.getColor("TextField.background"));
+				fInputIsValid = true;
+				fireActionPerformed();
+			}
+			catch(NumberFormatException e) {
+				fInputIsValid = false;
+				if ((fErrorMessage == null) || ((fErrorMessage != null) && (fErrorMessage.length() > 0))) {
+					setBackground(new Color(255,128,128));
+					JOptionPane.showMessageDialog(null,fErrorMessage);
+				}
+				if (fAutoCorrect) {
+					if (fNumberType == kInteger) {
+						setText(String.valueOf(fIntegerValue));
+					}
+					else if (fNumberType == kDouble) {
+						setText(String.valueOf(fDoubleValue));
+					}
+					setBackground( UIManager.getColor("TextField.background"));
+				}
+				else {
+					setBackground(new Color(255,128,128));
+				}
+			}
+
+			return fInputIsValid;
 		}
 	}
 }
