@@ -26,6 +26,7 @@ package org.sm.smtools.swing.util;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import org.sm.smtools.swing.dialogs.*;
 
 /**
  * The <CODE>JNumberInputField</CODE> class provides a input textfield for <CODE>int</CODE> and <CODE>double</CODE> datatypes.
@@ -194,7 +195,7 @@ public final class JNumberInputField extends JTextField implements ActionListene
 				fInputIsValid = false;
 				setBackground(new Color(255,128,128));
 				if ((fErrorMessage != null) && (fErrorMessage.length() > 0)) {
-					JOptionPane.showMessageDialog(null,fErrorMessage);
+					JWarningDialog.warn(null,fErrorMessage);
 				}
 				if (fAutoCorrect) {
 					if (fNumberType == kInteger) {
