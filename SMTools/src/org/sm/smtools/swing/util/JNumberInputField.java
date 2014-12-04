@@ -192,8 +192,8 @@ public final class JNumberInputField extends JTextField implements ActionListene
 			}
 			catch(NumberFormatException e) {
 				fInputIsValid = false;
-				if ((fErrorMessage == null) || ((fErrorMessage != null) && (fErrorMessage.length() > 0))) {
-					setBackground(new Color(255,128,128));
+				setBackground(new Color(255,128,128));
+				if ((fErrorMessage != null) && (fErrorMessage.length() > 0)) {
 					JOptionPane.showMessageDialog(null,fErrorMessage);
 				}
 				if (fAutoCorrect) {
