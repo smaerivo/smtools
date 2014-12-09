@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : JGradientColorMap.java
 // Author        : Sven Maerivoet
-// Last modified : 17/11/2014
+// Last modified : 09/12/2014
 // Target        : Java VM (1.8)
 // --------------------------------------
 
@@ -34,23 +34,11 @@ import org.sm.smtools.util.*;
  * <P>
  * A gradient colour map provides a visual display of a bar with a certain specified spectrum:
  * <P>
- * <B>Gray scale:</B><BR>
- * <IMG src="doc-files/gradient-color-map-grayscale.png" alt="">
- * <P>
- * <B>Jet:</B><BR>
- * <IMG src="doc-files/gradient-color-map-jet.png" alt="">
- * <P>
- * <B>Copper:</B><BR>
- * <IMG src="doc-files/gradient-color-map-copper.png" alt="">
- * <P>
  * <B>Bone:</B><BR>
  * <IMG src="doc-files/gradient-color-map-bone.png" alt="">
  * <P>
- * <B>Green-red diverging:</B><BR>
- * <IMG src="doc-files/gradient-color-map-greenreddiverging.png" alt="">
- * <P>
- * <B>Hot:</B><BR>
- * <IMG src="doc-files/gradient-color-map-hot.png" alt="">
+ * <B>Copper:</B><BR>
+ * <IMG src="doc-files/gradient-color-map-copper.png" alt="">
  * <P>
  * <B>Discontinuous blue-white-green:</B><BR>
  * <IMG src="doc-files/gradient-color-map-discontinuousbluewhitegreen.png" alt="">
@@ -60,6 +48,18 @@ import org.sm.smtools.util.*;
  * <P>
  * <B>Black and white:</B><BR>
  * <IMG src="doc-files/gradient-color-map-blackandwhite.png" alt="">
+ * <P>
+ * <B>Gray scale:</B><BR>
+ * <IMG src="doc-files/gradient-color-map-grayscale.png" alt="">
+ * <P>
+ * <B>Green-red diverging:</B><BR>
+ * <IMG src="doc-files/gradient-color-map-greenreddiverging.png" alt="">
+ * <P>
+ * <B>Hot:</B><BR>
+ * <IMG src="doc-files/gradient-color-map-hot.png" alt="">
+ * <P>
+ * <B>Jet:</B><BR>
+ * <IMG src="doc-files/gradient-color-map-jet.png" alt="">
  * <P>
  * <B>Hue/saturation/brightness (HSB):</B><BR>
  * <IMG src="doc-files/gradient-color-map-huesaturationbrightness.png" alt="">
@@ -137,7 +137,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 17/11/2014
+ * @version 09/12/2014
  */
 public final class JGradientColorMap extends JPanel
 {
@@ -150,15 +150,15 @@ public final class JGradientColorMap extends JPanel
 	 * The various supported colour maps.
 	 */
 	public static enum EColorMap
-		{kGrayScale,
-		 kJet,
+		{kBone,
 		 kCopper,
-		 kBone,
-		 kGreenRedDiverging,
-		 kHot,
 		 kDiscontinuousBlueWhiteGreen,
 		 kDiscontinuousDarkRedYellow,
 		 kBlackAndWhite,
+		 kGrayScale,
+		 kGreenRedDiverging,
+		 kHot,
+		 kJet,
 		 kHueSaturationBrightness,
 		 kSeparatedRGB,
 		 kRed,
@@ -661,40 +661,7 @@ public final class JGradientColorMap extends JPanel
 		float green = 0.0f;
 		float blue = 0.0f;
 
-		if (fColorMap == EColorMap.kGrayScale) {			
-			red = t;
-			green = t;
-			blue = t;
-		}
-		else if (fColorMap == EColorMap.kJet) {
-			if (t <= kLowerTreshold) {
-				// interpolate from blue to green
-				t = t / kLowerTreshold;
-				red = 0.0f;
-				green = t;
-				blue = 1.0f - t;
-			}
-			else if (t <= kHigherTreshold) {
-				// interpolate from green to yellow
-				t = (t - kLowerTreshold) / kDifference;
-				red = t;
-				green = 1.0f;
-				blue = 0.0f;
-			}
-			else if (t <= 100) {
-				// interpolate from yellow to red
-				t = (t - kHigherTreshold) / (1.0f - kHigherTreshold);
-				red = 1.0f;
-				green = 1.0f - t;
-				blue = 0.0f;
-			}
-		}
-		else if (fColorMap == EColorMap.kCopper) {
-			red = (float) MathTools.clip(t * 1.5f,0.0,1.0);
-			green = t;
-			blue = t / 10.0f;
-		}
-		else if (fColorMap == EColorMap.kBone) {
+		if (fColorMap == EColorMap.kBone) {
 			float n = 3.0f / 8.0f;
 			if (t < n) {
 				red = 0.0f;
@@ -715,37 +682,10 @@ public final class JGradientColorMap extends JPanel
 			green = ((7.0f * t) + green) / 8.0f;
 			blue = ((7.0f * t) + blue) / 8.0f;
 		}
-		else if (fColorMap == EColorMap.kGreenRedDiverging) {
-			if (t < 0.5f) {
-				float divergingFactor = t / 0.5f;
-				red = divergingFactor;
-				green = 1.0f;
-				blue = divergingFactor;
-			}
-			else {
-				float divergingFactor = (1.0f - t) / 0.5f;
-				red = 1.0f;
-				green = divergingFactor;
-				blue = divergingFactor;
-			}
-		}
-		else if (fColorMap == EColorMap.kHot) {
-			float n = 3.0f / 8.0f;
-			if (t < n) {
-				red = t * (1.0f / n);
-				green = 0.0f;
-				blue = 0.0f;
-			}
-			else if (t < (2.0f * n)) {
-				red = 1.0f;
-				green = (t - n) * (1.0f / n);
-				blue = 0.0f;
-			}
-			else {
-				red = 1.0f;
-				green = 1.0f;
-				blue = (t - (2.0f * n)) * (1.0f / n);
-			}
+		else if (fColorMap == EColorMap.kCopper) {
+			red = (float) MathTools.clip(t * 1.5f,0.0,1.0);
+			green = t;
+			blue = t / 10.0f;
 		}
 		else if (fColorMap == EColorMap.kDiscontinuousBlueWhiteGreen) {
 			if (t < 0.0625f) {
@@ -792,6 +732,66 @@ public final class JGradientColorMap extends JPanel
 				red = 1.0f;
 				green = 1.0f;
 				blue = 1.0f;
+			}
+		}
+		else if (fColorMap == EColorMap.kGrayScale) {
+			red = t;
+			green = t;
+			blue = t;
+		}
+		else if (fColorMap == EColorMap.kGreenRedDiverging) {
+			if (t < 0.5f) {
+				float divergingFactor = t / 0.5f;
+				red = divergingFactor;
+				green = 1.0f;
+				blue = divergingFactor;
+			}
+			else {
+				float divergingFactor = (1.0f - t) / 0.5f;
+				red = 1.0f;
+				green = divergingFactor;
+				blue = divergingFactor;
+			}
+		}
+		else if (fColorMap == EColorMap.kHot) {
+			float n = 3.0f / 8.0f;
+			if (t < n) {
+				red = t * (1.0f / n);
+				green = 0.0f;
+				blue = 0.0f;
+			}
+			else if (t < (2.0f * n)) {
+				red = 1.0f;
+				green = (t - n) * (1.0f / n);
+				blue = 0.0f;
+			}
+			else {
+				red = 1.0f;
+				green = 1.0f;
+				blue = (t - (2.0f * n)) * (1.0f / n);
+			}
+		}
+		else if (fColorMap == EColorMap.kJet) {
+			if (t <= kLowerTreshold) {
+				// interpolate from blue to green
+				t = t / kLowerTreshold;
+				red = 0.0f;
+				green = t;
+				blue = 1.0f - t;
+			}
+			else if (t <= kHigherTreshold) {
+				// interpolate from green to yellow
+				t = (t - kLowerTreshold) / kDifference;
+				red = t;
+				green = 1.0f;
+				blue = 0.0f;
+			}
+			else if (t <= 100) {
+				// interpolate from yellow to red
+				t = (t - kHigherTreshold) / (1.0f - kHigherTreshold);
+				red = 1.0f;
+				green = 1.0f - t;
+				blue = 0.0f;
 			}
 		}
 		else if (fColorMap == EColorMap.kHueSaturationBrightness) {
