@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 10/11/2014
+// Last modified : 11/12/2014
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -43,7 +43,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 10/11/2014
+ * @version 11/12/2014
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
@@ -53,9 +53,6 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	private static final String kActionCommandLoadCustomColorMap = "button.CustomColorMap.LoadFromFile";
 	private static final String kActionCommandSaveCustomColorMap = "button.CustomColorMap.SaveToFile";
 	private static final String kActionCommandClearCustomColorMap = "button.CustomColorMap.Clear";
-
-	// the field separator for loading and saving
-	private static final String kFieldSeparator = ",";
 
 	// internal datastructures
 	private int fNrOfColors;
@@ -138,34 +135,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 					clearControls();
 
 					TextFileParser tfp = new TextFileParser(filename);
-					while (!tfp.endOfFileReached()) {
-						String[] colorMapComponentsDesc = tfp.getNextCSV();
-						if (colorMapComponentsDesc.length < 5) {
-							throw (new FileParseException(filename,"",tfp.getLastReadLineNr()));
-						}
-
-						// extract ID
-						String idDesc = colorMapComponentsDesc[0];
-						int id = Integer.parseInt(idDesc);
-
-						// only retain supported color indices
-						if (id < fNrOfColors) {
-
-							// extract level
-							String levelDesc = colorMapComponentsDesc[1];
-							double level = Double.parseDouble(levelDesc);
-
-							// extract color components
-							String redDesc = colorMapComponentsDesc[2];
-							int red = Integer.parseInt(redDesc);
-							String greenDesc = colorMapComponentsDesc[3];
-							int green = Integer.parseInt(greenDesc);
-							String blueDesc = colorMapComponentsDesc[4];
-							int blue = Integer.parseInt(blueDesc);
-
-							fColorMap.setCustomColorMapComponent(id,level,new Color(red,green,blue));
-						}
-					}
+					fColorMap.loadCustomColorMapComponents(tfp);
 
 					adjustControls();
 				}
@@ -192,29 +162,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 
 				try {
 					TextFileWriter tfw = new TextFileWriter(filename);
-
-					// store all color map components to file
-					TreeMap<Integer,CustomColorMapComponent> colorMapComponents = fColorMap.getAllCustomColorMapComponents();
-					for (int colorIndex : fColorMap.getAllCustomColorMapComponents().keySet()) {
-						CustomColorMapComponent colorMapComponent = colorMapComponents.get(colorIndex);
-
-						// save ID
-						tfw.writeInteger(colorIndex);
-						tfw.writeString(kFieldSeparator);
-
-						// save level
-						tfw.writeDouble(colorMapComponent.fLevel);
-						tfw.writeString(kFieldSeparator);
-
-						// save color components
-						tfw.writeInteger(colorMapComponent.fColor.getRed());
-						tfw.writeString(kFieldSeparator);
-						tfw.writeInteger(colorMapComponent.fColor.getGreen());
-						tfw.writeString(kFieldSeparator);
-						tfw.writeInteger(colorMapComponent.fColor.getBlue());
-
-						tfw.writeLn();
-					}
+					fColorMap.saveCustomColorMapComponents(tfw);
 					JMessageDialog.show(this,I18NL10N.translate("text.CustomColorMap.Saved"));
 				}
 				catch (FileCantBeCreatedException exc) {

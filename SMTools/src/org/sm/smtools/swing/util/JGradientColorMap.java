@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : JGradientColorMap.java
 // Author        : Sven Maerivoet
-// Last modified : 09/12/2014
+// Last modified : 11/12/2014
 // Target        : Java VM (1.8)
 // --------------------------------------
 
@@ -26,6 +26,7 @@ package org.sm.smtools.swing.util;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import org.sm.smtools.exceptions.*;
 import org.sm.smtools.math.*;
 import org.sm.smtools.util.*;
 
@@ -137,7 +138,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 09/12/2014
+ * @version 11/12/2014
  */
 public final class JGradientColorMap extends JPanel
 {
@@ -176,6 +177,9 @@ public final class JGradientColorMap extends JPanel
 		 kVioletPurples,
 		 kDeepSpace,
 		 kCustom};
+
+	// the field separator for loading and saving
+	private static final String kFieldSeparator = ",";
 
 	// colour map preferences
 	private static final float kLowerTreshold = 0.33f;
@@ -643,6 +647,79 @@ public final class JGradientColorMap extends JPanel
 		}
 
 		return colorMapComponents;
+	}
+
+	/**
+	 * Loads the custom colour map's components from a file.
+	 * 
+	 * @param  tfp                 a reference to the file parser
+	 * @throws FileParseException  in case a parse error occurs
+	 */
+	public final void loadCustomColorMapComponents(TextFileParser tfp) throws FileParseException
+	{
+		int nrOfColorMapComponents = tfp.getNextInteger();
+
+		clearAllCustomColorMapComponents();
+		for (int colorIndex = 0; colorIndex < nrOfColorMapComponents; ++colorIndex) {
+			String[] colorMapComponentsDesc = tfp.getNextCSV();
+			if (colorMapComponentsDesc.length < 5) {
+				throw (new FileParseException("","",tfp.getLastReadLineNr()));
+			}
+
+			// extract ID
+			String idDesc = colorMapComponentsDesc[0];
+			int id = Integer.parseInt(idDesc);
+
+			// extract level
+			String levelDesc = colorMapComponentsDesc[1];
+			double level = Double.parseDouble(levelDesc);
+
+			// extract color components
+			String redDesc = colorMapComponentsDesc[2];
+			int red = Integer.parseInt(redDesc);
+			String greenDesc = colorMapComponentsDesc[3];
+			int green = Integer.parseInt(greenDesc);
+			String blueDesc = colorMapComponentsDesc[4];
+			int blue = Integer.parseInt(blueDesc);
+
+			setCustomColorMapComponent(id,level,new Color(red,green,blue));
+		}
+	}
+
+	/**
+	 * Saves the custom colour map's components to a file.
+	 * 
+	 * @param  tfw                 a reference to the file writer
+	 * @throws FileWriteException  in case a write error occurs
+	 */
+	public final void saveCustomColorMapComponents(TextFileWriter tfw) throws FileWriteException
+	{
+		TreeMap<Integer,CustomColorMapComponent> colorMapComponents = getAllCustomColorMapComponents();
+
+		// save the number of colour map components
+		tfw.writeInteger(colorMapComponents.size());
+		tfw.writeLn();
+
+		for (int colorIndex : getAllCustomColorMapComponents().keySet()) {
+			CustomColorMapComponent colorMapComponent = colorMapComponents.get(colorIndex);
+
+			// save ID
+			tfw.writeInteger(colorIndex);
+			tfw.writeString(kFieldSeparator);
+
+			// save level
+			tfw.writeDouble(colorMapComponent.fLevel);
+			tfw.writeString(kFieldSeparator);
+
+			// save color components
+			tfw.writeInteger(colorMapComponent.fColor.getRed());
+			tfw.writeString(kFieldSeparator);
+			tfw.writeInteger(colorMapComponent.fColor.getGreen());
+			tfw.writeString(kFieldSeparator);
+			tfw.writeInteger(colorMapComponent.fColor.getBlue());
+
+			tfw.writeLn();
+		}
 	}
 
 	/**
