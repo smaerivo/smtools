@@ -179,11 +179,11 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	public JDateChooser(JFrame owner, String title, JDefaultDialog.EType dialogType, DateStamp defaultDateStamp, EUseDefaultDate useDefaultDate, JDefaultDialog.EActivation activation)
 	{
 		super(owner,
-				JDefaultDialog.EModality.kModal,
-				JDefaultDialog.ESize.kFixedSize,
-				dialogType,
-				new Object[] {title,defaultDateStamp,useDefaultDate},
-				activation);
+			JDefaultDialog.EModality.kModal,
+			JDefaultDialog.ESize.kFixedSize,
+			dialogType,
+			new Object[] {title,defaultDateStamp,useDefaultDate},
+			activation);
 		JARResources.checkSystemInitialisation();
 	}
 

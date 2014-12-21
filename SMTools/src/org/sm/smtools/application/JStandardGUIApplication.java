@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 19/11/2014
+// Last modified : 21/12/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -137,7 +137,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 19/11/2014
+ * @version 21/12/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -567,6 +567,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 				fGUIWidth = (int) Math.round(screenSize.getWidth() - screenInsets.left - screenInsets.right);
 				fGUIHeight = (int) Math.round(screenSize.getHeight() - screenInsets.top - screenInsets.bottom);
 
+/*
+				DISABLE DUE TO A BUG IN SWING SHOWING CHILD'S CONTENTS IN THE MAIN CONTENTPANE
+				------------------------------------------------------------------------------
+
 				// check if the OS can set the window to a maximised state
 				if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {
 					setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -575,6 +579,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 					// we approximate the fullscreen GUI ourselves
 					setSize(new Dimension(fGUIWidth,fGUIHeight));
 				}
+*/
+				// we approximate the fullscreen GUI ourselves
+				setSize(new Dimension(fGUIWidth,fGUIHeight));
 			}
 			else {
 				setSize(new Dimension(fGUIWidth,fGUIHeight));

@@ -201,11 +201,11 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 	public JTimeChooser(JFrame owner, String title, JDefaultDialog.EType dialogType, TimeStamp timeStamp, EType type, EClockDigits clockDigits, EUpdating updating, EDigitalClock digitalClock, JDefaultDialog.EActivation activation)
 	{
 		super(owner,
-				JDefaultDialog.EModality.kModal,
-				JDefaultDialog.ESize.kFixedSize,
-				dialogType,
-				new Object[] {title, timeStamp, type, clockDigits, updating, digitalClock},
-				activation);
+			JDefaultDialog.EModality.kModal,
+			JDefaultDialog.ESize.kFixedSize,
+			dialogType,
+			new Object[] {title, timeStamp, type, clockDigits, updating, digitalClock},
+			activation);
 		JARResources.checkSystemInitialisation();
 	}
 
