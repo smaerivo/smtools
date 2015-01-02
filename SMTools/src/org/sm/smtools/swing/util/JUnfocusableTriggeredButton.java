@@ -6,7 +6,7 @@
 // ------------------------------------------------
 
 /**
- * Copyright 2003-2014 Sven Maerivoet
+ * Copyright 2003-2015 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
