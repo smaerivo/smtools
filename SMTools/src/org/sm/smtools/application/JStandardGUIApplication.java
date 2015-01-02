@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 21/12/2014
+// Last modified : 30/12/2014
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -67,7 +67,9 @@ import org.sm.smtools.swing.dialogs.*;
  *       <LI>-<B>silent</B></LI>
  *       <LI>-<B>help</B></LI>
  *     </UL>
- *     <I>Note that the application is sized to fullscreen if either width or height or set to reflect this. Fullscreen is this case
+ *     <I>As a locale, you can also specify a BCP 47 short name (cf. the IETF's Best Current Practice,
+ *     see also http://en.wikipedia.org/wiki/IETF_language_tag).<BR />
+ *     Note that the application is sized to fullscreen if either width or height or set to reflect this. Fullscreen is this case
  *     this implies window-mode (which is maximised if the OS allows it).</I>
  *   </UL>
  *   <LI><B><U>Custom initialisation and clean-up</U></B></LI>
@@ -137,7 +139,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 21/12/2014
+ * @version 30/12/2014
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {

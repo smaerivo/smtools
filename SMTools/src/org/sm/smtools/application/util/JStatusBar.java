@@ -245,7 +245,6 @@ public final class JStatusBar extends JPanel
 			fBatteryUsageLabel.setIcon(fBatteryLevelUnknownImage);
 
 			int batteryLifePercent = batteryStatus.getBatteryLifePercent();
-
 			if (batteryStatus.isOnACPower() && !batteryStatus.isCharging()) {
 				fBatteryUsageLabel.setIcon(fBatteryLevelOnACPowerImage);
 			}
