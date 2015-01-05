@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 05/01/2005
+// Last modified : 05/01/2015
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -30,7 +30,6 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import org.apache.log4j.*;
-import org.sm.smtools.application.registry.*;
 import org.sm.smtools.util.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
@@ -139,7 +138,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 05/01/2005
+ * @version 05/01/2015
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -436,7 +435,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		fSystemRegistry = Registry.getInstance();
 
 		// load (deserialise) the system registry
-		kLogger.info(I18NL10N.translate("text.LoadingSystemRegistryHives"));
+		kLogger.info(I18NL10N.translate("text.LoadingSystemRegistry"));
 		try {
 			fSystemRegistry.load(kSystemRegistryFilename);
 		}
@@ -788,7 +787,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 				kLogger.info(I18NL10N.translate("text.RunningApplicationShutdownSequence"));
 				shutdown();
 
-				kLogger.info(I18NL10N.translate("text.SavingRegistryHives"));
+				kLogger.info(I18NL10N.translate("text.SavingRegistry"));
 				saveRegistry();
 
 				// quit the running application
@@ -800,7 +799,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			kLogger.info(I18NL10N.translate("text.RunningApplicationShutdownSequence"));
 			shutdown();
 
-			kLogger.info(I18NL10N.translate("text.SavingRegistryHives"));
+			kLogger.info(I18NL10N.translate("text.SavingRegistry"));
 			saveRegistry();
 
 			// quit the running application
@@ -1937,11 +1936,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 			try {
 				Registry registry = Registry.getInstance();
-
-				SystemHive systemHive = new SystemHive();
-				systemHive.fContents = new Hashtable<>();
-
-				registry.addHive(SystemHive.kName,systemHive);
+				registry.clear();
 				registry.save(kSystemRegistryFilename);
 				kLogger.info("Done creating registry; application stopped.");
 			}

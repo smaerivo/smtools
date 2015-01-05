@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : RegistryException.java
 // Author        : Sven Maerivoet
-// Last modified : 28/10/2004
+// Last modified : 05/01/2015
 // Target        : Java VM (1.8)
 //--------------------------------------
 
@@ -23,7 +23,7 @@
 
 package org.sm.smtools.exceptions;
 
-import org.sm.smtools.application.registry.*;
+import org.sm.smtools.application.util.*;
 
 /**
  * Indicates an error involving the {@link Registry}.
@@ -31,9 +31,8 @@ import org.sm.smtools.application.registry.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 28/10/2004
- * @see     org.sm.smtools.application.registry.Hive 
- * @see     org.sm.smtools.application.registry.Registry 
+ * @version 05/01/2015
+ * @see     org.sm.smtools.application.util.Registry 
  */
 public final class RegistryException extends Exception
 {
@@ -48,8 +47,7 @@ public final class RegistryException extends Exception
 	 * Constructs a <CODE>RegistryException</CODE> object, based on the specified error.
 	 *
 	 * @param registryError  the specified error
-	 * @see                  org.sm.smtools.application.registry.Hive
-	 * @see                  org.sm.smtools.application.registry.Registry
+	 * @see                  org.sm.smtools.application.util.Registry
 	 */
 	public RegistryException(String registryError)
 	{
