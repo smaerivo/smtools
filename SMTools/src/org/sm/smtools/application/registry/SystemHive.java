@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : SystemHive.java
 // Author        : Sven Maerivoet
-// Last modified : 28/10/2004
+// Last modified : 05/01/2005
 // Target        : Java VM (1.8)
 // -------------------------------
 
@@ -33,12 +33,17 @@ import java.util.*;
  * parameterised, so that an <CODE>Object</CODE> is referenced/looked up as a <CODE>String</CODE>. 
  * 
  * @author  Sven Maerivoet
- * @version 28/10/2004
+ * @version 05/01/2005
  * @see     Hive
  * @see     Registry
  */
 public class SystemHive implements Hive
 {
+	/**
+	 * The name of the system hive.
+	 */
+	public static final String kName = "SystemHive";
+
 	// version number of serialisation
 	private static final long serialVersionUID = 1L;
 

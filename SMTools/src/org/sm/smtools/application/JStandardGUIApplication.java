@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 30/12/2014
+// Last modified : 05/01/2005
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -130,7 +130,7 @@ import org.sm.smtools.swing.dialogs.*;
  * then this options becomes available in the menu.
  * <P>
  * As the application is ran, the global system {@link Registry} is read from the file <CODE>system-registry.ser</CODE>
- * (and stored back to file at the end). The user registry is also loaded from the file <CODE>application-registry.ser</CODE> if it exists.
+ * (and stored back to file at the end).
  * <P>
  * When the user wants to quit the application, a confirmation dialog is shown:
  * <P>
@@ -139,7 +139,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 30/12/2014
+ * @version 05/01/2005
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -226,9 +226,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	// system registry filename
 	private static final String kSystemRegistryFilename = "system-registry.ser";
 
-	// system registry filename
-	private static final String kApplicationRegistryFilename = "application-registry.ser";
-
 	// default application icon filename
 	private static final String kDefaultApplicationIconFilename = "smtools-resources/images/icon.jpg";
 
@@ -268,7 +265,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private static final int kClockUpdatePeriod = 500;
 
 	// switch for first-time initialisation of the system registry
-	private static final boolean kSaveSystemRegistry = false;
+	private static final boolean kCreateSystemRegistry = false;
 
 	// internal datastructures
 	private Registry fSystemRegistry;
@@ -445,20 +442,6 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 		catch (RegistryException exc) {
 			abortApplication(exc.getRegistryError(),true);
-		}
-
-		// load (deserialise) the application's registry
-		File file = new File(kApplicationRegistryFilename);
-		if (file.exists()) {
-			try {
-				kLogger.info(I18NL10N.translate("text.LoadingApplicationRegistryHives"));
-
-				// automatically join both system and application registries
-				fSystemRegistry.load(kApplicationRegistryFilename);
-			}
-			catch (RegistryException exc) {
-				abortApplication(exc.getRegistryError(),true);
-			}
 		}
 
 		// make the contents of windows dynamic (e.g., resizing background images, ...)
@@ -918,7 +901,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	public static void main(String[] argv)
 	{
-		saveSystemRegistry();
+		createSystemRegistry();
 		new JStandardGUIApplication(argv,null);
 	}
 
@@ -1947,10 +1930,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 	/**
 	 */
-	private static void saveSystemRegistry()
+	private static void createSystemRegistry()
 	{
-		if (kSaveSystemRegistry) {
-			kLogger.info("Saving system registry...");
+		if (kCreateSystemRegistry) {
+			kLogger.info("Creating system registry...");
 
 			try {
 				Registry registry = Registry.getInstance();
@@ -1958,12 +1941,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 				SystemHive systemHive = new SystemHive();
 				systemHive.fContents = new Hashtable<>();
 
-				// update contents of the system hive
-				// ...
-
-				registry.addHive("SystemHive",systemHive);
+				registry.addHive(SystemHive.kName,systemHive);
 				registry.save(kSystemRegistryFilename);
-				kLogger.info("Done saving registry; application stopped.");
+				kLogger.info("Done creating registry; application stopped.");
 			}
 			catch (Exception exc) {
 				kLogger.fatal(exc);
