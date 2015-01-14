@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 05/01/2015
+// Last modified : 14/01/2015
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -138,7 +138,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 05/01/2015
+ * @version 14/01/2015
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -390,7 +390,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		parseCommandLine(argv);
 
 		// load the system's locale database
-		kLogger.info("Loading system locale database...");
+		kLogger.info("Loading system locale database [" + fLocale + "]...");
 		try {
 			I18NL10N.load(JARResources.fSystemResources.getInputStream(I18NL10N.getFilename(kSystemLocalePrefix,fLocale)));
 		}
