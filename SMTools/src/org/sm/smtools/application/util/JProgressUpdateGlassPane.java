@@ -1,7 +1,7 @@
 // ---------------------------------------------
 // Filename      : JProgressUpdateGlassPane.java
 // Author        : Sven Maerivoet
-// Last modified : 07/11s/2014
+// Last modified : 19/01/2015
 // Target        : Java VM (1.8)
 // ---------------------------------------------
 
@@ -57,7 +57,7 @@ import org.sm.smtools.util.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 07/11/2014
+ * @version 19/01/2015
  */
 public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener, KeyListener
 {
@@ -454,7 +454,20 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 
 		// show the time left
 		if (fShowTimeEstimation && (timeLeftMs > 0)) {
-			String timeDesc = timeLeft.getMSString() + " (" + totalTime.getMSString() + ")";
+			// also show the hours if necessary
+			String timeDesc = "";
+			if (timeLeftMs < (60 * 60 * 1000)) {
+				timeDesc = timeLeft.getMSString() + " (";
+			}
+			else {
+				timeDesc = timeLeft.getHMSString() + " (";
+			}
+			if (totalTimeMs < (60 * 60 * 1000)) {
+				timeDesc += totalTime.getMSString() + ")";
+			}
+			else {
+				timeDesc += totalTime.getHMSString() + ")";
+			}
 
 			font = new Font(getFont().getFontName(),Font.ITALIC,(int) Math.round(diameter / 20.0));
 			g2.setFont(font);
