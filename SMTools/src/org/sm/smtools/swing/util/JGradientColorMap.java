@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : JGradientColorMap.java
 // Author        : Sven Maerivoet
-// Last modified : 11/12/2014
+// Last modified : 03/02/2015
 // Target        : Java VM (1.8)
 // --------------------------------------
 
@@ -113,6 +113,9 @@ import org.sm.smtools.util.*;
  * <B>Custom:</B><BR>
  * Dependent on the colours specified.
  * <P>
+ * <B>Random:</B><BR>
+ * A random selection of colours.
+ * <P>
  * A gradient colour map can have four orientations (see {@link JGradientColorMap.EOrientation}):
  * <UL>
  *   <LI>horizontal left to right (tick marks are supported),</LI>
@@ -138,7 +141,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 11/12/2014
+ * @version 03/02/2015
  */
 public final class JGradientColorMap extends JPanel
 {
@@ -176,7 +179,8 @@ public final class JGradientColorMap extends JPanel
 		 kYellowBrowns,
 		 kVioletPurples,
 		 kDeepSpace,
-		 kCustom};
+		 kCustom,
+		 kRandom};
 
 	// the field separator for loading and saving
 	private static final String kFieldSeparator = ",";
@@ -189,6 +193,7 @@ public final class JGradientColorMap extends JPanel
 	private static final int kDefaultHeight = 20;
 	private static final int kTickMarkSize = 10;
 	private static final int kHalfTickMarkSize = (int) Math.round(kTickMarkSize / 2.0);
+	private static final int kDefaultNrOfRandomComponents = 10;
 
 	// internal datastructures
 	private EOrientation fOrientation;
@@ -216,6 +221,7 @@ public final class JGradientColorMap extends JPanel
 	private TreeMap<Double,Color> fYellowBrownsColorMap;
 	private TreeMap<Double,Color> fVioletPurplesColorMap;
 	private TreeMap<Double,Color> fDeepSpaceColorMap;
+	private TreeMap<Double,Color> fRandomColorMap;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -320,8 +326,22 @@ public final class JGradientColorMap extends JPanel
 		else if (fColorMap == EColorMap.kDeepSpace) {
 			fCustomColorMap = fDeepSpaceColorMap;
 		}
-	
+		else if (fColorMap == EColorMap.kRandom) {
+			createRandomColorMap(kDefaultNrOfRandomComponents);
+		}
+
 		repaint();
+	}
+
+	/**
+	 * Sets up a random colour map.
+	 * 
+	 * @param nrOfRandomColors  the number of random colours to be used
+	 */
+	public void setRandomColorMap(int nrOfRandomColors)
+	{
+		createRandomColorMap(nrOfRandomColors);
+		fColorMap = EColorMap.kRandom;
 	}
 
 	/**
@@ -650,6 +670,71 @@ public final class JGradientColorMap extends JPanel
 	}
 
 	/**
+	 * Loads the random colour map's components from a file.
+	 * 
+	 * @param  tfp                 a reference to the file parser
+	 * @throws FileParseException  in case a parse error occurs
+	 */
+	public final void loadRandomColorMapComponents(TextFileParser tfp) throws FileParseException
+	{
+		fRandomColorMap =  new TreeMap<Double,Color>();
+
+		int nrOfColorMapComponents = tfp.getNextInteger();
+		for (int colorIndex = 0; colorIndex < nrOfColorMapComponents; ++colorIndex) {
+			String[] colorMapComponentsDesc = tfp.getNextCSV();
+			if (colorMapComponentsDesc.length < 4) {
+				throw (new FileParseException("","",tfp.getLastReadLineNr()));
+			}
+
+			// extract level
+			String levelDesc = colorMapComponentsDesc[0];
+			double level = Double.parseDouble(levelDesc);
+
+			// extract color components
+			String redDesc = colorMapComponentsDesc[1];
+			int red = Integer.parseInt(redDesc);
+			String greenDesc = colorMapComponentsDesc[2];
+			int green = Integer.parseInt(greenDesc);
+			String blueDesc = colorMapComponentsDesc[3];
+			int blue = Integer.parseInt(blueDesc);
+
+			fRandomColorMap.put(level,new Color(red,green,blue));
+		}
+
+		fCustomColorMap = fRandomColorMap;
+	}
+
+	/**
+	 * Saves the random colour map's components to a file.
+	 * 
+	 * @param  tfw                 a reference to the file writer
+	 * @throws FileWriteException  in case a write error occurs
+	 */
+	public final void saveRandomColorMapComponents(TextFileWriter tfw) throws FileWriteException
+	{
+		// save the number of colour map components
+		tfw.writeInteger(fRandomColorMap.size());
+		tfw.writeLn();
+
+		for (double level : fRandomColorMap.keySet()) {
+			Color color = fRandomColorMap.get(level);
+
+			// save level
+			tfw.writeDouble(level);
+			tfw.writeString(kFieldSeparator);
+
+			// save color components
+			tfw.writeInteger(color.getRed());
+			tfw.writeString(kFieldSeparator);
+			tfw.writeInteger(color.getGreen());
+			tfw.writeString(kFieldSeparator);
+			tfw.writeInteger(color.getBlue());
+
+			tfw.writeLn();
+		}
+	}
+
+	/**
 	 * Loads the custom colour map's components from a file.
 	 * 
 	 * @param  tfp                 a reference to the file parser
@@ -657,9 +742,9 @@ public final class JGradientColorMap extends JPanel
 	 */
 	public final void loadCustomColorMapComponents(TextFileParser tfp) throws FileParseException
 	{
-		int nrOfColorMapComponents = tfp.getNextInteger();
-
 		clearAllCustomColorMapComponents();
+
+		int nrOfColorMapComponents = tfp.getNextInteger();
 		for (int colorIndex = 0; colorIndex < nrOfColorMapComponents; ++colorIndex) {
 			String[] colorMapComponentsDesc = tfp.getNextCSV();
 			if (colorMapComponentsDesc.length < 5) {
@@ -953,7 +1038,8 @@ public final class JGradientColorMap extends JPanel
 						(fColorMap == EColorMap.kBlues) ||
 						(fColorMap == EColorMap.kYellowBrowns) ||
 						(fColorMap == EColorMap.kVioletPurples) ||
-						(fColorMap == EColorMap.kDeepSpace)) {
+						(fColorMap == EColorMap.kDeepSpace) ||
+						(fColorMap == EColorMap.kRandom)) {
 			// find the values surrounding the requested value
 			Double lowerValue = fCustomColorMap.floorKey((double) t);
 			if (lowerValue == null) {
@@ -1131,6 +1217,19 @@ public final class JGradientColorMap extends JPanel
 		fDeepSpaceColorMap.put(0.8,new Color(48,25,0));
 		fDeepSpaceColorMap.put(0.9,new Color(0,2,9));
 		fDeepSpaceColorMap.put(1.0,new Color(0,0,100));
+	}
+
+	/**
+	 * @param nrOfRandomColors  -
+	 */
+	private void createRandomColorMap(int nrOfRandomColors)
+	{
+		fRandomColorMap =  new TreeMap<Double,Color>();
+		for (int i = 0; i < nrOfRandomColors; ++i) {
+			fRandomColorMap.put((double) i * (1.0 / (double) nrOfRandomColors),new Color((float) Math.random(),(float) Math.random(),(float) Math.random()));
+		}
+
+		fCustomColorMap = fRandomColorMap;
 	}
 
 	/*****************
