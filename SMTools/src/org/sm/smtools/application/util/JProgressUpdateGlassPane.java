@@ -1,7 +1,7 @@
 // ---------------------------------------------
 // Filename      : JProgressUpdateGlassPane.java
 // Author        : Sven Maerivoet
-// Last modified : 19/01/2015
+// Last modified : 08/02/2015
 // Target        : Java VM (1.8)
 // ---------------------------------------------
 
@@ -57,7 +57,7 @@ import org.sm.smtools.util.*;
  * <P>
  *
  * @author  Sven Maerivoet
- * @version 19/01/2015
+ * @version 08/02/2015
  */
 public class JProgressUpdateGlassPane extends JPanel implements MouseListener, MouseMotionListener, KeyListener
 {

@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : TaskExecutor.java
 // Author        : Sven Maerivoet
-// Last modified : 19/09/2014
+// Last modified : 08/02/2015
 // Target        : Java VM (1.8)
 // ---------------------------------
 
@@ -44,7 +44,7 @@ import org.sm.smtools.application.util.*;
  * Progress of the tasks' executions is shown via an optional progress update glasspane.
  * 
  * @author  Sven Maerivoet
- * @version 19/09/2014
+ * @version 08/02/2015
  * @see     ATask
  */
 public class TaskExecutor extends SwingWorker<Void,Void>
