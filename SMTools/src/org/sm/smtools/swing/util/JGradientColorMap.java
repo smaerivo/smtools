@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : JGradientColorMap.java
 // Author        : Sven Maerivoet
-// Last modified : 03/02/2015
+// Last modified : 04/06/2015
 // Target        : Java VM (1.8)
 // --------------------------------------
 
@@ -141,7 +141,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 03/02/2015
+ * @version 04/06/2015
  */
 public final class JGradientColorMap extends JPanel
 {
@@ -1226,7 +1226,7 @@ public final class JGradientColorMap extends JPanel
 	{
 		fRandomColorMap =  new TreeMap<Double,Color>();
 		for (int i = 0; i < nrOfRandomColors; ++i) {
-			fRandomColorMap.put((double) i * (1.0 / (double) nrOfRandomColors),new Color((float) Math.random(),(float) Math.random(),(float) Math.random()));
+			fRandomColorMap.put((double) i * (1.0 / ((double) nrOfRandomColors - 1.0)),new Color((float) Math.random(),(float) Math.random(),(float) Math.random()));
 		}
 
 		fCustomColorMap = fRandomColorMap;
