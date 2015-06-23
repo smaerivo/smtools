@@ -513,13 +513,13 @@ public class JAboutBox extends JDefaultDialog
 		aboutText += "Java VM " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ")<BR>";
 		aboutText += I18NL10N.translate("text.OperatingSystem") + ": " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<BR>";
 		aboutText += I18NL10N.translate("text.CurrentLocale") + ": " + I18NL10N.getCurrentLocaleDescription() + "<BR/>";
-		int nrOfProcessors = MemoryStatistics.getNrOfProcessors();
+		int nrOfProcessors = SystemInformation.getNrOfProcessors();
 		aboutText += I18NL10N.translate("text.NrOfProcessors") + ": " + String.valueOf(nrOfProcessors) + "<BR>";		
 
 		// update the available memory
-		long totalMemory = MathTools.round(MathTools.convertBToMiB(MemoryStatistics.getTotalMemory()));
-		long usedMemory = MathTools.round(MathTools.convertBToMiB(MemoryStatistics.getUsedMemory()));
-		long freeMemory = MathTools.round(MathTools.convertBToMiB(MemoryStatistics.getFreeMemory()));
+		long totalMemory = MathTools.round(MathTools.convertBToMiB(SystemInformation.getTotalMemory()));
+		long usedMemory = MathTools.round(MathTools.convertBToMiB(SystemInformation.getUsedMemory()));
+		long freeMemory = MathTools.round(MathTools.convertBToMiB(SystemInformation.getFreeMemory()));
 		aboutText += I18NL10N.translate("text.MemoryTotal") + ": " + String.valueOf(totalMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR>";		
 		aboutText += I18NL10N.translate("text.MemoryUsed") + ": " + String.valueOf(usedMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR>";		
 		aboutText += I18NL10N.translate("text.MemoryFree") + ": " + String.valueOf(freeMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR>";		

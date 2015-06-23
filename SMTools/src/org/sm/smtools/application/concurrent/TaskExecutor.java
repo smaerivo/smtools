@@ -74,7 +74,7 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 		fTasks = new ArrayList<ATask>();
 		fBusy = false;
 
-		setNrOfThreadsToUse(MemoryStatistics.getNrOfProcessors());
+		setNrOfThreadsToUse(SystemInformation.getNrOfProcessors());
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class TaskExecutor extends SwingWorker<Void,Void>
 	public final void setNrOfThreadsToUse(int nrOfThreadsToUse)
 	{
 		// setup the thread pool
-		int nrOfProcessors = MemoryStatistics.getNrOfProcessors();
+		int nrOfProcessors = SystemInformation.getNrOfProcessors();
 		if (nrOfThreadsToUse < 1) {
 			nrOfThreadsToUse = 1;
 		}

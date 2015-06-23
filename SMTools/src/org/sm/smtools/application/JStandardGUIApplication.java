@@ -552,8 +552,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 				fGUIHeight = (int) Math.round(screenSize.getHeight() - screenInsets.top - screenInsets.bottom);
 
 /*
-				DISABLE DUE TO A BUG IN SWING SHOWING CHILD'S CONTENTS IN THE MAIN CONTENTPANE
-				------------------------------------------------------------------------------
+				DISABLED DUE TO A BUG IN SWING SHOWING CHILD'S CONTENTS IN THE MAIN CONTENTPANE
+				-------------------------------------------------------------------------------
 
 				// check if the OS can set the window to a maximised state
 				if (Toolkit.getDefaultToolkit().isFrameStateSupported(Frame.MAXIMIZED_BOTH)) {

@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : JStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 03/10/2014
+// Last modified : 23/06/2015
 // Target        : Java VM (1.8)
 // -------------------------------
 
@@ -35,13 +35,13 @@ import org.sm.smtools.util.*;
 
 /**
  * The <CODE>JStatusBar</CODE> class constructs a <CODE>JPanel</CODE> that provides an application with a status bar.
- * The status bar contains an indicator of the battery level as well as the current memory usage (they are automatically
- * updated every 30 seconds).
+ * The status bar contains an indicator of the battery level (Windows platforms only) as well as the current memory usage
+ * (they are automatically updated every 30 seconds).
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 03/10/2014
+ * @version 23/06/2015
  */
 public final class JStatusBar extends JPanel
 {
@@ -123,22 +123,24 @@ public final class JStatusBar extends JPanel
 				}
 			}
 
-			// preload the battery level images
-			try {
-				fBatteryLevelHighImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelHighImageFilename));
-				fBatteryLevelMediumImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelMediumImageFilename));
-				fBatteryLevelLowImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelLowImageFilename));
-				fBatteryLevelCriticalImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelCriticalImageFilename));
-				fBatteryLevelChargingImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelChargingImageFilename));
-				fBatteryLevelUnknownImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelUnknownImageFilename));
-				fBatteryLevelOnACPowerImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelOnACPowerImageFilename));
+			if (SystemInformation.getOperatingSystem() == SystemInformation.EOperatingSystem.kWindows) {
+				// preload the battery level images
+				try {
+					fBatteryLevelHighImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelHighImageFilename));
+					fBatteryLevelMediumImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelMediumImageFilename));
+					fBatteryLevelLowImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelLowImageFilename));
+					fBatteryLevelCriticalImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelCriticalImageFilename));
+					fBatteryLevelChargingImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelChargingImageFilename));
+					fBatteryLevelUnknownImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelUnknownImageFilename));
+					fBatteryLevelOnACPowerImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelOnACPowerImageFilename));
+				}
+				catch (FileDoesNotExistException exc) {
+					// ignore
+				}
+				// add the battery level label
+				fBatteryUsageLabel = new JLabel(" ",fBatteryLevelUnknownImage,SwingConstants.LEFT);
+				addCustomLabel(fBatteryUsageLabel);
 			}
-			catch (FileDoesNotExistException exc) {
-				// ignore
-			}
-			// add the battery level label
-			fBatteryUsageLabel = new JLabel(" ",fBatteryLevelUnknownImage,SwingConstants.LEFT);
-			addCustomLabel(fBatteryUsageLabel);
 
 			// add the memory usage label
 			fMemoryUsageLabel = new JLabel();
@@ -236,80 +238,82 @@ public final class JStatusBar extends JPanel
 	 */
 	public void updateBatteryLevelAndMemoryUsage()
 	{	
-		try {
-			// obtain the battery status
-			Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
-			Kernel32.INSTANCE.GetSystemPowerStatus(batteryStatus);
+		if (SystemInformation.getOperatingSystem() == SystemInformation.EOperatingSystem.kWindows) {
+			try {
+				// obtain the battery status
+				Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
+				Kernel32.INSTANCE.GetSystemPowerStatus(batteryStatus);
 
-			// update the battery level label
-			fBatteryUsageLabel.setIcon(fBatteryLevelUnknownImage);
+				// update the battery level label
+				fBatteryUsageLabel.setIcon(fBatteryLevelUnknownImage);
 
-			int batteryLifePercent = batteryStatus.getBatteryLifePercent();
-			if (batteryStatus.isOnACPower() && !batteryStatus.isCharging()) {
-				fBatteryUsageLabel.setIcon(fBatteryLevelOnACPowerImage);
-			}
-			else {
-				if (batteryStatus.isCharging()) {
-					fBatteryUsageLabel.setIcon(fBatteryLevelChargingImage);
+				int batteryLifePercent = batteryStatus.getBatteryLifePercent();
+				if (batteryStatus.isOnACPower() && !batteryStatus.isCharging()) {
+					fBatteryUsageLabel.setIcon(fBatteryLevelOnACPowerImage);
 				}
 				else {
-					if (batteryLifePercent >= 66) {
-						fBatteryUsageLabel.setIcon(fBatteryLevelHighImage);
-					}
-					else if (batteryLifePercent >= 33) {
-						fBatteryUsageLabel.setIcon(fBatteryLevelMediumImage);
-					}
-					else if (batteryLifePercent >= 10) {
-						fBatteryUsageLabel.setIcon(fBatteryLevelLowImage);
+					if (batteryStatus.isCharging()) {
+						fBatteryUsageLabel.setIcon(fBatteryLevelChargingImage);
 					}
 					else {
-						fBatteryUsageLabel.setIcon(fBatteryLevelCriticalImage);
+						if (batteryLifePercent >= 66) {
+							fBatteryUsageLabel.setIcon(fBatteryLevelHighImage);
+						}
+						else if (batteryLifePercent >= 33) {
+							fBatteryUsageLabel.setIcon(fBatteryLevelMediumImage);
+						}
+						else if (batteryLifePercent >= 10) {
+							fBatteryUsageLabel.setIcon(fBatteryLevelLowImage);
+						}
+						else {
+							fBatteryUsageLabel.setIcon(fBatteryLevelCriticalImage);
+						}
 					}
 				}
-			}
 
-			fBatteryUsageLabel.setText(" " + batteryLifePercent + "%");
+				fBatteryUsageLabel.setText(" " + batteryLifePercent + "%");
 
-			int batteryLifeTimeSeconds = batteryStatus.getBatteryLifeTime();
-			if (batteryLifeTimeSeconds > 0) {
-				int batteryLifeTimeHours = batteryLifeTimeSeconds / 3600;
-				int batteryLifeTimeMinutes = (batteryLifeTimeSeconds - (batteryLifeTimeHours * 3600)) / 60;
+				int batteryLifeTimeSeconds = batteryStatus.getBatteryLifeTime();
+				if (batteryLifeTimeSeconds > 0) {
+					int batteryLifeTimeHours = batteryLifeTimeSeconds / 3600;
+					int batteryLifeTimeMinutes = (batteryLifeTimeSeconds - (batteryLifeTimeHours * 3600)) / 60;
 
-				String batteryUsageTooltipText = "";
-				if (batteryLifeTimeHours > 0) {
-					if (batteryLifeTimeHours == 1) {
-						batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingHour");
+					String batteryUsageTooltipText = "";
+					if (batteryLifeTimeHours > 0) {
+						if (batteryLifeTimeHours == 1) {
+							batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingHour");
+						}
+						else {
+							batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingHours",String.valueOf(batteryLifeTimeHours));
+						}
+						batteryUsageTooltipText += ", ";
+					}
+					if (batteryLifeTimeMinutes == 1) {
+						batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingMinute");
 					}
 					else {
-						batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingHours",String.valueOf(batteryLifeTimeHours));
+						batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingMinutes",String.valueOf(batteryLifeTimeMinutes));
 					}
-					batteryUsageTooltipText += ", ";
-				}
-				if (batteryLifeTimeMinutes == 1) {
-					batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingMinute");
-				}
-				else {
-					batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingMinutes",String.valueOf(batteryLifeTimeMinutes));
-				}
 				
-				fBatteryUsageLabel.setToolTipText(batteryUsageTooltipText);
+					fBatteryUsageLabel.setToolTipText(batteryUsageTooltipText);
+				}
+				else {
+					fBatteryUsageLabel.setToolTipText(null);
+				}
 			}
-			else {
-				fBatteryUsageLabel.setToolTipText(null);
+			catch (UnsatisfiedLinkError exc) {
+				// ignore
 			}
-		}
-		catch (UnsatisfiedLinkError exc) {
-			// ignore
-		}
-		catch (NoClassDefFoundError exc) {
-			// ignore
+			catch (NoClassDefFoundError exc) {
+				// ignore
+			}
 		}
 
 		// update the memory usage label
-		double percentageFree = ((double) MemoryStatistics.getFreeMemory() / (double) MemoryStatistics.getTotalMemory()) * 100;
+		double percentageFree = ((double) SystemInformation.getFreeMemory() / (double) SystemInformation.getTotalMemory()) * 100;
 		fMemoryUsageLabel.setText(
 			I18NL10N.translate("text.MemoryFree") + ": " +
-			StringTools.convertDoubleToString(MathTools.convertBToMiB(MemoryStatistics.getFreeMemory()),0) + " " +
+			StringTools.convertDoubleToString(MathTools.convertBToMiB(SystemInformation.getFreeMemory()),0) + " " +
 			I18NL10N.translate("text.MiBAbbreviation") + " (" + StringTools.convertDoubleToString(percentageFree,0) + "%)");
 	}
 

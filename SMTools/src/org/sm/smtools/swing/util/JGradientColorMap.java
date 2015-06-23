@@ -1,7 +1,7 @@
 // --------------------------------------
 // Filename      : JGradientColorMap.java
 // Author        : Sven Maerivoet
-// Last modified : 04/06/2015
+// Last modified : 23/06/2015
 // Target        : Java VM (1.8)
 // --------------------------------------
 
@@ -24,6 +24,7 @@
 package org.sm.smtools.swing.util;
 
 import java.awt.*;
+import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import org.sm.smtools.exceptions.*;
@@ -52,6 +53,9 @@ import org.sm.smtools.util.*;
  * <P>
  * <B>Gray scale:</B><BR>
  * <IMG src="doc-files/gradient-color-map-grayscale.png" alt="">
+ * <P>
+ * <B>Gray scale (trimmed):</B><BR>
+ * <IMG src="doc-files/gradient-color-map-grayscale-trimmed.png" alt="">
  * <P>
  * <B>Green-red diverging:</B><BR>
  * <IMG src="doc-files/gradient-color-map-greenreddiverging.png" alt="">
@@ -141,7 +145,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 04/06/2015
+ * @version 23/06/2015
  */
 public final class JGradientColorMap extends JPanel
 {
@@ -160,6 +164,7 @@ public final class JGradientColorMap extends JPanel
 		 kDiscontinuousDarkRedYellow,
 		 kBlackAndWhite,
 		 kGrayScale,
+		 kGrayScaleTrimmed,
 		 kGreenRedDiverging,
 		 kHot,
 		 kJet,
@@ -590,11 +595,11 @@ public final class JGradientColorMap extends JPanel
 		// constrain the level
 		level = MathTools.clip(level,0.0,1.0);
 
-		// store the mapping from ID to color map component
+		// store the mapping from ID to colour map component
 		CustomColorMapComponent customColorMapComponent = new CustomColorMapComponent(level,color);
 		fCustomColorMapComponents.put(id,customColorMapComponent);
 
-		// update the color map
+		// update the colour map
 		fCustomColorMap.put(level,color);
 	}
 
@@ -608,7 +613,7 @@ public final class JGradientColorMap extends JPanel
 		if (fCustomColorMapComponents.containsKey(id)) {
 			fCustomColorMapComponents.remove(id);
 
-			// rebuild custom color map
+			// rebuild custom colour map
 			fCustomColorMap = new TreeMap<Double,Color>();
 			for (CustomColorMapComponent customColorMapComponent : fCustomColorMapComponents.values()) {
 				fCustomColorMap.put(customColorMapComponent.fLevel,customColorMapComponent.fColor);
@@ -670,12 +675,12 @@ public final class JGradientColorMap extends JPanel
 	}
 
 	/**
-	 * Loads the random colour map's components from a file.
+	 * Loads the random colour map's components from a plain-text file.
 	 * 
 	 * @param  tfp                 a reference to the file parser
 	 * @throws FileParseException  in case a parse error occurs
 	 */
-	public final void loadRandomColorMapComponents(TextFileParser tfp) throws FileParseException
+	public final void plainTextLoadRandomColorMapComponents(TextFileParser tfp) throws FileParseException
 	{
 		fRandomColorMap =  new TreeMap<Double,Color>();
 
@@ -690,7 +695,7 @@ public final class JGradientColorMap extends JPanel
 			String levelDesc = colorMapComponentsDesc[0];
 			double level = Double.parseDouble(levelDesc);
 
-			// extract color components
+			// extract colour components
 			String redDesc = colorMapComponentsDesc[1];
 			int red = Integer.parseInt(redDesc);
 			String greenDesc = colorMapComponentsDesc[2];
@@ -705,12 +710,38 @@ public final class JGradientColorMap extends JPanel
 	}
 
 	/**
-	 * Saves the random colour map's components to a file.
+	 * Loads the random colour map's components from a file as a stream.
+	 * 
+	 * @param  dataInputStream  a data inputstream
+	 * @throws IOException      in case a parse error occurs
+	 */
+	public final void streamLoadRandomColorMapComponents(DataInputStream dataInputStream) throws IOException
+	{
+		fRandomColorMap =  new TreeMap<Double,Color>();
+
+		int nrOfColorMapComponents = dataInputStream.readInt();
+		for (int colorIndex = 0; colorIndex < nrOfColorMapComponents; ++colorIndex) {
+			// extract level
+			double level = dataInputStream.readDouble();
+
+			// extract colour components
+			int red = dataInputStream.readInt();
+			int green = dataInputStream.readInt();
+			int blue = dataInputStream.readInt();
+
+			fRandomColorMap.put(level,new Color(red,green,blue));
+		}
+
+		fCustomColorMap = fRandomColorMap;
+	}
+
+	/**
+	 * Saves the random colour map's components to a plain-text file.
 	 * 
 	 * @param  tfw                 a reference to the file writer
 	 * @throws FileWriteException  in case a write error occurs
 	 */
-	public final void saveRandomColorMapComponents(TextFileWriter tfw) throws FileWriteException
+	public final void plainTextSaveRandomColorMapComponents(TextFileWriter tfw) throws FileWriteException
 	{
 		// save the number of colour map components
 		tfw.writeInteger(fRandomColorMap.size());
@@ -719,11 +750,11 @@ public final class JGradientColorMap extends JPanel
 		for (double level : fRandomColorMap.keySet()) {
 			Color color = fRandomColorMap.get(level);
 
-			// save level
+			// load level
 			tfw.writeDouble(level);
 			tfw.writeString(kFieldSeparator);
 
-			// save color components
+			// load colour components
 			tfw.writeInteger(color.getRed());
 			tfw.writeString(kFieldSeparator);
 			tfw.writeInteger(color.getGreen());
@@ -735,12 +766,36 @@ public final class JGradientColorMap extends JPanel
 	}
 
 	/**
-	 * Loads the custom colour map's components from a file.
+	 * Saves the random colour map's components to a file as a stream.
+	 * 
+	 * @param  dataOutputStream  a data outputstream
+	 * @throws IOException       in case a write error occurs
+	 */
+	public final void streamSaveRandomColorMapComponents(DataOutputStream dataOutputStream) throws IOException
+	{
+		// save the number of colour map components
+		dataOutputStream.writeInt(fRandomColorMap.size());
+
+		for (double level : fRandomColorMap.keySet()) {
+			Color color = fRandomColorMap.get(level);
+
+			// save level
+			dataOutputStream.writeDouble(level);
+
+			// save colour components
+			dataOutputStream.writeInt(color.getRed());
+			dataOutputStream.writeInt(color.getGreen());
+			dataOutputStream.writeInt(color.getBlue());
+		}
+	}
+
+	/**
+	 * Loads the custom colour map's components from a plain-text file.
 	 * 
 	 * @param  tfp                 a reference to the file parser
 	 * @throws FileParseException  in case a parse error occurs
 	 */
-	public final void loadCustomColorMapComponents(TextFileParser tfp) throws FileParseException
+	public final void plainTextLoadCustomColorMapComponents(TextFileParser tfp) throws FileParseException
 	{
 		clearAllCustomColorMapComponents();
 
@@ -759,7 +814,7 @@ public final class JGradientColorMap extends JPanel
 			String levelDesc = colorMapComponentsDesc[1];
 			double level = Double.parseDouble(levelDesc);
 
-			// extract color components
+			// extract colour components
 			String redDesc = colorMapComponentsDesc[2];
 			int red = Integer.parseInt(redDesc);
 			String greenDesc = colorMapComponentsDesc[3];
@@ -772,12 +827,39 @@ public final class JGradientColorMap extends JPanel
 	}
 
 	/**
-	 * Saves the custom colour map's components to a file.
+	 * Loads the custom colour map's components from a file as a stream.
+	 * 
+	 * @param  dataInputStream  a data inputstream
+	 * @throws IOException      in case a parse error occurs
+	 */
+	public final void streamLoadCustomColorMapComponents(DataInputStream dataInputStream) throws IOException
+	{
+		clearAllCustomColorMapComponents();
+
+		int nrOfColorMapComponents = dataInputStream.readInt();
+		for (int colorIndex = 0; colorIndex < nrOfColorMapComponents; ++colorIndex) {
+			// load ID
+			int id = dataInputStream.readInt();
+
+			// load level
+			double level = dataInputStream.readDouble();
+
+			// load colour components
+			int red = dataInputStream.readInt();
+			int green = dataInputStream.readInt();
+			int blue = dataInputStream.readInt();
+
+			setCustomColorMapComponent(id,level,new Color(red,green,blue));
+		}
+	}
+
+	/**
+	 * Saves the custom colour map's components to a plain-text file.
 	 * 
 	 * @param  tfw                 a reference to the file writer
 	 * @throws FileWriteException  in case a write error occurs
 	 */
-	public final void saveCustomColorMapComponents(TextFileWriter tfw) throws FileWriteException
+	public final void plainTextSaveCustomColorMapComponents(TextFileWriter tfw) throws FileWriteException
 	{
 		TreeMap<Integer,CustomColorMapComponent> colorMapComponents = getAllCustomColorMapComponents();
 
@@ -796,7 +878,7 @@ public final class JGradientColorMap extends JPanel
 			tfw.writeDouble(colorMapComponent.fLevel);
 			tfw.writeString(kFieldSeparator);
 
-			// save color components
+			// save colour components
 			tfw.writeInteger(colorMapComponent.fColor.getRed());
 			tfw.writeString(kFieldSeparator);
 			tfw.writeInteger(colorMapComponent.fColor.getGreen());
@@ -804,6 +886,35 @@ public final class JGradientColorMap extends JPanel
 			tfw.writeInteger(colorMapComponent.fColor.getBlue());
 
 			tfw.writeLn();
+		}
+	}
+
+	/**
+	 * Saves the custom colour map's components to a plain-text file.
+	 * 
+	 * @param  dataOutputStream  a data outputstream
+	 * @throws IOException       in case a write error occurs
+	 */
+	public final void streamSaveCustomColorMapComponents(DataOutputStream dataOutputStream) throws IOException
+	{
+		TreeMap<Integer,CustomColorMapComponent> colorMapComponents = getAllCustomColorMapComponents();
+
+		// save the number of colour map components
+		dataOutputStream.writeInt(colorMapComponents.size());
+
+		for (int colorIndex : getAllCustomColorMapComponents().keySet()) {
+			CustomColorMapComponent colorMapComponent = colorMapComponents.get(colorIndex);
+
+			// save ID
+			dataOutputStream.writeInt(colorIndex);
+
+			// save level
+			dataOutputStream.writeDouble(colorMapComponent.fLevel);
+
+			// save colour components
+			dataOutputStream.writeInt(colorMapComponent.fColor.getRed());
+			dataOutputStream.writeInt(colorMapComponent.fColor.getGreen());
+			dataOutputStream.writeInt(colorMapComponent.fColor.getBlue());
 		}
 	}
 
@@ -900,6 +1011,20 @@ public final class JGradientColorMap extends JPanel
 			red = t;
 			green = t;
 			blue = t;
+		}
+		else if (fColorMap == EColorMap.kGrayScaleTrimmed) {
+			float offset = 0.2f;
+			if (t < offset) {
+				float factor = t / offset;
+				red = factor;
+				green = factor;
+				blue = factor;
+			}
+			else {
+				red = 1.0f;
+				green = 1.0f;
+				blue = 1.0f;
+			}
 		}
 		else if (fColorMap == EColorMap.kGreenRedDiverging) {
 			if (t < 0.5f) {
@@ -1062,7 +1187,7 @@ public final class JGradientColorMap extends JPanel
 			Color lowerColor = fCustomColorMap.get(lowerValue);
 			Color higherColor = fCustomColorMap.get(higherValue);
 
-			// interpolate color components
+			// interpolate colour components
 			red = (float) MathTools.clip((lowerColor.getRed() / 255.0) + fraction * ((higherColor.getRed() / 255.0) - (lowerColor.getRed() / 255.0)),0.0,1.0);
 			green = (float) MathTools.clip((lowerColor.getGreen() / 255.0) + fraction * ((higherColor.getGreen() / 255.0) - (lowerColor.getGreen() / 255.0)),0.0,1.0);
 			blue = (float) MathTools.clip((lowerColor.getBlue() / 255.0) + fraction * ((higherColor.getBlue() / 255.0) - (lowerColor.getBlue() / 255.0)),0.0,1.0);
@@ -1245,12 +1370,12 @@ public final class JGradientColorMap extends JPanel
 	public final class CustomColorMapComponent
 	{
 		/**
-		 * The level associated with this color map component.
+		 * The level associated with this colour map component.
 		 */
 		public double fLevel;
 
 		/**
-		 * The colour associated with this color map component.
+		 * The colour associated with this colour map component.
 		 */
 		public Color fColor;
 
