@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 24/09/2014
+// Last modified : 18/05/2016
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2016 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 24/09/2014
+ * @version 18/05/2016
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -462,7 +462,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * This class contains an example about box.
 	 * 
 	 * @author  Sven Maerivoet
-	 * @version 26/12/2013
+	 * @version 18/05/2016
 	 * @see     org.sm.smtools.swing.dialogs.JAboutBox
 	 */
 	private final class JDerivedAboutBox extends JAboutBox
@@ -511,7 +511,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		{
 			return
 			("<B>JDerivedGUIApplication v1.1</B><BR />" +
-				"Copyright 2003-2014 Sven Maerivoet");
+				"Copyright 2003-2016 Sven Maerivoet");
 		}
 
 		/**

@@ -1,12 +1,12 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 14/01/2015
+// Last modified : 18/05/2016
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2016 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -138,7 +138,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 14/01/2015
+ * @version 18/05/2016
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -211,7 +211,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 	// the required Java version for the SMTools package
 	private static final int kRequiredMajorJavaVersion = 1;
-	private static final int kRequiredMinorJavaVersion = 7;
+	private static final int kRequiredMinorJavaVersion = 8;
 
 	// the location of the JAR archive containing all the resources
 	private static final String kResourceArchiveFilename = "smtools.jar";
@@ -965,7 +965,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Sets up the required major version of the Java runtime engine that wants to run this application.
 	 * <P>
-	 * <B>The default is 1 (for JRE 1.7.0).</B>
+	 * <B>The default is 1 (for JRE 1.8.0).</B>
 	 *
 	 * @return the required major version of the Java runtime engine
 	 */
@@ -977,7 +977,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Sets up the required minor version of the Java runtime engine that wants to run this application.
 	 * <P>
-	 * <B>The default is 7 (for JRE 1.7.0).</B>
+	 * <B>The default is 8 (for JRE 1.8.0).</B>
 	 *
 	 * @return the required minor version of the Java runtime engine
 	 */
