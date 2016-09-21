@@ -1,7 +1,7 @@
 // ----------------------------------
 // Filename      : ComplexNumber.java
 // Author        : Sven Maerivoet
-// Last modified : 28/10/2014
+// Last modified : 21/09/2016
 // Target        : Java VM (1.8)
 // ----------------------------------
 
@@ -31,7 +31,7 @@ package org.sm.smtools.math.complex;
  * <B>Note that this class is final cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 28/10/2014
+ * @version 21/09/2016
  */
 public final class ComplexNumber
 {
@@ -139,7 +139,7 @@ public final class ComplexNumber
 	 *
 	 * @return the real component of this complex number
 	 */
-	public Double realComponent()
+	public double realComponent()
 	{
 		return fRealComponent;
 	}
@@ -149,7 +149,7 @@ public final class ComplexNumber
 	 *
 	 * @return the imaginary component of this complex number
 	 */
-	public Double imaginaryComponent()
+	public double imaginaryComponent()
 	{
 		return fImaginaryComponent;
 	}
@@ -261,7 +261,7 @@ public final class ComplexNumber
 	 *
 	 * @return the modulus of this complex number
 	 */
-	public Double modulus()
+	public double modulus()
 	{
 		return fModulus;
 	}
@@ -271,7 +271,7 @@ public final class ComplexNumber
 	 *
 	 * @return the squared modulus of this complex number
 	 */
-	public Double modulusSquared()
+	public double modulusSquared()
 	{
 		return fModulusSquared;
 	}
@@ -281,7 +281,7 @@ public final class ComplexNumber
 	 *
 	 * @return the argument (phase) of this complex number
 	 */
-	public Double argument()
+	public double argument()
 	{
 		return fArgument;
 	}
@@ -347,7 +347,7 @@ public final class ComplexNumber
 	 *
 	 * @return a reference to the cubic root of this complex number
 	 */
-	public final ComplexNumber cbrt()
+	public ComplexNumber cbrt()
 	{
 		return pow(1.0 / 3.0);
 	}
@@ -484,21 +484,21 @@ public final class ComplexNumber
 	}
 
 	/**
-	 * Takes the tangens (= sin/cos) of this complex number and returns a reference to the result.
+	 * Takes the tangent (= sin/cos) of this complex number and returns a reference to the result.
 	 *
-	 * @return a reference to the tangens of this complex number 
+	 * @return a reference to the tangent of this complex number 
 	 */
-	public final ComplexNumber tan()
+	public ComplexNumber tan()
 	{
 		return sin().divide(cos());
 	}
 
 	/**
-	 * Takes the cotangens (= cos/sin) of this complex number and returns a reference to the result.
+	 * Takes the cotangent (= cos/sin) of this complex number and returns a reference to the result.
 	 *
-	 * @return a reference to the cotangens of this complex number 
+	 * @return a reference to the cotangent of this complex number 
 	 */
-	public final ComplexNumber cot()
+	public ComplexNumber cot()
 	{
 		return cos().divide(sin());
 	}
@@ -508,7 +508,7 @@ public final class ComplexNumber
 	 *
 	 * @return a reference to the secans of this complex number 
 	 */
-	public final ComplexNumber sec()
+	public ComplexNumber sec()
 	{
 		return cos().reciprocal();
 	}
@@ -518,9 +518,53 @@ public final class ComplexNumber
 	 *
 	 * @return a reference to the cosecans of this complex number 
 	 */
-	public final ComplexNumber cosec()
+	public ComplexNumber cosec()
 	{
 		return sin().reciprocal();
+	}
+
+	/**
+	 * Takes the hyperbolic sine of this complex number and returns a reference to the result.
+	 *
+	 * @return a reference to the hyperbolic sine of this complex number 
+	 */
+	public ComplexNumber sinh()
+	{
+		return exp().subtract(negate().exp()).multiply(new ComplexNumber(0.5));
+	}
+
+	/**
+	 * Takes the hyperbolic cosine of this complex number and returns a reference to the result.
+	 *
+	 * @return a reference to the hyperbolic cosine of this complex number 
+	 */
+	public ComplexNumber cosh()
+	{
+		return exp().add(negate().exp()).multiply(new ComplexNumber(0.5));
+	}
+
+	/**
+	 * Takes the hyperbolic tangent of this complex number and returns a reference to the result.
+	 *
+	 * @return a reference to the hyperbolic tangent of this complex number 
+	 */
+	public ComplexNumber tanh()
+	{
+		ComplexNumber expZ = exp();
+		ComplexNumber expMinZ = negate().exp();
+		return expZ.subtract(expMinZ).divide(expZ.add(expMinZ));
+	}
+
+	/**
+	 * Takes the hyperbolic cotangent of this complex number and returns a reference to the result.
+	 *
+	 * @return a reference to the hyperbolic cotangent of this complex number 
+	 */
+	public ComplexNumber cotanh()
+	{
+		ComplexNumber expZ = exp();
+		ComplexNumber expMinZ = negate().exp();
+		return expZ.add(expMinZ).divide(expZ.subtract(expMinZ));
 	}
 
 	/**

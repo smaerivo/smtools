@@ -4,10 +4,10 @@
 	<classpathentry kind="lib" path="/JLayer/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="/Java Help 2.0/javahelp/lib/jhall.jar"/>
 	<classpathentry kind="lib" path="/Log4j/log4j-all-1.3alpha-8.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Java Native Access 3.5.1/jna-3.5.1.jar"/>
 	<classpathentry kind="lib" path="/Java Native Access 3.5.1/platform-3.5.1.jar"/>
 	<classpathentry kind="lib" path="/QuaQua Look-and-Feel/quaqua.jar"/>
 	<classpathentry kind="lib" path="/BigDecimalMath/bigdecimalmath.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,12 +1,12 @@
 // -----------------------------------
 // Filename      : TextFileParser.java
 // Author        : Sven Maerivoet
-// Last modified : 08/04/2013
+// Last modified : 21/09/2016
 // Target        : Java VM (1.8)
 // -----------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2016 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ package org.sm.smtools.util;
 
 import java.io.*;
 import java.util.*;
-import java.util.regex.*;
 import org.sm.smtools.exceptions.*;
 
 /**
@@ -49,7 +48,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 08/04/2013
+ * @version 21/09/2016
  */
 public final class TextFileParser
 {
@@ -336,41 +335,21 @@ public final class TextFileParser
 	 */
 	public String[] getNextCSV() throws FileParseException
 	{
-		// match quoted, unquoted and null fields
-		String kCSVPattern = "\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\",?|([^,]+),?|,";
-		Pattern csvRegEx = Pattern.compile(kCSVPattern);
-		String source = getNextString();
-		Matcher csvMatcher = csvRegEx.matcher(source);
+		return getNextCSV(',');
+	}
 
-		// extract all fields
-		ArrayList<String> list = new ArrayList<>();
-		while (csvMatcher.find()) {
-			String match = csvMatcher.group();
-			if (match == null) {
-				break;
-			}
-			if (match.endsWith(",")) {
-				// trim trailing separator
-				match = match.substring(0,match.length() - 1);
-			}
-			if (match.endsWith("\"")) {
-				// trim leading double quote
-				match = match.substring(1,match.length() - 1);
-			}
-			list.add(match);
-		}
-
-		if (source.length() > 0) {
-			// check if there was a trailing comma
-			if (source.charAt(source.length() - 1) == ',') {
-				list.add("");
-			}
-		}
-
-		// convert to an array of strings
-		String[] csvValues = new String[list.size()];
-		list.toArray(csvValues);
-		return csvValues;
+	/**
+	 * Returns the next line converted to a <CODE>String[]</CODE> array of comma-separated values with a specified split character.
+	 * <P>
+	 * The CSV parser can operate on quoted, unquoted and empty <CODE>String</CODE>s.
+	 *
+	 * @param splitChar            the character used to split the CSV record
+	 * @return                     the next line converted to a <CODE>String[]</CODE> array of comma-separated values
+	 * @throws FileParseException  if the end-of-file is reached (the exception only contains the line number)
+	 */
+	public String[] getNextCSV(char splitChar) throws FileParseException
+	{
+		return StringTools.convertToCSV(getNextString(),splitChar);
 	}
 
 	/**

@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 10/10/2014
+// Last modified : 21/09/2016
 // Target        : Java VM (1.8)
 // --------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2016 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ package org.sm.smtools.util;
 
 import java.text.*;
 import java.util.*;
+import java.util.regex.*;
 import org.sm.smtools.math.complex.*;
 
 /**
@@ -43,7 +44,7 @@ import org.sm.smtools.math.complex.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 10/10/2014
+ * @version 21/09/2016
  */
 public final class StringTools
 {
@@ -443,5 +444,69 @@ public final class StringTools
 	public static boolean isComment(String input)
 	{
 		return input.trim().startsWith("#");
+	}
+
+	/**
+	 * Returns the input converted to a <CODE>String[]</CODE> array of comma-separated values.
+	 * <P>
+	 * The CSV parser can operate on quoted, unquoted and empty <CODE>String</CODE>s.
+	 *
+	 * @param source  the source <CODE>String</CODE>
+	 * @return        the input converted to a <CODE>String[]</CODE> array of comma-separated values
+	 */
+	public static String[] convertToCSV(String source)
+	{
+		return convertToCSV(source,',');
+	}
+
+	/**
+	 * Returns the input converted to a <CODE>String[]</CODE> array of comma-separated values with a specified split character.
+	 * <P>
+	 * The CSV parser can operate on quoted, unquoted and empty <CODE>String</CODE>s.
+	 *
+	 * @param source     the source <CODE>String</CODE>
+	 * @param splitChar  the character used to split the CSV record
+	 * @return           the input converted to a <CODE>String[]</CODE> array of comma-separated values
+	 */
+	public static String[] convertToCSV(String source, char splitChar)
+	{
+		// match quoted, unquoted and null fields
+		// final String kCSVPattern = "\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\",?|([^,]+),?|,";
+		final String kCSVPattern = "\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\"" + splitChar + "?|([^" + splitChar + "]+)" + splitChar + "?|" + splitChar;
+
+		Pattern csvRegEx = Pattern.compile(kCSVPattern);
+		Matcher csvMatcher = csvRegEx.matcher(source);
+
+		// extract all fields
+		ArrayList<String> list = new ArrayList<>();
+		char[] charArr = {splitChar};
+		String splitStr = new String(charArr);
+		while (csvMatcher.find()) {
+			String match = csvMatcher.group();
+			if (match == null) {
+				break;
+			}
+			if (match.endsWith(splitStr)) {
+				// trim trailing separator
+				match = match.substring(0,match.length() - 1);
+			}
+			if (match.endsWith("\"")) {
+				// trim leading double quote
+				match = match.substring(1,match.length() - 1);
+			}
+			list.add(match);
+		}
+
+		if (source.length() > 0) {
+			// check if there was a trailing comma
+			if (source.charAt(source.length() - 1) == splitChar) {
+				list.add("");
+			}
+		}
+
+		// convert to an array of strings
+		String[] csvValues = new String[list.size()];
+		list.toArray(csvValues);
+		return csvValues;
 	}
 }
