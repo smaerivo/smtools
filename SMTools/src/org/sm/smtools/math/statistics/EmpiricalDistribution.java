@@ -1,12 +1,12 @@
 // ------------------------------------------
 // Filename      : EmpiricalDistribution.java
 // Author        : Sven Maerivoet
-// Last modified : 17/06/2014
+// Last modified : 29/10/2016
 // Target        : Java VM (1.8)
 // ------------------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2016 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.sm.smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 17/06/2014
+ * @version 29/10/2016
  */
 public final class EmpiricalDistribution
 {
@@ -304,9 +304,9 @@ public final class EmpiricalDistribution
 		// ********************
 
 		// estimate the percentiles
-		fPercentiles = new double[101];
-		for (int percentile = 0; percentile <= 100; ++percentile) {
-			double rank = (((double) percentile / 100.0) * ((double) fN - 1.0)) + 1.0;
+		fPercentiles = new double[1001];
+		for (int percentile = 0; percentile <= 1000; ++percentile) {
+			double rank = (((double) percentile / 1000.0) * ((double) fN - 1.0)) + 1.0;
 			if (rank <= 1.0) {
 				fPercentiles[percentile] = fXSorted[0];
 			}
@@ -373,7 +373,22 @@ public final class EmpiricalDistribution
 			return 0.0;
 		}
 
-		return fPercentiles[MathTools.clip(percentile,0,100)];
+		return fPercentiles[MathTools.clip(percentile * 10,0,1000)];
+	}
+
+	/**
+	 * Returns the given percentile.
+	 * 
+	 * @param percentile  the requested percentile (in the interval [0.0,100.0])
+	 * @return            the requested percentile value
+	 */
+	public double getPercentile(double percentile)
+	{
+		if (fPercentiles == null) {
+			return 0.0;
+		}
+
+		return fPercentiles[MathTools.clip((int) Math.round(percentile * 10.0),0,1000)];
 	}
 
 	/**
