@@ -1,12 +1,12 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 19/11/2014
+// Last modified : 31/10/2016
 // Target        : Java VM (1.8)
 // -------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2016 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import java.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 19/11/2014
+ * @version 31/10/2016
  */
 public final class MathTools
 {
@@ -340,6 +340,40 @@ public final class MathTools
 	public static double findMaximum(double[] x)
 	{
 		double maximum = x[0];
+		for (int i = 1; i < x.length; ++i) {
+			if (x[i] > maximum) {
+				maximum = x[i];
+			}
+		}
+		return maximum;
+	}
+
+	/**
+	 * Searches incrementally for the minimum value in an array.
+	 * 
+	 * @param x  the array to search in
+	 * @return   the minimum value in the array
+	 */
+	public static int findMinimum(int[] x)
+	{
+		int minimum = x[0];
+		for (int i = 1; i < x.length; ++i) {
+			if (x[i] < minimum) {
+				minimum = x[i];
+			}
+		}
+		return minimum;
+	}
+
+	/**
+	 * Searches incrementally for the maximum value in an array.
+	 * 
+	 * @param x  the array to search in
+	 * @return   the maximum value in the array
+	 */
+	public static int findMaximum(int[] x)
+	{
+		int maximum = x[0];
 		for (int i = 1; i < x.length; ++i) {
 			if (x[i] > maximum) {
 				maximum = x[i];

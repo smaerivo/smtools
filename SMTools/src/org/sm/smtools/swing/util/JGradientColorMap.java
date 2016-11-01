@@ -1,12 +1,12 @@
 // --------------------------------------
 // Filename      : JGradientColorMap.java
 // Author        : Sven Maerivoet
-// Last modified : 23/06/2015
+// Last modified : 01/11/2016
 // Target        : Java VM (1.8)
 // --------------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2016 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,6 +114,9 @@ import org.sm.smtools.util.*;
  * <B>Deep space:</B><BR>
  * <IMG src="doc-files/gradient-color-map-deepspace.png" alt="">
  * <P>
+ * <B>Blue-white:</B><BR>
+ * <IMG src="doc-files/gradient-color-map-blue-white.png" alt="">
+ * <P>
  * <B>Custom:</B><BR>
  * Dependent on the colours specified.
  * <P>
@@ -145,7 +148,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 23/06/2015
+ * @version 01/11/2016
  */
 public final class JGradientColorMap extends JPanel
 {
@@ -184,6 +187,7 @@ public final class JGradientColorMap extends JPanel
 		 kYellowBrowns,
 		 kVioletPurples,
 		 kDeepSpace,
+		 kBlueWhite,
 		 kCustom,
 		 kRandom};
 
@@ -226,6 +230,7 @@ public final class JGradientColorMap extends JPanel
 	private TreeMap<Double,Color> fYellowBrownsColorMap;
 	private TreeMap<Double,Color> fVioletPurplesColorMap;
 	private TreeMap<Double,Color> fDeepSpaceColorMap;
+	private TreeMap<Double,Color> fBlueWhiteColorMap;
 	private TreeMap<Double,Color> fRandomColorMap;
 
 	/****************
@@ -330,6 +335,9 @@ public final class JGradientColorMap extends JPanel
 		}
 		else if (fColorMap == EColorMap.kDeepSpace) {
 			fCustomColorMap = fDeepSpaceColorMap;
+		}
+		else if (fColorMap == EColorMap.kBlueWhite) {
+			fCustomColorMap = fBlueWhiteColorMap;
 		}
 		else if (fColorMap == EColorMap.kRandom) {
 			createRandomColorMap(kDefaultNrOfRandomComponents);
@@ -1164,6 +1172,7 @@ public final class JGradientColorMap extends JPanel
 						(fColorMap == EColorMap.kYellowBrowns) ||
 						(fColorMap == EColorMap.kVioletPurples) ||
 						(fColorMap == EColorMap.kDeepSpace) ||
+						(fColorMap == EColorMap.kBlueWhite) ||
 						(fColorMap == EColorMap.kRandom)) {
 			// find the values surrounding the requested value
 			Double lowerValue = fCustomColorMap.floorKey((double) t);
@@ -1330,7 +1339,7 @@ public final class JGradientColorMap extends JPanel
 		fVioletPurplesColorMap.put(0.923076923076923,new Color(221,160,221));
 		fVioletPurplesColorMap.put(1.0,new Color(216,191,216));
 
-		fDeepSpaceColorMap =  new TreeMap<Double,Color>();
+		fDeepSpaceColorMap = new TreeMap<Double,Color>();
 		fDeepSpaceColorMap.put(0.0,new Color(0,0,100));
 		fDeepSpaceColorMap.put(0.1,new Color(10,35,194));
 		fDeepSpaceColorMap.put(0.2,new Color(52,103,233));
@@ -1342,6 +1351,13 @@ public final class JGradientColorMap extends JPanel
 		fDeepSpaceColorMap.put(0.8,new Color(48,25,0));
 		fDeepSpaceColorMap.put(0.9,new Color(0,2,9));
 		fDeepSpaceColorMap.put(1.0,new Color(0,0,100));
+
+		fBlueWhiteColorMap = new TreeMap<Double,Color>();
+		fBlueWhiteColorMap.put(0.0,new Color(0,0,64));
+		fBlueWhiteColorMap.put(0.25,new Color(0,0,96));
+		fBlueWhiteColorMap.put(0.50,new Color(64,64,128));
+		fBlueWhiteColorMap.put(0.75,new Color(128,128,196));
+		fBlueWhiteColorMap.put(1.0,new Color(255,255,255));
 	}
 
 	/**
@@ -1397,7 +1413,7 @@ public final class JGradientColorMap extends JPanel
 
 	import org.sm.smtools.swing.util.*;
 
-		JGradientColorMap gcr = new JGradientColorMap(JGradientColorMap.EColorMap.kSeparatedRGB);
+		JGradientColorMap gcr = new JGradientColorMap(JGradientColorMap.EColorMap.kCustom);
 		gcr.setPreferredSize(new Dimension(1200,600));
 		contentPane.add(gcr);
 */

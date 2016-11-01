@@ -240,6 +240,9 @@ public final class EmpiricalDistribution
 		if (fX == null) {
 			return;
 		}
+		else if (fX.length == 0) {
+			return;
+		}
 
 		// *********************************************************
 		// estimate empirical cumulative distribution function (CDF)
