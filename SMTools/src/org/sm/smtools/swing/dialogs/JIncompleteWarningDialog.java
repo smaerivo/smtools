@@ -1,12 +1,12 @@
 // ---------------------------------------------
 // Filename      : JIncompleteWarningDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 16/07/2014
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // ---------------------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 16/07/2014
+ * @version 26/06/2018
  */
 public final class JIncompleteWarningDialog
 {
@@ -87,11 +87,11 @@ public final class JIncompleteWarningDialog
 	public static void warn(Component parentComponent, String className)
 	{
 		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSWarningDialog);
-		Object[] options = {I18NL10N.translate("button.Ok")};
+		Object[] options = {I18NL10N.kINSTANCE.translate("button.Ok")};
 
 		JOptionPane.showOptionDialog(parentComponent,className + " : " +
-				I18NL10N.translate("text.ImplementationNotYetCompleted") + "!",
-				I18NL10N.translate("text.ImportantNotice"),JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,
+				I18NL10N.kINSTANCE.translate("text.ImplementationNotYetCompleted") + "!",
+				I18NL10N.kINSTANCE.translate("text.ImportantNotice"),JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,
 				options,options[0]);
 	}
 }

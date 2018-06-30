@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : I18NL10N.java
 // Author        : Sven Maerivoet
-// Last modified : 04/01/2013
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,18 +41,18 @@ import org.sm.smtools.util.*;
  * whereas the values represent the translations.
  * <P>
  * When an application is starting, the database (a '<CODE>properties</CODE>' file) containing the selected locale
- * should be loaded using the static {@link I18NL10N#load(String)} or
+ * should be loaded using the {@link I18NL10N#load(String)} or
  * {@link I18NL10N#load(InputStream)} methods. Note that, as opposed to a <CODE>ResourceBundle</CODE>,
  * the <CODE>I18NL10N</CODE> class can easily handle different file locations. Use the
  * {@link I18NL10N#getFilename(String)} and {@link I18NL10N#getFilename(String,String)} methods to
  * specify a file location and an optional locale, for example:
  * <CODE>
- *   I18NL10N.load(I18NL10N.getFilename("locales-",I18NL10N.kLocaleBritishEnglish));
+ *   I18NL10N.kINSTANCE.load(I18NL10N.kINSTANCE.getFilename("locales-",I18NL10N.kINSTANCE.kLocaleBritishEnglish));
  * </CODE>
  * <P>
  * Translations are performed by the following lookup:
  * <CODE>
- *   String translation = I18NL10N.translate(key,parameters);
+ *   String translation = I18NL10N.kINSTANCE.translate(key,parameters);
  * </CODE>
  * <P>
  * The optional parameters are specified in the keys using <CODE>(^i)</CODE>
@@ -77,13 +77,13 @@ import org.sm.smtools.util.*;
  *   </LI>
  *   <LI>The following translations demonstrate its usage:
  *   <UL>
- *     <LI><CODE>I18NL10N.translate("my.First.Key")</CODE> will result in "<CODE>my first value</CODE>".</LI>
- *     <LI><CODE>I18NL10N.translate("my.Second.Key","second")</CODE> will result in "<CODE>my second value</CODE>".</LI>
+ *     <LI><CODE>I18NL10N.kINSTANCE.translate("my.First.Key")</CODE> will result in "<CODE>my first value</CODE>".</LI>
+ *     <LI><CODE>I18NL10N.kINSTANCE.translate("my.Second.Key","second")</CODE> will result in "<CODE>my second value</CODE>".</LI>
  *   </UL>
  *   </LI>
  *   <LI>A GUI is typically constructed with statements like the following one: <BR>
  *   <UL>
- *     <LI><CODE>JLabel label = new JLabel(I18NL10N.translate(&quot;labelKey&quot;,&quot;parameter 1&quot;,...,&quot;parameter N&quot;));</CODE></LI>
+ *     <LI><CODE>JLabel label = new JLabel(I18NL10N.kINSTANCE.translate(&quot;labelKey&quot;,&quot;parameter 1&quot;,...,&quot;parameter N&quot;));</CODE></LI>
  *   </UL>
  *   </LI>
  * </UL>
@@ -91,9 +91,11 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author Sven Maerivoet
- * @version 04/01/2013
+ * @version 26/06/2018
  */
-public final class I18NL10N {
+public enum I18NL10N
+{
+	kINSTANCE;
 
 	// locale-related definitions
 	/**
@@ -118,16 +120,7 @@ public final class I18NL10N {
 	private static final String kLocaleFilenameExtension = ".properties";
 
 	// internal datastructures
-//	private 
-	public static Properties fTranslationTable;
-
-	/*************************
-	 * STATIC INITIALISATION *
-	 *************************/
-
-	static {
-		fTranslationTable = new Properties();
-	}
+	private Properties fTranslationTable;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -138,6 +131,7 @@ public final class I18NL10N {
 	 */
 	private I18NL10N()
 	{
+		fTranslationTable = new Properties();
 	}
 
 	/******************
@@ -157,7 +151,7 @@ public final class I18NL10N {
 	 * @see                               I18NL10N#load(String)
 	 * @see                               I18NL10N#load(InputStream)
 	 */
-	public static String getFilename(String localeFilenamePrefix, String localeSpecifier) throws FileDoesNotExistException
+	public String getFilename(String localeFilenamePrefix, String localeSpecifier) throws FileDoesNotExistException
 	{
 		if (localeSpecifier == null) {
 			// use system default
@@ -211,7 +205,7 @@ public final class I18NL10N {
 	 * @see                               I18NL10N#load(String)
 	 * @see                               I18NL10N#load(InputStream)
 	 */
-	public static String getFilename(String localeFilenamePrefix) throws FileDoesNotExistException
+	public String getFilename(String localeFilenamePrefix) throws FileDoesNotExistException
 	{
 		return getFilename(localeFilenamePrefix,null);
 	}
@@ -227,7 +221,7 @@ public final class I18NL10N {
 	 * @see                               I18NL10N#getFilename(String,String)
 	 * @see                               I18NL10N#load(InputStream)
 	 */
-	public static void load(String localeFilename) throws FileDoesNotExistException
+	public void load(String localeFilename) throws FileDoesNotExistException
 	{
 		TextFileParser fLanguageFile = new TextFileParser(localeFilename);
 
@@ -252,7 +246,7 @@ public final class I18NL10N {
 	 * @see                        I18NL10N#getFilename(String,String)
 	 * @see                        I18NL10N#load(String)
 	 */
-	public static void load(InputStream languageInputStream) throws FileReadException
+	public void load(InputStream languageInputStream) throws FileReadException
 	{
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(languageInputStream));
@@ -271,7 +265,7 @@ public final class I18NL10N {
 	/**
 	 * Clears the database.
 	 */
-	public static void clear()
+	public void clear()
 	{
 		fTranslationTable.clear();
 	}
@@ -281,7 +275,7 @@ public final class I18NL10N {
 	 *
 	 * @return the descriptive name of the currently used locale
 	 */
-	public static String getCurrentLocaleDescription()
+	public String getCurrentLocaleDescription()
 	{
 		return Locale.getDefault().getDisplayName();
 	}
@@ -293,7 +287,7 @@ public final class I18NL10N {
 	 *
 	 * @return the short BCP 47 name of the currently used locale
 	 */
-	public static String getCurrentLocaleName()
+	public String getCurrentLocaleName()
 	{
 		return Locale.getDefault().toString();
 	}
@@ -303,7 +297,7 @@ public final class I18NL10N {
 	 *
 	 * @return the currently used locale
 	 */
-	public static Locale getCurrentLocale()
+	public Locale getCurrentLocale()
 	{
 		return Locale.getDefault();
 	}
@@ -320,7 +314,7 @@ public final class I18NL10N {
 	 * @param parameters   the optional parameters to substitute in the translated value
 	 * @return             the value corresponding to the <CODE>languageKey</CODE>
 	 */
-	public static String translate(String languageKey, String ... parameters)
+	public String translate(String languageKey, String ... parameters)
 	{
 		// retrieve value from database
 		String value = fTranslationTable.getProperty(languageKey);
@@ -383,7 +377,7 @@ public final class I18NL10N {
 	 * @param mnemonic  the mnemonic to retrieve the <CODE>KeyEvent</CODE> code from
 	 * @return          the <CODE>KeyEvent</CODE> code associated with the specified mnemonic (<CODE>null</CODE> if the mnemonic was empty)
 	 */
-	public static Integer translateMnemonic(final String mnemonic)
+	public Integer translateMnemonic(final String mnemonic)
 	{
 		if ((mnemonic == null) || (mnemonic.length() == 0)) {
 			return null;
@@ -456,7 +450,7 @@ public final class I18NL10N {
 	/**
 	 * @param line  -
 	 */
-	private static void extractKeyValuePair(String line)
+	private void extractKeyValuePair(String line)
 	{
 		// ignore empty lines and comments
 		if ((line.length() > 0) && (!line.startsWith("#"))) {

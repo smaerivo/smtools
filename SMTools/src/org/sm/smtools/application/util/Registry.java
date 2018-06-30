@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : Registry.java
 // Author        : Sven Maerivoet
-// Last modified : 05/01/2015
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,21 +33,20 @@ import org.sm.smtools.exceptions.*;
  * The <CODE>Registry</CODE> class is actually a <B>singleton</B> instance, and a local reference to it
  * should be obtained as follows:
  * <P>
- * <CODE>Registry registry = Registry.getInstance();</CODE>
+ * <CODE>Registry registry = Registry.kINSTANCE;</CODE>
  * <P>
  * The registry contains serialisable objects that can be stored and retrieved via a <CODE>String</CODE> key using the
  * {@link Registry#addObject(String,Object)} and {@link Registry#getObject(String)} methods.
- * <P>
- * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 05/01/2015
+ * @version 26/06/2018
  */
-public final class Registry
+public enum Registry
 {
+	kINSTANCE;
+
 	// internal datastructures
-	private static Registry fInstance;
-	public Hashtable<String,Object> fContents;
+	private Hashtable<String,Object> fContents;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -66,24 +65,10 @@ public final class Registry
 	 ******************/
 
 	/**
-	 * Returns the singleton instance of the <CODE>Registry</CODE> class.
-	 * 
-	 * @return the singleton instance of the <CODE>Registry</CODE> class
-	 */
-	public synchronized static Registry getInstance()
-	{
-		// return a singleton instance
-		if (fInstance == null) {
-			fInstance = new Registry();
-		}
-
-		return fInstance;
-	}
-
-	/**
 	 * Clears the registry.
 	 */
-	public synchronized void clear()
+//	public synchronized void clear()
+	public void clear()
 	{
 		fContents = new Hashtable<String,Object>();
 	}
@@ -94,7 +79,7 @@ public final class Registry
 	 * @param name    the name of the object
 	 * @param object  a reference to the object
 	 */
-	public synchronized void addObject(String name, Object object)
+	public void addObject(String name, Object object)
 	{
 		fContents.put(name,object);
 	}
@@ -105,7 +90,7 @@ public final class Registry
 	 * @param name  the name of the object
 	 * @return      a reference to the object
 	 */
-	public synchronized Object getObject(String name)
+	public Object getObject(String name)
 	{
 		return fContents.get(name);
 	}
@@ -117,7 +102,7 @@ public final class Registry
 	 * @throws RegistryException  if an error occurred during the deserialisation process
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized void load(String filename) throws RegistryException
+	public void load(String filename) throws RegistryException
 	{
 		// prevent resource leaks
 		try (FileInputStream fileInputStream = new FileInputStream(filename); ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
@@ -129,13 +114,13 @@ public final class Registry
 			fileInputStream.close();
 		}
 		catch (InvalidClassException exc) {
-			throw new RegistryException(I18NL10N.translate("error.DeserialisingRegistry",filename));
+			throw new RegistryException(I18NL10N.kINSTANCE.translate("error.DeserialisingRegistry",filename));
 		}
 		catch (IOException exc) {
-			throw new RegistryException(I18NL10N.translate("error.LoadingRegistry",filename));
+			throw new RegistryException(I18NL10N.kINSTANCE.translate("error.LoadingRegistry",filename));
 		}
 		catch (ClassNotFoundException exc) {
-			throw new RegistryException(I18NL10N.translate("error.CastingRegistryObjectsWhenLoading",filename));
+			throw new RegistryException(I18NL10N.kINSTANCE.translate("error.CastingRegistryObjectsWhenLoading",filename));
 		}
 	}
 
@@ -147,7 +132,7 @@ public final class Registry
 	 * @param  filename           the name of the file to save the registry to
 	 * @throws RegistryException  if an error occurred during the serialisation process
 	 */
-	public synchronized void save(String filename) throws RegistryException
+	public void save(String filename) throws RegistryException
 	{
 		FileOutputStream fileOutputStream = null;
 		ObjectOutputStream objectOutputStream = null;
@@ -163,7 +148,7 @@ public final class Registry
 			fileOutputStream.close();
 		}
 		catch (IOException exc) {
-			throw new RegistryException(I18NL10N.translate("error.SavingRegistry",filename));
+			throw new RegistryException(I18NL10N.kINSTANCE.translate("error.SavingRegistry",filename));
 		}
 	}
 }

@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : MP3Player.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 26/06/2018
  */
 public final class MP3Player extends Thread
 {
@@ -96,6 +96,7 @@ public final class MP3Player extends Thread
 	/*************************
 	 * STATIC INITIALISATION *
 	 *************************/
+
 	static {
 		enableSystemSounds();
 	}
@@ -225,7 +226,7 @@ public final class MP3Player extends Thread
 	 */
 	public static void playSystemSound(String soundFilename, EPlaying playing)
 	{
-		if (!DevelopMode.isActivated() && (fSystemSoundsEnabled)) {
+		if (!DevelopMode.kINSTANCE.isActivated() && (fSystemSoundsEnabled)) {
 			try {
 				(new MP3Player(JARResources.fSystemResources.getInputStream(soundFilename))).play(playing);
 			}
@@ -233,7 +234,7 @@ public final class MP3Player extends Thread
 				// ignore
 			}
 			catch (SoundPlayingException exc) {
-				kLogger.error(I18NL10N.translate("error.PlayingSound"));
+				kLogger.error(I18NL10N.kINSTANCE.translate("error.PlayingSound"));
 			}
 		}
 	}
@@ -255,7 +256,7 @@ public final class MP3Player extends Thread
 			createPlayer(bufferedInputStream);
 		}
 		catch (FileNotFoundException exc) {
-			kLogger.error(I18NL10N.translate("error.SoundFileNotFound",soundFilename));
+			kLogger.error(I18NL10N.kINSTANCE.translate("error.SoundFileNotFound",soundFilename));
 			throw (new FileDoesNotExistException(soundFilename));
 		}		
 	}
@@ -271,7 +272,7 @@ public final class MP3Player extends Thread
 			fPlayer = new Player(soundInputStream,audioDevice);
 		}
 		catch (JavaLayerException exc) {
-			kLogger.error(I18NL10N.translate("error.PlayingSound"));
+			kLogger.error(I18NL10N.kINSTANCE.translate("error.PlayingSound"));
 			throw (new SoundPlayingException());
 		}
 	}

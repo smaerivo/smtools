@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : JAboutBox.java
 // Author        : Sven Maerivoet
-// Last modified : 04/05/2014
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ import org.sm.smtools.util.*;
  * tab is <B>not</B> shown.
  * 
  * @author  Sven Maerivoet
- * @version 04/05/2014
+ * @version 26/06/2018
  */
 public class JAboutBox extends JDefaultDialog
 {
@@ -143,8 +143,7 @@ public class JAboutBox extends JDefaultDialog
 			JDefaultDialog.EModality.kModal,
 			JDefaultDialog.ESize.kFixedSize,
 			JDefaultDialog.EType.kOk,
-			new Object[] {resources},
-			JDefaultDialog.EActivation.kPostponed);
+			new Object[] {resources});
 	}
 
 	/*********************
@@ -293,7 +292,7 @@ public class JAboutBox extends JDefaultDialog
 	@Override
 	protected final String setupWindowTitle()
 	{
-		return I18NL10N.translate("text.AboutBox.DialogTitle");
+		return I18NL10N.kINSTANCE.translate("text.AboutBox.DialogTitle");
 	}
 
 	/**
@@ -333,7 +332,7 @@ public class JAboutBox extends JDefaultDialog
 		fAboutTextLabel.setAlignmentY(Component.TOP_ALIGNMENT);
 		updateAboutTextLabel();		
 		aboutPane.add(fAboutTextLabel);
-		fTabbedPane.addTab(I18NL10N.translate("text.AboutBox.AboutPaneTitle"),aboutPane);
+		fTabbedPane.addTab(I18NL10N.kINSTANCE.translate("text.AboutBox.AboutPaneTitle"),aboutPane);
 
 		// create the copyright pane
 		if (setupCopyrightContent() != null) {
@@ -358,7 +357,7 @@ public class JAboutBox extends JDefaultDialog
 			JPanel subPanel = new JPanel();
 			subPanel.setLayout(new BoxLayout(subPanel,BoxLayout.Y_AXIS));
 			JLabel label = new JLabel(javaCupImage,JLabel.CENTER);
-			label.setToolTipText(I18NL10N.translate("tooltip.JavaCupImage"));
+			label.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.JavaCupImage"));
 			if (javaCupImage != null) {
 				label.setBorder(BorderFactory.createEtchedBorder());
 			}
@@ -366,7 +365,7 @@ public class JAboutBox extends JDefaultDialog
 			subPanel.add(label);
 			subPanel.add(Box.createRigidArea(new Dimension(0,10)));
 			label = new JLabel("<HTML><B>Java 2 !</B></HTML>",JLabel.CENTER);
-			label.setToolTipText(I18NL10N.translate("tooltip.JavaCupImage"));
+			label.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.JavaCupImage"));
 			label.setAlignmentX(Component.CENTER_ALIGNMENT);
 			subPanel.add(label);
 			subPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -378,12 +377,12 @@ public class JAboutBox extends JDefaultDialog
 			subPanel = new JPanel();
 			subPanel.setLayout(new BoxLayout(subPanel,BoxLayout.Y_AXIS));
 			label = new JLabel(swingImage,JLabel.CENTER);
-			label.setToolTipText(I18NL10N.translate("tooltip.SwingImage"));
+			label.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.SwingImage"));
 			label.setAlignmentX(Component.CENTER_ALIGNMENT);
 			subPanel.add(label);
 			subPanel.add(Box.createRigidArea(new Dimension(0,10)));
 			label = new JLabel("<HTML><B>Swing !</B></HTML>",JLabel.CENTER);
-			label.setToolTipText(I18NL10N.translate("tooltip.SwingImage"));
+			label.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.SwingImage"));
 			label.setAlignmentX(Component.CENTER_ALIGNMENT);
 			subPanel.add(label);
 			subPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -404,7 +403,7 @@ public class JAboutBox extends JDefaultDialog
 			centerPanel.add(new JLabel(copyrightLabelText.toString()));
 			copyrightPane.add(centerPanel,BorderLayout.CENTER);
 
-			fTabbedPane.addTab(I18NL10N.translate("text.AboutBox.CopyrightPaneTitle"),copyrightPane);
+			fTabbedPane.addTab(I18NL10N.kINSTANCE.translate("text.AboutBox.CopyrightPaneTitle"),copyrightPane);
 		}
 
 		Dimension maximumDimensions = new Dimension(0,0);
@@ -434,7 +433,7 @@ public class JAboutBox extends JDefaultDialog
 			maximumDimensions.width += kTextAreaExcessScrollPaneSpace;
 			fLicenceScrollPane.setPreferredSize(maximumDimensions);
 			licencePane.add(fLicenceScrollPane,BorderLayout.CENTER);
-			fTabbedPane.addTab(I18NL10N.translate("text.AboutBox.LicencePaneTitle"),licencePane);
+			fTabbedPane.addTab(I18NL10N.kINSTANCE.translate("text.AboutBox.LicencePaneTitle"),licencePane);
 		}
 
 		if (setupAffiliationsLabels() != null) {
@@ -462,7 +461,7 @@ public class JAboutBox extends JDefaultDialog
 			fAffiliationsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 			fAffiliationsScrollPane.setPreferredSize(maximumDimensions);
 
-			fTabbedPane.addTab(I18NL10N.translate("text.AboutBox.AffiliationsPaneTitle"),fAffiliationsScrollPane);
+			fTabbedPane.addTab(I18NL10N.kINSTANCE.translate("text.AboutBox.AffiliationsPaneTitle"),fAffiliationsScrollPane);
 		}
 
 		mainPanel.setLayout(new BorderLayout());
@@ -511,22 +510,22 @@ public class JAboutBox extends JDefaultDialog
 
 		// update the JVM, OS, current locale and machine specifics
 		aboutText += "Java VM " + System.getProperty("java.version") + " (" + System.getProperty("java.vendor") + ")<BR>";
-		aboutText += I18NL10N.translate("text.OperatingSystem") + ": " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<BR>";
-		aboutText += I18NL10N.translate("text.CurrentLocale") + ": " + I18NL10N.getCurrentLocaleDescription() + "<BR/>";
+		aboutText += I18NL10N.kINSTANCE.translate("text.OperatingSystem") + ": " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")<BR>";
+		aboutText += I18NL10N.kINSTANCE.translate("text.CurrentLocale") + ": " + I18NL10N.kINSTANCE.getCurrentLocaleDescription() + "<BR/>";
 		int nrOfProcessors = SystemInformation.getNrOfProcessors();
-		aboutText += I18NL10N.translate("text.NrOfProcessors") + ": " + String.valueOf(nrOfProcessors) + "<BR>";		
+		aboutText += I18NL10N.kINSTANCE.translate("text.NrOfProcessors") + ": " + String.valueOf(nrOfProcessors) + "<BR>";		
 
 		// update the available memory
 		long totalMemory = MathTools.round(MathTools.convertBToMiB(SystemInformation.getTotalMemory()));
 		long usedMemory = MathTools.round(MathTools.convertBToMiB(SystemInformation.getUsedMemory()));
 		long freeMemory = MathTools.round(MathTools.convertBToMiB(SystemInformation.getFreeMemory()));
-		aboutText += I18NL10N.translate("text.MemoryTotal") + ": " + String.valueOf(totalMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR>";		
-		aboutText += I18NL10N.translate("text.MemoryUsed") + ": " + String.valueOf(usedMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR>";		
-		aboutText += I18NL10N.translate("text.MemoryFree") + ": " + String.valueOf(freeMemory) + " " + I18NL10N.translate("text.MiBAbbreviation") + "<BR>";		
+		aboutText += I18NL10N.kINSTANCE.translate("text.MemoryTotal") + ": " + String.valueOf(totalMemory) + " " + I18NL10N.kINSTANCE.translate("text.MiBAbbreviation") + "<BR>";		
+		aboutText += I18NL10N.kINSTANCE.translate("text.MemoryUsed") + ": " + String.valueOf(usedMemory) + " " + I18NL10N.kINSTANCE.translate("text.MiBAbbreviation") + "<BR>";		
+		aboutText += I18NL10N.kINSTANCE.translate("text.MemoryFree") + ": " + String.valueOf(freeMemory) + " " + I18NL10N.kINSTANCE.translate("text.MiBAbbreviation") + "<BR>";		
 
 		// update the used libraries
 		aboutText += "<BR>";
-		aboutText += I18NL10N.translate("text.UsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8, Java Native Access 3.5.1, Quaqua 8, BigDecimalMath 2012-03";
+		aboutText += I18NL10N.kINSTANCE.translate("text.UsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8, Java Native Access 3.5.1, Quaqua 8, BigDecimalMath 2012-03";
 		if (setupUsedLibrariesDescriptions() != null) {
 			aboutText += ", " + setupUsedLibrariesDescriptions();
 		}

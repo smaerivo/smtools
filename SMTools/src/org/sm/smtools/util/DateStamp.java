@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 26/06/2018
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
@@ -527,19 +527,19 @@ public final class DateStamp implements Comparable<DateStamp>
 	{
 		switch (dayOfWeek) {
 			case 1:
-				return I18NL10N.translate("text.Day.Monday");
+				return I18NL10N.kINSTANCE.translate("text.Day.Monday");
 			case 2:
-				return I18NL10N.translate("text.Day.Tuesday");
+				return I18NL10N.kINSTANCE.translate("text.Day.Tuesday");
 			case 3:
-				return I18NL10N.translate("text.Day.Wednesday");
+				return I18NL10N.kINSTANCE.translate("text.Day.Wednesday");
 			case 4:
-				return I18NL10N.translate("text.Day.Thursday");
+				return I18NL10N.kINSTANCE.translate("text.Day.Thursday");
 			case 5:
-				return I18NL10N.translate("text.Day.Friday");
+				return I18NL10N.kINSTANCE.translate("text.Day.Friday");
 			case 6:
-				return I18NL10N.translate("text.Day.Saturday");
+				return I18NL10N.kINSTANCE.translate("text.Day.Saturday");
 			case 7:
-				return I18NL10N.translate("text.Day.Sunday");
+				return I18NL10N.kINSTANCE.translate("text.Day.Sunday");
 		}
 
 		return "";
@@ -558,29 +558,29 @@ public final class DateStamp implements Comparable<DateStamp>
 	{
 		switch (month) {
 			case 1:
-				return I18NL10N.translate("text.Month.January");
+				return I18NL10N.kINSTANCE.translate("text.Month.January");
 			case 2:
-				return I18NL10N.translate("text.Month.February");
+				return I18NL10N.kINSTANCE.translate("text.Month.February");
 			case 3:
-				return I18NL10N.translate("text.Month.March");
+				return I18NL10N.kINSTANCE.translate("text.Month.March");
 			case 4:
-				return I18NL10N.translate("text.Month.April");
+				return I18NL10N.kINSTANCE.translate("text.Month.April");
 			case 5:
-				return I18NL10N.translate("text.Month.May");
+				return I18NL10N.kINSTANCE.translate("text.Month.May");
 			case 6:
-				return I18NL10N.translate("text.Month.June");
+				return I18NL10N.kINSTANCE.translate("text.Month.June");
 			case 7:
-				return I18NL10N.translate("text.Month.July");
+				return I18NL10N.kINSTANCE.translate("text.Month.July");
 			case 8:
-				return I18NL10N.translate("text.Month.August");
+				return I18NL10N.kINSTANCE.translate("text.Month.August");
 			case 9:
-				return I18NL10N.translate("text.Month.September");
+				return I18NL10N.kINSTANCE.translate("text.Month.September");
 			case 10:
-				return I18NL10N.translate("text.Month.October");
+				return I18NL10N.kINSTANCE.translate("text.Month.October");
 			case 11:
-				return I18NL10N.translate("text.Month.November");
+				return I18NL10N.kINSTANCE.translate("text.Month.November");
 			case 12:
-				return I18NL10N.translate("text.Month.December");
+				return I18NL10N.kINSTANCE.translate("text.Month.December");
 		}
 
 		return "";
@@ -597,40 +597,40 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public static int getMonth(String month)
 	{
-		if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.January"))) {
+		if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.January"))) {
 			return 1;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.February"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.February"))) {
 			return 2;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.March"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.March"))) {
 			return 3;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.April"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.April"))) {
 			return 4;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.May"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.May"))) {
 			return 5;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.June"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.June"))) {
 			return 6;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.July"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.July"))) {
 			return 7;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.August"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.August"))) {
 			return 8;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.September"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.September"))) {
 			return 9;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.October"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.October"))) {
 			return 10;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.November"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.November"))) {
 			return 11;
 		}
-		else if (month.equalsIgnoreCase(I18NL10N.translate("text.Month.December"))) {
+		else if (month.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("text.Month.December"))) {
 			return 12;
 		}
 

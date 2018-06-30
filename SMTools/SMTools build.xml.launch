@@ -9,7 +9,7 @@
 <listEntry value="1"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="ANT_HOME" value="C:\Program Files\eclipse\plugins\org.apache.ant_1.9.6.v201510161327"/>
+<mapEntry key="ANT_HOME" value="C:\Users\smaerivo\.p2\pool\plugins\org.apache.ant_1.10.1.v20170504-0840"/>
 <mapEntry key="Path" value="${env_var:JAVA_HOME}/bin;${env_var:Path}"/>
 </mapAttribute>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">

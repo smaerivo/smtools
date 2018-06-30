@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 18/05/2016
+// Last modified : 30/06/2018
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2016 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,13 +48,13 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 18/05/2016
+ * @version 30/06/2018
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
 {
 	// access point to the Log4j logging facility
-	//private static final Logger kLogger = Logger.getLogger(JDerivedGUIApplication.class.getName());
+//	private static final Logger kLogger = Logger.getLogger(JDerivedGUIApplication.class.getName());
 
 	// the location of the JAR archive containing all the resources
 	private static final String kResourceArchiveFilename = "application-resources.zip";
@@ -88,7 +88,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 *************************/
 
 	static {
-		DevelopMode.deactivate();
+		DevelopMode.kINSTANCE.deactivate();
 	}
 
 	/****************
@@ -132,41 +132,37 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemDateChooser)) {
 			fStatusBarCustomLabel.setText("64-bit FP");
-			getStatusBar().setStatusText(I18NL10N.translate("text.ChooseDateDialogTitle"));
+			getStatusBar().setStatusText(I18NL10N.kINSTANCE.translate("text.ChooseDateDialogTitle"));
 			JDateChooser dateChooser = new JDateChooser(
 				this,
-				I18NL10N.translate("text.ChooseDateDialogTitle"),
+				I18NL10N.kINSTANCE.translate("text.ChooseDateDialogTitle"),
 				JDefaultDialog.EType.kOkCancel,
 				new DateStamp(11,4,1976),
-				JDateChooser.EUseDefaultDate.kEnabled,
-				JDefaultDialog.EActivation.kImmediately);
+				JDateChooser.EUseDefaultDate.kEnabled);
 			getStatusBar().clearStatusText();
 			if (dateChooser.isCancelled()) {
-				JWarningDialog.warn(this,I18NL10N.translate("text.ChoiceCancelled"));
+				JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("text.ChoiceCancelled"));
 			}
 			else {
-				JMessageDialog.show(this,I18NL10N.translate("text.SelectedDate",dateChooser.getSelectedDate().getFullDateString()));
+				JMessageDialog.show(this,I18NL10N.kINSTANCE.translate("text.SelectedDate",dateChooser.getSelectedDate().getFullDateString()));
 			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTimeChooser)) {
 			fStatusBarCustomLabel.setText("128-bit FP");
-			getStatusBar().setStatusText(I18NL10N.translate("text.ChooseTimeDialogTitle"));
+			getStatusBar().setStatusText(I18NL10N.kINSTANCE.translate("text.ChooseTimeDialogTitle"));
 			JTimeChooser timeChooser = new JTimeChooser(
 				this,
-				I18NL10N.translate("text.ChooseTimeDialogTitle"),
+				I18NL10N.kINSTANCE.translate("text.ChooseTimeDialogTitle"),
 				JDefaultDialog.EType.kOkCancel,
-				new TimeStamp(12,25,20,10),
 				JTimeChooser.EType.kHourMinuteSecondMillisecond,
-				JTimeChooser.EClockDigits.kUse12Hour,
-				JTimeChooser.EUpdating.kDiscrete,
-				JTimeChooser.EDigitalClock.kShown,
-				JDefaultDialog.EActivation.kImmediately);
+				JTimeChooser.EUpdatingMethod.kContinuous,
+				JTimeChooser.EDigitalClock.kShown);
 			getStatusBar().clearStatusText();
 			if (timeChooser.isCancelled()) {
-				JWarningDialog.warn(this,I18NL10N.translate("text.ChoiceCancelled"));
+				JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("text.ChoiceCancelled"));
 			}
 			else {
-				JMessageDialog.show(this,I18NL10N.translate("text.SelectedTime",timeChooser.getSelectedTime().getHMSString()));
+				JMessageDialog.show(this,I18NL10N.kINSTANCE.translate("text.SelectedTime",timeChooser.getSelectedTime().getHMSMsString()));
 			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemIndex)) {
@@ -359,8 +355,8 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		JMenu menu = null;
 		JMenuItem menuItem = null;
 
-			menu = new JMenu(I18NL10N.translate("menu.Demonstration"));
-			menu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.Demonstration.Mnemonic")));
+			menu = new JMenu(I18NL10N.kINSTANCE.translate("menu.Demonstration"));
+			menu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.Demonstration.Mnemonic")));
 
 				menuItem = constructMenuItem(kActionCommandMenuItemDateChooser);
 				menuItem.setActionCommand(kActionCommandMenuItemDateChooser);
@@ -392,8 +388,8 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		JMenu rightHandMenu = null;
 		JMenuItem menuItem = null;
 
-		rightHandMenu = new JMenu(I18NL10N.translate("menu.Help"));
-		rightHandMenu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.Help.Mnemonic")));
+		rightHandMenu = new JMenu(I18NL10N.kINSTANCE.translate("menu.Help"));
+		rightHandMenu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.Help.Mnemonic")));
 
 		menuItem = constructMenuItem(kActionCommandMenuItemIndex);
 		menuItem.setActionCommand(kActionCommandMenuItemIndex);
@@ -449,9 +445,18 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JAboutBox setupAboutBox()
+	protected boolean hasAboutBox()
 	{
-		return (new JDerivedAboutBox(this,fResources));
+		return true;
+	}
+
+	/**
+	 * See {@link JStandardGUIApplication}.
+	 */
+	@Override
+	protected void showAboutBox()
+	{
+		new JDerivedAboutBox(this,fResources);
 	}
 
 	/*****************
@@ -462,7 +467,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * This class contains an example about box.
 	 * 
 	 * @author  Sven Maerivoet
-	 * @version 18/05/2016
+	 * @version 30/06/2018
 	 * @see     org.sm.smtools.swing.dialogs.JAboutBox
 	 */
 	private final class JDerivedAboutBox extends JAboutBox
@@ -511,7 +516,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		{
 			return
 			("<B>JDerivedGUIApplication v1.1</B><BR />" +
-				"Copyright 2003-2016 Sven Maerivoet");
+				"Copyright 2003-2018 Sven Maerivoet");
 		}
 
 		/**
@@ -554,7 +559,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 				}
 				catch (FileDoesNotExistException exc) {
 				}
-				affiliationLabel.setToolTipText(I18NL10N.translate("tooltip.AboutBox.ClickForBrowser"));
+				affiliationLabel.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.AboutBox.ClickForBrowser"));
 			affiliationsLabels.add(affiliationLabel);
 
 				affiliationLabel = new JLabel(
@@ -567,14 +572,14 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 					"<html>" +
 						"E-mail: sven.maerivoet@gmail.com" +
 					"</html>");
-				affiliationLabel.setToolTipText(I18NL10N.translate("tooltip.AboutBox.ClickForEmailClient"));
+				affiliationLabel.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.AboutBox.ClickForEmailClient"));
 			affiliationsLabels.add(affiliationLabel);
 
 				affiliationLabel = new JLabel(
 					"<html>" +
 						"Website: http://www.maerivoet.org/" +
 					"</html>");
-				affiliationLabel.setToolTipText(I18NL10N.translate("tooltip.AboutBox.ClickForBrowser"));
+				affiliationLabel.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.AboutBox.ClickForBrowser"));
 			affiliationsLabels.add(affiliationLabel);
 
 			for (JLabel label : affiliationsLabels) { 
@@ -678,7 +683,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			for (ATask task : getTasks()) {
 				result += ((MyTask) task).getResult();
 			}
-			JMessageDialog.show(fMainWindow,I18NL10N.translate("text.TaskCompleted",String.valueOf(result)));
+			JMessageDialog.show(fMainWindow,I18NL10N.kINSTANCE.translate("text.TaskCompleted",String.valueOf(result)));
 		}
 	}
 

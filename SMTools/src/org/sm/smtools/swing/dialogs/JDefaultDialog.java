@@ -1,12 +1,12 @@
 // -----------------------------------
 // Filename      : JDefaultDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 20/09/2014
+// Last modified : 30/06/2018
 // Target        : Java VM (1.8)
 // -----------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ import org.sm.smtools.util.*;
  * Typically, <CODE>JDefaultDialog</CODE> is subclassed, with several methods overridden.
  * These methods control both the visual layout of the dialog box (custom dialog title and
  * custom content area) and the actions that need to be taken upon user input. The dialog
- * boxes can be modal or modeless, fixed size or resizable, directly activated or postponed.
+ * boxes can be modal or modeless, and have a fixed size or be resizable.
  * When the dialog box is shown, it is placed in the middle of the parent's frame.
  * <P>
  * The overridable methods are called in the following order:
@@ -82,21 +82,16 @@ import org.sm.smtools.util.*;
  *       JDefaultDialog.EModality.kModal,<BR>
  *       JDefaultDialog.ESize.kResizable,<BR>
  *       JDefaultDialog.EType.kOkCancel,<BR>
- *       new Object[] {object1,object2},<BR>
- *       JDefaultDialog.EActivation.kImmediately);<BR>
+ *       new Object[] {object1,object2};<BR>
  * </CODE>
  * So the <CODE>Object[]</CODE> array is constructed using <CODE>new Object[]
  * {object1,object2}</CODE>. If no parameters are to be passed, you should specify
  * <CODE>null</CODE> for the array.
  * <P>
- * If the dialog box's activation was postponed (using the {@link JDefaultDialog#JDefaultDialog(JFrame,EModality,ESize,EType,Object[],EActivation)}
- * constructor) for example for storing in the GUI's component cache, it should be reactivated using the {@link JDefaultDialog#activate} method. Any initialisation that needs to occur
- * during the reactivation process, can be performed by overriding the {@link JDefaultDialog#initialiseDuringActivation} method.
- * <P>
  * Note that there are two callback functions provided for when the ok- and cancel-buttons are selected: {@link JDefaultDialog#okSelected()} and {@link JDefaultDialog#cancelSelected()}.
  *
  * @author  Sven Maerivoet
- * @version 20/09/2014
+ * @version 30/06/2018
  */
 public class JDefaultDialog extends JDialog implements ActionListener, WindowListener
 {
@@ -115,11 +110,6 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 */
 	public static enum EType {kOk, kOkCancel, Custom};
 
-	/**
-	 * Useful constants to specify that the dialog box should be opened at the end of the constructor or if it should be postponed.
-	 */
-	public static enum EActivation {kImmediately, kPostponed};
-
 	// the offset used when the dialog is at the edge of the screen
 	private static final int kDialogOffset = 50;
 
@@ -127,7 +117,6 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	private JFrame fApplicationFrame;
 	private EType fType;
 	private boolean fCancelled;
-	private EActivation fActivation;
 	private boolean fIsShown;
 	private boolean fAutoPositioning;
 
@@ -138,47 +127,22 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	/**
 	 * Constructs a <CODE>JDefaultDialog</CODE> object with the specified characteristics.
 	 * <P>
-	 * Note that the dialog box is activated (i.e., made visible) at the end of the constructor.
 	 *
 	 * @param applicationFrame  the frame in which this dialog box is to be displayed
 	 * @param modality          an <CODE>EModality</CODE> flag to indicate if the dialog box should be modal or modeless
 	 * @param size              an <CODE>ESize</CODE> flag indicating whether or not the dialog box should be resizable
 	 * @param type              the type of the dialog box ("Ok", "Ok/Cancel" or custom)
 	 * @param parameters        an array of objects which are passed to the {@link JDefaultDialog#initialiseClass(Object[])} method
-	 * @see                     JDefaultDialog#JDefaultDialog(JFrame,EModality,ESize,EType,Object[],EActivation)
 	 * @see                     JDefaultDialog.EModality
 	 * @see                     JDefaultDialog.ESize
 	 * @see                     JDefaultDialog.EType
 	 */
 	public JDefaultDialog(JFrame applicationFrame, EModality modality, ESize size, EType type, Object[] parameters)
 	{
-		this(applicationFrame,modality,size,type,parameters,EActivation.kImmediately);
-	}
-
-	/**
-	 * Constructs a <CODE>JDefaultDialog</CODE> object with the specified characteristics.
-	 * <P>
-	 * If <CODE>immediateActivation</CODE> is <CODE>false</CODE>, the dialog box should be made
-	 * visible by explicitly calling the {@link JDefaultDialog#activate} method.
-	 *
-	 * @param applicationFrame  the frame in which this dialog box is to be displayed
-	 * @param modality          an <CODE>EModality</CODE> flag to indicate if the dialog box should be modal or modeless
-	 * @param size              an <CODE>ESize</CODE> flag indicating whether or not the dialog box should be resizable
-	 * @param type              the type of the dialog box ("Ok", "Ok/Cancel" or custom)
-	 * @param parameters        an array of objects which are passed to the {@link JDefaultDialog#initialiseClass(Object[])} method
-	 * @param activation        an <CODE>EActivation</CODE> flag indicating whether or not the dialog box should be made visible at the end of the constructor
-	 * @see                     JDefaultDialog#JDefaultDialog(JFrame,EModality,ESize,EType,Object[])
-	 * @see                     JDefaultDialog.EModality
-	 * @see                     JDefaultDialog.ESize
-	 * @see                     JDefaultDialog.EType
-	 */
-	public JDefaultDialog(JFrame applicationFrame, EModality modality, ESize size, EType type, Object[] parameters, EActivation activation)
-	{
 		super(applicationFrame);
 
 		fType = type;
 		fCancelled = (fType == EType.kOkCancel);
-		fActivation = activation;
 		fIsShown = false;
 		fAutoPositioning = true;
 
@@ -214,9 +178,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 			setModal(true);
 		}
 
-		if (fActivation == EActivation.kImmediately) {
-			activate();
-		}
+		activate();
 	}
 
 	/******************
@@ -243,13 +205,13 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	{
 		String command = e.getActionCommand();
 
-		if (command.equalsIgnoreCase(I18NL10N.translate("button.Ok"))) {
+		if (command.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("button.Ok"))) {
 			okSelected();
 			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
 			fCancelled = false;
 			windowClosing(null);
 		}
-		else if (command.equalsIgnoreCase(I18NL10N.translate("button.Cancel"))) {
+		else if (command.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("button.Cancel"))) {
 			cancelSelected();
 			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
 			windowClosing(null);
@@ -525,16 +487,16 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 			subPanel = new JPanel();
 			subPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-			button = new JButton(I18NL10N.translate("button.Ok"));
-			button.setActionCommand(I18NL10N.translate("button.Ok"));
+			button = new JButton(I18NL10N.kINSTANCE.translate("button.Ok"));
+			button.setActionCommand(I18NL10N.kINSTANCE.translate("button.Ok"));
 			button.addActionListener(this);
 			subPanel.add(button);
 			button.requestFocusInWindow();
 
 			if (fType == EType.kOkCancel) {
 
-				button = new JButton(I18NL10N.translate("button.Cancel"));
-				button.setActionCommand(I18NL10N.translate("button.Cancel"));
+				button = new JButton(I18NL10N.kINSTANCE.translate("button.Cancel"));
+				button.setActionCommand(I18NL10N.kINSTANCE.translate("button.Cancel"));
 				button.addActionListener(this);
 				subPanel.add(button);
 				button.requestFocusInWindow();

@@ -1,12 +1,12 @@
 // ----------------------------------
 // Filename      : JSplashScreen.java
 // Author        : Sven Maerivoet
-// Last modified : 04/12/2012
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // ----------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/12/2012
+ * @version 26/06/2018
  * @see     org.sm.smtools.application.JStandardGUIApplication
  * @see     org.sm.smtools.util.MP3Player
  */
@@ -109,7 +109,7 @@ public final class JSplashScreen extends JWindow
 	public JSplashScreen(JLabel customSplashScreenContent, InputStream mp3SoundInputStream)
 	{
 		fStatusWaitTime = 0;
-		fAvailable = (customSplashScreenContent != null) && (!DevelopMode.isActivated());
+		fAvailable = (customSplashScreenContent != null) && (!DevelopMode.kINSTANCE.isActivated());
 
 		if (fAvailable) {
 
@@ -158,7 +158,7 @@ public final class JSplashScreen extends JWindow
 
 			panel.add(Box.createRigidArea(new Dimension(0,20)));
 
-			fStatusLabel = new JLabel(I18NL10N.translate("text.SplashScreenMessage"),JLabel.LEFT);
+			fStatusLabel = new JLabel(I18NL10N.kINSTANCE.translate("text.SplashScreenMessage"),JLabel.LEFT);
 			fStatusLabel.setForeground(Color.white);
 			fStatusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 			panel.add(fStatusLabel);
@@ -232,7 +232,7 @@ public final class JSplashScreen extends JWindow
 		if (fAvailable) {
 			fStatusLabel.setText(statusMessage);
 
-			if (!DevelopMode.isActivated()) {
+			if (!DevelopMode.kINSTANCE.isActivated()) {
 				Chrono.wait(fStatusWaitTime);
 			}
 		}

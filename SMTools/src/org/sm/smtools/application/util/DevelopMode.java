@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : DevelopMode.java
 // Author        : Sven Maerivoet
-// Last modified : 14/03/2011
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // --------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ package org.sm.smtools.application.util;
  * the following manner:
  * <P>
  * <CODE>
- *   if (DevelopMode.isActivated()) {<BR>
+ *   if (DevelopMode.kINSTANCE.isActivated()) {<BR>
  *     ... // perform 'hacks'<BR>
  *   }
  * </CODE>
@@ -43,28 +43,28 @@ package org.sm.smtools.application.util;
  * Changing the status is done through direct assignment:
  * <P>
  * <CODE>
- *   DevelopMode.activate();
+ *   DevelopMode.kINSTANCE.activate();
  * </CODE>
  * <P>
  * If activation is required before any class initialisation, then use a static initialiser as follows:
  * <P>
  * <CODE>
  *   static {<BR>
- *     DevelopMode.activate();<BR>
+ *     DevelopMode.kINSTANCE.activate();<BR>
  *   }
  * </CODE>
  * <P>
  * Note that the default value is <CODE>false</CODE>.
- * <P>
- * <B>Note that this class cannot be subclassed, nor instantiated!</B>
  * 
  * @author  Sven Maerivoet
- * @version 14/03/2011
+ * @version 26/06/2018
  */
-public final class DevelopMode
+public enum DevelopMode
 {
+	kINSTANCE;
+
 	// internal datastructures
-	private static boolean fModeActivated = false;
+	private boolean fModeActivated = false;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -84,7 +84,7 @@ public final class DevelopMode
 	/**
 	 * Activates develop mode.
 	 */
-	public static void activate()
+	public void activate()
 	{
 		fModeActivated = true;
 	}
@@ -92,7 +92,7 @@ public final class DevelopMode
 	/**
 	 * Deactivates develop mode.
 	 */
-	public static void deactivate()
+	public void deactivate()
 	{
 		fModeActivated = false;
 	}
@@ -102,7 +102,7 @@ public final class DevelopMode
 	 *
 	 * @return <CODE>true</CODE> if the develop mode is activated, <CODE>false</CODE> otherwise
 	 */
-	public static boolean isActivated()
+	public boolean isActivated()
 	{
 		return fModeActivated;
 	}

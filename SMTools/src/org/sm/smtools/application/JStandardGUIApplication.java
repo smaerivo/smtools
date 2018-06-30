@@ -1,12 +1,12 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 18/05/2016
+// Last modified : 30/06/2018
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
 /**
- * Copyright 2003-2016 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,7 +112,8 @@ import org.sm.smtools.swing.dialogs.*;
  *     <LI>{@link JStandardGUIApplication#getStatusBar()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupGlassPane()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupIsClockEnabled()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
+ *     <LI>{@link JStandardGUIApplication#hasAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
+ *     <LI>{@link JStandardGUIApplication#showAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
  *   </UL>
  *   <LI><B><U>Reacting to user input</U></B></LI>
  *   <UL>
@@ -138,7 +139,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 18/05/2016
+ * @version 30/06/2018
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -332,7 +333,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *       {@link JStandardGUIApplication#setupIsStatusBarEnabled()}, and {@link JStandardGUIApplication#getStatusBar()}).</LI>
 	 *   <LI>The GUI's menu bar is constructed (see {@link JStandardGUIApplication#setupMenus()} and
 	 *       {@link JStandardGUIApplication#setupRightHandMenu()}).</LI>
-	 *   <LI>The about box is shown (see {@link JStandardGUIApplication#setupAboutBox()}).</LI>
+	 *   <LI>The about box is shown (see {@link JStandardGUIApplication#hasAboutBox()} and {@link JStandardGUIApplication#showAboutBox()}).</LI>
 	 *   <LI>The repainting behaviour when resizing is set to dynamic layout (see {@link JStandardGUIApplication#setDynamicLayout(boolean)}).</LI>
 	 *   <LI>The application checks if minimisation to the system tray is allowed (see {@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}).</LI>
 	 *   <LI>The glass pane is constructed (see {@link JStandardGUIApplication#setupGlassPane()}).</LI>
@@ -392,7 +393,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		// load the system's locale database
 		kLogger.info("Loading system locale database [" + fLocale + "]...");
 		try {
-			I18NL10N.load(JARResources.fSystemResources.getInputStream(I18NL10N.getFilename(kSystemLocalePrefix,fLocale)));
+			I18NL10N.kINSTANCE.load(JARResources.fSystemResources.getInputStream(I18NL10N.kINSTANCE.getFilename(kSystemLocalePrefix,fLocale)));
 		}
 		catch (FileDoesNotExistException exc) {
 			abortApplication("System locale database (" + kSystemLocalePrefix + " + " + fLocale + ") not found; application aborted.");
@@ -405,14 +406,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		String applicationResourceArchiveFilename = setupApplicationResourceArchiveFilename(); 
 		if (applicationResourceArchiveFilename != null) {
 			try {
-				kLogger.info(I18NL10N.translate("text.LoadingApplicationResources"));
+				kLogger.info(I18NL10N.kINSTANCE.translate("text.LoadingApplicationResources"));
 				fResources = new JARResources(applicationResourceArchiveFilename);
 			}
 			catch (FileDoesNotExistException exc) {
-				abortApplication(I18NL10N.translate("error.ApplicationResourcesArchiveNotFound",applicationResourceArchiveFilename),true);
+				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationResourcesArchiveNotFound",applicationResourceArchiveFilename),true);
 			}
 			catch (FileReadException exc) {
-				abortApplication(I18NL10N.translate("error.ApplicationResourcesArchiveProcessing",applicationResourceArchiveFilename),true);
+				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationResourcesArchiveProcessing",applicationResourceArchiveFilename),true);
 			}
 		}
 
@@ -420,22 +421,22 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		String applicationLocalePrefix = setupApplicationLocalePrefix();
 		if (applicationLocalePrefix != null) {
 			try {
-				kLogger.info(I18NL10N.translate("text.LoadingApplicationLocaleDatabase"));
-				I18NL10N.load(fResources.getInputStream(I18NL10N.getFilename(applicationLocalePrefix,fLocale)));
+				kLogger.info(I18NL10N.kINSTANCE.translate("text.LoadingApplicationLocaleDatabase"));
+				I18NL10N.kINSTANCE.load(fResources.getInputStream(I18NL10N.kINSTANCE.getFilename(applicationLocalePrefix,fLocale)));
 			}
 			catch (FileDoesNotExistException exc) {
-				abortApplication(I18NL10N.translate("error.ApplicationLocaleDatabaseNotFound",applicationLocalePrefix + " + " + fLocale),true);
+				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationLocaleDatabaseNotFound",applicationLocalePrefix + " + " + fLocale),true);
 			}
 			catch (FileReadException exc) {
-				abortApplication(I18NL10N.translate("error.ApplicationLocaleDatabaseProcessing",applicationLocalePrefix + " + " + fLocale),true);
+				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationLocaleDatabaseProcessing",applicationLocalePrefix + " + " + fLocale),true);
 			}
 		}
 
 		// obtain a reference to the system registry
-		fSystemRegistry = Registry.getInstance();
+		fSystemRegistry = Registry.kINSTANCE;
 
 		// load (deserialise) the system registry
-		kLogger.info(I18NL10N.translate("text.LoadingSystemRegistry"));
+		kLogger.info(I18NL10N.kINSTANCE.translate("text.LoadingSystemRegistry"));
 		try {
 			fSystemRegistry.load(kSystemRegistryFilename);
 		}
@@ -449,7 +450,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		// set the look-and-feel to that of the platform
-		kLogger.info(I18NL10N.translate("text.SettingGUILookAndFeel"));
+		kLogger.info(I18NL10N.kINSTANCE.translate("text.SettingGUILookAndFeel"));
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JDialog.setDefaultLookAndFeelDecorated(true);
 		setInitialLookAndFeel(setupInitialLookAndFeel());
@@ -463,11 +464,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		setTitle(kDefaultWindowTitle);
 
 		// allow custom initialisation
-		kLogger.info(I18NL10N.translate("text.PerformingCustomInitialisation"));
+		kLogger.info(I18NL10N.kINSTANCE.translate("text.PerformingCustomInitialisation"));
 		initialise(parameters);
 
-		kLogger.info(I18NL10N.translate("text.CreatingGUIComponents"));
-		getSplashScreen().setStatusMessage(I18NL10N.translate("text.ConstructingGUI"));
+		kLogger.info(I18NL10N.kINSTANCE.translate("text.CreatingGUIComponents"));
+		getSplashScreen().setStatusMessage(I18NL10N.kINSTANCE.translate("text.ConstructingGUI"));
 
 		// load the application's icon
 		fIcon = setupIcon();
@@ -593,13 +594,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		// check whether or not minimising to the system tray is supported
 		fMinimiseToSystemTray = (SystemTray.isSupported() && setupMinimiseToSystemTrayAllowed());
 
-		kLogger.info(I18NL10N.translate("text.ApplicationReady"));
-
-		// show the aboutbox
-		JDefaultDialog aboutBox = setupAboutBox();
-		if ((!DevelopMode.isActivated()) && (aboutBox != null)) {
-			aboutBox.activate();
-		}
+		kLogger.info(I18NL10N.kINSTANCE.translate("text.ApplicationReady"));
 
 		// allows real-time repainting of the window's contents upon resizing
 		setDynamicLayout(true);
@@ -610,6 +605,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			setGlassPane(fGlassPane);
 			fGlassPane.setVisible(false);
 			fGlassPane.setOpaque(false);
+		}
+
+		// show the aboutbox
+		if (!DevelopMode.kINSTANCE.isActivated()) {
+			showAboutBox();
 		}
 	}
 
@@ -641,10 +641,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemAbout)) {
-			JDefaultDialog aboutBox = setupAboutBox();
-			if (aboutBox != null) {
-				aboutBox.activate();
-			}
+			showAboutBox();
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemGTKLAF)) {
 			setLookAndFeel(klafGTK,false);
@@ -780,30 +777,30 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	@Override
 	public final void windowClosing(WindowEvent e)
 	{
-		if (!DevelopMode.isActivated()) {
+		if (!DevelopMode.kINSTANCE.isActivated()) {
 
-			if (JConfirmationDialog.confirm(this,I18NL10N.translate("text.ConfirmExitApplication"))) {
+			if (JConfirmationDialog.confirm(this,I18NL10N.kINSTANCE.translate("text.ConfirmExitApplication"))) {
 
-				kLogger.info(I18NL10N.translate("text.RunningApplicationShutdownSequence"));
+				kLogger.info(I18NL10N.kINSTANCE.translate("text.RunningApplicationShutdownSequence"));
 				shutdown();
 
-				kLogger.info(I18NL10N.translate("text.SavingRegistry"));
+				kLogger.info(I18NL10N.kINSTANCE.translate("text.SavingRegistry"));
 				saveRegistry();
 
 				// quit the running application
-				kLogger.info(I18NL10N.translate("text.ApplicationTerminated"));
+				kLogger.info(I18NL10N.kINSTANCE.translate("text.ApplicationTerminated"));
 				System.exit(0);
 			}
 		}
 		else {
-			kLogger.info(I18NL10N.translate("text.RunningApplicationShutdownSequence"));
+			kLogger.info(I18NL10N.kINSTANCE.translate("text.RunningApplicationShutdownSequence"));
 			shutdown();
 
-			kLogger.info(I18NL10N.translate("text.SavingRegistry"));
+			kLogger.info(I18NL10N.kINSTANCE.translate("text.SavingRegistry"));
 			saveRegistry();
 
 			// quit the running application
-			kLogger.info(I18NL10N.translate("text.ApplicationTerminated"));
+			kLogger.info(I18NL10N.kINSTANCE.translate("text.ApplicationTerminated"));
 			System.exit(0);
 		}
 	}
@@ -865,11 +862,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 			try {
 				SystemTray.getSystemTray().add(fTrayIcon);
-				fTrayIcon.displayMessage(setupWindowTitle(),I18NL10N.translate("text.RestoreFromSystemTray"),TrayIcon.MessageType.INFO);
+				fTrayIcon.displayMessage(setupWindowTitle(),I18NL10N.kINSTANCE.translate("text.RestoreFromSystemTray"),TrayIcon.MessageType.INFO);
 				setVisible(false);
 			}
 			catch (AWTException exc) {
-				kLogger.error(I18NL10N.translate("error.MinimisingToSystemTray"));
+				kLogger.error(I18NL10N.kINSTANCE.translate("error.MinimisingToSystemTray"));
 			}
 		}
 	}
@@ -1309,11 +1306,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	protected final JMenuItem constructMenuItem(String menuItemKey, boolean useMnemonic)
 	{
-		String translation = I18NL10N.translate(menuItemKey.trim());
+		String translation = I18NL10N.kINSTANCE.translate(menuItemKey.trim());
 		String indentation = StringTools.getIndentation(menuItemKey);
 
 		if (useMnemonic) {
-			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(menuItemKey.trim() + ".Mnemonic"));
+			Integer mnemonic = I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(menuItemKey.trim() + ".Mnemonic"));
 			if (mnemonic != null) {
 				return (new JMenuItem(indentation + translation,mnemonic));
 			}
@@ -1350,13 +1347,13 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	protected final JRadioButtonMenuItem constructRadioButtonMenuItem(String radioButtonMenuItemKey, boolean useMnemonic)
 	{
-		String translation = I18NL10N.translate(radioButtonMenuItemKey.trim());
+		String translation = I18NL10N.kINSTANCE.translate(radioButtonMenuItemKey.trim());
 		String indentation = StringTools.getIndentation(radioButtonMenuItemKey);
 
 		JRadioButtonMenuItem radioButtonMenuItem = new JRadioButtonMenuItem(indentation + translation);
 
 		if (useMnemonic) {
-			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(radioButtonMenuItemKey.trim() + ".Mnemonic"));
+			Integer mnemonic = I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(radioButtonMenuItemKey.trim() + ".Mnemonic"));
 
 			if (mnemonic != null) {
 				radioButtonMenuItem.setMnemonic(mnemonic);
@@ -1390,13 +1387,13 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	protected final JCheckBoxMenuItem constructCheckBoxMenuItem(String checkBoxMenuItemKey, boolean useMnemonic)
 	{
-		String translation = I18NL10N.translate(checkBoxMenuItemKey.trim());
+		String translation = I18NL10N.kINSTANCE.translate(checkBoxMenuItemKey.trim());
 		String indentation = StringTools.getIndentation(checkBoxMenuItemKey);
 
 		JCheckBoxMenuItem checkBoxMenuItem = new JCheckBoxMenuItem(indentation + translation);
 
 		if (useMnemonic) {
-			Integer mnemonic = I18NL10N.translateMnemonic(I18NL10N.translate(checkBoxMenuItemKey.trim() + ".Mnemonic"));
+			Integer mnemonic = I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(checkBoxMenuItemKey.trim() + ".Mnemonic"));
 
 			if (mnemonic != null) {
 				checkBoxMenuItem.setMnemonic(mnemonic);
@@ -1476,17 +1473,26 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * Sets up a custom about box.
+	 * Returns a <CODE>boolean</CODE> indicating whether or not a custom about box is available.
 	 * <P>
-	 * Note that this method returns <CODE>null</CODE> by default, indicating that no
+	 * Note that this method returns <CODE>false</CODE> by default, indicating that no custom
 	 * about box is available.
 	 *
-	 * @return the about box dialog
+	 * @return a <CODE>boolean</CODE> indicating whether or not a custom about box is available
 	 * @see    org.sm.smtools.swing.dialogs.JAboutBox
 	 */
-	protected JAboutBox setupAboutBox()
+	protected boolean hasAboutBox()
 	{
-		return null;
+		return false;
+	}
+
+	/**
+	 * Shows a custom about box.
+	 *
+	 * @see org.sm.smtools.swing.dialogs.JAboutBox
+	 */
+	protected void showAboutBox()
+	{
 	}
 
 	/**
@@ -1511,7 +1517,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	{
 		if (abortMessage != null) {
 			if ((appendLocale.length > 0) && (appendLocale[0])) {
-				kLogger.fatal(abortMessage + "\n" + I18NL10N.translate("text.ApplicationAborted"));
+				kLogger.fatal(abortMessage + "\n" + I18NL10N.kINSTANCE.translate("text.ApplicationAborted"));
 			}
 			else {
 				kLogger.fatal(abortMessage);
@@ -1541,14 +1547,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			}
 			SwingUtilities.updateComponentTreeUI(this);
 			repaint();
-			String message = I18NL10N.translate("text.GUILookAndFeelAdjusted",fCurrentLAF);
+			String message = I18NL10N.kINSTANCE.translate("text.GUILookAndFeelAdjusted",fCurrentLAF);
 			kLogger.info(message);
 			if (!silent) {
 				JMessageDialog.show(this,message);
 			}
 		}
 		catch (Exception exc) {
-			String message = I18NL10N.translate("error.LAFNotFound",fCurrentLAF);
+			String message = I18NL10N.kINSTANCE.translate("error.LAFNotFound",fCurrentLAF);
 			kLogger.error(message);
 			if (!silent) {
 				JWarningDialog.warn(this,message);
@@ -1640,12 +1646,22 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		ButtonGroup buttonGroup = null;
 
 		// the general menu
-		menu = new JMenu(I18NL10N.translate("menu.General"));
-		menu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.General.Mnemonic")));
+		menu = new JMenu(I18NL10N.kINSTANCE.translate("menu.General"));
+		menu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.General.Mnemonic")));
 		menuBar.add(menu);
 
-		JAboutBox aboutBox = setupAboutBox();
+//XXX
+//		JAboutBox aboutBox = setupAboutBox();
+/*
 		if (aboutBox != null) {
+				menuItem = constructMenuItem(kActionCommandMenuItemAbout);
+				menuItem.setActionCommand(kActionCommandMenuItemAbout);
+				menuItem.addActionListener(this);
+				menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'A',java.awt.event.InputEvent.CTRL_DOWN_MASK));
+			menu.add(menuItem);
+		}
+*/
+		if (hasAboutBox()) {
 				menuItem = constructMenuItem(kActionCommandMenuItemAbout);
 				menuItem.setActionCommand(kActionCommandMenuItemAbout);
 				menuItem.addActionListener(this);
@@ -1654,68 +1670,68 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		// the look-and-feel submenu
-		subMenu = new JMenu(I18NL10N.translate("menu.LookAndFeel"));
-		subMenu.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate("menu.LookAndFeel.Mnemonic")));
+		subMenu = new JMenu(I18NL10N.kINSTANCE.translate("menu.LookAndFeel"));
+		subMenu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.LookAndFeel.Mnemonic")));
 
 			buttonGroup = new ButtonGroup();
-			frbMetal = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMetalLAF));
-			frbMetal.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMetalLAF + ".Mnemonic")));
+			frbMetal = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemMetalLAF));
+			frbMetal.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemMetalLAF + ".Mnemonic")));
 			frbMetal.setSelected(false);
 			frbMetal.setActionCommand(kActionCommandMenuItemMetalLAF);
 			frbMetal.addActionListener(this);
 			buttonGroup.add(frbMetal);
 		subMenu.add(frbMetal);
 
-			frbNimbus = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemNimbusLAF));
-			frbNimbus.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemNimbusLAF + ".Mnemonic")));
+			frbNimbus = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemNimbusLAF));
+			frbNimbus.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemNimbusLAF + ".Mnemonic")));
 			frbNimbus.setSelected(false);
 			frbNimbus.setActionCommand(kActionCommandMenuItemNimbusLAF);
 			frbNimbus.addActionListener(this);
 			buttonGroup.add(frbNimbus);
 		subMenu.add(frbNimbus);
 
-			frbMotif = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMotifLAF));
-			frbMotif.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMotifLAF + ".Mnemonic")));
+			frbMotif = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemMotifLAF));
+			frbMotif.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemMotifLAF + ".Mnemonic")));
 			frbMotif.setSelected(false);
 			frbMotif.setActionCommand(kActionCommandMenuItemMotifLAF);
 			frbMotif.addActionListener(this);
 			buttonGroup.add(frbMotif);
 		subMenu.add(frbMotif);
 
-			frbGTK = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemGTKLAF));
-			frbGTK.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemGTKLAF + ".Mnemonic")));
+			frbGTK = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemGTKLAF));
+			frbGTK.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemGTKLAF + ".Mnemonic")));
 			frbGTK.setSelected(false);
 			frbGTK.setActionCommand(kActionCommandMenuItemGTKLAF);
 			frbGTK.addActionListener(this);
 			buttonGroup.add(frbGTK);
 		subMenu.add(frbGTK);
 
-			frbWindows = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemWindowsLAF));
-			frbWindows.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemWindowsLAF + ".Mnemonic")));
+			frbWindows = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemWindowsLAF));
+			frbWindows.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemWindowsLAF + ".Mnemonic")));
 			frbWindows.setSelected(false);
 			frbWindows.setActionCommand(kActionCommandMenuItemWindowsLAF);
 			frbWindows.addActionListener(this);
 			buttonGroup.add(frbWindows);
 		subMenu.add(frbWindows);
 
-			frbWindowsClassic = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemWindowsClassicLAF));
-			frbWindowsClassic.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemWindowsClassicLAF + ".Mnemonic")));
+			frbWindowsClassic = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemWindowsClassicLAF));
+			frbWindowsClassic.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemWindowsClassicLAF + ".Mnemonic")));
 			frbWindowsClassic.setSelected(false);
 			frbWindowsClassic.setActionCommand(kActionCommandMenuItemWindowsClassicLAF);
 			frbWindowsClassic.addActionListener(this);
 			buttonGroup.add(frbWindowsClassic);
 		subMenu.add(frbWindowsClassic);
 
-			frbMac = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemMacLAF));
-			frbMac.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemMacLAF + ".Mnemonic")));
+			frbMac = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemMacLAF));
+			frbMac.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemMacLAF + ".Mnemonic")));
 			frbMac.setSelected(false);
 			frbMac.setActionCommand(kActionCommandMenuItemMacLAF);
 			frbMac.addActionListener(this);
 			buttonGroup.add(frbMac);
 		subMenu.add(frbMac);
 
-			frbQuaqua = new JRadioButtonMenuItem(I18NL10N.translate(kActionCommandMenuItemQuaquaLAF));
-			frbQuaqua.setMnemonic(I18NL10N.translateMnemonic(I18NL10N.translate(kActionCommandMenuItemQuaquaLAF + ".Mnemonic")));
+			frbQuaqua = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemQuaquaLAF));
+			frbQuaqua.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemQuaquaLAF + ".Mnemonic")));
 			frbQuaqua.setSelected(false);
 			frbQuaqua.setActionCommand(kActionCommandMenuItemQuaquaLAF);
 			frbQuaqua.addActionListener(this);
@@ -1846,7 +1862,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 						}
 					}
 					else if (upperCaseParameter.equalsIgnoreCase(kParamDevelopMode)) {
-						DevelopMode.activate();
+						DevelopMode.kINSTANCE.activate();
 					}
 					else if (upperCaseParameter.startsWith(kParamWidth + "=")) {
 
@@ -1935,7 +1951,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			kLogger.info("Creating system registry...");
 
 			try {
-				Registry registry = Registry.getInstance();
+				Registry registry = Registry.kINSTANCE;
 				registry.clear();
 				registry.save(kSystemRegistryFilename);
 				kLogger.info("Done creating registry; application stopped.");

@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : JCustomColorMapChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 23/06/2015
+// Last modified : 30/06/2018
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 23/06/2015
+ * @version 30/06/2018
  */
 public final class JCustomColorMapChooser extends JDefaultDialog implements ActionListener, ChangeListener
 {
@@ -79,8 +79,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 			JDefaultDialog.EModality.kModal,
 			JDefaultDialog.ESize.kFixedSize,
 			JDefaultDialog.EType.kOkCancel,
-			new Object[] {nrOfColors,customColorMapComponents},
-			JDefaultDialog.EActivation.kImmediately);
+			new Object[] {nrOfColors,customColorMapComponents});
 	}
 
 	/******************
@@ -102,11 +101,11 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 			double level = (double) fColorSliders[colorIndex].getValue() / 100.0;
 
 			if (selected) {
-				fColorCheckBoxes[colorIndex].setText(I18NL10N.translate("text.CustomColorMap.Enabled"));
+				fColorCheckBoxes[colorIndex].setText(I18NL10N.kINSTANCE.translate("text.CustomColorMap.Enabled"));
 				fColorMap.setCustomColorMapComponent(colorIndex,level,fColorButtons[colorIndex].getBackground());
 			}
 			else {
-				fColorCheckBoxes[colorIndex].setText(I18NL10N.translate("text.CustomColorMap.Disabled"));
+				fColorCheckBoxes[colorIndex].setText(I18NL10N.kINSTANCE.translate("text.CustomColorMap.Disabled"));
 				fColorMap.removeCustomColorMapComponent(colorIndex);
 			}
 			fColorButtons[colorIndex].setEnabled(selected);
@@ -115,7 +114,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 		}
 		else if (command.startsWith(kActionCommandColorButtonPrefix)) {
 			int colorIndex = Integer.parseInt(command.substring(command.indexOf("-") + 1));
-			Color color = JColorChooser.showDialog(this,I18NL10N.translate("text.CustomColorMap.SelectColor"),fColorButtons[colorIndex].getBackground());
+			Color color = JColorChooser.showDialog(this,I18NL10N.kINSTANCE.translate("text.CustomColorMap.SelectColor"),fColorButtons[colorIndex].getBackground());
 			if (color != null) {
 				fColorButtons[colorIndex].setBackground(color);				
 
@@ -126,8 +125,8 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 		}
 		else if (command.equalsIgnoreCase(kActionCommandLoadCustomColorMap)) {
 			JFileChooser fileChooser = new JFileChooser(".");
-			fileChooser.setDialogTitle(I18NL10N.translate("text.CustomColorMap.LoadTitle"));
-			fileChooser.setFileFilter(new JFileFilter("CSV",I18NL10N.translate("text.File.CSVDescription")));
+			fileChooser.setDialogTitle(I18NL10N.kINSTANCE.translate("text.CustomColorMap.LoadTitle"));
+			fileChooser.setFileFilter(new JFileFilter("CSV",I18NL10N.kINSTANCE.translate("text.File.CSVDescription")));
 			if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				String filename = fileChooser.getSelectedFile().getPath();
 
@@ -140,20 +139,20 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 					adjustControls();
 				}
 				catch (FileDoesNotExistException exc) {
-					JWarningDialog.warn(this,I18NL10N.translate("error.CustomColorMap.ErrorLoadingCustomColorMap"));
+					JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.CustomColorMap.ErrorLoadingCustomColorMap"));
 				}
 				catch (FileParseException exc) {
-					JWarningDialog.warn(this,I18NL10N.translate("error.CustomColorMap.ErrorParsingCustomColorMap",String.valueOf(exc.getLineNr()),exc.getValue()));
+					JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.CustomColorMap.ErrorParsingCustomColorMap",String.valueOf(exc.getLineNr()),exc.getValue()));
 				}
 				catch (NumberFormatException exc) {
-					JWarningDialog.warn(this,I18NL10N.translate("error.CustomColorMap.ErrorParsingCustomColorMapComponent",String.valueOf(exc.getMessage())));
+					JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.CustomColorMap.ErrorParsingCustomColorMapComponent",String.valueOf(exc.getMessage())));
 				}
 			}
 		}
 		else if (command.equalsIgnoreCase(kActionCommandSaveCustomColorMap)) {
 			JFileChooser fileChooser = new JFileChooser(".");
-			fileChooser.setDialogTitle(I18NL10N.translate("text.CustomColorMap.SaveTitle"));
-			fileChooser.setFileFilter(new JFileFilter("CSV",I18NL10N.translate("text.File.CSVDescription")));
+			fileChooser.setDialogTitle(I18NL10N.kINSTANCE.translate("text.CustomColorMap.SaveTitle"));
+			fileChooser.setFileFilter(new JFileFilter("CSV",I18NL10N.kINSTANCE.translate("text.File.CSVDescription")));
 			if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
 				String filename = fileChooser.getSelectedFile().getPath();
 				if (!filename.endsWith(".csv")) {
@@ -163,13 +162,13 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 				try {
 					TextFileWriter tfw = new TextFileWriter(filename);
 					fColorMap.plainTextSaveCustomColorMapComponents(tfw);
-					JMessageDialog.show(this,I18NL10N.translate("text.CustomColorMap.Saved"));
+					JMessageDialog.show(this,I18NL10N.kINSTANCE.translate("text.CustomColorMap.Saved"));
 				}
 				catch (FileCantBeCreatedException exc) {
-					JWarningDialog.warn(this,I18NL10N.translate("error.CustomColorMap.ErrorSavingCustomColorMap"));
+					JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.CustomColorMap.ErrorSavingCustomColorMap"));
 				}
 				catch (FileWriteException exc) {
-					JWarningDialog.warn(this,I18NL10N.translate("error.CustomColorMap.ErrorSavingCustomColorMap"));
+					JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.CustomColorMap.ErrorSavingCustomColorMap"));
 				}
 			}
 		}
@@ -236,7 +235,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 	@Override
 	protected java.lang.String setupWindowTitle()
 	{
-		return I18NL10N.translate("text.CustomColorMap.Title");
+		return I18NL10N.kINSTANCE.translate("text.CustomColorMap.Title");
 	}
 
 	/**
@@ -270,7 +269,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 				colorPanel.setLayout(new BoxLayout(colorPanel,BoxLayout.Y_AXIS));
 				boolean colorAvailable = customColorMapComponents.containsKey(colorIndex);
 
-					fColorButtons[colorIndex] = new JButton(I18NL10N.translate("text.CustomColorMap.SetColor"));
+					fColorButtons[colorIndex] = new JButton(I18NL10N.kINSTANCE.translate("text.CustomColorMap.SetColor"));
 					fColorButtons[colorIndex].setHorizontalAlignment(SwingConstants.LEFT);
 					fColorButtons[colorIndex].setActionCommand(kActionCommandColorButtonPrefix + String.valueOf(colorIndex));
 					fColorButtons[colorIndex].addActionListener(this);
@@ -303,11 +302,11 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 
 				colorPanel.add(Box.createVerticalStrut(10));
 
-					fColorCheckBoxes[colorIndex] = new JCheckBox(I18NL10N.translate("text.CustomColorMap.Disabled"));
+					fColorCheckBoxes[colorIndex] = new JCheckBox(I18NL10N.kINSTANCE.translate("text.CustomColorMap.Disabled"));
 					fColorCheckBoxes[colorIndex].setHorizontalAlignment(SwingConstants.LEFT);
 					fColorCheckBoxes[colorIndex].setSelected(colorAvailable);
 					if (colorAvailable) {
-						fColorCheckBoxes[colorIndex].setText(I18NL10N.translate("text.CustomColorMap.Enabled"));
+						fColorCheckBoxes[colorIndex].setText(I18NL10N.kINSTANCE.translate("text.CustomColorMap.Enabled"));
 					}
 					fColorCheckBoxes[colorIndex].setActionCommand(kActionCommandColorCheckBoxPrefix + String.valueOf(colorIndex));
 					fColorCheckBoxes[colorIndex].addActionListener(this);
@@ -328,7 +327,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 			lowerPanel.setLayout(new BoxLayout(lowerPanel,BoxLayout.X_AXIS));
 			lowerPanel.add(Box.createHorizontalGlue());
 
-				JButton clearButton = new JButton(I18NL10N.translate(kActionCommandClearCustomColorMap));
+				JButton clearButton = new JButton(I18NL10N.kINSTANCE.translate(kActionCommandClearCustomColorMap));
 				clearButton.setActionCommand(kActionCommandClearCustomColorMap);
 				clearButton.addActionListener(this);
 			lowerPanel.add(clearButton);
@@ -341,14 +340,14 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 
 			lowerPanel.add(Box.createHorizontalStrut(10));
 
-				JButton loadButton = new JButton(I18NL10N.translate(kActionCommandLoadCustomColorMap));
+				JButton loadButton = new JButton(I18NL10N.kINSTANCE.translate(kActionCommandLoadCustomColorMap));
 				loadButton.setActionCommand(kActionCommandLoadCustomColorMap);
 				loadButton.addActionListener(this);
 			lowerPanel.add(loadButton);
 
 			lowerPanel.add(Box.createHorizontalStrut(10));
 
-				JButton saveButton = new JButton(I18NL10N.translate(kActionCommandSaveCustomColorMap));
+				JButton saveButton = new JButton(I18NL10N.kINSTANCE.translate(kActionCommandSaveCustomColorMap));
 				saveButton.setActionCommand(kActionCommandSaveCustomColorMap);
 				saveButton.addActionListener(this);
 			lowerPanel.add(saveButton);
@@ -382,7 +381,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 			fColorSliders[colorIndex].setEnabled(false);
 
 			fColorCheckBoxes[colorIndex].setSelected(false);
-			fColorCheckBoxes[colorIndex].setText(I18NL10N.translate("text.CustomColorMap.Disabled"));
+			fColorCheckBoxes[colorIndex].setText(I18NL10N.kINSTANCE.translate("text.CustomColorMap.Disabled"));
 		}
 
 		if (fClearControls) {
@@ -411,7 +410,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 				fColorSliders[colorIndex].setEnabled(true);
 
 				fColorCheckBoxes[colorIndex].setSelected(true);
-				fColorCheckBoxes[colorIndex].setText(I18NL10N.translate("text.CustomColorMap.Enabled"));
+				fColorCheckBoxes[colorIndex].setText(I18NL10N.kINSTANCE.translate("text.CustomColorMap.Enabled"));
 			}
 		}
 	}

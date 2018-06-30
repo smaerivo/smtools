@@ -1,12 +1,12 @@
 // -------------------------------
 // Filename      : JStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 23/06/2015
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // -------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 23/06/2015
+ * @version 26/06/2018
  */
 public final class JStatusBar extends JPanel
 {
@@ -281,18 +281,18 @@ public final class JStatusBar extends JPanel
 					String batteryUsageTooltipText = "";
 					if (batteryLifeTimeHours > 0) {
 						if (batteryLifeTimeHours == 1) {
-							batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingHour");
+							batteryUsageTooltipText += I18NL10N.kINSTANCE.translate("tooltip.BatteryLifeRemainingHour");
 						}
 						else {
-							batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingHours",String.valueOf(batteryLifeTimeHours));
+							batteryUsageTooltipText += I18NL10N.kINSTANCE.translate("tooltip.BatteryLifeRemainingHours",String.valueOf(batteryLifeTimeHours));
 						}
 						batteryUsageTooltipText += ", ";
 					}
 					if (batteryLifeTimeMinutes == 1) {
-						batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingMinute");
+						batteryUsageTooltipText += I18NL10N.kINSTANCE.translate("tooltip.BatteryLifeRemainingMinute");
 					}
 					else {
-						batteryUsageTooltipText += I18NL10N.translate("tooltip.BatteryLifeRemainingMinutes",String.valueOf(batteryLifeTimeMinutes));
+						batteryUsageTooltipText += I18NL10N.kINSTANCE.translate("tooltip.BatteryLifeRemainingMinutes",String.valueOf(batteryLifeTimeMinutes));
 					}
 				
 					fBatteryUsageLabel.setToolTipText(batteryUsageTooltipText);
@@ -312,9 +312,9 @@ public final class JStatusBar extends JPanel
 		// update the memory usage label
 		double percentageFree = ((double) SystemInformation.getFreeMemory() / (double) SystemInformation.getTotalMemory()) * 100;
 		fMemoryUsageLabel.setText(
-			I18NL10N.translate("text.MemoryFree") + ": " +
+			I18NL10N.kINSTANCE.translate("text.MemoryFree") + ": " +
 			StringTools.convertDoubleToString(MathTools.convertBToMiB(SystemInformation.getFreeMemory()),0) + " " +
-			I18NL10N.translate("text.MiBAbbreviation") + " (" + StringTools.convertDoubleToString(percentageFree,0) + "%)");
+			I18NL10N.kINSTANCE.translate("text.MiBAbbreviation") + " (" + StringTools.convertDoubleToString(percentageFree,0) + "%)");
 	}
 
 	/*******************

@@ -1,12 +1,12 @@
 // ---------------------------------
 // Filename      : JDateChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 04/05/2014
+// Last modified : 30/06/2018
 // Target        : Java VM (1.8)
 // ---------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,18 +69,12 @@ import org.sm.smtools.util.*;
  *   }<BR>
  * </CODE>
  * <P>
- * <B><U>Important remark</U></B><BR>
- * This GUI-component supports <B>caching</B> in the <I>SMTools</I> framework. Using the
- * {@link JDateChooser#JDateChooser(JFrame,String,JDefaultDialog.EType,DateStamp,EUseDefaultDate,JDefaultDialog.EActivation)} constructor, dialog
- * activation can be postponed until an explicit call to {@link JDefaultDialog#activate}
- * is made.
- * <P>
  * Note that the system resources must be initialised (see {@link JARResources#fSystemResources}).
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/05/2014
+ * @version 30/06/2018
  */
 public final class JDateChooser extends JDefaultDialog implements ChangeListener
 {
@@ -99,27 +93,27 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 
 	// the names of the months and the days
 	private static final String[] kMonths =
-		{I18NL10N.translate("text.Month.January"),
-		I18NL10N.translate("text.Month.February"),
-		I18NL10N.translate("text.Month.March"),
-		I18NL10N.translate("text.Month.April"),
-		I18NL10N.translate("text.Month.May"),
-		I18NL10N.translate("text.Month.June"),
-		I18NL10N.translate("text.Month.July"),
-		I18NL10N.translate("text.Month.August"),
-		I18NL10N.translate("text.Month.September"),
-		I18NL10N.translate("text.Month.October"),
-		I18NL10N.translate("text.Month.November"),
-		I18NL10N.translate("text.Month.December")};
+		{I18NL10N.kINSTANCE.translate("text.Month.January"),
+		I18NL10N.kINSTANCE.translate("text.Month.February"),
+		I18NL10N.kINSTANCE.translate("text.Month.March"),
+		I18NL10N.kINSTANCE.translate("text.Month.April"),
+		I18NL10N.kINSTANCE.translate("text.Month.May"),
+		I18NL10N.kINSTANCE.translate("text.Month.June"),
+		I18NL10N.kINSTANCE.translate("text.Month.July"),
+		I18NL10N.kINSTANCE.translate("text.Month.August"),
+		I18NL10N.kINSTANCE.translate("text.Month.September"),
+		I18NL10N.kINSTANCE.translate("text.Month.October"),
+		I18NL10N.kINSTANCE.translate("text.Month.November"),
+		I18NL10N.kINSTANCE.translate("text.Month.December")};
 
 	private static final String[] kWeekDaysAbbreviated =
-		{I18NL10N.translate("text.Day.MondayAbbreviated"),
-		I18NL10N.translate("text.Day.TuesdayAbbreviated"),
-		I18NL10N.translate("text.Day.WednesdayAbbreviated"),
-		I18NL10N.translate("text.Day.ThursdayAbbreviated"),
-		I18NL10N.translate("text.Day.FridayAbbreviated"),
-		I18NL10N.translate("text.Day.SaturdayAbbreviated"),
-		I18NL10N.translate("text.Day.SundayAbbreviated")};
+		{I18NL10N.kINSTANCE.translate("text.Day.MondayAbbreviated"),
+		I18NL10N.kINSTANCE.translate("text.Day.TuesdayAbbreviated"),
+		I18NL10N.kINSTANCE.translate("text.Day.WednesdayAbbreviated"),
+		I18NL10N.kINSTANCE.translate("text.Day.ThursdayAbbreviated"),
+		I18NL10N.kINSTANCE.translate("text.Day.FridayAbbreviated"),
+		I18NL10N.kINSTANCE.translate("text.Day.SaturdayAbbreviated"),
+		I18NL10N.kINSTANCE.translate("text.Day.SundayAbbreviated")};
 
 	// the number of days in each month
 	private static final int[] kDaysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -149,41 +143,21 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	 ****************/
 
 	/**
-	 * Constructs a <CODE>JDateChooser</CODE> object and shows it on the screen.
+	 * Constructs a <CODE>JDateChooser</CODE> object.
 	 *
 	 * @param owner             the frame in which this dialog is to be displayed
 	 * @param title             the dialog's window title
 	 * @param dialogType        the type of dialog
 	 * @param defaultDateStamp  the default <CODE>DateStamp</CODE> used when the calendar is shown
 	 * @param useDefaultDate    an <CODE>EUseDefaultDate</CODE> switch for enabling/disabling the use of the default date
-	 * @see                     JDateChooser#JDateChooser(JFrame,String,JDefaultDialog.EType,DateStamp,EUseDefaultDate,JDefaultDialog.EActivation)
 	 */
 	public JDateChooser(JFrame owner, String title, JDefaultDialog.EType dialogType, DateStamp defaultDateStamp, EUseDefaultDate useDefaultDate)
-	{
-		this(owner,title,dialogType,defaultDateStamp,useDefaultDate,JDefaultDialog.EActivation.kImmediately);
-	}
-
-	/**
-	 * Constructs a <CODE>JDateChooser</CODE> object and allows postponing of activation.
-	 *
-	 * @param owner             the frame in which this dialog is to be displayed
-	 * @param title             the dialog's window title
-	 * @param dialogType        the type of dialog
-	 * @param defaultDateStamp  the default <CODE>DateStamp</CODE> used when the calendar is shown
-	 * @param useDefaultDate    an <CODE>EUseDefaultDate</CODE> switch for enabling/disabling the use of the default date
-	 * @param activation        an <CODE>EActivation</CODE> flag indicating whether or not the dialog box should be made
-	 *                          visible at the end of the constructor (which can be useful for <B>caching</B>)
-	 * @see                     JDateChooser#JDateChooser(JFrame,String,JDefaultDialog.EType,DateStamp,EUseDefaultDate)
-	 * @see                     JDefaultDialog.EActivation
-	 */
-	public JDateChooser(JFrame owner, String title, JDefaultDialog.EType dialogType, DateStamp defaultDateStamp, EUseDefaultDate useDefaultDate, JDefaultDialog.EActivation activation)
 	{
 		super(owner,
 			JDefaultDialog.EModality.kModal,
 			JDefaultDialog.ESize.kFixedSize,
 			dialogType,
-			new Object[] {title,defaultDateStamp,useDefaultDate},
-			activation);
+			new Object[] {title,defaultDateStamp,useDefaultDate});
 		JARResources.checkSystemInitialisation();
 	}
 
@@ -270,7 +244,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		fDefaultDate.set(defaultDateStamp);
 		fSelectedDate.set(fDefaultDate);
 		if (fDefaultDateButton != null) {
-			fDefaultDateButton.setToolTipText(I18NL10N.translate("tooltip.Calendar.CurrentDate",fDefaultDate.getDMYString()));
+			fDefaultDateButton.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.Calendar.CurrentDate",fDefaultDate.getDMYString()));
 		}
 		setCaptions();
 	}
@@ -325,7 +299,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 				fMonthChooser = new JComboBox<String>(monthNames);
 				fMonthChooser.setEditable(false);
 				fMonthChooser.addActionListener(this);
-				fMonthChooser.setToolTipText(I18NL10N.translate("tooltip.Calendar.Month"));
+				fMonthChooser.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.Calendar.Month"));
 				subPanel.add(fMonthChooser);
 
 				// create a small gap
@@ -337,7 +311,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 				JSpinner.NumberEditor yearSpinnerNumberEditor = new JSpinner.NumberEditor(fYearChooser,"0");
 				fYearChooser.setEditor(yearSpinnerNumberEditor);
 				fYearChooser.addChangeListener(this);
-				fYearChooser.setToolTipText(I18NL10N.translate("tooltip.Calendar.Year"));
+				fYearChooser.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.Calendar.Year"));
 				subPanel.add(fYearChooser);
 
 				// create a small gap
@@ -353,7 +327,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 						fDefaultDateButton.setFocusPainted(false);
 						fDefaultDateButton.setRolloverIcon(new ImageIcon(undoRolloverIcon));
 						fDefaultDateButton.setRolloverEnabled(true);
-						fDefaultDateButton.setToolTipText(I18NL10N.translate("tooltip.Calendar.CurrentDate",fDefaultDate.getDMYString()));
+						fDefaultDateButton.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.Calendar.CurrentDate",fDefaultDate.getDMYString()));
 						fDefaultDateButton.setActionCommand(kDefaultDate);
 						fDefaultDateButton.addActionListener(this);
 						subPanel.add(fDefaultDateButton);
@@ -362,7 +336,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 						subPanel.add(Box.createRigidArea(new Dimension(15,0)));
 					}
 					catch (FileDoesNotExistException exc) {
-						JWarningDialog.warn(this,I18NL10N.translate("error.GUIComponentImageNotFound"));
+						JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.GUIComponentImageNotFound"));
 					}
 				}
 
@@ -375,13 +349,13 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 					navButton.setFocusPainted(false);
 					navButton.setRolloverIcon(new ImageIcon(exclamationRolloverIcon));
 					navButton.setRolloverEnabled(true);
-					navButton.setToolTipText(I18NL10N.translate("tooltip.Calendar.Exclamation",(new DateStamp()).getDMYString()));
+					navButton.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.Calendar.Exclamation",(new DateStamp()).getDMYString()));
 					navButton.setActionCommand(kCurrentDate);
 					navButton.addActionListener(this);
 					subPanel.add(navButton);
 				}
 				catch (FileDoesNotExistException exc) {
-					JWarningDialog.warn(this,I18NL10N.translate("error.GUIComponentImageNotFound"));
+					JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.GUIComponentImageNotFound"));
 				}
 			panel.add(subPanel);
 			panel.add(new JEtchedLine());
@@ -489,7 +463,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 		fSelectedDateLabel.setPreferredSize(new Dimension(kSelectedLabelWidth,30));
 
 		// update the window title by appending it with the current selected week
-		setTitle(setupWindowTitle() + " (" + I18NL10N.translate("text.Week") + " " + String.valueOf(fSelectedDate.getWeekOfYear()) + ")");
+		setTitle(setupWindowTitle() + " (" + I18NL10N.kINSTANCE.translate("text.Week") + " " + String.valueOf(fSelectedDate.getWeekOfYear()) + ")");
 	}
 
 	/**

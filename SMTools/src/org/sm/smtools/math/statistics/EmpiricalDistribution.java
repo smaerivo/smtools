@@ -1,12 +1,12 @@
 // ------------------------------------------
 // Filename      : EmpiricalDistribution.java
 // Author        : Sven Maerivoet
-// Last modified : 29/10/2016
+// Last modified : 26/06/2018
 // Target        : Java VM (1.8)
 // ------------------------------------------
 
 /**
- * Copyright 2003-2016 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.sm.smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 29/10/2016
+ * @version 26/06/2018
  */
 public final class EmpiricalDistribution
 {
@@ -1099,7 +1099,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getMeanDescription()
 	{
-		return I18NL10N.translate("text.Statistics.Mean");
+		return I18NL10N.kINSTANCE.translate("text.Statistics.Mean");
 	}
 
 	/**
@@ -1109,7 +1109,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getStandardDeviationDescription()
 	{
-		return I18NL10N.translate("text.Statistics.StandardDeviation");
+		return I18NL10N.kINSTANCE.translate("text.Statistics.StandardDeviation");
 	}
 
 	/**
@@ -1119,7 +1119,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getVarianceDescription()
 	{
-		return I18NL10N.translate("text.Statistics.Variance");
+		return I18NL10N.kINSTANCE.translate("text.Statistics.Variance");
 	}
 
 	/**
@@ -1129,7 +1129,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getMedianDescription()
 	{
-		return I18NL10N.translate("text.Statistics.Median");
+		return I18NL10N.kINSTANCE.translate("text.Statistics.Median");
 	}
 
 	/**
@@ -1139,7 +1139,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getInterquartileRangeDescription()
 	{
-		return I18NL10N.translate("text.Statistics.InterquartileRange");
+		return I18NL10N.kINSTANCE.translate("text.Statistics.InterquartileRange");
 	}
 
 	/**
@@ -1149,7 +1149,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getPercentileDescription()
 	{
-		return I18NL10N.translate("text.Statistics.Percentile");
+		return I18NL10N.kINSTANCE.translate("text.Statistics.Percentile");
 	}
 
 	/**
@@ -1159,7 +1159,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getSkewnessDescription()
 	{
-		return I18NL10N.translate("text.Statistics.Skewness");
+		return I18NL10N.kINSTANCE.translate("text.Statistics.Skewness");
 	}
 
 	/**
@@ -1169,7 +1169,7 @@ public final class EmpiricalDistribution
 	 */
 	public static String getKurtosisDescription()
 	{
-		return I18NL10N.translate("text.Statistics.Kurtosis");
+		return I18NL10N.kINSTANCE.translate("text.Statistics.Kurtosis");
 	}
 
 	/**
@@ -1181,23 +1181,23 @@ public final class EmpiricalDistribution
 	{
 		String skewnessInterpretation = "";
 		if ((fSkewnessZStatistic >= -2.0) && (fSkewnessZStatistic <= +2.0)) {
-			skewnessInterpretation = I18NL10N.translate("text.Statistics.SkewnessInconclusive");
+			skewnessInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.SkewnessInconclusive");
 		}
 		else {
 			if (Math.abs(fSkewness) <= +0.5) {
-				skewnessInterpretation = I18NL10N.translate("text.Statistics.SkewnessSymmetric");
+				skewnessInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.SkewnessSymmetric");
 			}
 			else if (fSkewness > +1.0) {
-				skewnessInterpretation = I18NL10N.translate("text.Statistics.SkewnessHighlyRightTailed");
+				skewnessInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.SkewnessHighlyRightTailed");
 			}
 			else if (fSkewness > +0.5) {
-				skewnessInterpretation = I18NL10N.translate("text.Statistics.SkewnessModeratelyRightTailed");
+				skewnessInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.SkewnessModeratelyRightTailed");
 			}
 			else if (fSkewness < -1.0) {
-				skewnessInterpretation = I18NL10N.translate("text.Statistics.SkewnessHighlyLefttTailed");
+				skewnessInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.SkewnessHighlyLefttTailed");
 			}
 			else if (fSkewness < -0.5) {
-				skewnessInterpretation = I18NL10N.translate("text.Statistics.SkewnessModeratelyLeftTailed");
+				skewnessInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.SkewnessModeratelyLeftTailed");
 			}
 		}
 
@@ -1213,17 +1213,17 @@ public final class EmpiricalDistribution
 	{
 		String kurtosisInterpretation = "";
 		if ((fKurtosisZStatistic >= -2.0) && (fKurtosisZStatistic <= +2.0)) {
-			kurtosisInterpretation = I18NL10N.translate("text.Statistics.KurtosisInconclusive");
+			kurtosisInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.KurtosisInconclusive");
 		}
 		else {
 			if (Math.abs(fKurtosis) < 1.0) {
-				kurtosisInterpretation = I18NL10N.translate("text.Statistics.KurtosisMesokurtic");
+				kurtosisInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.KurtosisMesokurtic");
 			}
 			else if (fKurtosisZStatistic > +2.0) {
-				kurtosisInterpretation = I18NL10N.translate("text.Statistics.KurtosisLeptokurtic");
+				kurtosisInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.KurtosisLeptokurtic");
 			}
 			else if (fKurtosisZStatistic < -2.0) {
-				kurtosisInterpretation = I18NL10N.translate("text.Statistics.KurtosisPlatykurtic");
+				kurtosisInterpretation = I18NL10N.kINSTANCE.translate("text.Statistics.KurtosisPlatykurtic");
 			}
 		}
 
