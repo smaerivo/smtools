@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : TextFileParser.java
 // Author        : Sven Maerivoet
-// Last modified : 21/09/2016
+// Last modified : 02/08/2019
 // Target        : Java VM (1.8)
 // -----------------------------------
 
@@ -48,7 +48,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 21/09/2016
+ * @version 02/08/2019
  */
 public final class TextFileParser
 {
@@ -289,39 +289,62 @@ public final class TextFileParser
 	 * <B>dd/MM/yyyy</B>, e.g., 11/04/1976
 	 *
 	 * @return                     the next line converted to a <CODE>DateStamp</CODE>
-	 * @throws FileParseException  if the end-of-file is reached or the line contains a malformed date stamp (the exception contains the value and line number)
+	 * @throws FileParseException  if the end-of-file is reached
 	 * @see                        DateStamp
 	 */
 	public DateStamp getNextDateStamp() throws FileParseException
 	{
 		String stringRead = getNextNonEmptyString();
-		try {
-			return (new DateStamp(stringRead));
-		}
-		catch (DateTimeFormatException exc) {
-			throw (new FileParseException(stringRead,fLineNr));
-		}
+		return (new DateStamp(stringRead));
 	}
 
 	/**
 	 * Returns the next line converted to a <CODE>TimeStamp</CODE> (empty lines are ignored).
 	 * <P>
-	 * The string has to have the following specific format:
-	 * <P>
-	 * <B>HH:mm:ss</B> or <B>HH:mm:ss.mls</B>, e.g., 12:45:16 or 05:03:06.002
+	 * The string has to have the following specific format: <B>HH:mm:ss</B>
 	 *
 	 * @return                     the next line converted to a <CODE>TimeStamp</CODE>
-	 * @throws FileParseException  if the end-of-file is reached or the line contains a malformed time stamp (the exception contains the value and line number)
+	 * @throws FileParseException  if the end-of-file is reached
 	 * @see                        TimeStamp
 	 */
 	public TimeStamp getNextTimeStamp() throws FileParseException
 	{
 		String stringRead = getNextNonEmptyString();
+		return (new TimeStamp(stringRead));
+	}
+
+	/**
+	 * Convert the next line converted to a <CODE>DateStamp</CODE> and <CODE>TimeStamp</CODE> (empty lines are ignored).
+	 * Any time zone information is ignored.
+	 * <P>
+	 * The results are returned through the function's parameters.
+	 * <P>
+	 * The string has to have the following specific format: <B>yyyy-MM-ddT:HH:mm:ssZ</B>
+	 *
+	 * @param                      date the <CODE>DateStamp</CODE> object to store the read date in
+	 * @param                      time the <CODE>TimeStamp</CODE> object to store the read time in
+	 * @throws FileParseException  if the end-of-file is reached or the specified parameters are <CODE>null</CODE>
+	 * @see                        TimeStamp
+	 */
+	public void getNextDateTimeStamp(DateStamp date, TimeStamp time) throws FileParseException
+	{
+		if ((date == null) || (time == null)) {
+			throw (new FileParseException("Specified date and/or time parameters are null",getLastReadLineNr()));
+		}
+
+		String stringRead = getNextNonEmptyString();
 		try {
-			return (new TimeStamp(stringRead));
+			date.setToYMD(stringRead.substring(0,19));
 		}
 		catch (DateTimeFormatException exc) {
-			throw (new FileParseException(stringRead,fLineNr));
+			throw (new FileParseException("Date [" + exc.getDateTimeString() + "] incorrectly specified (must be yyyy-MM-dd)",getLastReadLineNr()));
+		}
+		
+		try {
+			time.setToHMS(stringRead.substring(11,20));
+		}
+		catch (DateTimeFormatException exc) {
+			throw (new FileParseException("Time [" + exc.getDateTimeString() + "] incorrectly specified (must be HH:mm:ss)",getLastReadLineNr()));
 		}
 	}
 

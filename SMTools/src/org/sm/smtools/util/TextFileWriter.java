@@ -1,12 +1,12 @@
 // -----------------------------------
 // Filename      : TextFileWriter.java
 // Author        : Sven Maerivoet
-// Last modified : 10/11/2014
+// Last modified : 02/08/2019
 // Target        : Java VM (1.8)
 // -----------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2018 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 10/11/2014
+ * @version 02/08/2019
  */
 public final class TextFileWriter
 {
@@ -220,6 +220,25 @@ public final class TextFileWriter
 
 		if (fFileWriter.checkError()) {
 			throw (new FileWriteException(fFilename,timeString));
+		}
+	}
+
+	/**
+	 * Writes a string representation of both a <CODE>DateStamp</CODE> and a <CODE>TimeStamp</CODE> object to the file.
+	 * <P>
+	 * The string representation of the <CODE>TimeStamp</CODE> object is <B>yyyy-MM-ddT:HH:mm:ssZ</B>.
+	 *
+	 * @param  dateStamp           the <CODE>DateStamp</CODE> object to write to the file
+	 * @param  timeStamp           the <CODE>TimeStamp</CODE> object to write to the file
+	 * @throws FileWriteException  if the <CODE>TimeStamp</CODE> object could not be written to the file
+	 */
+	public final void writeDateTimeStamp(DateStamp dateStamp, TimeStamp timeStamp) throws FileWriteException
+	{
+		String dateTimeString = dateStamp.getYMDString() + "T" + timeStamp.getHMSString() + "Z";
+		fFileWriter.print(dateTimeString);
+
+		if (fFileWriter.checkError()) {
+			throw (new FileWriteException(fFilename,dateTimeString));
 		}
 	}
 

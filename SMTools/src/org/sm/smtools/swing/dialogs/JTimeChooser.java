@@ -386,7 +386,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					fCurrentTimeStamp.setToCurrentTime();
+					fCurrentTimeStamp.setToNow();
 				}
 			};
 

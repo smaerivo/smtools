@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 26/06/2018
+// Last modified : 02/08/2019
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2018 Sven Maerivoet
+ * Copyright 2003-2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,9 @@
 
 package org.sm.smtools.util;
 
-import java.text.*;
-import java.util.*;
+import java.time.*;
+import java.time.format.*;
+import java.time.temporal.*;
 import org.sm.smtools.application.util.*;
 import org.sm.smtools.exceptions.*;
 
@@ -38,12 +39,12 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 26/06/2018
+ * @version 02/08/2019
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
 	// container holding the current date
-	private Calendar fDateStamp;
+	private LocalDate fDateStamp;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -59,7 +60,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public DateStamp()
 	{
-		setToCurrentDate();
+		setToNow();
 	}
 
 	/**
@@ -75,7 +76,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public DateStamp(int day, int month, int year)
 	{
-		set(day,month,year);
+		setToDMY(day,month,year);
 	}
 
 	/**
@@ -90,7 +91,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public DateStamp(int weekOfYear, int year)
 	{
-		set(weekOfYear,year);
+		setToWoYY(weekOfYear,year);
 	}
 
 	/**
@@ -100,17 +101,20 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * <P>
 	 * <B>dd/MM/yyyy</B>, e.g., 11/04/1976
 	 *
-	 * @param dateString                the string representation of the date stamp (in the format dd/MM/yyyy)
-	 * @throws DateTimeFormatException  if an error occurred during conversion
-	 * @see                             DateStamp#DateStamp()
-	 * @see                             DateStamp#DateStamp(int,int,int)
-	 * @see                             DateStamp#DateStamp(int,int)
-	 * @see                             DateStamp#DateStamp(DateStamp)
-	 * @see                             java.text.SimpleDateFormat
+	 * @param dateString  the string representation of the date stamp (in the format dd/MM/yyyy)
+	 * @see               DateStamp#DateStamp()
+	 * @see               DateStamp#DateStamp(int,int,int)
+	 * @see               DateStamp#DateStamp(int,int)
+	 * @see               DateStamp#DateStamp(DateStamp)
 	 */
-	public DateStamp(String dateString) throws DateTimeFormatException
+	public DateStamp(String dateString)
 	{
-		set(dateString);
+		try {
+			setToDMY(dateString);
+		}
+		catch (Exception exc) {
+			// ignore
+		}
 	}
 
 	/**
@@ -139,12 +143,9 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * @param month  the month component
 	 * @param year   the year component
 	 */
-	public void set(int day, int month, int year)
+	public void setToDMY(int day, int month, int year)
 	{
-		fDateStamp = Calendar.getInstance();
-		fDateStamp.set(Calendar.DAY_OF_MONTH,day);
-		fDateStamp.set(Calendar.MONTH,month - fDateStamp.getMinimum(Calendar.MONTH) - 1);
-		fDateStamp.set(Calendar.YEAR,year);
+		fDateStamp = LocalDate.of(year,month,day);
 	}
 
 	/**
@@ -153,12 +154,10 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * @param weekOfYear  the week of the year component
 	 * @param year        the year component
 	 */
-	public void set(int weekOfYear, int year)
+	public void setToWoYY(int weekOfYear, int year)
 	{
-		fDateStamp = Calendar.getInstance();
-		fDateStamp.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
-		fDateStamp.set(Calendar.WEEK_OF_YEAR,weekOfYear);
-		fDateStamp.set(Calendar.YEAR,year);
+		setToDMY(1,1,year);
+		fDateStamp = fDateStamp.with(ChronoField.ALIGNED_WEEK_OF_YEAR,weekOfYear);
 	}
 
 	/**
@@ -168,7 +167,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public void set(DateStamp dateStamp)
 	{
-		set(dateStamp.getDay(),dateStamp.getMonth(),dateStamp.getYear());
+		setToDMY(dateStamp.getDayOfMonth(),dateStamp.getMonth(),dateStamp.getYear());
 	}
 
 	/**
@@ -182,21 +181,12 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * @throws DateTimeFormatException  if an error occurred during conversion
 	 * @see                             java.text.SimpleDateFormat
 	 */
-	public void set(String dateString) throws DateTimeFormatException
+	public void setToDMY(String dateString) throws DateTimeFormatException
 	{
-		fDateStamp = Calendar.getInstance();
-
-		String[] dateStampParts = dateString.split("/");
 		try {
-			int day = Integer.parseInt(dateStampParts[0]);
-			int month = Integer.parseInt(dateStampParts[1]);
-			int year = Integer.parseInt(dateStampParts[2]);
-			set(day,month,year);
+			fDateStamp = LocalDate.parse(dateString,DateTimeFormatter.ofPattern("dd/MM/uuuu"));
 		}
-		catch (ArrayIndexOutOfBoundsException exc) {
-			throw (new DateTimeFormatException(dateString));
-		}
-		catch (NumberFormatException exc) {
+		catch (DateTimeParseException exc) {
 			throw (new DateTimeFormatException(dateString));
 		}
 	}
@@ -212,21 +202,12 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * @throws DateTimeFormatException  if an error occurred during conversion
 	 * @see                             java.text.SimpleDateFormat
 	 */
-	public void setAdjusted(String dateString) throws DateTimeFormatException
+	public void setToYMD(String dateString) throws DateTimeFormatException
 	{
-		fDateStamp = Calendar.getInstance();
-
-		String[] dateStampParts = dateString.split("-");
 		try {
-			int year = Integer.parseInt(dateStampParts[0]);
-			int month = Integer.parseInt(dateStampParts[1]);
-			int day = Integer.parseInt(dateStampParts[2]);
-			set(day,month,year);
+			fDateStamp = LocalDate.parse(dateString,DateTimeFormatter.ofPattern("uuuu-MM-dd"));
 		}
-		catch (ArrayIndexOutOfBoundsException exc) {
-			throw (new DateTimeFormatException(dateString));
-		}
-		catch (NumberFormatException exc) {
+		catch (DateTimeParseException exc) {
 			throw (new DateTimeFormatException(dateString));
 		}
 	}
@@ -238,7 +219,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public void setToNextDay(int nrOfNextDays)
 	{
-		fDateStamp.add(Calendar.DAY_OF_MONTH,nrOfNextDays);
+		fDateStamp = fDateStamp.plusDays(nrOfNextDays);
 	}
 
 	/**
@@ -248,7 +229,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public void setToPreviousDay(int nrOfPreviousDays)
 	{
-		fDateStamp.add(Calendar.DAY_OF_MONTH,-nrOfPreviousDays);
+		fDateStamp = fDateStamp.minusDays(nrOfPreviousDays);
 	}
 
 	/**
@@ -258,7 +239,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public void setToNextMonth(int nrOfNextMonths)
 	{
-		fDateStamp.add(Calendar.MONTH,nrOfNextMonths);
+		fDateStamp = fDateStamp.plusMonths(nrOfNextMonths);
 	}
 
 	/**
@@ -268,7 +249,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public void setToPreviousMonth(int nrOfPreviousMonths)
 	{
-		fDateStamp.add(Calendar.MONTH,-nrOfPreviousMonths);
+		fDateStamp = fDateStamp.minusMonths(nrOfPreviousMonths);
 	}
 
 	/**
@@ -278,7 +259,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public void setToNextYear(int nrOfNextYears)
 	{
-		fDateStamp.add(Calendar.YEAR,nrOfNextYears);
+		fDateStamp = fDateStamp.plusYears(nrOfNextYears);
 	}
 
 	/**
@@ -288,25 +269,62 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public void setToPreviousYear(int nrOfPreviousYears)
 	{
-		fDateStamp.add(Calendar.YEAR,-nrOfPreviousYears);
+		fDateStamp = fDateStamp.minusYears(nrOfPreviousYears);
 	}
 
 	/**
 	 * Sets this <CODE>DateStamp</CODE> to the current system date.
 	 */
-	public void setToCurrentDate()
+	public void setToNow()
 	{
-		fDateStamp = Calendar.getInstance();
+		fDateStamp = LocalDate.now();
 	}
 
 	/**
-	 * Returns this <CODE>DateStamp</CODE>'s day of the month [1-31].
+	 * Converts this <CODE>DateStamp</CODE> object from a Unix time (number of milliseconds since the epoch) using a specified time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
 	 * 
-	 * @return the day
+	 * @param unixMilliseconds  the Unix time (number of milliseconds since the epoch)
+	 * @param timeZoneID        the ID of the time zone
 	 */
-	public int getDay()
+	public void convertFromUnixTime(long unixMilliseconds, ZoneId timeZoneID)
 	{
-		return fDateStamp.get(Calendar.DAY_OF_MONTH);
+		Instant instant = Instant.ofEpochSecond(unixMilliseconds / 1000L);
+		fDateStamp = LocalDateTime.ofInstant(instant,timeZoneID.getRules().getOffset(instant)).toLocalDate();
+	}
+
+	/**
+	 * Converts this <CODE>DateStamp</CODE> object from a Unix time (number of milliseconds since the epoch) using the user's local time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
+	 * 
+	 * @param unixMilliseconds  the Unix time (number of milliseconds since the epoch)
+	 */
+	public void convertFromUnixTime(long unixMilliseconds)
+	{
+		convertFromUnixTime(unixMilliseconds,ZoneId.systemDefault());
+	}
+	
+	/**
+	 * Converts this <CODE>DateStamp</CODE> object to a Unix time (number of milliseconds since the epoch) using a specified time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
+	 * 
+	 * @param timeZoneID  the ID of the time zone
+	 * @return            the Unix time (number of milliseconds since the epoch)
+	 */
+	public long convertToUnixTime(ZoneId timeZoneID)
+	{
+		return fDateStamp.atStartOfDay(timeZoneID).toEpochSecond() * 1000L;
+	}
+
+	/**
+	 * Converts this <CODE>DateStamp</CODE> object to a Unix time (number of milliseconds since the epoch) using the user's local time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
+	 * 
+	 * @return the Unix time (number of milliseconds since the epoch)
+	 */
+	public long convertToUnixTime()
+	{
+		return convertToUnixTime(ZoneId.systemDefault());
 	}
 
 	/**
@@ -316,17 +334,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public int getDayOfWeek()
 	{
-		switch (fDateStamp.get(Calendar.DAY_OF_WEEK)) {
-			case Calendar.MONDAY: return 1;
-			case Calendar.TUESDAY: return 2;
-			case Calendar.WEDNESDAY: return 3;
-			case Calendar.THURSDAY: return 4;
-			case Calendar.FRIDAY: return 5;
-			case Calendar.SATURDAY: return 6;
-			case Calendar.SUNDAY: return 7;
-		}
-
-		return 0;
+		return fDateStamp.getDayOfWeek().getValue();
 	}
 
 	/**
@@ -336,7 +344,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public int getDayOfMonth()
 	{
-		return fDateStamp.get(Calendar.DAY_OF_MONTH);
+		return fDateStamp.getDayOfMonth();
 	}
 
 	/**
@@ -346,7 +354,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public int getNumberOfDaysInMonth()
 	{
-		return getNumberOfDaysInMonth(getMonth(),getYear());
+		return DateStamp.getNumberOfDaysInMonth(getMonth(),getYear());
 	}
 
 	/**
@@ -358,21 +366,8 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public static int getNumberOfDaysInMonth(int month, int year)
 	{
-		final int[] kDaysInMonth = {31,28,31,30,31,30,31,31,30,31,30,31};
-
-		if (month < 1) {
-			month = 1;
-		}
-		else if (month > 12) {
-			month = 12;
-		}
-
-		int daysInMonth = kDaysInMonth[month + 1];
-		if ((month == 2) && isLeapYear(year)) {
-			++daysInMonth;
-		}
-
-		return daysInMonth;
+		YearMonth yearMonth = YearMonth.of(year,month);
+		return yearMonth.lengthOfMonth();
 	}
 
 	/**
@@ -382,7 +377,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public int getDayOfYear()
 	{
-		return fDateStamp.get(Calendar.DAY_OF_YEAR);
+		return fDateStamp.getDayOfYear();
 	}
 
 	/**
@@ -392,7 +387,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public int getWeekOfYear()
 	{
-		return fDateStamp.get(Calendar.WEEK_OF_YEAR);
+		return fDateStamp.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
 	}
 
 	/**
@@ -402,7 +397,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public int getMonth()
 	{
-		return (fDateStamp.get(Calendar.MONTH) - fDateStamp.getMinimum(Calendar.MONTH) + 1);
+		return fDateStamp.getMonthValue();
 	}
 
 	/**
@@ -412,7 +407,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public int getYear()
 	{
-		return fDateStamp.get(Calendar.YEAR);
+		return fDateStamp.getYear();
 	}
 
 	/**
@@ -422,36 +417,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public boolean isLeapYear()
 	{
-		return isLeapYear(getYear());
-	}
-	
-	/**
-	 * Checks whether or not a specified year is a leap year (assuming a Gregorian calendar).
-	 *
-	 * @param year  the year to check
-	 * @return      <CODE>true</CODE> if the specified year is leap year, <CODE>false</CODE> otherwise
-	 */
-	public static boolean isLeapYear(int year)
-	{
-		// check if the year is divisible by 4
-		if ((year % 4) == 0) {
-
-			// check if the year is divisible by 4 but not by 100
-			if ((year % 100) != 0) {
-				return true;
-			}
-			else if ((year % 400) == 0) {
-				// check if the year is divisible by 4 and 100 and 400
-				return true;
-			}
-			else {
-				// check if the year is divisible by 4 and 100 but not by 400
-				return false;
-			}
-		}
-		else {
-			return false;
-		}
+		return fDateStamp.isLeapYear();
 	}
 
 	/**
@@ -466,18 +432,6 @@ public final class DateStamp implements Comparable<DateStamp>
 	}
 
 	/**
-	 * Returns a Java <CODE>Date</CODE> object representing this <CODE>DateStamp</CODE>.
-	 *
-	 * @return a Java <CODE>Date</CODE> object representing this <CODE>DateStamp</CODE>
-	 */
-	public Date getJavaDate()
-	{
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(getYear(),getMonth() - calendar.getMinimum(Calendar.MONTH) - 1,getDay());
-		return calendar.getTime();
-	}
-
-	/**
 	 * Returns a <CODE>String</CODE> representation of this <CODE>DateStamp</CODE> object in the format dd/MM/yyyy.
 	 *
 	 * @return a <CODE>String</CODE> representation of this <CODE>DateStamp</CODE> object in the format dd/MM/yyyy
@@ -485,7 +439,18 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public String getDMYString()
 	{
-		return (new SimpleDateFormat("dd/MM/yyyy")).format(fDateStamp.getTime());
+		return fDateStamp.format(DateTimeFormatter.ofPattern("dd/MM/uuuu"));
+	}
+
+	/**
+	 * Returns a <CODE>String</CODE> representation of this <CODE>DateStamp</CODE> object in the format yyyy-MM-dd.
+	 *
+	 * @return a <CODE>String</CODE> representation of this <CODE>DateStamp</CODE> object in the format yyyy-MM-dd
+	 * @see    java.text.SimpleDateFormat
+	 */
+	public String getYMDString()
+	{
+		return fDateStamp.format(DateTimeFormatter.ofPattern("uuuu-MM-dd"));
 	}
 
 	/**
@@ -503,7 +468,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	public String getFullDateString()
 	{
 		String dayOfWeekString = DateStamp.getDayOfWeekString(getDayOfWeek());
-		String dayString = String.valueOf(getDay());
+		String dayString = String.valueOf(getDayOfMonth());
 		String monthString = getMonthString(getMonth());
 		String yearString = String.valueOf(getYear());
 
@@ -512,6 +477,83 @@ public final class DateStamp implements Comparable<DateStamp>
 			dayString + " " +
 			monthString.substring(0,1).toUpperCase() + monthString.substring(1) + " " +
 			yearString;
+	}
+
+	/**
+	 * The overloaded <CODE>Comparable</CODE> interface.
+	 */
+	@Override
+	public int compareTo(DateStamp otherDateStamp)
+	{
+		if (getYear() < otherDateStamp.getYear()) {
+			return -1;
+		}
+		else if (getYear() > otherDateStamp.getYear()) {
+			return +1;
+		}
+		else {
+			if (getMonth() < otherDateStamp.getMonth()) {
+				return -1;
+			}
+			else if (getMonth() > otherDateStamp.getMonth()) {
+				return +1;
+			}
+			else {
+				if (getDayOfMonth() < otherDateStamp.getDayOfMonth()) {
+					return -1;
+				}
+				else if (getDayOfMonth() > otherDateStamp.getDayOfMonth()) {
+					return +1;
+				}
+				else {
+					return 0;
+				}
+			}
+		}
+	}
+	 
+	/**
+	 * Default overloaded <CODE>toString()</CODE> method.
+	 * 
+	 * @return a <CODE>String</CODE> representation of this <CODE>DateStamp</CODE> object in the format dd/MM/yyyy
+	 * @see    java.text.SimpleDateFormat
+	 */
+	public String toString()
+	{
+		return getDMYString();
+	}
+
+	/**
+	 * Default <CODE>equals()</CODE> operator.
+	 * 
+	 * @return <CODE>true</CODE> if both objects denote the same date stamp, <CODE>false</CODE> otherwise
+	 */
+	public boolean equals(Object object)
+	{
+		if (!(object instanceof DateStamp)) {
+			return false;
+		}
+
+		if (object == this) {
+			return true;
+		}
+
+		return (compareTo((DateStamp) object) == 0);
+	}
+
+	/******************
+	 * STATIC METHODS *
+	 ******************/
+
+	/**
+	 * Helper method to convert a time zone's short description into a <CODE>ZoneId</CODE> object.
+	 * 
+	 * @param timeZoneShortDescription  the short description of the time zone
+	 * @return                          the <CODE>ZoneID</CODE> object corresponding to the specified time zone's description
+	 */
+	public static ZoneId getZoneID(String timeZoneShortDescription)
+	{
+		return ZoneId.of(timeZoneShortDescription);
 	}
 
 	/**
@@ -635,74 +677,5 @@ public final class DateStamp implements Comparable<DateStamp>
 		}
 
 		return 0;
-	}
-
-	/**
-	 * The overloaded <CODE>Comparable</CODE> interface.
-	 */
-	@Override
-	public int compareTo(DateStamp otherDateStamp)
-	{
-		if (getYear() < otherDateStamp.getYear()) {
-			return -1;
-		}
-		else if (getYear() > otherDateStamp.getYear()) {
-			return +1;
-		}
-		else {
-			if (getMonth() < otherDateStamp.getMonth()) {
-				return -1;
-			}
-			else if (getMonth() > otherDateStamp.getMonth()) {
-				return +1;
-			}
-			else {
-				if (getDay() < otherDateStamp.getDay()) {
-					return -1;
-				}
-				else if (getDay() > otherDateStamp.getDay()) {
-					return +1;
-				}
-				else {
-					return 0;
-				}
-			}
-		}
-	}
-	 
-	/**
-	 * Default overloaded <CODE>toString()</CODE> method.
-	 * 
-	 * @return a <CODE>String</CODE> representation of this <CODE>DateStamp</CODE> object in the format dd/MM/yyyy
-	 * @see    java.text.SimpleDateFormat
-	 */
-	public String toString()
-	{
-		return getDMYString();
-	}
-
-	/**
-	 * Default <CODE>equals()</CODE> operator.
-	 * 
-	 * @return <CODE>true</CODE> if both objects denote the same date stamp, <CODE>false</CODE> otherwise
-	 */
-	public boolean equals(Object object)
-	{
-		if (object == this) {
-			return true;
-		}
-
-		if (!(object instanceof DateStamp)) {
-			return false;
-		}
-
-		DateStamp dateStamp = (DateStamp) object;
-		if ((getDay() != dateStamp.getDay()) ||
-				(getMonth() != dateStamp.getMonth()) ||
-				(getYear() != dateStamp.getYear())) {
-			return false;
-		}
-
-		return true;
 	}
 }

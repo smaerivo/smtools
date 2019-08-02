@@ -180,14 +180,14 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 			String dayString = dayButton.getText();
 
 			if (dayString.length() > 0) {
-				fSelectedDate.set(Integer.parseInt(dayString),fSelectedDate.getMonth(),fSelectedDate.getYear());
+				fSelectedDate.setToDMY(Integer.parseInt(dayString),fSelectedDate.getMonth(),fSelectedDate.getYear());
 				setCaptions();
 			}
 		}
 		else {
 			if (command.equals("comboBoxChanged")) {
 				int selectedMonth = getMonthIndex((String) fMonthChooser.getSelectedItem()) + 1;
-				fSelectedDate.set(fSelectedDate.getDay(),selectedMonth,fSelectedDate.getYear());
+				fSelectedDate.setToDMY(fSelectedDate.getDayOfMonth(),selectedMonth,fSelectedDate.getYear());
 			}
 			else if (command.equals(kDefaultDate)) {
 				fSelectedDate.set(fDefaultDate);
@@ -195,7 +195,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 				fYearChooser.setValue(fSelectedDate.getYear());
 			}
 			else if (command.equals(kCurrentDate)) {
-				fSelectedDate.setToCurrentDate();
+				fSelectedDate.setToNow();
 				fMonthChooser.setSelectedIndex(fSelectedDate.getMonth() - 1);
 				fYearChooser.setValue(fSelectedDate.getYear());
 			}
@@ -210,8 +210,8 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
-		int selectedDay = preventDateOverlow(fSelectedDate.getDay());
-		fSelectedDate.set(selectedDay,fSelectedDate.getMonth(),((Integer) fYearChooser.getValue()).intValue());
+		int selectedDay = preventDateOverlow(fSelectedDate.getDayOfMonth());
+		fSelectedDate.setToDMY(selectedDay,fSelectedDate.getMonth(),((Integer) fYearChooser.getValue()).intValue());
 		setCaptions();
 	}
 
@@ -411,7 +411,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	 */
 	private void setCaptions()
 	{
-		int selectedDay = fSelectedDate.getDay();
+		int selectedDay = fSelectedDate.getDayOfMonth();
 		int selectedMonth = fSelectedDate.getMonth();
 		int selectedYear = fSelectedDate.getYear();
 		

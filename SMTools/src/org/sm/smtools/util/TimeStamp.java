@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : TimeStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 12/07/2013
+// Last modified : 02/08/2019
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,9 @@
 
 package org.sm.smtools.util;
 
-import java.text.*;
-import java.util.*;
+import java.time.*;
+import java.time.format.*;
+import java.time.temporal.*;
 import org.sm.smtools.exceptions.*;
 
 /**
@@ -35,12 +36,12 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 12/07/2013
+ * @version 02/08/2019
  */
 public final class TimeStamp implements Comparable<TimeStamp>
 {
 	// container holding the current time
-	private Calendar fTimeStamp;
+	private LocalTime fTimeStamp;
 	
 	/****************
 	 * CONSTRUCTORS *
@@ -58,7 +59,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public TimeStamp()
 	{
-		setToCurrentTime();
+		setToNow();
 	}
 
 	/**
@@ -116,21 +117,22 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	/**
 	 * Constructs a <CODE>TimeStamp</CODE> object corresponding to the specified string representation.
 	 * <P>
-	 * The string has to have the following specific format:
-	 * <P>
-	 * <B>HH:mm</B> or <B>HH:mm:ss</B>, or <B>HH:mm:ss.mls</B>, e.g., 10:15, 12:45:16, or 05:03:06.002
+	 * The string has to have the following specific format: <B>HH:mm:ss</B>, e.g., 12:45:16
 	 *
-	 * @param timeString                the string representation of the time stamp (in the format HH:mm, HH:mm:ss, or HH:mm:ss.SSS)
-	 * @throws DateTimeFormatException  if an error occurred during conversion
-	 * @see                             TimeStamp#TimeStamp()
-	 * @see                             TimeStamp#TimeStamp(int,int,int)
-	 * @see                             TimeStamp#TimeStamp(long)
-	 * @see                             TimeStamp#TimeStamp(TimeStamp)
-	 * @see                             java.text.SimpleDateFormat
+	 * @param timeString  the string representation of the time stamp (in the format HH:mm:ss)
+	 * @see               TimeStamp#TimeStamp()
+	 * @see               TimeStamp#TimeStamp(int,int,int)
+	 * @see               TimeStamp#TimeStamp(long)
+	 * @see               TimeStamp#TimeStamp(TimeStamp)
 	 */
-	public TimeStamp(String timeString) throws DateTimeFormatException
+	public TimeStamp(String timeString)
 	{
-		set(timeString);
+		try {
+			setToHMS(timeString);
+		}
+		catch (Exception exc) {
+			// ignore
+		}
 	}
 
 	/**
@@ -172,11 +174,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public void set(int hour, int minute, int second, int millisecond)
 	{
-		fTimeStamp = Calendar.getInstance();
-		fTimeStamp.set(Calendar.HOUR_OF_DAY,hour);
-		fTimeStamp.set(Calendar.MINUTE,minute);
-		fTimeStamp.set(Calendar.SECOND,second);
-		fTimeStamp.set(Calendar.MILLISECOND,millisecond);
+		fTimeStamp = LocalTime.of(hour,minute,second,millisecond * 1000000);
 	}
 
 	/**
@@ -196,56 +194,62 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public void setToMillisecondOfDay(long millisecond)
 	{
-		int hour = (int) (millisecond / (1000 * 60 * 60));
-		millisecond %= (1000 * 60 * 60);
-
-		int minute = (int) (millisecond / (1000 * 60));
-		millisecond %= (1000 * 60);
-
-		int second = (int) (millisecond / 1000);
-
-		millisecond = (int) (millisecond % 1000);
-
-		set(hour,minute,second,(int) millisecond);
+		fTimeStamp = LocalTime.ofNanoOfDay(millisecond * 1000000);
 	}
 
 	/**
 	 * Sets this <CODE>TimeStamp</CODE> object corresponding to the specified string representation.
 	 * <P>
-	 * The string has to have the following specific format:
-	 * <P>
-	 * <B>HH:mm</B> or <B>HH:mm:ss</B>, or <B>HH:mm:ss.mls</B>, e.g., 10:15, 12:45:16, or 05:03:06.002
+	 * The string has to have the following specific format: <B>HH:mm</B>, e.g., 10:15
 	 *
-	 * @param                           timeString the string representation of the time stamp (in the format HH:mm, HH:mm:ss, or HH:mm:ss.SSS)
+	 * @param                           timeString the string representation of the time stamp (in the format HH:mm)
 	 * @throws DateTimeFormatException  if an error occurred during conversion
 	 * @see                             java.text.SimpleDateFormat
 	 */
-	public void set(String timeString) throws DateTimeFormatException
+	public void setToHM(String timeString) throws DateTimeFormatException
 	{
-		fTimeStamp = Calendar.getInstance();
-
-		String[] timeStampParts = timeString.split("\\:");
 		try {
-			int hour = Integer.parseInt(timeStampParts[0]);
-			int minute = Integer.parseInt(timeStampParts[1]);
-			int second = 0;
-			int millisecond = 0;
-			if (timeStampParts.length > 2) {
-				if (timeStampParts[2].indexOf(".") > -1) {
-					String[] secondParts = timeStampParts[2].split("\\.");
-					second = Integer.parseInt(secondParts[0]);
-					millisecond = Integer.parseInt(secondParts[1]);
-				}
-				else {
-					second = Integer.parseInt(timeStampParts[2]);
-				}
-			}
-			set(hour,minute,second,millisecond);
+			fTimeStamp = LocalTime.parse(timeString,DateTimeFormatter.ofPattern("HH:mm"));
 		}
-		catch (ArrayIndexOutOfBoundsException exc) {
+		catch (DateTimeParseException exc) {
 			throw (new DateTimeFormatException(timeString));
 		}
-		catch (NumberFormatException exc) {
+	}
+
+	/**
+	 * Sets this <CODE>TimeStamp</CODE> object corresponding to the specified string representation.
+	 * <P>
+	 * The string has to have the following specific format: <B>HH:mm:ss</B>, e.g., 12:45:16
+	 *
+	 * @param                           timeString the string representation of the time stamp (in the format HH:mm:ss)
+	 * @throws DateTimeFormatException  if an error occurred during conversion
+	 * @see                             java.text.SimpleDateFormat
+	 */
+	public void setToHMS(String timeString) throws DateTimeFormatException
+	{
+		try {
+			fTimeStamp = LocalTime.parse(timeString,DateTimeFormatter.ofPattern("HH:mm:ss"));
+		}
+		catch (DateTimeParseException exc) {
+			throw (new DateTimeFormatException(timeString));
+		}
+	}
+
+	/**
+	 * Sets this <CODE>TimeStamp</CODE> object corresponding to the specified string representation.
+	 * <P>
+	 * The string has to have the following specific format: <B>HH:mm:ss.mls</B>, e.g., 05:03:06.002
+	 *
+	 * @param                           timeString the string representation of the time stamp (in the format HH:mm:ss.SSS)
+	 * @throws DateTimeFormatException  if an error occurred during conversion
+	 * @see                             java.text.SimpleDateFormat
+	 */
+	public void setToHMSMs(String timeString) throws DateTimeFormatException
+	{
+		try {
+			fTimeStamp = LocalTime.parse(timeString,DateTimeFormatter.ofPattern("HH:mm:ss.SSS"));
+		}
+		catch (DateTimeParseException exc) {
 			throw (new DateTimeFormatException(timeString));
 		}
 	}
@@ -253,9 +257,9 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	/**
 	 * Sets this <CODE>TimeStamp</CODE> to the current system time.
 	 */
-	public void setToCurrentTime()
+	public void setToNow()
 	{
-		fTimeStamp = Calendar.getInstance();
+		fTimeStamp = LocalTime.now();
 	}
 
 	/**
@@ -265,7 +269,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public int getHour()
 	{
-		return fTimeStamp.get(Calendar.HOUR_OF_DAY);
+		return fTimeStamp.getHour();
 	}
 
 	/**
@@ -275,7 +279,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public int getMinute()
 	{
-		return fTimeStamp.get(Calendar.MINUTE);
+		return fTimeStamp.getMinute();
 	}
 
 	/**
@@ -285,7 +289,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public int getSecond()
 	{
-		return fTimeStamp.get(Calendar.SECOND);
+		return fTimeStamp.getSecond();
 	}
 
 	/**
@@ -295,7 +299,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public int getMillisecond()
 	{
-		return fTimeStamp.get(Calendar.MILLISECOND);
+		return (fTimeStamp.getNano() / 1000000);
 	}
 
 	/**
@@ -305,7 +309,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public int getMinuteOfDay()
 	{
-		return (getMinute() + (getHour() * 60));
+		return fTimeStamp.get(ChronoField.MINUTE_OF_DAY);
 	}
 
 	/**
@@ -315,7 +319,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public int getSecondOfDay()
 	{
-		return (getSecond() + (60 * getMinute()) + (getHour() * 3600));
+		return fTimeStamp.get(ChronoField.SECOND_OF_DAY);
 	}
 
 	/**
@@ -325,22 +329,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public int getMillisecondOfDay()
 	{
-		return (getMillisecond() + (getSecond() * 1000) + (getMinute() * 1000 * 60) + (getHour() * 1000 * 60 * 60));
-	}
-
-	/**
-	 * Returns a Java <CODE>Date</CODE> object representing this <CODE>TimeStamp</CODE>.
-	 *
-	 * @return a Java <CODE>Date</CODE> object representing this <CODE>TimeStamp</CODE>
-	 */
-	public Date getJavaDate()
-	{
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY,getHour());
-		calendar.set(Calendar.MINUTE,getMinute());
-		calendar.set(Calendar.SECOND,getSecond());
-		calendar.set(Calendar.MILLISECOND,getMillisecond());
-		return calendar.getTime();
+		return fTimeStamp.get(ChronoField.MILLI_OF_DAY);
 	}
 
 	/**
@@ -351,7 +340,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public String getHMSMsString()
 	{
-		return (new SimpleDateFormat("HH:mm:ss.SSS")).format(fTimeStamp.getTime());
+		return fTimeStamp.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"));
 	}
 
 	/**
@@ -362,7 +351,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public String getHMSString()
 	{
-		return (new SimpleDateFormat("HH:mm:ss")).format(fTimeStamp.getTime());
+		return fTimeStamp.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
 	/**
@@ -373,7 +362,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public String getHMString()
 	{
-		return (new SimpleDateFormat("HH:mm")).format(fTimeStamp.getTime());
+		return fTimeStamp.format(DateTimeFormatter.ofPattern("HH:mm"));
 	}
 
 	/**
@@ -384,7 +373,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public String getMSString()
 	{
-		return (new SimpleDateFormat("mm:ss")).format(fTimeStamp.getTime());
+		return fTimeStamp.format(DateTimeFormatter.ofPattern("mm:ss"));
 	}
 
 	/**
@@ -395,7 +384,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public String getMSMsString()
 	{
-		return (new SimpleDateFormat("mm:ss.SSS")).format(fTimeStamp.getTime());
+		return fTimeStamp.format(DateTimeFormatter.ofPattern("mm:ss.SSS"));
 	}
 
 	/**
@@ -406,7 +395,7 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public String getSMsString()
 	{
-		return (new SimpleDateFormat("ss.SSS")).format(fTimeStamp.getTime());
+		return fTimeStamp.format(DateTimeFormatter.ofPattern("ss.SSS"));
 	}
 
 	/**
@@ -417,87 +406,58 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 */
 	public String getSString()
 	{
-		return (new SimpleDateFormat("ss")).format(fTimeStamp.getTime());
+		return fTimeStamp.format(DateTimeFormatter.ofPattern("ss"));
 	}
 
 	/**
-	 * Converts this <CODE>TimeStamp</CODE> object from one time zone to another.
-	 * Note that daylight savings are taken into account when applicable.
-	 * <P> 
-	 * Time zones can be obtained via, e.g., <CODE>TimeZone.getTimeZone("Europe/Brussels")</CODE>.
+	 * Converts this <CODE>TimeStamp</CODE> object from a Unix time (number of milliseconds since the epoch) using a specified time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
 	 * 
-	 * @param date          the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
-	 * @param fromTimeZone  the <CODE>TimeZone</CODE> to convert from
-	 * @param toTimeZone    the <CODE>TimeZone</CODE> to convert to
-	 * 
+	 * @param unixMilliseconds  the Unix time (number of milliseconds since the epoch)
+	 * @param timeZoneID        the ID of the time zone
 	 */
-	public void convertBetweenTimeZones(DateStamp date, TimeZone fromTimeZone, TimeZone toTimeZone)
+	public void convertFromUnixTime(long unixMilliseconds, ZoneId timeZoneID)
 	{
-		Calendar fromCalendar = Calendar.getInstance(fromTimeZone);
-		Calendar toCalendar = Calendar.getInstance(toTimeZone);
-
-		// perform conversion via the total milliseconds timestamp
-		fromCalendar.set(Calendar.DAY_OF_MONTH,date.getDay());
-		fromCalendar.set(Calendar.MONTH,date.getMonth() - fromCalendar.getMinimum(Calendar.MONTH) - 1);
-		fromCalendar.set(Calendar.YEAR,date.getYear());
-		fromCalendar.set(Calendar.HOUR_OF_DAY,getHour());
-		fromCalendar.set(Calendar.MINUTE,getMinute());
-		fromCalendar.set(Calendar.SECOND,getSecond());
-		fromCalendar.set(Calendar.MILLISECOND,getMillisecond());
-		long utcMilliseconds = fromCalendar.getTimeInMillis();
-
-		toCalendar.setTimeInMillis(utcMilliseconds);
-		set(toCalendar.get(Calendar.HOUR_OF_DAY),toCalendar.get(Calendar.MINUTE),toCalendar.get(Calendar.SECOND),toCalendar.get(Calendar.MILLISECOND));
+		Instant instant = Instant.ofEpochSecond(unixMilliseconds / 1000L);
+		fTimeStamp = LocalDateTime.ofInstant(instant,timeZoneID.getRules().getOffset(instant)).toLocalTime();
 	}
 
 	/**
-	 * Converts this <CODE>TimeStamp</CODE> object from a time zone to UTC.
-	 * Note that daylight savings are taken into account when applicable.
+	 * Converts this <CODE>TimeStamp</CODE> object from a Unix time (number of milliseconds since the epoch) using the user's local time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
 	 * 
-	 * @param date          the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
-	 * @param fromTimeZone  the <CODE>TimeZone</CODE> to convert from
-	 * 
+	 * @param unixMilliseconds  the Unix time (number of milliseconds since the epoch)
 	 */
-	public void convertFromTimeZoneToUTC(DateStamp date, TimeZone fromTimeZone)
+	public void convertFromUnixTime(long unixMilliseconds)
 	{
-		convertBetweenTimeZones(date,fromTimeZone,TimeZone.getTimeZone("UTC"));
+		convertFromUnixTime(unixMilliseconds,ZoneId.systemDefault());
+	}
+	
+	/**
+	 * Converts this <CODE>TimeStamp</CODE> object to a Unix time (number of milliseconds since the epoch) using a specified date and time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
+	 * 
+	 * @param date        the date at which the timestamp occurs
+	 * @param timeZoneID  the ID of the time zone
+	 * @return            the Unix time (number of milliseconds since the epoch)
+	 */
+	public long convertToUnixTime(DateStamp date, ZoneId timeZoneID)
+	{
+		LocalDate localDate = LocalDate.of(date.getYear(),date.getMonth(),date.getDayOfMonth());
+		LocalDateTime ldt = LocalDateTime.of(localDate,fTimeStamp);
+		return ldt.atZone(timeZoneID).toEpochSecond() * 1000L;
 	}
 
 	/**
-	 * Converts this <CODE>TimeStamp</CODE> object from UTC to a time zone.
-	 * Note that daylight savings are taken into account when applicable.
+	 * Converts this <CODE>TimeStamp</CODE> object to a Unix time (number of milliseconds since the epoch) using the user's date and local time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
 	 * 
-	 * @param date        the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
-	 * @param toTimeZone  the <CODE>TimeZone</CODE> to convert to
-	 * 
+	 * @param date        the date at which the timestamp occurs
+	 * @return the Unix time (number of milliseconds since the epoch)
 	 */
-	public void convertFromUTCToTimeZone(DateStamp date, TimeZone toTimeZone)
+	public long convertToUnixTime(DateStamp date)
 	{
-		convertBetweenTimeZones(date,TimeZone.getTimeZone("UTC"),toTimeZone);
-	}
-
-	/**
-	 * Converts this <CODE>TimeStamp</CODE> object from the user's local time zone to UTC.
-	 * Note that daylight savings are taken into account when applicable.
-	 * 
-	 * @param date  the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
-	 * 
-	 */
-	public void convertFromLocalTimeZoneToUTC(DateStamp date)
-	{
-		convertFromTimeZoneToUTC(date,TimeZone.getDefault());
-	}
-
-	/**
-	 * Converts this <CODE>TimeStamp</CODE> object from UTC to the user's local time zone.
-	 * Note that daylight savings are taken into account when applicable.
-	 * 
-	 * @param date  the <CODE>DateStamp</CODE> of this <CODE>TimeStamp</CODE> object
-	 * 
-	 */
-	public void convertFromUTCToLocalTimeZone(DateStamp date)
-	{
-		convertFromUTCToTimeZone(date,TimeZone.getDefault());
+		return convertToUnixTime(date,ZoneId.systemDefault());
 	}
 
 	/**
@@ -567,14 +527,6 @@ public final class TimeStamp implements Comparable<TimeStamp>
 			return false;
 		}
 
-		TimeStamp timeStamp = (TimeStamp) object;
-		if ((getHour() != timeStamp.getHour()) ||
-				(getMinute() != timeStamp.getMinute()) ||
-				(getSecond() != timeStamp.getSecond()) ||
-				(getMillisecond() != timeStamp.getMillisecond())) {
-			return false;
-		}
-
-		return true;
+		return (compareTo((TimeStamp) object) == 0);
 	}
 }
