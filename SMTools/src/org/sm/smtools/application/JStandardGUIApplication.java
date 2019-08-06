@@ -1,12 +1,12 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 30/06/2018
+// Last modified : 07/08/2019
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
 /**
- * Copyright 2003-2018 Sven Maerivoet
+ * Copyright 2003-2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -139,7 +139,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 30/06/2018
+ * @version 07/08/2019
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -259,6 +259,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private static final String kActionCommandMenuItemEnableWindowResizing = "menuItem.EnableWindowResizing";
 	private static final String kActionCommandMenuItemAbout = "menuItem.About";
 	private static final String kActionCommandMenuItemSystemSoundsEnabled = "menuItem.SystemSoundsEnabled";
+	private static final String kActionCommandMenuItemSoundSetLCARS = "menuItem.SoundSetLCARS";
+	private static final String kActionCommandMenuItemSoundSetApple = "menuItem.SoundSetApple";
+	private static final String kActionCommandMenuItemSoundSetSpace = "menuItem.SoundSetSpace";
 	private static final String kActionCommandMenuItemQuit = "menuItem.Quit";
 
 	// set the clock's update period to half a second
@@ -283,6 +286,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private JCheckBoxMenuItem fcbEnableWindowResizing;
 	private boolean fSystemSoundsEnabled;
 	private JCheckBoxMenuItem fcbSystemSoundsEnabled;
+	private JRadioButtonMenuItem frbLCARSSoundSet;
+	private JRadioButtonMenuItem frbAppleSoundSet;
+	private JRadioButtonMenuItem frbSpaceSoundSet;
 	private JStatusBar fStatusBar;
 	private JLabel fClockLabel;
 	private String fLocale;
@@ -637,7 +643,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	{
 		String command = e.getActionCommand();
 		if (command.startsWith("menuItem")) {
-			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSMenuItem,MP3Player.EPlaying.kBlocked);
+			MP3Player.playSystemSound(JGUISounds.kINSTANCE.getMenuItemSoundFilename(),MP3Player.EPlaying.kBlocked);
 		}
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemAbout)) {
@@ -683,6 +689,15 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			else {
 				MP3Player.disableSystemSounds();
 			}
+		}
+		else if (command.equalsIgnoreCase(kActionCommandMenuItemSoundSetLCARS)) {
+			JGUISounds.kINSTANCE.selectSoundSet(JGUISounds.EGUISoundSet.kLCARS);
+		}
+		else if (command.equalsIgnoreCase(kActionCommandMenuItemSoundSetApple)) {
+			JGUISounds.kINSTANCE.selectSoundSet(JGUISounds.EGUISoundSet.kApple);
+		}
+		else if (command.equalsIgnoreCase(kActionCommandMenuItemSoundSetSpace)) {
+			JGUISounds.kINSTANCE.selectSoundSet(JGUISounds.EGUISoundSet.kSpace);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemQuit)) {
 			windowClosing(null);
@@ -825,7 +840,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	@Override
 	public final void windowDeiconified(WindowEvent e)
 	{
-		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSWindowEvent);
+		MP3Player.playSystemSound(JGUISounds.kINSTANCE.getWindowEventSoundFilename());
 	}
 
 	/**
@@ -838,7 +853,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	@Override
 	public final void windowIconified(WindowEvent e)
 	{
-		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSWindowEvent);
+		MP3Player.playSystemSound(JGUISounds.kINSTANCE.getWindowEventSoundFilename());
 		if (fMinimiseToSystemTray) {
 			fTrayIcon = new TrayIcon(fIcon,setupWindowTitle(),null);
 			fTrayIcon.setImageAutoSize(true);
@@ -1543,7 +1558,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		try {
 			UIManager.setLookAndFeel(fCurrentLAF);
 			if (!silent) {
-				MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSChangeLookAndFeel,MP3Player.EPlaying.kBlocked);
+				MP3Player.playSystemSound(JGUISounds.kINSTANCE.getChangeLookAndFeelSoundFilename(),MP3Player.EPlaying.kBlocked);
 			}
 			SwingUtilities.updateComponentTreeUI(this);
 			repaint();
@@ -1650,23 +1665,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		menu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.General.Mnemonic")));
 		menuBar.add(menu);
 
-//XXX
-//		JAboutBox aboutBox = setupAboutBox();
-/*
-		if (aboutBox != null) {
-				menuItem = constructMenuItem(kActionCommandMenuItemAbout);
-				menuItem.setActionCommand(kActionCommandMenuItemAbout);
-				menuItem.addActionListener(this);
-				menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'A',java.awt.event.InputEvent.CTRL_DOWN_MASK));
-			menu.add(menuItem);
-		}
-*/
 		if (hasAboutBox()) {
 				menuItem = constructMenuItem(kActionCommandMenuItemAbout);
 				menuItem.setActionCommand(kActionCommandMenuItemAbout);
 				menuItem.addActionListener(this);
 				menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'A',java.awt.event.InputEvent.CTRL_DOWN_MASK));
 			menu.add(menuItem);
+
+			menu.addSeparator();
 		}
 
 		// the look-and-feel submenu
@@ -1772,13 +1778,44 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		menu.add(subMenu);
 
-		menu.addSeparator();
+		// the sound set submenu
+		subMenu = new JMenu(I18NL10N.kINSTANCE.translate("menu.SoundSet"));
+		subMenu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.SoundSet.Mnemonic")));
 
 			fcbSystemSoundsEnabled = constructCheckBoxMenuItem(kActionCommandMenuItemSystemSoundsEnabled);
 			fcbSystemSoundsEnabled.setState(fSystemSoundsEnabled);
 			fcbSystemSoundsEnabled.setActionCommand(kActionCommandMenuItemSystemSoundsEnabled);
 			fcbSystemSoundsEnabled.addActionListener(this);
-		menu.add(fcbSystemSoundsEnabled);
+		subMenu.add(fcbSystemSoundsEnabled);
+
+		subMenu.addSeparator();
+
+		buttonGroup = new ButtonGroup();
+			frbLCARSSoundSet = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemSoundSetLCARS));
+			frbLCARSSoundSet.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemSoundSetLCARS + ".Mnemonic")));
+			frbLCARSSoundSet.setSelected(true);
+			frbLCARSSoundSet.setActionCommand(kActionCommandMenuItemSoundSetLCARS);
+			frbLCARSSoundSet.addActionListener(this);
+			buttonGroup.add(frbLCARSSoundSet);
+		subMenu.add(frbLCARSSoundSet);
+
+			frbAppleSoundSet = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemSoundSetApple));
+			frbAppleSoundSet.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemSoundSetApple + ".Mnemonic")));
+			frbAppleSoundSet.setSelected(false);
+			frbAppleSoundSet.setActionCommand(kActionCommandMenuItemSoundSetApple);
+			frbAppleSoundSet.addActionListener(this);
+			buttonGroup.add(frbAppleSoundSet);
+		subMenu.add(frbAppleSoundSet);
+
+			frbSpaceSoundSet = new JRadioButtonMenuItem(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemSoundSetSpace));
+			frbSpaceSoundSet.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate(kActionCommandMenuItemSoundSetSpace + ".Mnemonic")));
+			frbSpaceSoundSet.setSelected(false);
+			frbSpaceSoundSet.setActionCommand(kActionCommandMenuItemSoundSetSpace);
+			frbSpaceSoundSet.addActionListener(this);
+			buttonGroup.add(frbSpaceSoundSet);
+		subMenu.add(frbSpaceSoundSet);
+
+		menu.add(subMenu);
 
 		menu.addSeparator();
 

@@ -1,12 +1,12 @@
 // ---------------------------------
 // Filename      : JTimeChooser.java
 // Author        : Sven Maerivoet
-// Last modified : 30/06/2018
+// Last modified : 06/08/2019
 // Target        : Java VM (1.8)
 // ---------------------------------
 
 /**
- * Copyright 2003-2018 Sven Maerivoet
+ * Copyright 2003-2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 30/06/2018
+ * @version 06/08/2019
  * @see     TimeStamp
  */
 public final class JTimeChooser extends JDefaultDialog implements ChangeListener
@@ -98,6 +98,9 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 
 	// switch to control whether or not setting the seconds can be done via the clock's main panel
 	private static final boolean kEnableMouseListeners = true;
+
+	// useful constant to specify the sound of a single clock tick.
+	private static final String kSoundFilenameClockTick = "smtools-resources/sounds/clock-tick.mp3";
 
 	// an action-command
 	private static final String kCurrentTime = "current-time";
@@ -440,7 +443,7 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 				public void actionPerformed(ActionEvent e)
 				{
 					if (isShown()) {
-						MP3Player.playSystemSound(MP3Player.kSoundFilenameClockTick);
+						MP3Player.playSystemSound(kSoundFilenameClockTick);
 					}
 				}
 			};

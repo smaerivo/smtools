@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : MP3Player.java
 // Author        : Sven Maerivoet
-// Last modified : 26/06/2018
+// Last modified : 06/08/2019
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2018 Sven Maerivoet
+ * Copyright 2003-2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,45 +40,10 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 26/06/2018
+ * @version 06/08/2019
  */
 public final class MP3Player extends Thread
 {
-	/**
-	 * Useful constant to specify the sound of a single clock tick.
-	 */
-	public static final String kSoundFilenameClockTick = "smtools-resources/sounds/clock-tick.mp3";
-
-	/**
-	 * Useful constant to specify the LCARS sound associated with a button click.
-	 */
-	public static final String kSoundFilenameLCARSButton = "smtools-resources/sounds/lcars-button.mp3";
-
-	/**
-	 * Useful constant to specify the LCARS sound associated when the application's look and feel has changed.
-	 */
-	public static final String kSoundFilenameLCARSChangeLookAndFeel = "smtools-resources/sounds/lcars-change-look-and-feel.mp3";
-
-	/**
-	 * Useful constant to specify the LCARS sound associated with a selection of a menu item.
-	 */
-	public static final String kSoundFilenameLCARSMenuItem = "smtools-resources/sounds/lcars-menu-item.mp3";
-
-	/**
-	 * Useful constant to specify the LCARS sound associated with a message dialog popup.
-	 */
-	public static final String kSoundFilenameLCARSMessageDialog = "smtools-resources/sounds/lcars-message-dialog.mp3";
-
-	/**
-	 * Useful constant to specify the LCARS sound associated when the application's GUI window is iconified or deiconified.
-	 */
-	public static final String kSoundFilenameLCARSWindowEvent = "smtools-resources/sounds/lcars-window-event.mp3";
-
-	/**
-	 * Useful constant to specify the LCARS sound associated with a warning dialog popup.
-	 */
-	public static final String kSoundFilenameLCARSWarningDialog = "smtools-resources/sounds/lcars-warning-dialog.mp3";
-
 	/**
 	 * Useful constants to specify whether or not the application's execution is blocked while playing a sound.
 	 */
@@ -226,6 +191,10 @@ public final class MP3Player extends Thread
 	 */
 	public static void playSystemSound(String soundFilename, EPlaying playing)
 	{
+		if (soundFilename == null) {
+			return;
+		}
+
 		if (!DevelopMode.kINSTANCE.isActivated() && (fSystemSoundsEnabled)) {
 			try {
 				(new MP3Player(JARResources.fSystemResources.getInputStream(soundFilename))).play(playing);

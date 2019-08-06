@@ -1,12 +1,12 @@
 // -----------------------------------
 // Filename      : JMessageDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 26/06/2018
+// Last modified : 06/08/2019
 // Target        : Java VM (1.8)
 // -----------------------------------
 
 /**
- * Copyright 2003-2018 Sven Maerivoet
+ * Copyright 2003-2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 26/06/2018
+ * @version 06/08/2019
  */
 public final class JMessageDialog
 {
@@ -86,7 +86,7 @@ public final class JMessageDialog
 	 */
 	public static void show(Component parentComponent, String message)
 	{
-		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSMessageDialog);
+		MP3Player.playSystemSound(JGUISounds.kINSTANCE.getMessageDialogSoundFilename());
 		Object[] options = {I18NL10N.kINSTANCE.translate("button.Ok")};
 
 		JOptionPane.showOptionDialog(parentComponent,message,I18NL10N.kINSTANCE.translate("text.Attention"),

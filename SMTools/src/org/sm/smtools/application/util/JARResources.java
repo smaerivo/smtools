@@ -1,12 +1,12 @@
 // ---------------------------------
 // Filename      : JARResources.java
 // Author        : Sven Maerivoet
-// Last modified : 28/04/2013
+// Last modified : 06/08/2019
 // Target        : Java VM (1.8)
 // ---------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 28/04/2013
+ * @version 06/08/2019
  */
 public final class JARResources
 {
@@ -67,6 +67,10 @@ public final class JARResources
 	 */
 	public JARResources(String jarFilename) throws FileDoesNotExistException, FileReadException
 	{
+		if (jarFilename == null) {
+			return;
+		}
+
 		fhtJARContents = new Hashtable<>();
 
 		try {
@@ -132,6 +136,10 @@ public final class JARResources
 	 */
 	public byte[] getRawResource(String name) throws FileDoesNotExistException
 	{
+		if (name == null) {
+			return null;
+		}
+
 		byte[] rawResource = fhtJARContents.get(name);
 		if (rawResource == null) {
 			kLogger.error("Resource (" + name + ") not found in archive.");

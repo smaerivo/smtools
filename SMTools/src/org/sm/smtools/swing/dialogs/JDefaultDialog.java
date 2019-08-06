@@ -1,12 +1,12 @@
 // -----------------------------------
 // Filename      : JDefaultDialog.java
 // Author        : Sven Maerivoet
-// Last modified : 30/06/2018
+// Last modified : 06/08/2019
 // Target        : Java VM (1.8)
 // -----------------------------------
 
 /**
- * Copyright 2003-2018 Sven Maerivoet
+ * Copyright 2003-2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ import org.sm.smtools.util.*;
  * Note that there are two callback functions provided for when the ok- and cancel-buttons are selected: {@link JDefaultDialog#okSelected()} and {@link JDefaultDialog#cancelSelected()}.
  *
  * @author  Sven Maerivoet
- * @version 30/06/2018
+ * @version 06/08/2019
  */
 public class JDefaultDialog extends JDialog implements ActionListener, WindowListener
 {
@@ -207,13 +207,13 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 
 		if (command.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("button.Ok"))) {
 			okSelected();
-			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
+			MP3Player.playSystemSound(JGUISounds.kINSTANCE.getButtonSoundFilename(),MP3Player.EPlaying.kUnblocked);
 			fCancelled = false;
 			windowClosing(null);
 		}
 		else if (command.equalsIgnoreCase(I18NL10N.kINSTANCE.translate("button.Cancel"))) {
 			cancelSelected();
-			MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSButton,MP3Player.EPlaying.kUnblocked);
+			MP3Player.playSystemSound(JGUISounds.kINSTANCE.getButtonSoundFilename(),MP3Player.EPlaying.kUnblocked);
 			windowClosing(null);
 		}
 	}
@@ -330,7 +330,7 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	 */
 	public final void activate()
 	{
-		MP3Player.playSystemSound(MP3Player.kSoundFilenameLCARSMessageDialog);
+		MP3Player.playSystemSound(JGUISounds.kINSTANCE.getMessageDialogSoundFilename());
 
 		fIsShown = true;
 
