@@ -26,6 +26,7 @@ package org.sm.smtools.application.util;
 /**
  * This class contains the filenames of the selected set of GUI sounds.
  * <P>
+ * Note that this is a singleton class, with only one instance allowed.<BR>
  * The sounds' filenames are queries using the <CODE>JGUISounds.kINSTANCE.getXXX()</CODE> methods.
  *
  * @author  Sven Maerivoet
@@ -44,6 +45,7 @@ public enum JGUISounds
 	private String kMessageDialogSoundFilename;
 	private String kWarningDialogSoundFilename;
 	private String kWindowEventSoundFilename;
+	private EGUISoundSet fCurrentSoundSet;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -78,13 +80,26 @@ public enum JGUISounds
 	{
 		if (guiSoundSet == EGUISoundSet.kLCARS) {
 			selectLCARSSoundSet();
+			fCurrentSoundSet = EGUISoundSet.kLCARS;
 		}
 		else if (guiSoundSet == EGUISoundSet.kApple) {
 			selectAppleSoundSet();
+			fCurrentSoundSet = EGUISoundSet.kApple;
 		}
 		else if (guiSoundSet == EGUISoundSet.kSpace) {
 			selectSpaceSoundSet();
+			fCurrentSoundSet = EGUISoundSet.kSpace;
 		}
+	}
+
+	/**
+	 * Returns the currently selected sound set.
+	 * 
+	 * @return the currently selected sound set
+	 */
+	public EGUISoundSet getCurrentSoundSet()
+	{
+		return fCurrentSoundSet;
 	}
 
 	/**

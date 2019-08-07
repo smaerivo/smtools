@@ -459,7 +459,15 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		kLogger.info(I18NL10N.kINSTANCE.translate("text.SettingGUILookAndFeel"));
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JDialog.setDefaultLookAndFeelDecorated(true);
-		setInitialLookAndFeel(setupInitialLookAndFeel());
+		try {
+			fCurrentLAF = translateLookAndFeelName(setupInitialLookAndFeel());
+			UIManager.setLookAndFeel(fCurrentLAF);
+		}
+		catch (Exception exc) {
+		}
+
+		// set the GUI sound set
+		JGUISounds.kINSTANCE.selectSoundSet(setupInitialSoundSet());
 
 		// activate the splash screen
 		fSplashScreen = new JSplashScreen(setupSplashScreenContent(),setupSplashScreenSound());
@@ -596,6 +604,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		// update the menu's radio buttons
 		setLookAndFeelMenuItems();
+		setSoundSetMenuItems();
 
 		// check whether or not minimising to the system tray is supported
 		fMinimiseToSystemTray = (SystemTray.isSupported() && setupMinimiseToSystemTrayAllowed());
@@ -1175,6 +1184,26 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
+	 * Sets up the application's initial GUI sound set.
+	 * <P>
+	 * The possible values that can be returned are (see also {@link JGUISounds}):<BR>
+	 * <BR>
+	 * <UL>
+	 *   <LI>the LCARS sound set</LI>
+	 *   <LI>the Apple sound set</LI>
+	 *   <LI>the space sound set</LI>
+	 * </UL>
+	 * <P>
+	 * Note that this method returns the LCARS GUI sound set by default.
+	 * 
+	 * @return the application's initial GUI sound set
+	 */
+	protected JGUISounds.EGUISoundSet setupInitialSoundSet()
+	{
+		return JGUISounds.EGUISoundSet.kLCARS;
+	}
+
+	/**
 	 * A callback method for when the look-and-feel has changed.
 	 */
 	protected void lookAndFeelChanged()
@@ -1623,15 +1652,21 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * @param lookAndFeel  -
 	 */
-	private void setInitialLookAndFeel(String lookAndFeel)
+	private void setSoundSetMenuItems()
 	{
-		try {
-			fCurrentLAF = translateLookAndFeelName(lookAndFeel);
-			UIManager.setLookAndFeel(fCurrentLAF);
+		frbLCARSSoundSet.setSelected(false);
+		frbAppleSoundSet.setSelected(false);
+		frbSpaceSoundSet.setSelected(false);
+
+		if (JGUISounds.kINSTANCE.getCurrentSoundSet() == JGUISounds.EGUISoundSet.kLCARS) {
+			frbLCARSSoundSet.setSelected(true);
 		}
-		catch (Exception exc) {
+		else if (JGUISounds.kINSTANCE.getCurrentSoundSet() == JGUISounds.EGUISoundSet.kApple) {
+			frbAppleSoundSet.setSelected(true);
+		}
+		else if (JGUISounds.kINSTANCE.getCurrentSoundSet() == JGUISounds.EGUISoundSet.kSpace) {
+			frbSpaceSoundSet.setSelected(true);
 		}
 	}
 
