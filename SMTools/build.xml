@@ -42,7 +42,7 @@
 			<manifest>
 			  <attribute name="Built-By" value="Sven Maerivoet" />
 	      <attribute name="Implementation-Title" value="SMTools" />
-	      <attribute name="Implementation-Version" value="1.5.4" />
+	      <attribute name="Implementation-Version" value="1.5.5" />
 				<attribute name="Main-Class" value="smtools.application.JStandardGUIApplication" />
 			</manifest>
 		</jar>
@@ -61,7 +61,7 @@
 		<javadoc
 			sourcepath="${srcDir}"
 			destdir="${docDir}"
-			doctitle="SMTools v1.5.4 API Documentation"
+			doctitle="SMTools v1.5.5 API Documentation"
 			header="&lt;B&gt;SMTools&lt;/B&gt;&lt;BR&gt;&lt;I&gt;Sven Maerivoet&lt;/I&gt;"
 			windowtitle="Sven Maerivoet - Java Tools"
 			splitindex="true"

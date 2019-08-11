@@ -627,7 +627,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 				@Override
 				public void mouseClicked(MouseEvent e)
 				{
-					JDesktopAccess.executeBrowseApplication("http://www.maerivoet.org/");
+					JDesktopAccess.executeBrowseApplication("https://www.maerivoet.org/");
 				} 
 				@Override
 				public void mouseEntered(MouseEvent e)
