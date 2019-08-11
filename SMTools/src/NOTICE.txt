@@ -1,3 +1,0 @@
-This product includes the SMTools v1.5.4 software framework developed by Sven Maerivoet.
-E-mail: sven.maerivoet@gmail.com
-URL: http://smtools.maerivoet.org/
