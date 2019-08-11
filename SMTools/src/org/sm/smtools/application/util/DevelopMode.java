@@ -33,27 +33,22 @@ package org.sm.smtools.application.util;
  * phase (e.g., for skipping intros, about boxes, confirmation dialogs
  * when quitting, ...). Their use is checked against a global flag, in
  * the following manner:
- * <P>
- * <CODE>
- *   if (DevelopMode.kINSTANCE.isActivated()) {<BR>
- *     ... // perform 'hacks'<BR>
+ * <PRE>
+ *   if (DevelopMode.kINSTANCE.isActivated()) {
+ *     ... // perform 'hacks'
  *   }
- * </CODE>
- * <P>
+ * </PRE>
  * Changing the status is done through direct assignment:
- * <P>
- * <CODE>
+ * <PRE>
  *   DevelopMode.kINSTANCE.activate();
- * </CODE>
+ * </PRE>
  * <P>
  * If activation is required before any class initialisation, then use a static initialiser as follows:
- * <P>
- * <CODE>
+ * <PRE>
  *   static {<BR>
  *     DevelopMode.kINSTANCE.activate();<BR>
  *   }
- * </CODE>
- * <P>
+ * </PRE>
  * Note that the default value is <CODE>false</CODE>.
  * 
  * @author  Sven Maerivoet

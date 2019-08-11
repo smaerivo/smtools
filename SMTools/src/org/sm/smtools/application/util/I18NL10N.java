@@ -46,14 +46,14 @@ import org.sm.smtools.util.*;
  * the <CODE>I18NL10N</CODE> class can easily handle different file locations. Use the
  * {@link I18NL10N#getFilename(String)} and {@link I18NL10N#getFilename(String,String)} methods to
  * specify a file location and an optional locale, for example:
- * <CODE>
+ * <PRE>
  *   I18NL10N.kINSTANCE.load(I18NL10N.kINSTANCE.getFilename("locales-",I18NL10N.kINSTANCE.kLocaleBritishEnglish));
- * </CODE>
+ * </PRE>
  * <P>
  * Translations are performed by the following lookup:
- * <CODE>
+ * <PRE>
  *   String translation = I18NL10N.kINSTANCE.translate(key,parameters);
- * </CODE>
+ * </PRE>
  * <P>
  * The optional parameters are specified in the keys using <CODE>(^i)</CODE>
  * with <CODE>i</CODE> the number of the parameter. In order to get the caret itself,
@@ -63,9 +63,9 @@ import org.sm.smtools.util.*;
  * <P>
  * The file should have the following structure: each line should contain at
  * most one (key,value) pair. They are specified as:
- * <CODE>
+ * <PRE>
  *   key=value
- * </CODE>
+ * </PRE>
  * <P>
  * Blank lines are allowed; comments are preceeded by a # character.
  * <UL>

@@ -30,9 +30,9 @@ import java.math.*;
  * The <CODE>MathTools</CODE> class offers some basic useful mathematical operations.
  * <P>
  * All methods in this class are static, so they should be invoked as:
- * <P>
- * <CODE>... = MathTools.method(...);</CODE>
- * <P>
+ * <PRE>
+ *   ... = MathTools.method(...);
+ * </PRE>
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet

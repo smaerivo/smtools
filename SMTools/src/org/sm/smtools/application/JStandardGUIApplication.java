@@ -84,6 +84,10 @@ import org.sm.smtools.swing.dialogs.*;
  *     <LI>{@link JStandardGUIApplication#setupSplashScreenContent()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupSplashScreenSound()} [<I>see also {@link JSplashScreen} and {@link MP3Player}</I>]</LI>
  *   </UL>
+ *   <LI><B><U>Sound set selection</U></B></LI>
+ *   <UL>
+ *      <LI>{@link JStandardGUIApplication#setupInitialSoundSet()}</LI>
+ *   </UL>
  *   <LI><B><U>Visual layout (window related)</U></B></LI>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#setupInitialLookAndFeel()}</LI>
@@ -102,8 +106,12 @@ import org.sm.smtools.swing.dialogs.*;
  *     <LI>{@link JStandardGUIApplication#getToolBarTitle()}</LI>
  *     <LI>{@link JStandardGUIApplication#isToolBarFloatable()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupToolBar()}</LI>
- *     <LI>{@link JStandardGUIApplication#addToolBarButton(JButton,String,String,ActionListener)}</LI>
+ *     <LI>{@link JStandardGUIApplication#addToolBarButton(AbstractButton,String,String,ActionListener)}</LI>
  *     <LI>{@link JStandardGUIApplication#addToolBarSeparator()}</LI>
+ *     <LI>{@link JStandardGUIApplication#showToolBar()}</LI>
+ *     <LI>{@link JStandardGUIApplication#hideToolBar()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getToolBarInputMap()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getToolBarActionMap()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupMenus()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupRightHandMenu()}</LI>
  *     <LI>{@link JStandardGUIApplication#constructMenuItem(String,boolean)}</LI>
@@ -334,6 +342,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *   <LI>The application's {@link JARResources} and locale {@link I18NL10N} database are loaded (if they are present).</LI>
 	 *   <LI>The global system {@link Registry} is read from file.</LI>
 	 *   <LI>The look-and-feel of the operating system is used by default.</LI>
+	 *   <LI>A GUI sound set is selected (see {@link JStandardGUIApplication#setupInitialSoundSet()}).</LI>
 	 *   <LI>A optional splash screen is shown (see {@link JStandardGUIApplication#setupSplashScreenContent()} and
 	 *       {@link JStandardGUIApplication#setupSplashScreenSound()}).</LI>
 	 *   <LI>Custom initialisation is performed (see {@link JStandardGUIApplication#initialise(Object[])}).
@@ -341,6 +350,12 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *   <LI>The window's icon and title are set (see {@link JStandardGUIApplication#setupIcon()} and
 	 *       {@link JStandardGUIApplication#setupWindowTitle()}).</LI>
 	 *   <LI>The GUI's content pane is constructed (see {@link JStandardGUIApplication#setupContentPane(JPanel)}).</LI>
+	 *   <LI>The GUI's tool bar is constructed (see {@link JStandardGUIApplication#getToolBarTitle()}, 
+	 *       {@link JStandardGUIApplication#isToolBarFloatable()}, {@link JStandardGUIApplication#setupToolBar()},
+	 *       {@link JStandardGUIApplication#addToolBarButton(AbstractButton,String,String,ActionListener)},
+	 *       {@link JStandardGUIApplication#addToolBarSeparator()}, {@link JStandardGUIApplication#showToolBar()},
+	 *       {@link JStandardGUIApplication#hideToolBar()}, {@link JStandardGUIApplication#getToolBarInputMap()} and
+	 *       {@link JStandardGUIApplication#getToolBarActionMap()}).</LI>
 	 *   <LI>The GUI's status bar is constructed (see {@link JStandardGUIApplication#setupStatusBarCustomLabels()},
 	 *       {@link JStandardGUIApplication#setupIsStatusBarEnabled()}, and {@link JStandardGUIApplication#getStatusBar()}).</LI>
 	 *   <LI>The GUI's menu bar is constructed (see {@link JStandardGUIApplication#setupMenus()} and
@@ -659,11 +674,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * Note that when overriding this method in a subclass, its parent should
 	 * explicitly be called in order to guarantee the correct default processing of
 	 * the user's input:
-	 * <P>
-	 * <CODE>
-	 *   super.actionPerformed(e);<BR>
+	 * <PRE>
+	 *   super.actionPerformed(e);
 	 *   // rest of method's code
-	 * </CODE>
+	 * </PRE>
 	 *
 	 * @param e  the <CODE>ActionEvent</CODE> that is received
 	 */
@@ -929,13 +943,12 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * The application's <CODE>main</CODE> method.
 	 * <P>
 	 * Note that this method should be overridden by a derived subclass:
-	 * <P>
-	 * <CODE>
-	 *   public static void main(String[] argv)<BR>
-	 *   {<BR>
-	 *     DerivedGUIApplication derivedGUIApplication = new DerivedGUIApplication(argv);<BR>
+	 * <PRE>
+	 *   public static void main(String[] argv)
+	 *   {
+	 *     DerivedGUIApplication derivedGUIApplication = new DerivedGUIApplication(argv);
 	 *   }
-	 * </CODE>
+	 * </PRE>
 	 *
 	 * @param argv  an array of strings containing the <B>command-line</B> parameters
 	 */
@@ -1086,33 +1099,32 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * method should be called with the appropriate parameters.
 	 * <P>
 	 * The following example shows the parsing of one custom parameter (with a custom option):
-	 * <CODE>
-	 *   final String kCustomParameter = "PARAMETER";<BR>
-	 *   final String kCustomOption    = "OPTION";<BR>
-	 *   <BR>
-	 *   String upperCaseParameter = parameter.toUpperCase();<BR>
-	 *   <BR>
-	 *   // parse parameter<BR>
-	 *   if (upperCaseParameter.startsWith(kCustomParameter &#43; "=")) {<BR>
-	 *   <BR>
-	 *     String upperCaseOption = upperCaseParameter.substring(kCustomParameter.length() &#43; 1);<BR>
-	 *     // parse option<BR>
-	 *     if (upperCaseOption.equalsIgnoreCase(kCustomOption)) {<BR>
-	 *       // take action as parameter is parsed<BR>
-	 *     }<BR>
-	 *     else {<BR>
-	 *       showParameterWarning(paramNr,parameter,"not a valid option");<BR>
-	 *     }<BR>
-	 *     <BR>
-	 *     // indicate that parameter was valid<BR>
-	 *     return true;<BR>
-	 *   }<BR>
-	 *   else {<BR>
-	 *     <BR>
-	 *     // indicate that parameter is unknown<BR>
-	 *     return false;<BR>
+	 * <PRE>
+	 *   final String kCustomParameter = "PARAMETER";
+	 *   final String kCustomOption    = "OPTION";
+	 *   
+	 *   String upperCaseParameter = parameter.toUpperCase();
+	 *   
+	 *   // parse parameter
+	 *   if (upperCaseParameter.startsWith(kCustomParameter &#43; "=")) {
+	 *   
+	 *     String upperCaseOption = upperCaseParameter.substring(kCustomParameter.length() &#43; 1);
+	 *     // parse option
+	 *     if (upperCaseOption.equalsIgnoreCase(kCustomOption)) {
+	 *       // take action as parameter is parsed
+	 *     }
+	 *     else {
+	 *       showParameterWarning(paramNr,parameter,"not a valid option");
+	 *     }
+	 *     
+	 *     // indicate that parameter was valid
+	 *     return true;
 	 *   }
-	 * </CODE>
+	 *   else {
+	 *     // indicate that parameter is unknown
+	 *     return false;
+	 *   }
+	 * </PRE>
 	 *
 	 * @param  paramNr    the number of the parameter that is being parsed
 	 * @param  parameter  the unmodified parameter as specified on the command-line
@@ -1243,9 +1255,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * </UL>
 	 * <P>
 	 * An example:
-	 * <P>
-	 * <CODE>return (new Dimension(JStandardGUIApplication.kFullScreenGUI,250));</CODE>
-	 * <P>
+	 * <PRE>
+	 *   return (new Dimension(JStandardGUIApplication.kFullScreenGUI,250));
+	 * </PRE>
 	 * which specifies a GUI with full screen width and 250 pixels height.
 	 *
 	 * @return the GUI's initial size on the screen as a <CODE>Dimension</CODE> object
@@ -1355,12 +1367,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * Sets up the GUI's tool bar.
 	 * <P>
 	 * A derived subclass typically overrides this method. The subclass can add
-	 * buttons to the tool bar via the {@link JStandardGUIApplication#addToolBarButton(JButton,String,String,ActionListener)} and
+	 * buttons to the tool bar via the {@link JStandardGUIApplication#addToolBarButton(AbstractButton,String,String,ActionListener)} and
 	 * {@link JStandardGUIApplication#addToolBarSeparator()} methods.
 	 * <P>
 	 * This would typically look like the following:
-	 * <P>
-	 * <CODE>
+	 * <PRE>
 	 *   String kActionCommandMenuItemXXX = "xxx";
 	 *   String kActionCommandMenuItemYYY = "yyy";
 	 *   JButton button1 = new JButton(new ImageIcon(fResources.getImage("application-resources/icons/load-parameters-icon.png")));
@@ -1371,13 +1382,13 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *     I18NL10N.kINSTANCE.translate(kActionCommandMenuItemXXX),
 	 *     kActionCommandMenuItemXXX,this);
 	 *     
-	 *     addToolBarSeparator();
+	 *   addToolBarSeparator();
 	 *     
-	 *     addToolBarButton(
-	 *       button2,
-	 *       I18NL10N.kINSTANCE.translate(kActionCommandMenuItemYYY),
-	 *       kActionCommandMenuItemYYY,this);
-	 * </CODE>
+	 *   addToolBarButton(
+	 *     button2,
+	 *     I18NL10N.kINSTANCE.translate(kActionCommandMenuItemYYY),
+	 *     kActionCommandMenuItemYYY,this);
+	 * </PRE>
 	 */
 	protected void setupToolBar()
 	{
@@ -1391,7 +1402,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @param actionCommand   the action command of the button
 	 * @param actionListener  the action listener for the button (usually <CODE>this</CODE>)
 	 */
-	protected final void addToolBarButton(JButton button, String toolTipText, String actionCommand, ActionListener actionListener)
+	protected final void addToolBarButton(AbstractButton button, String toolTipText, String actionCommand, ActionListener actionListener)
 	{
 			button.setToolTipText(toolTipText);
 			button.setActionCommand(actionCommand);
@@ -1405,6 +1416,44 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	protected final void addToolBarSeparator()
 	{
 		fToolBar.addSeparator();
+	}
+
+	/**
+	 * Helper method to show the GUI's tool bar.
+	 * <P>
+	 * Note that the GUI's tool bar is only shown if it contains any content.
+	 */
+	protected final void showToolBar()
+	{
+		fToolBar.setVisible(true);
+	}
+
+	/**
+	 * Helper method to hide the GUI's tool bar.
+	 */
+	protected final void hideToolBar()
+	{
+		fToolBar.setVisible(false);
+	}
+
+	/**
+	 * Helper method to retrieve the GUI's tool bar's input map.
+	 * 
+	 * @return the GUI's tool bar's input map
+	 */
+	protected final InputMap getToolBarInputMap()
+	{
+		return fToolBar.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+	}
+
+	/**
+	 * Helper method to retrieve the GUI's tool bar's action map.
+	 * 
+	 * @return the GUI's tool bar's action map
+	 */
+	protected final ActionMap getToolBarActionMap()
+	{
+		return fToolBar.getActionMap();
 	}
 
 	/**

@@ -32,9 +32,9 @@ import org.sm.smtools.exceptions.*;
  * <P>
  * The <CODE>Registry</CODE> class is actually a <B>singleton</B> instance, and a local reference to it
  * should be obtained as follows:
- * <P>
- * <CODE>Registry registry = Registry.kINSTANCE;</CODE>
- * <P>
+ * <PRE>
+ *   Registry registry = Registry.kINSTANCE;
+ * </PRE>
  * The registry contains serialisable objects that can be stored and retrieved via a <CODE>String</CODE> key using the
  * {@link Registry#addObject(String,Object)} and {@link Registry#getObject(String)} methods.
  * 
