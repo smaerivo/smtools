@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 30/06/2018
+// Last modified : 11/08/2019
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2018 Sven Maerivoet
+ * Copyright 2003-2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 30/06/2018
+ * @version 11/08/2019
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -331,7 +331,6 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	protected void setupContentPane(JPanel contentPane)
 	{
 		contentPane.setLayout(new BorderLayout());
-
 		String backgroundImageFilename = "application-resources/images/clouds.jpg";
 
 		JImagePanel jip = null;
@@ -343,6 +342,39 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		catch (FileDoesNotExistException exc) {
 			// ignore
 		}
+	}
+
+	/**
+	 * See {@link JStandardGUIApplication}.
+	 */
+	@Override
+	protected String getToolBarTitle()
+	{
+		return "A tool bar";
+	}
+
+	/**
+	 * See {@link JStandardGUIApplication}.
+	 */
+	@Override
+	protected void setupToolBar()
+	{
+		String kActionCommandMenuItemXXX = "xxx";
+		String kActionCommandMenuItemYYY = "yyy";
+		JButton button1 = new JButton("Button #1");
+		JButton button2 = new JButton("Button #2");
+
+		addToolBarButton(
+			button1,
+			I18NL10N.kINSTANCE.translate(kActionCommandMenuItemXXX),
+			kActionCommandMenuItemXXX,this);
+
+		addToolBarSeparator();
+
+		addToolBarButton(
+			button2,
+			I18NL10N.kINSTANCE.translate(kActionCommandMenuItemYYY),
+			kActionCommandMenuItemYYY,this);
 	}
 
 	/**
@@ -405,7 +437,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	protected ArrayList<JLabel> setupStatusBarCustomLabels()
 	{
 		ArrayList<JLabel> customLabels = new ArrayList<JLabel>();
-			fStatusBarCustomLabel = new JLabel("64-bit FP");
+			fStatusBarCustomLabel = new JLabel();
 			customLabels.add(fStatusBarCustomLabel);
 		return customLabels;
 	}
@@ -467,7 +499,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * This class contains an example about box.
 	 * 
 	 * @author  Sven Maerivoet
-	 * @version 30/06/2018
+	 * @version 07/08/2019
 	 * @see     org.sm.smtools.swing.dialogs.JAboutBox
 	 */
 	private final class JDerivedAboutBox extends JAboutBox
@@ -516,7 +548,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		{
 			return
 			("<B>JDerivedGUIApplication v1.1</B><BR />" +
-				"Copyright 2003-2018 Sven Maerivoet");
+				"Copyright 2003-2019 Sven Maerivoet");
 		}
 
 		/**
@@ -577,7 +609,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 				affiliationLabel = new JLabel(
 					"<html>" +
-						"Website: http://www.maerivoet.org/" +
+						"Website: https://www.maerivoet.org/" +
 					"</html>");
 				affiliationLabel.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.AboutBox.ClickForBrowser"));
 			affiliationsLabels.add(affiliationLabel);

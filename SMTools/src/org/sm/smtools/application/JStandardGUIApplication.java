@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 07/08/2019
+// Last modified : 11/08/2019
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -99,6 +99,11 @@ import org.sm.smtools.swing.dialogs.*;
  *   <LI><B><U>Visual layout (content related)</U></B></LI>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#setupContentPane(JPanel)}</LI>
+ *     <LI>{@link JStandardGUIApplication#getToolBarTitle()}</LI>
+ *     <LI>{@link JStandardGUIApplication#isToolBarFloatable()}</LI>
+ *     <LI>{@link JStandardGUIApplication#setupToolBar()}</LI>
+ *     <LI>{@link JStandardGUIApplication#addToolBarButton(JButton,String,String,ActionListener)}</LI>
+ *     <LI>{@link JStandardGUIApplication#addToolBarSeparator()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupMenus()}</LI>
  *     <LI>{@link JStandardGUIApplication#setupRightHandMenu()}</LI>
  *     <LI>{@link JStandardGUIApplication#constructMenuItem(String,boolean)}</LI>
@@ -139,7 +144,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 07/08/2019
+ * @version 11/08/2019
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -289,6 +294,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private JRadioButtonMenuItem frbLCARSSoundSet;
 	private JRadioButtonMenuItem frbAppleSoundSet;
 	private JRadioButtonMenuItem frbSpaceSoundSet;
+	private JToolBar fToolBar;
 	private JStatusBar fStatusBar;
 	private JLabel fClockLabel;
 	private String fLocale;
@@ -496,6 +502,20 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		// setup content pane
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
+
+		// construct the tool bar
+		fToolBar = new JToolBar();
+			if (getToolBarTitle() != null) {
+				fToolBar.setName(getToolBarTitle());
+			}
+			fToolBar.setFloatable(isToolBarFloatable());
+			if (!isToolBarFloatable()) {
+				// provide some whitespace to the left edge
+				fToolBar.addSeparator(new Dimension(5,0));
+			}
+			fToolBar.setRollover(true);
+			setupToolBar();
+		contentPane.add(fToolBar,BorderLayout.NORTH);
 
 		// if necessary, add the status bar
 		fStatusBar = new JStatusBar(setupIsGUIResizable(),setupStatusBarCustomLabels());
@@ -1307,6 +1327,84 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	protected void setupContentPane(JPanel contentPane)
 	{
+	}
+
+	/**
+	 * Returns the GUI's tool bar's title.
+	 *
+	 * @return the GUI's tool bar's title
+	 */
+	protected String getToolBarTitle()
+	{
+		return null;
+	}
+
+	/**
+	 * Returns if the GUI's tool bar's can float freely.
+	 * <P>
+	 * By default, this method returns <CODE>true</CODE>.
+	 *
+	 * @return a <CODE>boolean</CODE> indicating whether or not the GUI's tool bar can float freely
+	 */
+	protected boolean isToolBarFloatable()
+	{
+		return true;
+	}
+
+	/**
+	 * Sets up the GUI's tool bar.
+	 * <P>
+	 * A derived subclass typically overrides this method. The subclass can add
+	 * buttons to the tool bar via the {@link JStandardGUIApplication#addToolBarButton(JButton,String,String,ActionListener)} and
+	 * {@link JStandardGUIApplication#addToolBarSeparator()} methods.
+	 * <P>
+	 * This would typically look like the following:
+	 * <P>
+	 * <CODE>
+	 *   String kActionCommandMenuItemXXX = "xxx";
+	 *   String kActionCommandMenuItemYYY = "yyy";
+	 *   JButton button1 = new JButton(new ImageIcon(fResources.getImage("application-resources/icons/load-parameters-icon.png")));
+	 *   JButton button2 = new JButton("Button #2");
+	 *   
+	 *   addToolBarButton(
+	 *     button1,
+	 *     I18NL10N.kINSTANCE.translate(kActionCommandMenuItemXXX),
+	 *     kActionCommandMenuItemXXX,this);
+	 *     
+	 *     addToolBarSeparator();
+	 *     
+	 *     addToolBarButton(
+	 *       button2,
+	 *       I18NL10N.kINSTANCE.translate(kActionCommandMenuItemYYY),
+	 *       kActionCommandMenuItemYYY,this);
+	 * </CODE>
+	 */
+	protected void setupToolBar()
+	{
+	}
+
+	/**
+	 * Helper method to add a button to the GUI's tool bar.
+	 *
+	 * @param button          the button to add
+	 * @param toolTipText     the tool tip text associated with the button
+	 * @param actionCommand   the action command of the button
+	 * @param actionListener  the action listener for the button (usually <CODE>this</CODE>)
+	 */
+	protected final void addToolBarButton(JButton button, String toolTipText, String actionCommand, ActionListener actionListener)
+	{
+			button.setToolTipText(toolTipText);
+			button.setActionCommand(actionCommand);
+			button.addActionListener(actionListener);
+		fToolBar.add(button);
+	}
+
+	/**
+	 * Helper method to add a separator to the GUI's tool bar.
+	 */
+	protected final void addToolBarSeparator()
+	{
+		fToolBar.addSeparator();
 	}
 
 	/**
