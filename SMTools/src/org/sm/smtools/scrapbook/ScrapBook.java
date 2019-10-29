@@ -62,10 +62,9 @@ public class ScrapBook
 	 * 
 	 * @param argv  the command-line parameters
 	 */
-	@SuppressWarnings("unused")
 	public static void main(String[] argv)
 	{
-		ScrapBook scrapBook = new ScrapBook();
+		new ScrapBook();
 	}
 
 	/*******************

@@ -63,10 +63,10 @@ public final class TextFileParser
 	/**
 	 * Sets up a text file parser for the specified file.
 	 *
-	 * @param filename                    the name of the file to parse
-	 * @throws FileDoesNotExistException  if the file is not found
+	 * @param filename                the name of the file to parse
+	 * @throws FileNotFoundException  if the file is not found
 	 */
-	public TextFileParser(String filename) throws FileDoesNotExistException
+	public TextFileParser(String filename) throws FileNotFoundException
 	{
 		try {
 			// try to open the file
@@ -74,18 +74,18 @@ public final class TextFileParser
 			initialise(fileInputStream,null);
 		}
 		catch (FileNotFoundException exc) {
-			throw (new FileDoesNotExistException(filename));
+			throw (new FileNotFoundException(filename));
 		}
 	}
 
 	/**
 	 * Sets up a text file parser for the specified file.
 	 *
-	 * @param filename                    the name of the file to parse
-	 * @param encoding                    the encoding used (e.g., UTF-8)
-	 * @throws FileDoesNotExistException  if the file is not found
+	 * @param filename                the name of the file to parse
+	 * @param encoding                the encoding used (e.g., UTF-8)
+	 * @throws FileNotFoundException  if the file is not found
 	 */
-	public TextFileParser(String filename, String encoding) throws FileDoesNotExistException
+	public TextFileParser(String filename, String encoding) throws FileNotFoundException
 	{
 		try {
 			// try to open the file
@@ -93,7 +93,7 @@ public final class TextFileParser
 			initialise(fileInputStream,encoding);
 		}
 		catch (FileNotFoundException exc) {
-			throw (new FileDoesNotExistException(filename));
+			throw (new FileNotFoundException(filename));
 		}
 	}
 

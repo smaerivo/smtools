@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : JARResources.java
 // Author        : Sven Maerivoet
-// Last modified : 06/08/2019
+// Last modified : 29/10/2019
 // Target        : Java VM (1.8)
 // ---------------------------------
 
@@ -25,6 +25,7 @@ package org.sm.smtools.application.util;
 
 import java.awt.*;
 import java.io.*;
+import java.nio.file.*;
 import java.util.*;
 import java.util.zip.*;
 import javax.swing.*;
@@ -39,7 +40,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 06/08/2019
+ * @version 29/10/2019
  */
 public final class JARResources
 {
@@ -52,7 +53,7 @@ public final class JARResources
 	private static final Logger kLogger = Logger.getLogger(JARResources.class.getName());
 
 	// internal data structures
-	private Hashtable<String,byte[]> fhtJARContents;
+	private Hashtable<String,byte[]> fJARContents;
 
 	/****************
 	 * CONSTRUCTORS *
@@ -61,17 +62,17 @@ public final class JARResources
 	/**
 	 * Constructs a <CODE>JARResources</CODE> object and loads all resources from it into memory.
 	 *
-	 * @param  jarFilename                the filename of the JAR or ZIP file containing the resources
-	 * @throws FileDoesNotExistException  if the archive file is not found
-	 * @throws FileReadException          if an error occurred during loading resources from the archive file
+	 * @param  jarFilename            the filename of the JAR or ZIP file containing the resources
+	 * @throws FileNotFoundException  if the archive file is not found
+	 * @throws FileReadException      if an error occurred during loading resources from the archive file
 	 */
-	public JARResources(String jarFilename) throws FileDoesNotExistException, FileReadException
+	public JARResources(String jarFilename) throws FileNotFoundException, FileReadException
 	{
+		fJARContents = new Hashtable<>();
+
 		if (jarFilename == null) {
 			return;
 		}
-
-		fhtJARContents = new Hashtable<>();
 
 		try {
 			FileInputStream fis = new FileInputStream(jarFilename);
@@ -95,7 +96,7 @@ public final class JARResources
 						}
 					}
 					// add to internal resource hashtable
-					fhtJARContents.put(zipEntry.getName(),buffer);
+					fJARContents.put(zipEntry.getName(),buffer);
 				}
 			}
 
@@ -103,7 +104,7 @@ public final class JARResources
 		}
 		catch (FileNotFoundException exc) {
 			kLogger.error(exc.getMessage());
-			throw (new FileDoesNotExistException(jarFilename));
+			throw (new FileNotFoundException(jarFilename));
 		}
 		catch (IOException exc) {
 			kLogger.error(exc.getMessage());
@@ -122,7 +123,7 @@ public final class JARResources
 	public static void checkSystemInitialisation()
 	{
 		if (JARResources.fSystemResources == null) {
-			kLogger.fatal("System resources not available! Application aborted.");
+			kLogger.fatal("System resources not available; application aborted.");
 			System.exit(0);
 		}
 	}
@@ -130,20 +131,27 @@ public final class JARResources
 	/**
 	 * Retrieves a raw resource from the archive.
 	 * 
-	 * @param  name                       the name of the resource to retrieve from the archive
-	 * @return                            a byte array representing the resource
-	 * @throws FileDoesNotExistException  if the resource was not found
+	 * @param  name                   the (file)name of the resource to retrieve from the archive
+	 * @return                        a byte array representing the resource
+	 * @throws FileNotFoundException  if the resource was not found
 	 */
-	public byte[] getRawResource(String name) throws FileDoesNotExistException
+	public byte[] getRawResource(String name) throws FileNotFoundException
 	{
 		if (name == null) {
 			return null;
 		}
 
-		byte[] rawResource = fhtJARContents.get(name);
+		byte[] rawResource = fJARContents.get(name);
 		if (rawResource == null) {
-			kLogger.error("Resource (" + name + ") not found in archive.");
-			throw (new FileDoesNotExistException(name));
+			// try to load resource from local file system
+			try {
+				kLogger.warn("Resource (" + name + ") not found in archive, trying to load from local file system...");
+				rawResource = Files.readAllBytes(Paths.get(name).toRealPath());
+			}
+			catch (Exception exc) {
+				kLogger.error("Failed to load resource (" + name + "): " + exc);
+				throw (new FileNotFoundException(name));
+			}
 		}
 		return rawResource;
 	}
@@ -151,12 +159,12 @@ public final class JARResources
 	/**
 	 * Retrieves a resource as an <CODE>InputStream</CODE> from the archive.
 	 * 
-	 * @param  name                       the name of the resource to retrieve from the archive
-	 * @return                            an <CODE>InputStream</CODE> representing the resource
-	 * @throws FileDoesNotExistException  if the resource was not found
-	 * @see                               JARResources#getRawResource(String name)
+	 * @param  name                   the (file)name of the resource to retrieve from the archive
+	 * @return                        an <CODE>InputStream</CODE> representing the resource
+	 * @throws FileNotFoundException  if the resource was not found
+	 * @see                           JARResources#getRawResource(String name)
 	 */
-	public InputStream getInputStream(String name) throws FileDoesNotExistException
+	public InputStream getInputStream(String name) throws FileNotFoundException
 	{
 		return (new ByteArrayInputStream(getRawResource(name)));
 	}
@@ -164,12 +172,12 @@ public final class JARResources
 	/**
 	 * Retrieves a resource as a <CODE>StringBuilder</CODE> from the archive.
 	 * 
-	 * @param  name                       the name of the resource to retrieve from the archive
-	 * @return                            a <CODE>StringBuilder</CODE> representing the resource
-	 * @throws FileDoesNotExistException  if the resource was not found
-	 * @see                               JARResources#getRawResource(String name)
+	 * @param  name                   the (file)name of the resource to retrieve from the archive
+	 * @return                        a <CODE>StringBuilder</CODE> representing the resource
+	 * @throws FileNotFoundException  if the resource was not found
+	 * @see                           JARResources#getRawResource(String name)
 	 */
-	public StringBuilder getText(String name) throws FileDoesNotExistException
+	public StringBuilder getText(String name) throws FileNotFoundException
 	{
 		return (new StringBuilder(new String(getRawResource(name))));
 	}
@@ -177,12 +185,12 @@ public final class JARResources
 	/**
 	 * Retrieves a resource as an <CODE>Image</CODE> from the archive.
 	 * 
-	 * @param  name                       the name of the resource to retrieve from the archive
-	 * @return                            an <CODE>Image</CODE> representing the resource
-	 * @throws FileDoesNotExistException  if the resource was not found
-	 * @see                               JARResources#getRawResource(String name)
+	 * @param  name                   the (file)name of the resource to retrieve from the archive
+	 * @return                        an <CODE>Image</CODE> representing the resource
+	 * @throws FileNotFoundException  if the resource was not found
+	 * @see                           JARResources#getRawResource(String name)
 	 */
-	public Image getImage(String name) throws FileDoesNotExistException
+	public Image getImage(String name) throws FileNotFoundException
 	{
 		// use ImageIcon as a MediaTracker to completely load the image
 		ImageIcon imageIcon = new ImageIcon(getRawResource(name));

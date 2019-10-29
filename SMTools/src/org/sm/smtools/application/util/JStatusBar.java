@@ -26,9 +26,9 @@ package org.sm.smtools.application.util;
 import com.sun.jna.*;
 import com.sun.jna.win32.*;
 import java.awt.*;
+import java.io.*;
 import java.util.*;
 import javax.swing.*;
-import org.sm.smtools.exceptions.*;
 import org.sm.smtools.math.*;
 import org.sm.smtools.swing.util.*;
 import org.sm.smtools.util.*;
@@ -134,7 +134,7 @@ public final class JStatusBar extends JPanel
 					fBatteryLevelUnknownImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelUnknownImageFilename));
 					fBatteryLevelOnACPowerImage = new ImageIcon(JARResources.fSystemResources.getImage(kBatteryLevelOnACPowerImageFilename));
 				}
-				catch (FileDoesNotExistException exc) {
+				catch (FileNotFoundException exc) {
 					// ignore
 				}
 				// add the battery level label

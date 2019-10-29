@@ -25,6 +25,7 @@ package org.sm.smtools.swing.dialogs;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -138,7 +139,7 @@ public final class JCustomColorMapChooser extends JDefaultDialog implements Acti
 
 					adjustControls();
 				}
-				catch (FileDoesNotExistException exc) {
+				catch (FileNotFoundException exc) {
 					JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.CustomColorMap.ErrorLoadingCustomColorMap"));
 				}
 				catch (FileParseException exc) {

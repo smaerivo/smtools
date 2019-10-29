@@ -8,5 +8,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Log4j"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/QuaQua LaF"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/BigDecimaMath"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PostgreSQL Connector"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

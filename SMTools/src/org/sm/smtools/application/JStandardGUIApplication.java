@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 11/08/2019
+// Last modified : 29/10/2019
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -50,12 +50,12 @@ import org.sm.smtools.swing.dialogs.*;
  * <UL>
  *   <LI><B><U>Java runtime environment version checking</U></B></LI>
  *   <UL>
- *     <LI>{@link JStandardGUIApplication#setupRequiredMajorJavaVersion()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupRequiredMinorJavaVersion()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getApplicationRequiredMajorJavaVersion()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getApplicationRequiredMinorJavaVersion()}</LI>
  *   </UL>
  *   <LI><B><U>Command-line parameter parsing</U></B></LI>
  *   <UL>
- *     <LI>{@link JStandardGUIApplication#parseParameter(int,String)}</LI>
+ *     <LI>{@link JStandardGUIApplication#parseApplicationParameter(int,String)}</LI>
  *     <BR>
  *     Already built-in command-line parameters are:
  *     <UL>
@@ -66,72 +66,73 @@ import org.sm.smtools.swing.dialogs.*;
  *       <LI>-<B>silent</B></LI>
  *       <LI>-<B>help</B></LI>
  *     </UL>
- *     <I>As a locale, you can also specify a BCP 47 short name (cf. the IETF's Best Current Practice,
- *     see also http://en.wikipedia.org/wiki/IETF_language_tag).<BR />
+ *     <I>As a locale, you can also specify a BCP 47 short name (cf. the
+ *     <a href="http://en.wikipedia.org/wiki/IETF_language_tag">IETF's Best Current Practice</a>).<BR>
  *     Note that the application is sized to fullscreen if either width or height or set to reflect this. Fullscreen is this case
  *     this implies window-mode (which is maximised if the OS allows it).</I>
  *   </UL>
  *   <LI><B><U>Custom initialisation and clean-up</U></B></LI>
  *   <UL>
- *     <LI>{@link JStandardGUIApplication#setupApplicationResourceArchiveFilename()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupApplicationLocalePrefix()}</LI>
- *     <LI>{@link JStandardGUIApplication#initialise(Object[])}</LI>
- *     <LI>{@link JStandardGUIApplication#shutdown()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getApplicationResourceArchiveFilename()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getApplicationLocalePrefix()}</LI>
+ *     <LI>{@link JStandardGUIApplication#loadApplicationRegistry()}</LI>
+ *     <LI>{@link JStandardGUIApplication#initialiseApplication(Object[])}</LI>
+ *     <LI>{@link JStandardGUIApplication#shutdownApplication()}</LI>
  *   </UL>
  *   <LI><B><U>Splash screen during startup</U></B></LI>
  *   <UL>
- *     <LI>{@link JStandardGUIApplication#getSplashScreen()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupSplashScreenContent()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupSplashScreenSound()} [<I>see also {@link JSplashScreen} and {@link MP3Player}</I>]</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUISplashScreen()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUISplashScreenContent()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUISplashScreenSound()} [<I>see also {@link JSplashScreen} and {@link MP3Player}</I>]</LI>
  *   </UL>
  *   <LI><B><U>Sound set selection</U></B></LI>
  *   <UL>
- *      <LI>{@link JStandardGUIApplication#setupInitialSoundSet()}</LI>
+ *      <LI>{@link JStandardGUIApplication#getGUIInitialSoundSet()}</LI>
  *   </UL>
  *   <LI><B><U>Visual layout (window related)</U></B></LI>
  *   <UL>
- *     <LI>{@link JStandardGUIApplication#setupInitialLookAndFeel()}</LI>
- *     <LI>{@link JStandardGUIApplication#lookAndFeelChanged()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupInitialGUISize()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupIsGUIResizable()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupIsGUIRepaintedWhenResizing()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupIcon()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupWindowTitle()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}</LI>
- *     <LI>{@link JStandardGUIApplication#setDynamicLayout(boolean)}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIInitialLookAndFeel()}</LI>
+ *     <LI>{@link JStandardGUIApplication#guiLookAndFeelChanged()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIInitialSize()}</LI>
+ *     <LI>{@link JStandardGUIApplication#isGUIResizable()}</LI>
+ *     <LI>{@link JStandardGUIApplication#isGUIRepaintedWhenResizing()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIIcon()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUITitle()}</LI>
+ *     <LI>{@link JStandardGUIApplication#isGUIMinimiseToSystemTrayAllowed()}</LI>
+ *     <LI>{@link JStandardGUIApplication#setGUIDynamicLayout(boolean)}</LI>
  *   </UL>
  *   <LI><B><U>Visual layout (content related)</U></B></LI>
  *   <UL>
- *     <LI>{@link JStandardGUIApplication#setupContentPane(JPanel)}</LI>
- *     <LI>{@link JStandardGUIApplication#getToolBarTitle()}</LI>
- *     <LI>{@link JStandardGUIApplication#isToolBarFloatable()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupToolBar()}</LI>
- *     <LI>{@link JStandardGUIApplication#addToolBarButton(AbstractButton,String,String,ActionListener)}</LI>
- *     <LI>{@link JStandardGUIApplication#addToolBarSeparator()}</LI>
- *     <LI>{@link JStandardGUIApplication#showToolBar()}</LI>
- *     <LI>{@link JStandardGUIApplication#hideToolBar()}</LI>
- *     <LI>{@link JStandardGUIApplication#getToolBarInputMap()}</LI>
- *     <LI>{@link JStandardGUIApplication#getToolBarActionMap()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupMenus()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupRightHandMenu()}</LI>
- *     <LI>{@link JStandardGUIApplication#constructMenuItem(String,boolean)}</LI>
- *     <LI>{@link JStandardGUIApplication#constructMenuItem(String)}</LI>
- *     <LI>{@link JStandardGUIApplication#constructRadioButtonMenuItem(String,boolean)}</LI>
- *     <LI>{@link JStandardGUIApplication#constructRadioButtonMenuItem(String)}</LI>
- *     <LI>{@link JStandardGUIApplication#constructCheckBoxMenuItem(String,boolean)}</LI>
- *     <LI>{@link JStandardGUIApplication#constructCheckBoxMenuItem(String)}</LI>
- *     <LI>{@link JStandardGUIApplication#setupStatusBarCustomLabels()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupIsStatusBarEnabled()}</LI>
- *     <LI>{@link JStandardGUIApplication#getStatusBar()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupGlassPane()}</LI>
- *     <LI>{@link JStandardGUIApplication#setupIsClockEnabled()}</LI>
- *     <LI>{@link JStandardGUIApplication#hasAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
- *     <LI>{@link JStandardGUIApplication#showAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIContentPane(JPanel)}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIToolBarTitle()}</LI>
+ *     <LI>{@link JStandardGUIApplication#isGUIToolBarFloatable()}</LI>
+ *     <LI>{@link JStandardGUIApplication#createGUIToolBar()}</LI>
+ *     <LI>{@link JStandardGUIApplication#addGUIToolBarButton(AbstractButton,String,String,ActionListener)}</LI>
+ *     <LI>{@link JStandardGUIApplication#addGUIToolBarSeparator()}</LI>
+ *     <LI>{@link JStandardGUIApplication#showGUIToolBar()}</LI>
+ *     <LI>{@link JStandardGUIApplication#hideGUIToolBar()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIToolBarInputMap()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIToolBarActionMap()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIMenus()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIRightHandMenu()}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructGUIMenuItem(String,boolean)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructGUIMenuItem(String)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructGUIRadioButtonMenuItem(String,boolean)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructGUIRadioButtonMenuItem(String)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructGUICheckBoxMenuItem(String,boolean)}</LI>
+ *     <LI>{@link JStandardGUIApplication#constructGUICheckBoxMenuItem(String)}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIStatusBarCustomLabels()}</LI>
+ *     <LI>{@link JStandardGUIApplication#isGUIStatusBarEnabled()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIStatusBar()}</LI>
+ *     <LI>{@link JStandardGUIApplication#getGUIGlassPane()}</LI>
+ *     <LI>{@link JStandardGUIApplication#isGUIClockEnabled()}</LI>
+ *     <LI>{@link JStandardGUIApplication#hasGUIAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
+ *     <LI>{@link JStandardGUIApplication#showGUIAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
  *   </UL>
  *   <LI><B><U>Reacting to user input</U></B></LI>
  *   <UL>
  *     <LI>{@link JStandardGUIApplication#actionPerformed(ActionEvent)}</LI>
- *     <LI>{@link JStandardGUIApplication#windowResized()}</LI>
+ *     <LI>{@link JStandardGUIApplication#guiWindowResized()}</LI>
  *   </UL>
  * </UL>
  * <P>
@@ -152,7 +153,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 11/08/2019
+ * @version 29/10/2019
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -224,23 +225,23 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private static final Logger kLogger = Logger.getLogger(JStandardGUIApplication.class.getName());
 
 	// the required Java version for the SMTools package
-	private static final int kRequiredMajorJavaVersion = 1;
-	private static final int kRequiredMinorJavaVersion = 8;
+	private static final int kApplicationRequiredMajorJavaVersion = 1;
+	private static final int kApplicationRequiredMinorJavaVersion = 8;
 
 	// the location of the JAR archive containing all the resources
-	private static final String kResourceArchiveFilename = "smtools.jar";
+	private static final String kSystemResourceArchiveFilename = "smtools.jar";
 
 	// the location of the system locale database
 	private static final String kSystemLocalePrefix = "smtools-resources/locales/locale-";
 
-	// default window title
-	private static final String kDefaultWindowTitle = "smtools.application.JStandardGUIApplication";
-
 	// system registry filename
-	private static final String kSystemRegistryFilename = "system-registry.ser";
+	private static final String kApplicationRegistryFilename = "registry.ser";
+
+	// default window title
+	private static final String kGUIDefaultTitle = "smtools.application.JStandardGUIApplication";
 
 	// default application icon filename
-	private static final String kDefaultApplicationIconFilename = "smtools-resources/images/icon.jpg";
+	private static final String kGUIDefaultIconFilename = "smtools-resources/images/icon.jpg";
 
 	// the different parameters
 	private static final String kParamLocale = "LOCALE";
@@ -278,16 +279,16 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private static final String kActionCommandMenuItemQuit = "menuItem.Quit";
 
 	// set the clock's update period to half a second
-	private static final int kClockUpdatePeriod = 500;
+	private static final int kGUIClockUpdatePeriod = 500;
 
 	// switch for first-time initialisation of the system registry
-	private static final boolean kCreateSystemRegistry = false;
+	private static final boolean kCreateApplicationRegistry = false;
 
 	// internal datastructures
-	private Registry fSystemRegistry;
+	private Registry fApplicationRegistry;
 	private int fGUIWidth;
 	private int fGUIHeight;
-	private String fCurrentLAF;
+	private String fGUICurrentLAF;
 	private JRadioButtonMenuItem frbGTK;
 	private JRadioButtonMenuItem frbMac;
 	private JRadioButtonMenuItem frbMetal;
@@ -302,17 +303,17 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	private JRadioButtonMenuItem frbLCARSSoundSet;
 	private JRadioButtonMenuItem frbAppleSoundSet;
 	private JRadioButtonMenuItem frbSpaceSoundSet;
-	private JToolBar fToolBar;
-	private JStatusBar fStatusBar;
-	private JLabel fClockLabel;
-	private String fLocale;
-	private JSplashScreen fSplashScreen;
-	private Image fIcon;
-	private boolean fMinimiseToSystemTray;
-	private TrayIcon fTrayIcon;
-	private JPanel fGlassPane;
-	private int fWindowWidth;
-	private int fWindowHeight;
+	private JToolBar fGUIToolBar;
+	private JStatusBar fGUIStatusBar;
+	private JLabel fGUIClockLabel;
+	private String fApplicationLocale;
+	private JSplashScreen fGUISplashScreen;
+	private Image fGUIIcon;
+	private boolean fGUIMinimiseToSystemTray;
+	private TrayIcon fGUITrayIcon;
+	private JPanel fGUIGlassPane;
+	private int fGUIWindowWidth;
+	private int fGUIWindowHeight;
 
 	/*************************
 	 * STATIC INITIALISATION *
@@ -331,46 +332,49 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * During construction of the GUI, the following events take place:
 	 * <UL>
-	 *   <LI>The required version of the Java runtime engine is checked (see {@link JStandardGUIApplication#setupRequiredMajorJavaVersion()} and
-	 *       {@link JStandardGUIApplication#setupRequiredMinorJavaVersion()}).</LI>
+	 *   <LI>The required version of the Java runtime engine is checked (see {@link JStandardGUIApplication#getApplicationRequiredMajorJavaVersion()} and
+	 *       {@link JStandardGUIApplication#getApplicationRequiredMinorJavaVersion()}).</LI>
 	 *   <LI>The system {@link JARResources} are loaded.</LI>
-	 *   <LI>The GUI is set to auto-size by default (see {@link JStandardGUIApplication#setupInitialGUISize()} and
-	 *       {@link JStandardGUIApplication#setupIsGUIResizable()}).</LI>
+	 *   <LI>The GUI is set to auto-size by default (see {@link JStandardGUIApplication#getGUIInitialSize()} and
+	 *       {@link JStandardGUIApplication#isGUIResizable()}).</LI>
 	 *   <LI>British English is the default language used.</LI>
-	 *   <LI>The command-line parameters are parsed (see {@link JStandardGUIApplication#parseParameter(int,String)}).</LI>
+	 *   <LI>The command-line parameters are parsed (see {@link JStandardGUIApplication#parseApplicationParameter(int,String)}).</LI>
 	 *   <LI>The system's locale {@link I18NL10N} database is loaded.</LI>
-	 *   <LI>The application's {@link JARResources} and locale {@link I18NL10N} database are loaded (if they are present).</LI>
+	 *   <LI>The application's {@link JARResources} and locale {@link I18NL10N} database are loaded (if they are present)
+	 *       (see  {@link JStandardGUIApplication#getApplicationResourceArchiveFilename()} and
+	 *       {@link JStandardGUIApplication#getApplicationLocalePrefix()}).</LI>
 	 *   <LI>The global system {@link Registry} is read from file.</LI>
 	 *   <LI>The look-and-feel of the operating system is used by default.</LI>
-	 *   <LI>A GUI sound set is selected (see {@link JStandardGUIApplication#setupInitialSoundSet()}).</LI>
-	 *   <LI>A optional splash screen is shown (see {@link JStandardGUIApplication#setupSplashScreenContent()} and
-	 *       {@link JStandardGUIApplication#setupSplashScreenSound()}).</LI>
-	 *   <LI>Custom initialisation is performed (see {@link JStandardGUIApplication#initialise(Object[])}).
+	 *   <LI>A GUI sound set is selected (see {@link JStandardGUIApplication#getGUIInitialSoundSet()}).</LI>
+	 *   <LI>A optional splash screen is shown (see {@link JStandardGUIApplication#getGUISplashScreenContent()} and
+	 *       {@link JStandardGUIApplication#getGUISplashScreenSound()}).</LI>
+	 *   <LI>Custom initialisation is performed (see  {@link JStandardGUIApplication#loadApplicationRegistry()} and 
+	 *       {@link JStandardGUIApplication#initialiseApplication(Object[])}).
 	 *       Note that the objects are specified as <CODE>new Object[] {object1,object2}</CODE>.</LI>
-	 *   <LI>The window's icon and title are set (see {@link JStandardGUIApplication#setupIcon()} and
-	 *       {@link JStandardGUIApplication#setupWindowTitle()}).</LI>
-	 *   <LI>The GUI's content pane is constructed (see {@link JStandardGUIApplication#setupContentPane(JPanel)}).</LI>
-	 *   <LI>The GUI's tool bar is constructed (see {@link JStandardGUIApplication#getToolBarTitle()}, 
-	 *       {@link JStandardGUIApplication#isToolBarFloatable()}, {@link JStandardGUIApplication#setupToolBar()},
-	 *       {@link JStandardGUIApplication#addToolBarButton(AbstractButton,String,String,ActionListener)},
-	 *       {@link JStandardGUIApplication#addToolBarSeparator()}, {@link JStandardGUIApplication#showToolBar()},
-	 *       {@link JStandardGUIApplication#hideToolBar()}, {@link JStandardGUIApplication#getToolBarInputMap()} and
-	 *       {@link JStandardGUIApplication#getToolBarActionMap()}).</LI>
-	 *   <LI>The GUI's status bar is constructed (see {@link JStandardGUIApplication#setupStatusBarCustomLabels()},
-	 *       {@link JStandardGUIApplication#setupIsStatusBarEnabled()}, and {@link JStandardGUIApplication#getStatusBar()}).</LI>
-	 *   <LI>The GUI's menu bar is constructed (see {@link JStandardGUIApplication#setupMenus()} and
-	 *       {@link JStandardGUIApplication#setupRightHandMenu()}).</LI>
-	 *   <LI>The about box is shown (see {@link JStandardGUIApplication#hasAboutBox()} and {@link JStandardGUIApplication#showAboutBox()}).</LI>
-	 *   <LI>The repainting behaviour when resizing is set to dynamic layout (see {@link JStandardGUIApplication#setDynamicLayout(boolean)}).</LI>
-	 *   <LI>The application checks if minimisation to the system tray is allowed (see {@link JStandardGUIApplication#setupMinimiseToSystemTrayAllowed()}).</LI>
-	 *   <LI>The glass pane is constructed (see {@link JStandardGUIApplication#setupGlassPane()}).</LI>
+	 *   <LI>The window's icon and title are set (see {@link JStandardGUIApplication#getGUIIcon()} and
+	 *       {@link JStandardGUIApplication#getGUITitle()}).</LI>
+	 *   <LI>The GUI's content pane is constructed (see {@link JStandardGUIApplication#getGUIContentPane(JPanel)}).</LI>
+	 *   <LI>The GUI's tool bar is constructed (see {@link JStandardGUIApplication#getGUIToolBarTitle()}, 
+	 *       {@link JStandardGUIApplication#isGUIToolBarFloatable()}, {@link JStandardGUIApplication#createGUIToolBar()},
+	 *       {@link JStandardGUIApplication#addGUIToolBarButton(AbstractButton,String,String,ActionListener)},
+	 *       {@link JStandardGUIApplication#addGUIToolBarSeparator()}, {@link JStandardGUIApplication#showGUIToolBar()},
+	 *       {@link JStandardGUIApplication#hideGUIToolBar()}, {@link JStandardGUIApplication#getGUIToolBarInputMap()} and
+	 *       {@link JStandardGUIApplication#getGUIToolBarActionMap()}).</LI>
+	 *   <LI>The GUI's status bar is constructed (see {@link JStandardGUIApplication#getGUIStatusBarCustomLabels()},
+	 *       {@link JStandardGUIApplication#isGUIStatusBarEnabled()}, and {@link JStandardGUIApplication#getGUIStatusBar()}).</LI>
+	 *   <LI>The GUI's menu bar is constructed (see {@link JStandardGUIApplication#getGUIMenus()} and
+	 *       {@link JStandardGUIApplication#getGUIRightHandMenu()}).</LI>
+	 *   <LI>The about box is shown (see {@link JStandardGUIApplication#hasGUIAboutBox()} and {@link JStandardGUIApplication#showGUIAboutBox()}).</LI>
+	 *   <LI>The repainting behaviour when resizing is set to dynamic layout (see {@link JStandardGUIApplication#setGUIDynamicLayout(boolean)}).</LI>
+	 *   <LI>The application checks if minimisation to the system tray is allowed (see {@link JStandardGUIApplication#isGUIMinimiseToSystemTrayAllowed()}).</LI>
+	 *   <LI>The glass pane is constructed (see {@link JStandardGUIApplication#getGUIGlassPane()}).</LI>
 	 * </UL>
 	 * If no parameters are to be passed to the GUI, specify <CODE>null</CODE>
 	 * for <CODE>parameters</CODE>.
 	 *
 	 * @param argv        an array of strings containing the <B>command-line</B> parameters
 	 * @param parameters  an array of objects containing the parameters to be passed to the GUI's
-	 *                    {@link JStandardGUIApplication#initialise(Object[])} method
+	 *                    {@link JStandardGUIApplication#initialiseApplication(Object[])} method
 	 */
 	public JStandardGUIApplication(String[] argv, Object[] parameters)
 	{
@@ -380,26 +384,25 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		int dotPosition = javaRuntimeVersion.indexOf(".");
 		int javaMajorVersion = (Integer.valueOf(javaRuntimeVersion.substring(dotPosition - 1,dotPosition))).intValue();
 		int javaMinorVersion = (Integer.valueOf(javaRuntimeVersion.substring(dotPosition + 1,dotPosition + 2))).intValue();
-		String requiredJavaRuntimeVersion = setupRequiredMajorJavaVersion() + "." + setupRequiredMinorJavaVersion();
-		if ((javaMajorVersion < setupRequiredMajorJavaVersion()) ||
-				((javaMajorVersion >= setupRequiredMajorJavaVersion()) && (javaMinorVersion < setupRequiredMinorJavaVersion()))) {
+		if ((javaMajorVersion < getApplicationRequiredMajorJavaVersion()) ||
+				((javaMajorVersion == getApplicationRequiredMajorJavaVersion()) && (javaMinorVersion < getApplicationRequiredMinorJavaVersion()))) {
 			abortApplication("Current version of Java runtime environment (" +
 				javaRuntimeVersion +
 				") is incompatible with requirements (" +
-				requiredJavaRuntimeVersion +
+				String.valueOf(getApplicationRequiredMajorJavaVersion()) + "." + String.valueOf(getApplicationRequiredMinorJavaVersion()) +
 				"); application aborted.");
 		}
 
 		// load JAR archive containing the system resources
 		try {
 			kLogger.info("Loading system resources...");
-			JARResources.fSystemResources = new JARResources(kResourceArchiveFilename);
+			JARResources.fSystemResources = new JARResources(kSystemResourceArchiveFilename);
 		}
-		catch (FileDoesNotExistException exc) {
-			abortApplication("Archive (" + kResourceArchiveFilename + ") containing system resources not found; application aborted.");
+		catch (FileNotFoundException exc) {
+			abortApplication("Archive (" + kSystemResourceArchiveFilename + ") containing system resources not found; application aborted.");
 		}
 		catch (FileReadException exc) {
-			abortApplication("Error while processing archive (" + kResourceArchiveFilename + ") containing system resources; application aborted.");
+			abortApplication("Error while processing archive (" + kSystemResourceArchiveFilename + ") containing system resources; application aborted.");
 		}
 
 		kLogger.info("Starting application...");
@@ -407,72 +410,70 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		fGUIWidth = kAutoSizeGUI;
 		fGUIHeight = kAutoSizeGUI;
 
-		Dimension initialGUISize = setupInitialGUISize();
+		Dimension initialGUISize = getGUIInitialSize();
 		if (initialGUISize != null) {
 			fGUIWidth = initialGUISize.width;
 			fGUIHeight = initialGUISize.height;
 		}
 
-		fLocale = I18NL10N.kLocaleBritishEnglish;
+		fApplicationLocale = I18NL10N.kLocaleBritishEnglish;
 		fSystemSoundsEnabled = true;
-		parseCommandLine(argv);
+		parseApplicationCommandLine(argv);
 
 		// load the system's locale database
-		kLogger.info("Loading system locale database [" + fLocale + "]...");
+		kLogger.info("Loading system locale database [" + fApplicationLocale + "]...");
 		try {
-			I18NL10N.kINSTANCE.load(JARResources.fSystemResources.getInputStream(I18NL10N.kINSTANCE.getFilename(kSystemLocalePrefix,fLocale)));
+			I18NL10N.kINSTANCE.load(JARResources.fSystemResources.getInputStream(I18NL10N.kINSTANCE.getFilename(kSystemLocalePrefix,fApplicationLocale)));
 		}
-		catch (FileDoesNotExistException exc) {
-			abortApplication("System locale database (" + kSystemLocalePrefix + " + " + fLocale + ") not found; application aborted.");
+		catch (FileNotFoundException exc) {
+			abortApplication("System locale database (" + kSystemLocalePrefix + " + " + fApplicationLocale + ") not found; application aborted.");
 		}
 		catch (FileReadException exc) {
-			abortApplication("Error while processing system locale database (" + kSystemLocalePrefix + " + " + fLocale + "); application aborted.");
+			abortApplication("Error while processing system locale database (" + kSystemLocalePrefix + " + " + fApplicationLocale + "); application aborted.");
 		}
 
 		// load application's resources
-		String applicationResourceArchiveFilename = setupApplicationResourceArchiveFilename(); 
-		if (applicationResourceArchiveFilename != null) {
-			try {
-				kLogger.info(I18NL10N.kINSTANCE.translate("text.LoadingApplicationResources"));
-				fResources = new JARResources(applicationResourceArchiveFilename);
-			}
-			catch (FileDoesNotExistException exc) {
-				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationResourcesArchiveNotFound",applicationResourceArchiveFilename),true);
-			}
-			catch (FileReadException exc) {
-				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationResourcesArchiveProcessing",applicationResourceArchiveFilename),true);
-			}
+		String applicationResourceArchiveFilename = getApplicationResourceArchiveFilename(); 
+		try {
+			kLogger.info(I18NL10N.kINSTANCE.translate("text.LoadingApplicationResources"));
+			fResources = new JARResources(applicationResourceArchiveFilename);
+		}
+		catch (FileNotFoundException exc) {
+			abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationResourcesArchiveNotFound",applicationResourceArchiveFilename),true);
+		}
+		catch (FileReadException exc) {
+			abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationResourcesArchiveProcessing",applicationResourceArchiveFilename),true);
 		}
 
 		// load application's locale database
-		String applicationLocalePrefix = setupApplicationLocalePrefix();
+		String applicationLocalePrefix = getApplicationLocalePrefix();
 		if (applicationLocalePrefix != null) {
 			try {
 				kLogger.info(I18NL10N.kINSTANCE.translate("text.LoadingApplicationLocaleDatabase"));
-				I18NL10N.kINSTANCE.load(fResources.getInputStream(I18NL10N.kINSTANCE.getFilename(applicationLocalePrefix,fLocale)));
+				I18NL10N.kINSTANCE.load(fResources.getInputStream(I18NL10N.kINSTANCE.getFilename(applicationLocalePrefix,fApplicationLocale)));
 			}
-			catch (FileDoesNotExistException exc) {
-				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationLocaleDatabaseNotFound",applicationLocalePrefix + " + " + fLocale),true);
+			catch (FileNotFoundException exc) {
+				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationLocaleDatabaseNotFound",applicationLocalePrefix + " + " + fApplicationLocale),true);
 			}
 			catch (FileReadException exc) {
-				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationLocaleDatabaseProcessing",applicationLocalePrefix + " + " + fLocale),true);
+				abortApplication(I18NL10N.kINSTANCE.translate("error.ApplicationLocaleDatabaseProcessing",applicationLocalePrefix + " + " + fApplicationLocale),true);
 			}
 		}
 
-		// obtain a reference to the system registry
-		fSystemRegistry = Registry.kINSTANCE;
+		// obtain a reference to the application registry
+		fApplicationRegistry = Registry.kINSTANCE;
 
-		// load (deserialise) the system registry
-		kLogger.info(I18NL10N.kINSTANCE.translate("text.LoadingSystemRegistry"));
+		// load (deserialise) the application registry
+		kLogger.info(I18NL10N.kINSTANCE.translate("text.LoadingApplicationRegistry"));
 		try {
-			fSystemRegistry.load(kSystemRegistryFilename);
+			fApplicationRegistry.load(kApplicationRegistryFilename);
 		}
 		catch (RegistryException exc) {
 			abortApplication(exc.getRegistryError(),true);
 		}
 
 		// make the contents of windows dynamic (e.g., resizing background images, ...)
-		if (setupIsGUIRepaintedWhenResizing() && ((boolean) Toolkit.getDefaultToolkit().getDesktopProperty("awt.dynamicLayoutSupported"))) {
+		if (isGUIRepaintedWhenResizing() && ((boolean) Toolkit.getDefaultToolkit().getDesktopProperty("awt.dynamicLayoutSupported"))) {
 			Toolkit.getDefaultToolkit().setDynamicLayout(true);
 		}
 
@@ -481,103 +482,104 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JDialog.setDefaultLookAndFeelDecorated(true);
 		try {
-			fCurrentLAF = translateLookAndFeelName(setupInitialLookAndFeel());
-			UIManager.setLookAndFeel(fCurrentLAF);
+			fGUICurrentLAF = translateLookAndFeelName(getGUIInitialLookAndFeel());
+			UIManager.setLookAndFeel(fGUICurrentLAF);
 		}
 		catch (Exception exc) {
 		}
 
 		// set the GUI sound set
-		JGUISounds.kINSTANCE.selectSoundSet(setupInitialSoundSet());
+		JGUISounds.kINSTANCE.selectSoundSet(getGUIInitialSoundSet());
 
 		// activate the splash screen
-		fSplashScreen = new JSplashScreen(setupSplashScreenContent(),setupSplashScreenSound());
+		fGUISplashScreen = new JSplashScreen(getGUISplashScreenContent(),getGUISplashScreenSound());
 
 		// change the cursor to indicate that the user has to wait
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		setTitle(kDefaultWindowTitle);
+		setTitle(kGUIDefaultTitle);
 
 		// allow custom initialisation
 		kLogger.info(I18NL10N.kINSTANCE.translate("text.PerformingCustomInitialisation"));
-		initialise(parameters);
+		loadApplicationRegistry();
+		initialiseApplication(parameters);
 
 		kLogger.info(I18NL10N.kINSTANCE.translate("text.CreatingGUIComponents"));
-		getSplashScreen().setStatusMessage(I18NL10N.kINSTANCE.translate("text.ConstructingGUI"));
+		getGUISplashScreen().setStatusMessage(I18NL10N.kINSTANCE.translate("text.ConstructingGUI"));
 
 		// load the application's icon
-		fIcon = setupIcon();
-		if (fIcon != null) {
-			setIconImage(fIcon);
+		fGUIIcon = getGUIIcon();
+		if (fGUIIcon != null) {
+			setIconImage(fGUIIcon);
 		}
 
-		setTitle(setupWindowTitle());
-		setResizable(setupIsGUIResizable());
+		setTitle(getGUITitle());
+		setResizable(isGUIResizable());
 
 		// setup content pane
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
 
 		// construct the tool bar
-		fToolBar = new JToolBar();
-			if (getToolBarTitle() != null) {
-				fToolBar.setName(getToolBarTitle());
+		fGUIToolBar = new JToolBar();
+			if (getGUIToolBarTitle() != null) {
+				fGUIToolBar.setName(getGUIToolBarTitle());
 			}
-			fToolBar.setFloatable(isToolBarFloatable());
-			if (!isToolBarFloatable()) {
+			fGUIToolBar.setFloatable(isGUIToolBarFloatable());
+			if (!isGUIToolBarFloatable()) {
 				// provide some whitespace to the left edge
-				fToolBar.addSeparator(new Dimension(5,0));
+				fGUIToolBar.addSeparator(new Dimension(5,0));
 			}
-			fToolBar.setRollover(true);
-			setupToolBar();
-		contentPane.add(fToolBar,BorderLayout.NORTH);
+			fGUIToolBar.setRollover(true);
+			createGUIToolBar();
+		contentPane.add(fGUIToolBar,BorderLayout.NORTH);
 
 		// if necessary, add the status bar
-		fStatusBar = new JStatusBar(setupIsGUIResizable(),setupStatusBarCustomLabels());
-		if (setupIsStatusBarEnabled()) {
-			contentPane.add(fStatusBar,BorderLayout.SOUTH);
+		fGUIStatusBar = new JStatusBar(isGUIResizable(),getGUIStatusBarCustomLabels());
+		if (isGUIStatusBarEnabled()) {
+			contentPane.add(fGUIStatusBar,BorderLayout.SOUTH);
 
 			// create a Swing timer to periodically update the status bar battery level and memory usage labels
 			Action updateStatusBarAction = new AbstractAction()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					fStatusBar.updateBatteryLevelAndMemoryUsage();
+					fGUIStatusBar.updateBatteryLevelAndMemoryUsage();
 				}
 			};
 			new javax.swing.Timer(JStatusBar.kUpdatePeriod,updateStatusBarAction).start();
 
 			// perform the first update when the GUI is displayed
-			fStatusBar.updateBatteryLevelAndMemoryUsage();
+			fGUIStatusBar.updateBatteryLevelAndMemoryUsage();
 		}
 
 			JPanel embeddedContentPane = new JPanel();
-			setupContentPane(embeddedContentPane);
+			getGUIContentPane(embeddedContentPane);
 		contentPane.add(embeddedContentPane,BorderLayout.CENTER);
 
 		setContentPane(contentPane);
 
 		// if necessary, add the clock
-		if (setupIsClockEnabled()) {
-			fClockLabel = new JLabel("",SwingConstants.RIGHT);
+		if (isGUIClockEnabled()) {
+			fGUIClockLabel = new JLabel("",SwingConstants.RIGHT);
 
 			// create a Swing timer to periodically update the clock label
 			Action updateClockPanelAction = new AbstractAction()
 			{
 				public void actionPerformed(ActionEvent e)
 				{
-					updateCurrentTimeLabel();
+					updateGUICurrentTimeLabel();
 				}
 			};
-			new javax.swing.Timer(kClockUpdatePeriod,updateClockPanelAction).start();
+			new javax.swing.Timer(kGUIClockUpdatePeriod,updateClockPanelAction).start();
 
 			// perform the first update when the GUI is displayed
-			updateCurrentTimeLabel();
+			updateGUICurrentTimeLabel();
 		}
 
 		// setup menu bar
 		JMenuBar menuBar = new JMenuBar();
-		constructMenuBar(menuBar);
+		constructGUIMenuBar(menuBar);
 		setJMenuBar(menuBar);
 
 		// we will handle the window-actions ourselves
@@ -595,8 +597,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			boolean fullScreenGUISelected = ((fGUIWidth == kFullScreenGUI) || (fGUIHeight == kFullScreenGUI));
 			if (fullScreenGUISelected) {
 				// determine the GUI's maximum screensize
-				Dimension screenSize = getScreenSize();
-				Insets screenInsets = getScreenInsets();
+				Dimension screenSize = getGUIScreenSize();
+				Insets screenInsets = getGUIScreenInsets();
 				// take into account all the space that a possible OS taskbar tasks
 				fGUIWidth = (int) Math.round(screenSize.getWidth() - screenInsets.left - screenInsets.right);
 				fGUIHeight = (int) Math.round(screenSize.getHeight() - screenInsets.top - screenInsets.bottom);
@@ -622,14 +624,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			}
 		}
 
-		if (fSplashScreen.isAvailable()) {
-			fSplashScreen.setVisible(false);
-			fSplashScreen.dispose();
+		if (fGUISplashScreen.isAvailable()) {
+			fGUISplashScreen.setVisible(false);
+			fGUISplashScreen.dispose();
 		}
 
 		// install the callback method for when the window is resized
-		fWindowWidth = 0;
-		fWindowHeight = 0;
+		fGUIWindowWidth = 0;
+		fGUIWindowHeight = 0;
 		addComponentListener(this);
 
 		setVisible(true);
@@ -638,28 +640,28 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		setCursor(Cursor.getDefaultCursor());
 
 		// update the menu's radio buttons
-		setLookAndFeelMenuItems();
-		setSoundSetMenuItems();
+		setGUILookAndFeelMenuItems();
+		setGUISoundSetMenuItems();
 
 		// check whether or not minimising to the system tray is supported
-		fMinimiseToSystemTray = (SystemTray.isSupported() && setupMinimiseToSystemTrayAllowed());
+		fGUIMinimiseToSystemTray = (SystemTray.isSupported() && isGUIMinimiseToSystemTrayAllowed());
 
 		kLogger.info(I18NL10N.kINSTANCE.translate("text.ApplicationReady"));
 
 		// allows real-time repainting of the window's contents upon resizing
-		setDynamicLayout(true);
+		setGUIDynamicLayout(true);
 
 		// setup glass pane
-		fGlassPane = setupGlassPane();
-		if (fGlassPane != null) {
-			setGlassPane(fGlassPane);
-			fGlassPane.setVisible(false);
-			fGlassPane.setOpaque(false);
+		fGUIGlassPane = getGUIGlassPane();
+		if (fGUIGlassPane != null) {
+			setGlassPane(fGUIGlassPane);
+			fGUIGlassPane.setVisible(false);
+			fGUIGlassPane.setOpaque(false);
 		}
 
 		// show the aboutbox
 		if (!DevelopMode.kINSTANCE.isActivated()) {
-			showAboutBox();
+			showGUIAboutBox();
 		}
 	}
 
@@ -690,37 +692,37 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemAbout)) {
-			showAboutBox();
+			showGUIAboutBox();
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemGTKLAF)) {
-			setLookAndFeel(klafGTK,false);
+			setGUILookAndFeel(klafGTK,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemMacLAF)) {
-			setLookAndFeel(klafMac,false);
+			setGUILookAndFeel(klafMac,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemMetalLAF)) {
-			setLookAndFeel(klafMetal,false);
+			setGUILookAndFeel(klafMetal,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemMotifLAF)) {
-			setLookAndFeel(klafMotif,false);
+			setGUILookAndFeel(klafMotif,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemNimbusLAF)) {
-			setLookAndFeel(klafNimbus,false);
+			setGUILookAndFeel(klafNimbus,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemQuaquaLAF)) {
-			setLookAndFeel(klafQuaqua,false);
+			setGUILookAndFeel(klafQuaqua,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemWindowsLAF)) {
-			setLookAndFeel(klafWindows,false);
+			setGUILookAndFeel(klafWindows,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemWindowsClassicLAF)) {
-			setLookAndFeel(klafWindowsClassic,false);
+			setGUILookAndFeel(klafWindowsClassic,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemSystemLAF)) {
-			setLookAndFeel(klafSystem,false);
+			setGUILookAndFeel(klafSystem,false);
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemMinimiseToSystemTray)) {
-			fMinimiseToSystemTray = !fMinimiseToSystemTray; 
+			fGUIMinimiseToSystemTray = !fGUIMinimiseToSystemTray; 
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemEnableWindowResizing)) {
 			setResizable(fcbEnableWindowResizing.isSelected());
@@ -785,7 +787,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * This method calls the callback function {@link JStandardGUIApplication#windowResized()}.
+	 * This method calls the callback function {@link JStandardGUIApplication#guiWindowResized()}.
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
@@ -795,12 +797,12 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	public final void componentResized(ComponentEvent e)
 	{
 		// only execute when the window has physically changed in size
-		if ((fWindowWidth != getWidth()) || (fWindowHeight != getHeight())) {
-			fWindowWidth = getWidth();
-			fWindowHeight = getHeight();
+		if ((fGUIWindowWidth != getWidth()) || (fGUIWindowHeight != getHeight())) {
+			fGUIWindowWidth = getWidth();
+			fGUIWindowHeight = getHeight();
 
 			// activate the callback
-			windowResized();
+			guiWindowResized();
 		}
 	}
 
@@ -840,10 +842,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 			if (JConfirmationDialog.confirm(this,I18NL10N.kINSTANCE.translate("text.ConfirmExitApplication"))) {
 
 				kLogger.info(I18NL10N.kINSTANCE.translate("text.RunningApplicationShutdownSequence"));
-				shutdown();
+				shutdownApplication();
 
-				kLogger.info(I18NL10N.kINSTANCE.translate("text.SavingRegistry"));
-				saveRegistry();
+				kLogger.info(I18NL10N.kINSTANCE.translate("text.SavingApplicationRegistry"));
+				saveApplicationRegistry();
 
 				// quit the running application
 				kLogger.info(I18NL10N.kINSTANCE.translate("text.ApplicationTerminated"));
@@ -852,10 +854,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 		else {
 			kLogger.info(I18NL10N.kINSTANCE.translate("text.RunningApplicationShutdownSequence"));
-			shutdown();
+			shutdownApplication();
 
-			kLogger.info(I18NL10N.kINSTANCE.translate("text.SavingRegistry"));
-			saveRegistry();
+			kLogger.info(I18NL10N.kINSTANCE.translate("text.SavingApplicationRegistry"));
+			saveApplicationRegistry();
 
 			// quit the running application
 			kLogger.info(I18NL10N.kINSTANCE.translate("text.ApplicationTerminated"));
@@ -897,15 +899,15 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	public final void windowIconified(WindowEvent e)
 	{
 		MP3Player.playSystemSound(JGUISounds.kINSTANCE.getWindowEventSoundFilename());
-		if (fMinimiseToSystemTray) {
-			fTrayIcon = new TrayIcon(fIcon,setupWindowTitle(),null);
-			fTrayIcon.setImageAutoSize(true);
+		if (fGUIMinimiseToSystemTray) {
+			fGUITrayIcon = new TrayIcon(fGUIIcon,getGUITitle(),null);
+			fGUITrayIcon.setImageAutoSize(true);
 
 			MouseListener iconListener = new MouseListener() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					setVisible(true);
-					SystemTray.getSystemTray().remove(fTrayIcon);
+					SystemTray.getSystemTray().remove(fGUITrayIcon);
 				}
 				@Override
 				public void mouseEntered(MouseEvent e) { }
@@ -916,11 +918,11 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 				@Override
 				public void mouseReleased(MouseEvent e) { }
 			};
-			fTrayIcon.addMouseListener(iconListener);
+			fGUITrayIcon.addMouseListener(iconListener);
 
 			try {
-				SystemTray.getSystemTray().add(fTrayIcon);
-				fTrayIcon.displayMessage(setupWindowTitle(),I18NL10N.kINSTANCE.translate("text.RestoreFromSystemTray"),TrayIcon.MessageType.INFO);
+				SystemTray.getSystemTray().add(fGUITrayIcon);
+				fGUITrayIcon.displayMessage(getGUITitle(),I18NL10N.kINSTANCE.translate("text.RestoreFromSystemTray"),TrayIcon.MessageType.INFO);
 				setVisible(false);
 			}
 			catch (AWTException exc) {
@@ -954,7 +956,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 */
 	public static void main(String[] argv)
 	{
-		createSystemRegistry();
+		createApplicationRegistry();
 		new JStandardGUIApplication(argv,null);
 	}
 
@@ -969,7 +971,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * Emulates hiding the mouse cursor.
 	 */
-	public final void hideMouseCursor()
+	public final void hideGUIMouseCursor()
 	{
 		int[] emptyImageData = new int[16 * 16];
 		Image image = Toolkit.getDefaultToolkit().createImage(new MemoryImageSource(16,16,emptyImageData,0,16));
@@ -981,7 +983,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * 
 	 * @param dynamicLayout  a <CODE>boolean</CODE> indicating whether or not dynamic layout should be activated
 	 */
-	public final void setDynamicLayout(boolean dynamicLayout)
+	public final void setGUIDynamicLayout(boolean dynamicLayout)
 	{
 		// check if dynamic layout is currently active and supported by the underlying operating system and/or window manager
 		if (dynamicLayout && Toolkit.getDefaultToolkit().isDynamicLayoutActive()) {
@@ -997,7 +999,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return the screen size
 	 */
-	public final Dimension getScreenSize()
+	public final Dimension getGUIScreenSize()
 	{
 		return Toolkit.getDefaultToolkit().getScreenSize();
 	}
@@ -1007,7 +1009,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return the screen insets
 	 */
-	public final Insets getScreenInsets()
+	public final Insets getGUIScreenInsets()
 	{
 		return Toolkit.getDefaultToolkit().getScreenInsets(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration());
 	}
@@ -1023,9 +1025,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return the required major version of the Java runtime engine
 	 */
-	protected int setupRequiredMajorJavaVersion()
+	protected int getApplicationRequiredMajorJavaVersion()
 	{
-		return kRequiredMajorJavaVersion;
+		return kApplicationRequiredMajorJavaVersion;
 	}
 
 	/**
@@ -1035,9 +1037,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return the required minor version of the Java runtime engine
 	 */
-	protected int setupRequiredMinorJavaVersion()
+	protected int getApplicationRequiredMinorJavaVersion()
 	{
-		return kRequiredMinorJavaVersion;
+		return kApplicationRequiredMinorJavaVersion;
 	}
 
 	/**
@@ -1048,7 +1050,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @return the filename of the archive (JAR or ZIP) containing the application's resources
 	 * @see    org.sm.smtools.application.util.JARResources
 	 */
-	protected String setupApplicationResourceArchiveFilename()
+	protected String getApplicationResourceArchiveFilename()
 	{
 		return null;
 	}
@@ -1061,9 +1063,33 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @return the path to the location of the application's locale databases
 	 * @see    org.sm.smtools.application.util.I18NL10N
 	 */
-	protected String setupApplicationLocalePrefix()
+	protected String getApplicationLocalePrefix()
 	{
 		return null;
+	}
+
+	/**
+	 * Allows loading of custom registry values. A typical code example looks like:
+	 * <PRE>
+	 *   (at)SuppressWarnings("unchecked")
+	 *   
+	 *   // obtain a local reference to the system registry
+	 *   Registry systemRegistry = Registry.kINSTANCE;
+	 *   
+	 *   // load last opened folder
+	 *   Object lastOpenedFolderEntry = systemRegistry.getObject("fLastOpenedFolder");
+	 *   if (lastOpenedFolderEntry != null) {
+	 *     fLastOpenedFolder = (String) lastOpenedFolderEntry;
+	 *   }
+	 *   else {
+	 *     // setup and store default as the current folder
+	 *     fLastOpenedFolder = ".";
+	 *     systemRegistry.addObject("fLastOpenedFolder",fLastOpenedFolder);
+	 *   }
+	 * </PRE>
+	 */
+	protected void loadApplicationRegistry()
+	{
 	}
 
 	/**
@@ -1075,18 +1101,24 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @param parameters  an array of <CODE>Objects</CODE>
 	 */
-	protected void initialise(Object[] parameters)
+	protected void initialiseApplication(Object[] parameters)
 	{
 	}
 
 	/**
-	 * Allows custom clean-up when the application is shutting down.
-	 * <P>
+	 * Allows custom clean-up when the application is shutting down. A typical code example could include:
+	 * <PRE>
+	 *   // obtain a local reference to the system registry
+	 *   Registry systemRegistry = Registry.kINSTANCE;
+	 *   
+	 *   // update registry
+	 *   systemRegistry.addObject("fLastOpenedFolder",fLastOpenedFolder);
+	 * </PRE>
 	 * <I>Note that the <CODE>shutdown()</CODE> sequence is not ran in case of a fatal error resulting in early abort.</I>
 	 *
 	 * @see JStandardGUIApplication#abortApplication(String,boolean...)
 	 */
-	protected void shutdown()
+	protected void shutdownApplication()
 	{
 	}
 
@@ -1095,7 +1127,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * A derived subclass typically overrides this method to parse all its custom command-line parameters.
 	 * <P>
-	 * Note that if an error occurs during parsing, the {@link JStandardGUIApplication#showParameterWarning(int,String,String)}
+	 * Note that if an error occurs during parsing, the {@link JStandardGUIApplication#showApplicationParameterWarning(int,String,String)}
 	 * method should be called with the appropriate parameters.
 	 * <P>
 	 * The following example shows the parsing of one custom parameter (with a custom option):
@@ -1129,9 +1161,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @param  paramNr    the number of the parameter that is being parsed
 	 * @param  parameter  the unmodified parameter as specified on the command-line
 	 * @return            <CODE>true</CODE> if the parameter was parsed successfully, <CODE>false</CODE> otherwise
-	 * @see               JStandardGUIApplication#showParameterWarning(int,String,String)
+	 * @see               JStandardGUIApplication#showApplicationParameterWarning(int,String,String)
 	 */
-	protected boolean parseParameter(int paramNr, String parameter)
+	protected boolean parseApplicationParameter(int paramNr, String parameter)
 	{
 		return false;
 	}
@@ -1142,9 +1174,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @param paramNr    the number of the parameter that failed to get parsed
 	 * @param parameter  the unmodified parameter as specified on the command-line
 	 * @param message    the warning message to log
-	 * @see              JStandardGUIApplication#parseParameter(int,String)
+	 * @see              JStandardGUIApplication#parseApplicationParameter(int,String)
 	 */
-	protected final void showParameterWarning(int paramNr, String parameter, String message)
+	protected final void showApplicationParameterWarning(int paramNr, String parameter, String message)
 	{
 		kLogger.warn(
 			"Warning: parameter #" + String.valueOf(paramNr) + " (" + parameter + ") ignored.\n" +
@@ -1159,7 +1191,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @return a <CODE>JLabel</CODE> containing the splash screen's custom content
 	 * @see    org.sm.smtools.application.util.JSplashScreen
 	 */
-	protected JLabel setupSplashScreenContent()
+	protected JLabel getGUISplashScreenContent()
 	{
 		return null;
 	}
@@ -1173,7 +1205,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @see    org.sm.smtools.application.util.JSplashScreen
 	 * @see    org.sm.smtools.util.MP3Player
 	 */
-	protected InputStream setupSplashScreenSound()
+	protected InputStream getGUISplashScreenSound()
 	{
 		return null;
 	}
@@ -1184,9 +1216,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @return a handle to the GUI's splash screen
 	 * @see    org.sm.smtools.application.util.JSplashScreen
 	 */
-	protected final JSplashScreen getSplashScreen()
+	protected final JSplashScreen getGUISplashScreen()
 	{
-		return fSplashScreen;
+		return fGUISplashScreen;
 	}
 
 	/**
@@ -1210,7 +1242,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * 
 	 * @return the application's initial look-and-feel
 	 */
-	protected String setupInitialLookAndFeel()
+	protected String getGUIInitialLookAndFeel()
 	{
 		return klafInitialLaF;
 	}
@@ -1230,7 +1262,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * 
 	 * @return the application's initial GUI sound set
 	 */
-	protected JGUISounds.EGUISoundSet setupInitialSoundSet()
+	protected JGUISounds.EGUISoundSet getGUIInitialSoundSet()
 	{
 		return JGUISounds.EGUISoundSet.kLCARS;
 	}
@@ -1238,9 +1270,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * A callback method for when the look-and-feel has changed.
 	 */
-	protected void lookAndFeelChanged()
+	protected void guiLookAndFeelChanged()
 	{
-		windowResized();
+		guiWindowResized();
 	}
 
 	/**
@@ -1262,7 +1294,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return the GUI's initial size on the screen as a <CODE>Dimension</CODE> object
 	 */
-	protected Dimension setupInitialGUISize()
+	protected Dimension getGUIInitialSize()
 	{
 		return null;
 	}
@@ -1274,7 +1306,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return <CODE>true</CODE> if the GUI's window should be resizable, <CODE>false</CODE> if it should be fixed size
 	 */
-	protected boolean setupIsGUIResizable()
+	protected boolean isGUIResizable()
 	{
 		return true;
 	}
@@ -1287,7 +1319,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return <CODE>true</CODE> if the GUI should be repainted when the window is resized
 	 */
-	protected boolean setupIsGUIRepaintedWhenResizing()
+	protected boolean isGUIRepaintedWhenResizing()
 	{
 		return true;
 	}
@@ -1295,7 +1327,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * A callback function for when the GUI's window is resized.
 	 */
-	protected void windowResized()
+	protected void guiWindowResized()
 	{
 	}
 
@@ -1306,12 +1338,12 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return the <CODE>Image</CODE> containing the GUI's icon
 	 */
-	protected Image setupIcon()
+	protected Image getGUIIcon()
 	{
 		try {
-			return JARResources.fSystemResources.getImage(kDefaultApplicationIconFilename);
+			return JARResources.fSystemResources.getImage(kGUIDefaultIconFilename);
 		}
-		catch (FileDoesNotExistException exc) {
+		catch (FileNotFoundException exc) {
 			return null;
 		}
 	}
@@ -1321,9 +1353,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return the GUI's window title
 	 */
-	protected String setupWindowTitle()
+	protected String getGUITitle()
 	{
-		return kDefaultWindowTitle;
+		return kGUIDefaultTitle;
 	}
 
 	/**
@@ -1337,7 +1369,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @param contentPane  the GUI's main content pane to modify
 	 */
-	protected void setupContentPane(JPanel contentPane)
+	protected void getGUIContentPane(JPanel contentPane)
 	{
 	}
 
@@ -1346,7 +1378,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return the GUI's tool bar's title
 	 */
-	protected String getToolBarTitle()
+	protected String getGUIToolBarTitle()
 	{
 		return null;
 	}
@@ -1358,7 +1390,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return a <CODE>boolean</CODE> indicating whether or not the GUI's tool bar can float freely
 	 */
-	protected boolean isToolBarFloatable()
+	protected boolean isGUIToolBarFloatable()
 	{
 		return true;
 	}
@@ -1367,8 +1399,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * Sets up the GUI's tool bar.
 	 * <P>
 	 * A derived subclass typically overrides this method. The subclass can add
-	 * buttons to the tool bar via the {@link JStandardGUIApplication#addToolBarButton(AbstractButton,String,String,ActionListener)} and
-	 * {@link JStandardGUIApplication#addToolBarSeparator()} methods.
+	 * buttons to the tool bar via the {@link JStandardGUIApplication#addGUIToolBarButton(AbstractButton,String,String,ActionListener)} and
+	 * {@link JStandardGUIApplication#addGUIToolBarSeparator()} methods.
 	 * <P>
 	 * This would typically look like the following:
 	 * <PRE>
@@ -1390,7 +1422,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *     kActionCommandMenuItemYYY,this);
 	 * </PRE>
 	 */
-	protected void setupToolBar()
+	protected void createGUIToolBar()
 	{
 	}
 
@@ -1402,20 +1434,32 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @param actionCommand   the action command of the button
 	 * @param actionListener  the action listener for the button (usually <CODE>this</CODE>)
 	 */
-	protected final void addToolBarButton(AbstractButton button, String toolTipText, String actionCommand, ActionListener actionListener)
+	protected final void addGUIToolBarButton(AbstractButton button, String toolTipText, String actionCommand, ActionListener actionListener)
 	{
 			button.setToolTipText(toolTipText);
 			button.setActionCommand(actionCommand);
 			button.addActionListener(actionListener);
-		fToolBar.add(button);
+		fGUIToolBar.add(button);
+	}
+
+	/**
+	 * Helper method to add an arbitrary component to the GUI's tool bar.
+	 *
+	 * @param component    the component to add
+	 * @param toolTipText  the tool tip text associated with the component
+	 */
+	protected final void addGUIToolBarComponent(JComponent component, String toolTipText)
+	{
+			component.setToolTipText(toolTipText);
+		fGUIToolBar.add(component);
 	}
 
 	/**
 	 * Helper method to add a separator to the GUI's tool bar.
 	 */
-	protected final void addToolBarSeparator()
+	protected final void addGUIToolBarSeparator()
 	{
-		fToolBar.addSeparator();
+		fGUIToolBar.addSeparator();
 	}
 
 	/**
@@ -1423,17 +1467,17 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * <P>
 	 * Note that the GUI's tool bar is only shown if it contains any content.
 	 */
-	protected final void showToolBar()
+	protected final void showGUIToolBar()
 	{
-		fToolBar.setVisible(true);
+		fGUIToolBar.setVisible(true);
 	}
 
 	/**
 	 * Helper method to hide the GUI's tool bar.
 	 */
-	protected final void hideToolBar()
+	protected final void hideGUIToolBar()
 	{
-		fToolBar.setVisible(false);
+		fGUIToolBar.setVisible(false);
 	}
 
 	/**
@@ -1441,9 +1485,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * 
 	 * @return the GUI's tool bar's input map
 	 */
-	protected final InputMap getToolBarInputMap()
+	protected final InputMap getGUIToolBarInputMap()
 	{
-		return fToolBar.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		return fGUIToolBar.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 	}
 
 	/**
@@ -1451,9 +1495,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * 
 	 * @return the GUI's tool bar's action map
 	 */
-	protected final ActionMap getToolBarActionMap()
+	protected final ActionMap getGUIToolBarActionMap()
 	{
-		return fToolBar.getActionMap();
+		return fGUIToolBar.getActionMap();
 	}
 
 	/**
@@ -1466,9 +1510,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * Note that this method returns <CODE>null</CODE> by default.
 	 *
 	 * @return an <CODE>ArrayList</CODE> of menus
-	 * @see    JStandardGUIApplication#setupRightHandMenu()
+	 * @see    JStandardGUIApplication#getGUIRightHandMenu()
 	 */
-	protected ArrayList<JMenu> setupMenus()
+	protected ArrayList<JMenu> getGUIMenus()
 	{
 		return null;
 	}
@@ -1479,15 +1523,16 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * Note that this method returns <CODE>null</CODE> by default.
 	 *
 	 * @return a menu used in the right part of the menubar
-	 * @see    JStandardGUIApplication#setupMenus()
+	 * @see    JStandardGUIApplication#getGUIMenus()
 	 */
-	protected JMenu setupRightHandMenu()
+	protected JMenu getGUIRightHandMenu()
 	{
 		return null;
 	}
 
 	/**
-	 * Helper method for constructing a menu item object; an optional mnemonic can be used if it is found.
+	 * Helper method for constructing a menu item object; an optional mnemonic can be used if it is found.<BR>
+	 * Note that the I18NL10N database is automatically used.
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
@@ -1495,7 +1540,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @param useMnemonic  a flag indicating whether to use a mnemonic or not
 	 * @return             a menu item object
 	 */
-	protected final JMenuItem constructMenuItem(String menuItemKey, boolean useMnemonic)
+	protected final JMenuItem constructGUIMenuItem(String menuItemKey, boolean useMnemonic)
 	{
 		String translation = I18NL10N.kINSTANCE.translate(menuItemKey.trim());
 		String indentation = StringTools.getIndentation(menuItemKey);
@@ -1515,20 +1560,22 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * Helper method constructing a menu item object; a mnemonic is used if it is found.
+	 * Helper method constructing a menu item object; a mnemonic is used if it is found.<BR>
+	 * Note that the I18NL10N database is automatically used.
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param menuItemKey  the key of the menu item
 	 * @return             a menu item object
 	 */
-	protected final JMenuItem constructMenuItem(String menuItemKey)
+	protected final JMenuItem constructGUIMenuItem(String menuItemKey)
 	{
-		return constructMenuItem(menuItemKey,true);
+		return constructGUIMenuItem(menuItemKey,true);
 	}
 
 	/**
-	 * Helper method for constructing a radio button menu item object; an optional mnemonic can be used if it is found.
+	 * Helper method for constructing a radio button menu item object; an optional mnemonic can be used if it is found.<BR>
+	 * Note that the I18NL10N database is automatically used.
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
@@ -1536,7 +1583,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @param useMnemonic             a flag indicating whether to use a mnemonic or not
 	 * @return                        a radio button menu item object
 	 */
-	protected final JRadioButtonMenuItem constructRadioButtonMenuItem(String radioButtonMenuItemKey, boolean useMnemonic)
+	protected final JRadioButtonMenuItem constructGUIRadioButtonMenuItem(String radioButtonMenuItemKey, boolean useMnemonic)
 	{
 		String translation = I18NL10N.kINSTANCE.translate(radioButtonMenuItemKey.trim());
 		String indentation = StringTools.getIndentation(radioButtonMenuItemKey);
@@ -1555,20 +1602,22 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * Helper method for constructing a radio button menu item object; a mnemonic is used if it is found.
+	 * Helper method for constructing a radio button menu item object; a mnemonic is used if it is found.<BR>
+	 * Note that the I18NL10N database is automatically used.
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param radioButtonMenuItemKey  the key of the menu item
 	 * @return                        a radio button menu item object
 	 */
-	protected final JRadioButtonMenuItem constructRadioButtonMenuItem(String radioButtonMenuItemKey)
+	protected final JRadioButtonMenuItem constructGUIRadioButtonMenuItem(String radioButtonMenuItemKey)
 	{
-		return constructRadioButtonMenuItem(radioButtonMenuItemKey,true);
+		return constructGUIRadioButtonMenuItem(radioButtonMenuItemKey,true);
 	}
 
 	/**
-	 * Helper method for constructing a check box menu item object; an optional mnemonic can be used if it is found.
+	 * Helper method for constructing a check box menu item object; an optional mnemonic can be used if it is found.<BR>
+	 * Note that the I18NL10N database is automatically used.
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
@@ -1576,7 +1625,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @param useMnemonic          a flag indicating whether to use a mnemonic or not
 	 * @return                     a check box menu item object
 	 */
-	protected final JCheckBoxMenuItem constructCheckBoxMenuItem(String checkBoxMenuItemKey, boolean useMnemonic)
+	protected final JCheckBoxMenuItem constructGUICheckBoxMenuItem(String checkBoxMenuItemKey, boolean useMnemonic)
 	{
 		String translation = I18NL10N.kINSTANCE.translate(checkBoxMenuItemKey.trim());
 		String indentation = StringTools.getIndentation(checkBoxMenuItemKey);
@@ -1595,16 +1644,17 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * Helper method for constructing a check box menu item object; a mnemonic is used if it is found.
+	 * Helper method for constructing a check box menu item object; a mnemonic is used if it is found.<BR>
+	 * Note that the I18NL10N database is automatically used.
 	 * <P>
 	 * Note that this method cannot be overridden!
 	 *
 	 * @param checkBoxMenuItemKey  the key of the menu item
 	 * @return                     a check box menu item object
 	 */
-	protected final JCheckBoxMenuItem constructCheckBoxMenuItem(String checkBoxMenuItemKey)
+	protected final JCheckBoxMenuItem constructGUICheckBoxMenuItem(String checkBoxMenuItemKey)
 	{
-		return constructCheckBoxMenuItem(checkBoxMenuItemKey,true);
+		return constructGUICheckBoxMenuItem(checkBoxMenuItemKey,true);
 	}
 
 	/**
@@ -1612,7 +1662,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return an <CODE>ArrayList</CODE> of custom labels, or <CODE>null</CODE> if none are provided
 	 */
-	protected ArrayList<JLabel> setupStatusBarCustomLabels()
+	protected ArrayList<JLabel> getGUIStatusBarCustomLabels()
 	{
 		return null;
 	}
@@ -1624,7 +1674,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return whether or not the status bar should be shown at the bottom of the application's window
 	 */
-	protected boolean setupIsStatusBarEnabled()
+	protected boolean isGUIStatusBarEnabled()
 	{
 		return true;
 	}
@@ -1634,9 +1684,9 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * 
 	 * @return the status bar
 	 */
-	protected final JStatusBar getStatusBar()
+	protected final JStatusBar getGUIStatusBar()
 	{
-		return fStatusBar;
+		return fGUIStatusBar;
 	}
 
 	/**
@@ -1646,7 +1696,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return a constructed glass pane
 	 */
-	protected JPanel setupGlassPane()
+	protected JPanel getGUIGlassPane()
 	{
 		return null;
 	}
@@ -1658,7 +1708,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return whether or not a clock (HH:MM:SS) should be shown at the right of the menubar
 	 */
-	protected boolean setupIsClockEnabled()
+	protected boolean isGUIClockEnabled()
 	{
 		return true;
 	}
@@ -1672,7 +1722,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @return a <CODE>boolean</CODE> indicating whether or not a custom about box is available
 	 * @see    org.sm.smtools.swing.dialogs.JAboutBox
 	 */
-	protected boolean hasAboutBox()
+	protected boolean hasGUIAboutBox()
 	{
 		return false;
 	}
@@ -1682,7 +1732,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @see org.sm.smtools.swing.dialogs.JAboutBox
 	 */
-	protected void showAboutBox()
+	protected void showGUIAboutBox()
 	{
 	}
 
@@ -1693,7 +1743,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 *
 	 * @return whether or not the application is allowed to minimise to the system tray
 	 */
-	protected boolean setupMinimiseToSystemTrayAllowed()
+	protected boolean isGUIMinimiseToSystemTrayAllowed()
 	{
 		return true;
 	}
@@ -1726,42 +1776,42 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	 * @param lookAndFeel  -
 	 * @param silent       -
 	 */
-	private void setLookAndFeel(String lookAndFeel, boolean silent)
+	private void setGUILookAndFeel(String lookAndFeel, boolean silent)
 	{
-		String previousLookAndFeel = fCurrentLAF;
-		fCurrentLAF = translateLookAndFeelName(lookAndFeel);
+		String previousLookAndFeel = fGUICurrentLAF;
+		fGUICurrentLAF = translateLookAndFeelName(lookAndFeel);
 
 		try {
-			UIManager.setLookAndFeel(fCurrentLAF);
+			UIManager.setLookAndFeel(fGUICurrentLAF);
 			if (!silent) {
 				MP3Player.playSystemSound(JGUISounds.kINSTANCE.getChangeLookAndFeelSoundFilename(),MP3Player.EPlaying.kBlocked);
 			}
 			SwingUtilities.updateComponentTreeUI(this);
 			repaint();
-			String message = I18NL10N.kINSTANCE.translate("text.GUILookAndFeelAdjusted",fCurrentLAF);
+			String message = I18NL10N.kINSTANCE.translate("text.GUILookAndFeelAdjusted",fGUICurrentLAF);
 			kLogger.info(message);
 			if (!silent) {
 				JMessageDialog.show(this,message);
 			}
 		}
 		catch (Exception exc) {
-			String message = I18NL10N.kINSTANCE.translate("error.LAFNotFound",fCurrentLAF);
+			String message = I18NL10N.kINSTANCE.translate("error.LAFNotFound",fGUICurrentLAF);
 			kLogger.error(message);
 			if (!silent) {
 				JWarningDialog.warn(this,message);
 			}
-			fCurrentLAF = previousLookAndFeel;
+			fGUICurrentLAF = previousLookAndFeel;
 		}
 
-		setLookAndFeelMenuItems();
+		setGUILookAndFeelMenuItems();
 
 		// run the callback
-		lookAndFeelChanged();
+		guiLookAndFeelChanged();
 	}
 
 	/**
 	 */
-	private void setLookAndFeelMenuItems()
+	private void setGUILookAndFeelMenuItems()
 	{
 		frbGTK.setSelected(false);
 		frbMac.setSelected(false);
@@ -1772,35 +1822,35 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		frbWindows.setSelected(false);
 		frbWindowsClassic.setSelected(false);
 
-		if (fCurrentLAF.equalsIgnoreCase(klafGTK)) {
+		if (fGUICurrentLAF.equalsIgnoreCase(klafGTK)) {
 			frbGTK.setSelected(true);
 		}
-		else if (fCurrentLAF.equalsIgnoreCase(klafMac)) {
+		else if (fGUICurrentLAF.equalsIgnoreCase(klafMac)) {
 			frbMac.setSelected(true);
 		}
-		else if (fCurrentLAF.equalsIgnoreCase(klafMetal)) {
+		else if (fGUICurrentLAF.equalsIgnoreCase(klafMetal)) {
 			frbMetal.setSelected(true);
 		}
-		else if (fCurrentLAF.equalsIgnoreCase(klafMotif)) {
+		else if (fGUICurrentLAF.equalsIgnoreCase(klafMotif)) {
 			frbMotif.setSelected(true);
 		}
-		else if (fCurrentLAF.equalsIgnoreCase(klafNimbus)) {
+		else if (fGUICurrentLAF.equalsIgnoreCase(klafNimbus)) {
 			frbNimbus.setSelected(true);
 		}
-		else if (fCurrentLAF.equalsIgnoreCase(klafQuaqua)) {
+		else if (fGUICurrentLAF.equalsIgnoreCase(klafQuaqua)) {
 			frbQuaqua.setSelected(true);
 		}
-		else if (fCurrentLAF.equalsIgnoreCase(klafWindows)) {
+		else if (fGUICurrentLAF.equalsIgnoreCase(klafWindows)) {
 			frbWindows.setSelected(true);
 		}
-		else if (fCurrentLAF.equalsIgnoreCase(klafWindowsClassic)) {
+		else if (fGUICurrentLAF.equalsIgnoreCase(klafWindowsClassic)) {
 			frbWindowsClassic.setSelected(true);
 		}
 	}
 
 	/**
 	 */
-	private void setSoundSetMenuItems()
+	private void setGUISoundSetMenuItems()
 	{
 		frbLCARSSoundSet.setSelected(false);
 		frbAppleSoundSet.setSelected(false);
@@ -1835,7 +1885,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	/**
 	 * @param menuBar  -
 	 */
-	private void constructMenuBar(JMenuBar menuBar)
+	private void constructGUIMenuBar(JMenuBar menuBar)
 	{
 		JMenu menu = null;
 		JMenu subMenu = null;
@@ -1847,8 +1897,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		menu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.General.Mnemonic")));
 		menuBar.add(menu);
 
-		if (hasAboutBox()) {
-				menuItem = constructMenuItem(kActionCommandMenuItemAbout);
+		if (hasGUIAboutBox()) {
+				menuItem = constructGUIMenuItem(kActionCommandMenuItemAbout);
 				menuItem.setActionCommand(kActionCommandMenuItemAbout);
 				menuItem.addActionListener(this);
 				menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'A',java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -1928,7 +1978,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		subMenu.addSeparator();
 
-			menuItem = constructMenuItem(kActionCommandMenuItemSystemLAF);
+			menuItem = constructGUIMenuItem(kActionCommandMenuItemSystemLAF);
 			menuItem.setActionCommand(kActionCommandMenuItemSystemLAF);
 			menuItem.addActionListener(this);
 		subMenu.add(menuItem);
@@ -1936,22 +1986,22 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		if (SystemTray.isSupported()) {
 			subMenu.addSeparator();
 
-				JCheckBoxMenuItem checkBoxMenuItem = constructCheckBoxMenuItem(kActionCommandMenuItemMinimiseToSystemTray);
+				JCheckBoxMenuItem checkBoxMenuItem = constructGUICheckBoxMenuItem(kActionCommandMenuItemMinimiseToSystemTray);
 				checkBoxMenuItem.setState(true);
 				checkBoxMenuItem.setActionCommand(kActionCommandMenuItemMinimiseToSystemTray);
 				checkBoxMenuItem.addActionListener(this);
-				if (!setupMinimiseToSystemTrayAllowed()) {
+				if (!isGUIMinimiseToSystemTrayAllowed()) {
 					checkBoxMenuItem.setState(false);
 					checkBoxMenuItem.setEnabled(false);
 				}
 			subMenu.add(checkBoxMenuItem);
 		}
 
-		if (setupIsGUIResizable()) {
+		if (isGUIResizable()) {
 			if (!SystemTray.isSupported()) {
 				subMenu.addSeparator();
 			}
-				fcbEnableWindowResizing = constructCheckBoxMenuItem(kActionCommandMenuItemEnableWindowResizing);
+				fcbEnableWindowResizing = constructGUICheckBoxMenuItem(kActionCommandMenuItemEnableWindowResizing);
 				fcbEnableWindowResizing.setState(true);
 				fcbEnableWindowResizing.setActionCommand(kActionCommandMenuItemEnableWindowResizing);
 				fcbEnableWindowResizing.addActionListener(this);
@@ -1964,7 +2014,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		subMenu = new JMenu(I18NL10N.kINSTANCE.translate("menu.SoundSet"));
 		subMenu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.SoundSet.Mnemonic")));
 
-			fcbSystemSoundsEnabled = constructCheckBoxMenuItem(kActionCommandMenuItemSystemSoundsEnabled);
+			fcbSystemSoundsEnabled = constructGUICheckBoxMenuItem(kActionCommandMenuItemSystemSoundsEnabled);
 			fcbSystemSoundsEnabled.setState(fSystemSoundsEnabled);
 			fcbSystemSoundsEnabled.setActionCommand(kActionCommandMenuItemSystemSoundsEnabled);
 			fcbSystemSoundsEnabled.addActionListener(this);
@@ -2001,14 +2051,14 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		menu.addSeparator();
 
-			menuItem = constructMenuItem(kActionCommandMenuItemQuit);
+			menuItem = constructGUIMenuItem(kActionCommandMenuItemQuit);
 			menuItem.setActionCommand(kActionCommandMenuItemQuit);
 			menuItem.addActionListener(this);
 			menuItem.setAccelerator(KeyStroke.getKeyStroke((int) 'Q',java.awt.event.InputEvent.CTRL_DOWN_MASK));
 		menu.add(menuItem);
 
 		// if necessary, add other menus
-		ArrayList<JMenu> otherMenus = setupMenus();
+		ArrayList<JMenu> otherMenus = getGUIMenus();
 		if (otherMenus != null) {
 			for (JMenu otherMenu : otherMenus) {
 				menuBar.add(otherMenu);
@@ -2017,7 +2067,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		// if necessary, add right hand menu
 		boolean menuBarGlued = false;
-		JMenu rightHandMenu = setupRightHandMenu();
+		JMenu rightHandMenu = getGUIRightHandMenu();
 		if (rightHandMenu != null) {
 			menuBar.add(Box.createHorizontalGlue());
 			menuBarGlued = true;
@@ -2025,27 +2075,27 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		// if necessary, add the clock
-		if (setupIsClockEnabled()) {
+		if (isGUIClockEnabled()) {
 			if (!menuBarGlued) {
 				menuBar.add(Box.createHorizontalGlue());
 			}
-			menuBar.add(fClockLabel);
+			menuBar.add(fGUIClockLabel);
 		}
 	}
 
 	/**
 	 */
-	private void updateCurrentTimeLabel()
+	private void updateGUICurrentTimeLabel()
 	{
  		DateStamp currentDate = new DateStamp();
  		TimeStamp currentTime = new TimeStamp();
-		fClockLabel.setText("[ " + currentDate.getDMYString() + " " + currentTime.getHMSString() + " ] "); // provide right-side padding
+		fGUIClockLabel.setText("[ " + currentDate.getDMYString() + " " + currentTime.getHMSString() + " ] "); // provide right-side padding
 	}
 
 	/**
 	 * @param argv  -
 	 */
-	private void parseCommandLine(String[] argv)
+	private void parseApplicationCommandLine(String[] argv)
 	{
 		if (argv.length > 0) {
 
@@ -2054,7 +2104,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 				String parameter = argv[paramNr - 1];
 				if (!parameter.startsWith("-")) {
-					showParameterWarning(paramNr,parameter,"it doesn't start with a hyphen");
+					showApplicationParameterWarning(paramNr,parameter,"it doesn't start with a hyphen");
 				}
 				else {
 
@@ -2067,17 +2117,17 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 						String option = upperCaseParameter.substring(kParamLocale.length() + 1);
 						if (option.equalsIgnoreCase(kParamLocaleDutch)) {
-							fLocale = I18NL10N.kLocaleDutch;
+							fApplicationLocale = I18NL10N.kLocaleDutch;
 						}
 						else if (option.equalsIgnoreCase(kParamLocaleBritishEnglish)) {
-							fLocale = I18NL10N.kLocaleBritishEnglish;
+							fApplicationLocale = I18NL10N.kLocaleBritishEnglish;
 						}
 						else if (option.equalsIgnoreCase(kParamLocaleAmericanEnglish)) {
-							fLocale = I18NL10N.kLocaleAmericanEnglish;
+							fApplicationLocale = I18NL10N.kLocaleAmericanEnglish;
 						}
 						else {
 							// user-specified locale
-							fLocale = parameter.substring(kParamLocale.length() + 1);
+							fApplicationLocale = parameter.substring(kParamLocale.length() + 1);
 						}
 					}
 					else if (upperCaseParameter.equalsIgnoreCase(kParamDevelopMode)) {
@@ -2098,7 +2148,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 								fGUIWidth = (new Integer(option)).intValue();
 							}
 							catch (NumberFormatException exc) {
-								showParameterWarning(paramNr,parameter,"incorrect width specified");
+								showApplicationParameterWarning(paramNr,parameter,"incorrect width specified");
 							}
 						}
 					}
@@ -2117,7 +2167,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 								fGUIHeight = (new Integer(option)).intValue();
 							}
 							catch (NumberFormatException exc) {
-								showParameterWarning(paramNr,parameter,"incorrect height specified");
+								showApplicationParameterWarning(paramNr,parameter,"incorrect height specified");
 							}
 						}
 					}
@@ -2142,8 +2192,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 							"  xxx and yyy can be either autosize, fullscreen or a number (default is autosize).");
 						abortApplication(null,false);
 					}
-					else if (!parseParameter(paramNr,parameter)) {
-						showParameterWarning(paramNr,parameter,"unknown parameter specified");
+					else if (!parseApplicationParameter(paramNr,parameter)) {
+						showApplicationParameterWarning(paramNr,parameter,"unknown parameter specified");
 					}
 				}
 			}
@@ -2152,10 +2202,10 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 	/**
 	 */
-	private void saveRegistry()
+	private void saveApplicationRegistry()
 	{
 		try {
-			fSystemRegistry.save(kSystemRegistryFilename);
+			fApplicationRegistry.save(kApplicationRegistryFilename);
 		}
 		catch (RegistryException exc) {
 			JWarningDialog.warn(this,exc.getRegistryError());
@@ -2164,16 +2214,16 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 	/**
 	 */
-	private static void createSystemRegistry()
+	private static void createApplicationRegistry()
 	{
-		if (kCreateSystemRegistry) {
-			kLogger.info("Creating system registry...");
+		if (kCreateApplicationRegistry) {
+			kLogger.info("Creating application registry...");
 
 			try {
 				Registry registry = Registry.kINSTANCE;
 				registry.clear();
-				registry.save(kSystemRegistryFilename);
-				kLogger.info("Done creating registry; application stopped.");
+				registry.save(kApplicationRegistryFilename);
+				kLogger.info("Done, application stopped.");
 			}
 			catch (Exception exc) {
 				kLogger.fatal(exc);

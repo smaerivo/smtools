@@ -152,7 +152,7 @@ public final class JSplashScreen extends JWindow
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
 				panel.add(label);
 			}
-			catch (FileDoesNotExistException exc) {
+			catch (FileNotFoundException exc) {
 				// ignore
 			}
 

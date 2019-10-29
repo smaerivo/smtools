@@ -24,11 +24,11 @@
 package org.sm.smtools.swing.dialogs;
 
 import java.awt.*;
+import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import org.sm.smtools.application.util.*;
-import org.sm.smtools.exceptions.*;
 import org.sm.smtools.math.*;
 import org.sm.smtools.util.*;
 
@@ -349,7 +349,7 @@ public class JAboutBox extends JDefaultDialog
 				javaCupImage = new ImageIcon(JARResources.fSystemResources.getImage(kJavaCupImageFilename));
 				swingImage = new ImageIcon(JARResources.fSystemResources.getImage(kSwingImageFilename));
 			}
-			catch (FileDoesNotExistException exc) {
+			catch (FileNotFoundException exc) {
 				// ignore
 			}
 

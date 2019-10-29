@@ -1,12 +1,12 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 31/10/2016
+// Last modified : 04/09/2019
 // Target        : Java VM (1.8)
 // -------------------------------
 
 /**
- * Copyright 2003-2016 Sven Maerivoet
+ * Copyright 2003-2016, 2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import java.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 31/10/2016
+ * @version 04/09/2019
  */
 public final class MathTools
 {
@@ -247,6 +247,51 @@ public final class MathTools
 	public static double rad2deg(double radians)
 	{
 		return (radians / Math.PI * 180.0);
+	}
+
+	/**
+	 * Calculates the great circle distance (using the haversine formula) between two specified points.
+	 * 
+	 * @param latitude1   -
+	 * @param longitude1  -
+	 * @param latitude2   -
+	 * @param longitude2  -
+	 * @return the great circle distance [in m] between the two specified points
+	 */
+	public static double getGreatCircleDistance(double latitude1, double longitude1, double latitude2, double longitude2)
+	{
+		double kEarthRadius = 6378.137; // in km
+		double deltaLatitude = latitude2 * Math.PI / 180.0 - latitude1 * Math.PI / 180.0;
+		double deltaLongitude = longitude2 * Math.PI / 180.0 - longitude1 * Math.PI / 180.0;
+		double a = Math.sin(deltaLatitude / 2.0) * Math.sin(deltaLatitude / 2.0) +
+			Math.cos(latitude1 * Math.PI / 180.0) * Math.cos(latitude2 * Math.PI / 180.0) *
+			Math.sin(deltaLongitude / 2.0) * Math.sin(deltaLongitude / 2.0);
+		double c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		double d = kEarthRadius * c;
+		return (d * 1000);
+	}
+
+	/**
+	 * Calculates a (latitude,longitude) in a <CODE>LatLongPosition</CODE> object that is
+	 * of a specified offset (expressed in meter) from a given point.
+	 * 
+	 * @param latitude         -
+	 * @param longitude        -
+	 * @param latitudeOffset   the latitude offset [in m]
+	 * @param longitudeOffset  the longitude offset [in m]
+	 * @return a (latitude,longitude) in a <CODE>LatLongPosition</CODE> object at a specified offset from a given point
+	 */
+	public static LatLongPosition getLatitudeLongitudeDisplacement(double latitude, double longitude, double latitudeOffset, double longitudeOffset)
+	{
+		final double kDisplacementKm = 111.111;
+
+		// convert to km
+		latitudeOffset /= 1000.0;
+		longitudeOffset /= 1000.0;
+
+		return new LatLongPosition(
+			latitude + (latitudeOffset / kDisplacementKm),
+			longitude + ((longitudeOffset / kDisplacementKm) * Math.cos(latitude * Math.PI / 180.0)));
 	}
 
 	/**

@@ -143,15 +143,15 @@ public enum I18NL10N
 	 * <P>
 	 * The system's default locale is used if <CODE>null</CODE> is assigned to the <CODE>localeSpecifier</CODE>. 
 	 * 
-	 * @param localeFilenamePrefix        the path and prefix name of the file containing the database
-	 * @param localeSpecifier             the locale to be used
-	 * @return                            a filename based on a prefix and locale
-	 * @throws FileDoesNotExistException  if the file containing the database could not be opened or the locale was not found
-	 * @see                               I18NL10N#getFilename(String)
-	 * @see                               I18NL10N#load(String)
-	 * @see                               I18NL10N#load(InputStream)
+	 * @param localeFilenamePrefix    the path and prefix name of the file containing the database
+	 * @param localeSpecifier         the locale to be used
+	 * @return                        a filename based on a prefix and locale
+	 * @throws FileNotFoundException  if the file containing the database could not be opened or the locale was not found
+	 * @see                           I18NL10N#getFilename(String)
+	 * @see                           I18NL10N#load(String)
+	 * @see                           I18NL10N#load(InputStream)
 	 */
-	public String getFilename(String localeFilenamePrefix, String localeSpecifier) throws FileDoesNotExistException
+	public String getFilename(String localeFilenamePrefix, String localeSpecifier) throws FileNotFoundException
 	{
 		if (localeSpecifier == null) {
 			// use system default
@@ -175,7 +175,7 @@ public enum I18NL10N
 	  }
 		if (!validLocale) {
 			kLogger.error("Invalid locale specified (" + localeSpecifier + ").");
-			throw (new FileDoesNotExistException(localeSpecifier));
+			throw (new FileNotFoundException(localeSpecifier));
 		}
 		else {
 			try {
@@ -188,7 +188,7 @@ public enum I18NL10N
 			}
 			catch (SecurityException exc) {
 				kLogger.error("Invalid locale specified (" + language + ").");
-				throw (new FileDoesNotExistException(language));
+				throw (new FileNotFoundException(language));
 			}
 		}
 
@@ -198,14 +198,14 @@ public enum I18NL10N
 	/**
 	 * Returns a filename based on a prefix only (the system's default locale is assumed).
 	 * 
-	 * @param localeFilenamePrefix        the path and prefix name of the file containing the database
-	 * @return                            a filename based on a prefix and the system's default locale
-	 * @throws FileDoesNotExistException  if the file containing the database could not be opened or the locale was not found
-	 * @see                               I18NL10N#getFilename(String,String)
-	 * @see                               I18NL10N#load(String)
-	 * @see                               I18NL10N#load(InputStream)
+	 * @param localeFilenamePrefix    the path and prefix name of the file containing the database
+	 * @return                        a filename based on a prefix and the system's default locale
+	 * @throws FileNotFoundException  if the file containing the database could not be opened or the locale was not found
+	 * @see                           I18NL10N#getFilename(String,String)
+	 * @see                           I18NL10N#load(String)
+	 * @see                           I18NL10N#load(InputStream)
 	 */
-	public String getFilename(String localeFilenamePrefix) throws FileDoesNotExistException
+	public String getFilename(String localeFilenamePrefix) throws FileNotFoundException
 	{
 		return getFilename(localeFilenamePrefix,null);
 	}
@@ -215,13 +215,13 @@ public enum I18NL10N
 	 * <P>
 	 * Note: all existing keys will be overwritten with the new values.
 	 * 
-	 * @param localeFilename              the name of the file containing the database
-	 * @throws FileDoesNotExistException  if the file containing the database could not be opened
-	 * @see                               I18NL10N#getFilename(String)
-	 * @see                               I18NL10N#getFilename(String,String)
-	 * @see                               I18NL10N#load(InputStream)
+	 * @param localeFilename          the name of the file containing the database
+	 * @throws FileNotFoundException  if the file containing the database could not be opened
+	 * @see                           I18NL10N#getFilename(String)
+	 * @see                           I18NL10N#getFilename(String,String)
+	 * @see                           I18NL10N#load(InputStream)
 	 */
-	public void load(String localeFilename) throws FileDoesNotExistException
+	public void load(String localeFilename) throws FileNotFoundException
 	{
 		TextFileParser fLanguageFile = new TextFileParser(localeFilename);
 

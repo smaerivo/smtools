@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : JFileFilter.java
 // Author        : Sven Maerivoet
-// Last modified : 04/05/2014
+// Last modified : 16/08/2019
 // Target        : Java VM (1.8)
 // --------------------------------
 
 /**
- * Copyright 2003-2015 Sven Maerivoet
+ * Copyright 2003-2015, 2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import java.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 04/05/2014
+ * @version 16/08/2019
  */
 public final class JFileFilter extends javax.swing.filechooser.FileFilter
 {
@@ -269,5 +269,21 @@ public final class JFileFilter extends javax.swing.filechooser.FileFilter
 	public boolean isExtensionListInDescription()
 	{
 		return fUseExtensionsInDescription;
+	}
+
+	/******************
+	 * STATIC METHODS *
+	 ******************/
+
+	/**
+	 * Returns whether or not a file with the specified filename exists (and is not a directory).
+	 * 
+	 * @param filename  the filename to check for
+	 * @return <CODE>true</CODE> when a file with the specified filename exists (and is not a directory), <CODE>false</CODE> otherwise
+	 */
+	public static boolean fileExists(String filename)
+	{
+		File file = new File(filename);
+		return (file.exists() && !file.isDirectory());
 	}
 }

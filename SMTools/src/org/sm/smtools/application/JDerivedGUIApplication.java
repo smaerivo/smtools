@@ -1,7 +1,7 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 11/08/2019
+// Last modified : 29/10/2019
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
@@ -30,7 +30,6 @@ import java.util.*;
 import javax.swing.*;
 import org.sm.smtools.application.concurrent.*;
 import org.sm.smtools.application.util.*;
-import org.sm.smtools.exceptions.*;
 import org.sm.smtools.swing.dialogs.*;
 import org.sm.smtools.swing.util.*;
 import org.sm.smtools.util.*;
@@ -48,7 +47,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 11/08/2019
+ * @version 29/10/2019
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -132,14 +131,14 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 
 		if (command.equalsIgnoreCase(kActionCommandMenuItemDateChooser)) {
 			fStatusBarCustomLabel.setText("64-bit FP");
-			getStatusBar().setStatusText(I18NL10N.kINSTANCE.translate("text.ChooseDateDialogTitle"));
+			getGUIStatusBar().setStatusText(I18NL10N.kINSTANCE.translate("text.ChooseDateDialogTitle"));
 			JDateChooser dateChooser = new JDateChooser(
 				this,
 				I18NL10N.kINSTANCE.translate("text.ChooseDateDialogTitle"),
 				JDefaultDialog.EType.kOkCancel,
 				new DateStamp(11,4,1976),
 				JDateChooser.EUseDefaultDate.kEnabled);
-			getStatusBar().clearStatusText();
+			getGUIStatusBar().clearStatusText();
 			if (dateChooser.isCancelled()) {
 				JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("text.ChoiceCancelled"));
 			}
@@ -149,7 +148,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		}
 		else if (command.equalsIgnoreCase(kActionCommandMenuItemTimeChooser)) {
 			fStatusBarCustomLabel.setText("128-bit FP");
-			getStatusBar().setStatusText(I18NL10N.kINSTANCE.translate("text.ChooseTimeDialogTitle"));
+			getGUIStatusBar().setStatusText(I18NL10N.kINSTANCE.translate("text.ChooseTimeDialogTitle"));
 			JTimeChooser timeChooser = new JTimeChooser(
 				this,
 				I18NL10N.kINSTANCE.translate("text.ChooseTimeDialogTitle"),
@@ -157,7 +156,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 				JTimeChooser.EType.kHourMinuteSecondMillisecond,
 				JTimeChooser.EUpdatingMethod.kContinuous,
 				JTimeChooser.EDigitalClock.kShown);
-			getStatusBar().clearStatusText();
+			getGUIStatusBar().clearStatusText();
 			if (timeChooser.isCancelled()) {
 				JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("text.ChoiceCancelled"));
 			}
@@ -212,7 +211,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected boolean parseParameter(int paramNr, String parameter)
+	protected boolean parseApplicationParameter(int paramNr, String parameter)
 	{
 		final String kCustomParameter = "PARAMETER";
 		final String kCustomOption = "OPTION";
@@ -228,7 +227,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 				System.out.println("Parameter parsed.");
 			}
 			else {
-				showParameterWarning(paramNr,parameter,"not a valid option");
+				showApplicationParameterWarning(paramNr,parameter,"not a valid option");
 			}
 
 			// indicate that parameter was valid
@@ -244,7 +243,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected String setupApplicationResourceArchiveFilename()
+	protected String getApplicationResourceArchiveFilename()
 	{
 		return kResourceArchiveFilename;
 	}
@@ -253,7 +252,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected String setupApplicationLocalePrefix()
+	protected String getApplicationLocalePrefix()
 	{
 		return kApplicationLocalePrefix;
 	}
@@ -262,16 +261,16 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected void initialise(Object[] parameters)
+	protected void initialiseApplication(Object[] parameters)
 	{
-		getSplashScreen().setStatusMessageWaitTime(kSplashScreenStatusMessageWaitTime);
+		getGUISplashScreen().setStatusMessageWaitTime(kSplashScreenStatusMessageWaitTime);
 	}
 
 	/**
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JLabel setupSplashScreenContent()
+	protected JLabel getGUISplashScreenContent()
 	{
 		JLabel label = new JLabel("JDerivedGUIApplication",JLabel.LEFT);
 		label.setFont(label.getFont().deriveFont(Font.BOLD).deriveFont(20.0f));
@@ -282,12 +281,12 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected InputStream setupSplashScreenSound()
+	protected InputStream getGUISplashScreenSound()
 	{
 		try {
 			return fResources.getInputStream(kSplashScreenSoundFilename);
 		}
-		catch (FileDoesNotExistException exc) {
+		catch (FileNotFoundException exc) {
 			return null;
 		}
 	}
@@ -296,7 +295,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected final Dimension setupInitialGUISize()
+	protected final Dimension getGUIInitialSize()
 	{
 		return (new Dimension(JStandardGUIApplication.kFullScreenGUI,JStandardGUIApplication.kFullScreenGUI));
 	}
@@ -305,12 +304,12 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected Image setupIcon()
+	protected Image getGUIIcon()
 	{
 		try {
 			return fResources.getImage(kApplicationIconFilename);
 		}
-		catch (FileDoesNotExistException exc) {
+		catch (FileNotFoundException exc) {
 			return null;
 		}
 	}
@@ -319,7 +318,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected String setupWindowTitle()
+	protected String getGUITitle()
 	{
 		return "smtools.application.JDerivedGUIApplication";
 	}
@@ -328,7 +327,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected void setupContentPane(JPanel contentPane)
+	protected void getGUIContentPane(JPanel contentPane)
 	{
 		contentPane.setLayout(new BorderLayout());
 		String backgroundImageFilename = "application-resources/images/clouds.jpg";
@@ -339,7 +338,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			jip.setOpaque(false);
 			contentPane.add(jip,BorderLayout.CENTER);
 		}
-		catch (FileDoesNotExistException exc) {
+		catch (FileNotFoundException exc) {
 			// ignore
 		}
 	}
@@ -348,7 +347,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected String getToolBarTitle()
+	protected String getGUIToolBarTitle()
 	{
 		return "A tool bar";
 	}
@@ -357,21 +356,21 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected void setupToolBar()
+	protected void createGUIToolBar()
 	{
 		String kActionCommandMenuItemXXX = "xxx";
 		String kActionCommandMenuItemYYY = "yyy";
 		JButton button1 = new JButton("Button #1");
 		JButton button2 = new JButton("Button #2");
 
-		addToolBarButton(
+		addGUIToolBarButton(
 			button1,
 			I18NL10N.kINSTANCE.translate(kActionCommandMenuItemXXX),
 			kActionCommandMenuItemXXX,this);
 
-		addToolBarSeparator();
+		addGUIToolBarSeparator();
 
-		addToolBarButton(
+		addGUIToolBarButton(
 			button2,
 			I18NL10N.kINSTANCE.translate(kActionCommandMenuItemYYY),
 			kActionCommandMenuItemYYY,this);
@@ -381,7 +380,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected ArrayList<JMenu> setupMenus()
+	protected ArrayList<JMenu> getGUIMenus()
 	{
 		ArrayList<JMenu> menus = new ArrayList<JMenu>();
 		JMenu menu = null;
@@ -390,19 +389,19 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			menu = new JMenu(I18NL10N.kINSTANCE.translate("menu.Demonstration"));
 			menu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.Demonstration.Mnemonic")));
 
-				menuItem = constructMenuItem(kActionCommandMenuItemDateChooser);
+				menuItem = constructGUIMenuItem(kActionCommandMenuItemDateChooser);
 				menuItem.setActionCommand(kActionCommandMenuItemDateChooser);
 				menuItem.addActionListener(this);
 			menu.add(menuItem);
 
-				menuItem = constructMenuItem(kActionCommandMenuItemTimeChooser);
+				menuItem = constructGUIMenuItem(kActionCommandMenuItemTimeChooser);
 				menuItem.setActionCommand(kActionCommandMenuItemTimeChooser);
 				menuItem.addActionListener(this);
 			menu.add(menuItem);
 
 			menu.addSeparator();
 
-				menuItem = constructMenuItem(kActionCommandMenuItemTaskRunner);
+				menuItem = constructGUIMenuItem(kActionCommandMenuItemTaskRunner);
 				menuItem.setActionCommand(kActionCommandMenuItemTaskRunner);
 				menuItem.addActionListener(this);
 			menu.add(menuItem);
@@ -415,7 +414,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JMenu setupRightHandMenu()
+	protected JMenu getGUIRightHandMenu()
 	{
 		JMenu rightHandMenu = null;
 		JMenuItem menuItem = null;
@@ -423,7 +422,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		rightHandMenu = new JMenu(I18NL10N.kINSTANCE.translate("menu.Help"));
 		rightHandMenu.setMnemonic(I18NL10N.kINSTANCE.translateMnemonic(I18NL10N.kINSTANCE.translate("menu.Help.Mnemonic")));
 
-		menuItem = constructMenuItem(kActionCommandMenuItemIndex);
+		menuItem = constructGUIMenuItem(kActionCommandMenuItemIndex);
 		menuItem.setActionCommand(kActionCommandMenuItemIndex);
 		menuItem.addActionListener(this);
 		rightHandMenu.add(menuItem);
@@ -434,7 +433,8 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	/**
 	 * See {@link JStandardGUIApplication}.
 	 */
-	protected ArrayList<JLabel> setupStatusBarCustomLabels()
+	@Override
+	protected ArrayList<JLabel> getGUIStatusBarCustomLabels()
 	{
 		ArrayList<JLabel> customLabels = new ArrayList<JLabel>();
 			fStatusBarCustomLabel = new JLabel();
@@ -446,7 +446,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected boolean setupIsStatusBarEnabled()
+	protected boolean isGUIStatusBarEnabled()
 	{
 		return true;
 	}
@@ -455,7 +455,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected JPanel setupGlassPane()
+	protected JPanel getGUIGlassPane()
 	{
 		fProgressUpdateGlassPane = new JProgressUpdateGlassPane();
 		fProgressUpdateGlassPane.setBlocking(true);
@@ -468,7 +468,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected boolean setupIsClockEnabled()
+	protected boolean isGUIClockEnabled()
 	{
 		return true;
 	}
@@ -477,7 +477,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected boolean hasAboutBox()
+	protected boolean hasGUIAboutBox()
 	{
 		return true;
 	}
@@ -486,7 +486,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 	 * See {@link JStandardGUIApplication}.
 	 */
 	@Override
-	protected void showAboutBox()
+	protected void showGUIAboutBox()
 	{
 		new JDerivedAboutBox(this,fResources);
 	}
@@ -527,7 +527,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			try {
 				return (new JLabel(new ImageIcon(fResources.getImage("application-resources/images/smtools-splash-banner.png"))));
 			}
-			catch (FileDoesNotExistException exc) {
+			catch (FileNotFoundException exc) {
 				return null;
 			}
 		}
@@ -559,7 +559,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			try {
 				return fResources.getText("application-resources/licence/copyright.txt");
 			}
-			catch (FileDoesNotExistException exc) {
+			catch (FileNotFoundException exc) {
 				return null;
 			}
 		}
@@ -572,7 +572,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 			try {
 				return fResources.getText("application-resources/licence/apache-licence.txt");
 			}
-			catch (FileDoesNotExistException exc) {
+			catch (FileNotFoundException exc) {
 				return null;
 			}
 		}
@@ -589,7 +589,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 				try {
 					affiliationLabel.setIcon(new ImageIcon(fResources.getImage("application-resources/images/smtools-splash-banner.png")));
 				}
-				catch (FileDoesNotExistException exc) {
+				catch (FileNotFoundException exc) {
 				}
 				affiliationLabel.setToolTipText(I18NL10N.kINSTANCE.translate("tooltip.AboutBox.ClickForBrowser"));
 			affiliationsLabels.add(affiliationLabel);

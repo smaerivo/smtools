@@ -36,7 +36,7 @@
 
 	<target name="jar" depends="compile">
 		<jar destfile="smtools.jar" basedir="${binDir}">
-			<fileset dir="smtools-resources" />
+			<fileset dir="." includes="smtools-resources/**" />
 			<fileset file="${srcDir}/LICENSE.txt" />
 			<fileset file="${srcDir}/NOTICE.txt" />
 			<manifest>
@@ -51,7 +51,7 @@
 	<target name="zip">
 		<delete file="application-resources.zip" />
 		<zip destfile="application-resources.zip">
-			<fileset dir="application-resources" />
+			<fileset dir="." includes="application-resources/**" />
 		</zip>
 	</target>
 

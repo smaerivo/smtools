@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : TimeStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 02/08/2019
+// Last modified : 19/08/2019
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -36,7 +36,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 02/08/2019
+ * @version 19/08/2019
  */
 public final class TimeStamp implements Comparable<TimeStamp>
 {
@@ -49,13 +49,6 @@ public final class TimeStamp implements Comparable<TimeStamp>
 
 	/**
 	 * Constructs a <CODE>TimeStamp</CODE> object corresponding to the current system time.
-	 *
-	 * @see TimeStamp#clear()
-	 * @see TimeStamp#TimeStamp(int,int,int)
-	 * @see TimeStamp#TimeStamp(int,int,int,int)
-	 * @see TimeStamp#TimeStamp(long)
-	 * @see TimeStamp#TimeStamp(String)
-	 * @see TimeStamp#TimeStamp(TimeStamp)
 	 */
 	public TimeStamp()
 	{
@@ -70,11 +63,6 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * @param hour    the hour component
 	 * @param minute  the minute component
 	 * @param second  the second component
-	 * @see           TimeStamp#TimeStamp()
-	 * @see           TimeStamp#TimeStamp(int,int,int,int)
-	 * @see           TimeStamp#TimeStamp(long)
-	 * @see           TimeStamp#TimeStamp(String)
-	 * @see           TimeStamp#TimeStamp(TimeStamp)
 	 */
 	public TimeStamp(int hour, int minute, int second)
 	{
@@ -88,30 +76,10 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * @param minute       the minute component
 	 * @param second       the second component
 	 * @param millisecond  the millisecond component
-	 * @see                TimeStamp#TimeStamp()
-	 * @see                TimeStamp#TimeStamp(int,int,int)
-	 * @see                TimeStamp#TimeStamp(long)
-	 * @see                TimeStamp#TimeStamp(String)
-	 * @see                TimeStamp#TimeStamp(TimeStamp)
 	 */
 	public TimeStamp(int hour, int minute, int second, int millisecond)
 	{
 		set(hour,minute,second,millisecond);
-	}
-
-	/**
-	 * Constructs a <CODE>TimeStamp</CODE> object corresponding to a number of milliseconds (since 00:00:00.000).
-	 *
-	 * @param millisecondOfDay  the number of milliseconds (since 00:00:00.000) to convert to a <CODE>TimeStamp</CODE> object
-	 * @see                     TimeStamp#TimeStamp()
-	 * @see                     TimeStamp#TimeStamp(int,int,int)
-	 * @see                     TimeStamp#TimeStamp(int,int,int, int)
-	 * @see                     TimeStamp#TimeStamp(String)
-	 * @see                     TimeStamp#TimeStamp(TimeStamp)
-	 */
-	public TimeStamp(long millisecondOfDay)
-	{
-		setToMillisecondOfDay(millisecondOfDay);
 	}
 
 	/**
@@ -120,10 +88,6 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * The string has to have the following specific format: <B>HH:mm:ss</B>, e.g., 12:45:16
 	 *
 	 * @param timeString  the string representation of the time stamp (in the format HH:mm:ss)
-	 * @see               TimeStamp#TimeStamp()
-	 * @see               TimeStamp#TimeStamp(int,int,int)
-	 * @see               TimeStamp#TimeStamp(long)
-	 * @see               TimeStamp#TimeStamp(TimeStamp)
 	 */
 	public TimeStamp(String timeString)
 	{
@@ -136,16 +100,36 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	}
 
 	/**
+	 * Constructs a <CODE>TimeStamp</CODE> object corresponding to the specified Unix time (number of milliseconds since the epoch)
+	 * using the user's local time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
+	 * 
+	 * @param unixMilliseconds  the Unix time (number of milliseconds since the epoch)
+	 */
+	public TimeStamp(long unixMilliseconds)
+	{
+		convertFromUnixTime(unixMilliseconds);
+	}
+
+	/**
+	 * Constructs a <CODE>TimeStamp</CODE> object corresponding to the specified Unix time (number of milliseconds since the epoch)
+	 * using a specified time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
+	 * 
+	 * @param unixMilliseconds  the Unix time (number of milliseconds since the epoch)
+	 * @param timeZoneID        the ID of the time zone
+	 */
+	public TimeStamp(long unixMilliseconds, ZoneId timeZoneID)
+	{
+		convertFromUnixTime(unixMilliseconds,timeZoneID);
+	}
+
+	/**
 	 * Constructs a <CODE>TimeStamp</CODE> object as a copy of another <CODE>TimeStamp</CODE> object.
 	 * <P>
 	 * This is the <B>copy constructor</B>.
 	 *
 	 * @param timeStamp  the <CODE>TimeStamp</CODE> object to <B>deep copy</B>
-	 * @see              TimeStamp#TimeStamp()
-	 * @see              TimeStamp#TimeStamp(int,int,int)
-	 * @see              TimeStamp#TimeStamp(int,int,int, int)
-	 * @see              TimeStamp#TimeStamp(long)
-	 * @see              TimeStamp#TimeStamp(String)
 	 */
 	public TimeStamp(TimeStamp timeStamp)
 	{

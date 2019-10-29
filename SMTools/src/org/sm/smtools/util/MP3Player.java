@@ -73,11 +73,11 @@ public final class MP3Player extends Thread
 	/**
 	 * Constructs an <CODE>MP3Player</CODE> object based on a specified filename.
 	 *
-	 * @param soundFilename               the name of the file containing the MP3 sound
-	 * @throws FileDoesNotExistException  if the specified file could not be found or loaded
-	 * @throws SoundPlayingException      if something went wrong during playing
+	 * @param soundFilename           the name of the file containing the MP3 sound
+	 * @throws FileNotFoundException  if the specified file could not be found or loaded
+	 * @throws SoundPlayingException  if something went wrong during playing
 	 */
-	public MP3Player(String soundFilename) throws FileDoesNotExistException, SoundPlayingException
+	public MP3Player(String soundFilename) throws FileNotFoundException, SoundPlayingException
 	{
 		loadSoundFile(soundFilename);
 	}
@@ -199,7 +199,7 @@ public final class MP3Player extends Thread
 			try {
 				(new MP3Player(JARResources.fSystemResources.getInputStream(soundFilename))).play(playing);
 			}
-			catch (FileDoesNotExistException exc) {
+			catch (FileNotFoundException exc) {
 				// ignore
 			}
 			catch (SoundPlayingException exc) {
@@ -213,11 +213,11 @@ public final class MP3Player extends Thread
 	 *******************/
 
 	/**
-	 * @param soundFilename               -
-	 * @throws FileDoesNotExistException  -
-	 * @throws SoundPlayingException      -
+	 * @param soundFilename           -
+	 * @throws FileNotFoundException  -
+	 * @throws SoundPlayingException  -
 	 */
-	private void loadSoundFile(String soundFilename) throws FileDoesNotExistException, SoundPlayingException
+	private void loadSoundFile(String soundFilename) throws FileNotFoundException, SoundPlayingException
 	{
 		try {
 			FileInputStream fileInputStream = new FileInputStream(soundFilename);
@@ -226,7 +226,7 @@ public final class MP3Player extends Thread
 		}
 		catch (FileNotFoundException exc) {
 			kLogger.error(I18NL10N.kINSTANCE.translate("error.SoundFileNotFound",soundFilename));
-			throw (new FileDoesNotExistException(soundFilename));
+			throw (new FileNotFoundException(soundFilename));
 		}		
 	}
 

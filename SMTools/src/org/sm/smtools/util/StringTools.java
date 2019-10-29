@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 21/09/2016
+// Last modified : 17/08/2019
 // Target        : Java VM (1.8)
 // --------------------------------
 
 /**
- * Copyright 2003-2016 Sven Maerivoet
+ * Copyright 2003-2016, 2019 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import org.sm.smtools.math.complex.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 21/09/2016
+ * @version 17/08/2019
  */
 public final class StringTools
 {
@@ -398,6 +398,29 @@ public final class StringTools
 	}
 
 	/**
+	 * Formats an integer with thousand-, million-, ... separators using the default locale.
+	 * 
+	 * @param number  the number to format
+	 * @return the formatted number
+	 */
+	public static String formatInteger(int number)
+	{
+		return formatInteger(number,Locale.getDefault());
+	}
+
+	/**
+	 * Formats an integer with thousand-, million-, ... separators using a specified locale.
+	 * 
+	 * @param number  the number to format
+	 * @param locale  the locale to use
+	 * @return the formatted number
+	 */
+	public static String formatInteger(int number, Locale locale)
+	{
+		return NumberFormat.getNumberInstance(Locale.getDefault()).format(number);
+	}
+
+	/**
 	 * Returns a <CODE>String</CODE> containing an <CODE>int</CODE> padded with leading zeros.
 	 *
 	 * @param number         the number to padd
@@ -431,6 +454,78 @@ public final class StringTools
 	{
 		// convert CR+LF to system dependent EOL
 		return input.replace("\\r\\n",kEOLCharacterSequence);
+	}
+
+	/**
+	 * Extracts a substring from a string.
+	 * The end index is truncated suitable if it is beyond the string's length.
+	 * 
+	 * @param input       the <CODE>String</CODE> to reverse
+	 * @param beginIndex  the begin index
+	 * @param endIndex    the end index
+	 * @return            a <CODE>String</CODE> with all characters from the original one reversed
+	 */
+	public static String substring(String input, int beginIndex, int endIndex)
+	{
+		if (endIndex > input.length()) {
+			endIndex = input.length();
+		}
+		return input.substring(beginIndex,endIndex);
+	}
+
+	/**
+	 * Reverses all the characters in a string.
+	 * 
+	 * @param input  the <CODE>String</CODE> to reverse
+	 * @return       a <CODE>String</CODE> with all characters from the original one reversed
+	 */
+	public static String reverse(String input)
+	{
+		return (new StringBuilder(input)).reverse().toString();
+	}
+
+	/**
+	 * Converts all tabs in a string to spaces.
+	 * <P>
+	 * The number of spaces to use per tab is optional, it is 2 by default.
+	 * 
+	 * @param input             the <CODE>String</CODE> to convert the tabs of
+	 * @param nrOfSpacesPerTab  [OPTIONAL] the number of spaces to use when replacing each tab
+	 * @return                  a <CODE>String</CODE> with all tabs converted to spaces
+	 */
+	public static String convertTabsToSpaces(String input, int... nrOfSpacesPerTab)
+	{
+		int nrOfSpaces = 2;
+		if (nrOfSpacesPerTab.length > 0) {
+			nrOfSpaces = nrOfSpacesPerTab[0];
+		}
+		String spaces = "";
+		for (int i = 0; i < nrOfSpaces; ++i) {
+			spaces += " ";
+		}
+		return input.replace("\\t",spaces);
+	}
+
+	/**
+	 * Converts all spaces in a string to tabs.
+	 * <P>
+	 * The number of spaces to use per tab is optional, it is 2 by default.
+	 * 
+	 * @param input             the <CODE>String</CODE> to convert the spaces of
+	 * @param nrOfSpacesPerTab  [OPTIONAL] the number of spaces to use when replacing them by a tab
+	 * @return                  a <CODE>String</CODE> with all spaces converted to tabs
+	 */
+	public static String convertSpacesToTabs(String input, int... nrOfSpacesPerTab)
+	{
+		int nrOfSpaces = 2;
+		if (nrOfSpacesPerTab.length > 0) {
+			nrOfSpaces = nrOfSpacesPerTab[0];
+		}
+		String spaces = "";
+		for (int i = 0; i < nrOfSpaces; ++i) {
+			spaces += " ";
+		}
+		return input.replace(spaces,"\\t");
 	}
 
 	/**
@@ -508,5 +603,54 @@ public final class StringTools
 		String[] csvValues = new String[list.size()];
 		list.toArray(csvValues);
 		return csvValues;
+	}
+
+	/**
+	 * Returns the Soundex code of the provided string. The goal is to hash words (typically surnames)
+	 * into a smaller space using a simple model which approximates the sound of the word when spoken
+	 * by an English speaker. Each word is reduced to a four-character string, the first character being
+	 * a upper case letter and the remaining being three digits. Double letters are collapsed to a single digit.
+	 * <P>
+	 * The algorithm makes no distinction between lower- and uppercase characters.
+	 *
+	 * @param input  the input <CODE>String</CODE>
+	 * @return       the Soundex code corresponding to the provided input string
+	 */
+	public static String getSoundex(String input)
+	{
+		final char[] kSoundexMap = {
+			// A   B   C   D   E   F   G   H   I   J   K   L   M
+				'0','1','2','3','0','1','2','0','0','2','2','4','5',
+			// N   O   P   Q   R   S   T   U   V   W   X   Y   Z
+				'5','0','1','2','6','2','3','0','1','0','2','0','2'};
+
+		String t = input.toUpperCase();
+		StringBuffer result = new StringBuffer();
+		char c, prev = '?';
+
+		// find up to four characters that map
+		for (int i = 0; (i < t.length()) && (result.length() < 4) && ((c = t.charAt(i)) != ','); ++i) {
+			if ((c >= 'A') && (c <= 'Z') && (c != prev)) {
+				prev = c;
+				if (i == 0) {
+					result.append(c);
+				}
+				else {
+					char m = kSoundexMap[c - 'A'];
+					if (m != '0') {
+						result.append(m);
+					}
+				}
+			} // if ((c >= 'A') && (c <= 'Z') && (c != prev))
+		} // for (...)
+
+		if (result.length() == 0) {
+			return null;
+		}
+		for (int i = result.length(); i < 4; ++i) {
+			result.append('0');
+		}
+	
+		return result.toString();
 	}
 }

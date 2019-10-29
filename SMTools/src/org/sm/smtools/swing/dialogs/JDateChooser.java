@@ -25,11 +25,11 @@ package org.sm.smtools.swing.dialogs;
 
 import java.awt.event.*;
 import java.awt.*;
+import java.io.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 import org.sm.smtools.application.util.*;
-import org.sm.smtools.exceptions.*;
 import org.sm.smtools.swing.util.*;
 import org.sm.smtools.util.*;
 
@@ -335,7 +335,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 						// create a small gap
 						subPanel.add(Box.createRigidArea(new Dimension(15,0)));
 					}
-					catch (FileDoesNotExistException exc) {
+					catch (FileNotFoundException exc) {
 						JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.GUIComponentImageNotFound"));
 					}
 				}
@@ -354,7 +354,7 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 					navButton.addActionListener(this);
 					subPanel.add(navButton);
 				}
-				catch (FileDoesNotExistException exc) {
+				catch (FileNotFoundException exc) {
 					JWarningDialog.warn(this,I18NL10N.kINSTANCE.translate("error.GUIComponentImageNotFound"));
 				}
 			panel.add(subPanel);

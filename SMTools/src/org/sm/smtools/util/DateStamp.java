@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 02/08/2019
+// Last modified : 22/08/2019
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -39,7 +39,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 02/08/2019
+ * @version 22/08/2019
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
@@ -52,11 +52,6 @@ public final class DateStamp implements Comparable<DateStamp>
 
 	/**
 	 * Constructs a <CODE>DateStamp</CODE> object corresponding to the current system date.
-	 *
-	 * @see DateStamp#DateStamp(int,int,int)
-	 * @see DateStamp#DateStamp(int,int)
-	 * @see DateStamp#DateStamp(String)
-	 * @see DateStamp#DateStamp(DateStamp)
 	 */
 	public DateStamp()
 	{
@@ -69,10 +64,6 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * @param day    the day component
 	 * @param month  the month component
 	 * @param year   the year component
-	 * @see          DateStamp#DateStamp()
-	 * @see          DateStamp#DateStamp(int,int)
-	 * @see          DateStamp#DateStamp(String)
-	 * @see          DateStamp#DateStamp(DateStamp)
 	 */
 	public DateStamp(int day, int month, int year)
 	{
@@ -84,10 +75,6 @@ public final class DateStamp implements Comparable<DateStamp>
 	 *
 	 * @param weekOfYear  the week of the year component
 	 * @param year        the year component
-	 * @see               DateStamp#DateStamp()
-	 * @see               DateStamp#DateStamp(int,int,int)
-	 * @see               DateStamp#DateStamp(String)
-	 * @see               DateStamp#DateStamp(DateStamp)
 	 */
 	public DateStamp(int weekOfYear, int year)
 	{
@@ -97,24 +84,55 @@ public final class DateStamp implements Comparable<DateStamp>
 	/**
 	 * Constructs a <CODE>DateStamp</CODE> object corresponding to the specified string representation.
 	 * <P>
-	 * The string has to have the following specific format:
-	 * <P>
-	 * <B>dd/MM/yyyy</B>, e.g., 11/04/1976
+	 * The string has to have the following specific format: <B>dd/MM/yyyy</B>, e.g., 11/04/1976,
+	 * or <B>yyyy-MM-dd</B> in case the optional <CODE>boolean</CODE> flag is set to true.
 	 *
 	 * @param dateString  the string representation of the date stamp (in the format dd/MM/yyyy)
-	 * @see               DateStamp#DateStamp()
-	 * @see               DateStamp#DateStamp(int,int,int)
-	 * @see               DateStamp#DateStamp(int,int)
-	 * @see               DateStamp#DateStamp(DateStamp)
+	 * @param ymdFlag     an optional <CODE>boolean</CODE> indicating if the format is to be interpreted as yyyy-MM-dd
 	 */
-	public DateStamp(String dateString)
+	public DateStamp(String dateString, boolean... ymdFlag)
 	{
 		try {
-			setToDMY(dateString);
+			if (ymdFlag.length > 0) {
+				if (ymdFlag[0]) {
+					setToYMD(dateString);
+				}
+				else {
+					setToDMY(dateString);
+				}
+			}
+			else {
+				setToDMY(dateString);
+			}
 		}
 		catch (Exception exc) {
 			// ignore
 		}
+	}
+
+	/**
+	 * Constructs a <CODE>DateStamp</CODE> object corresponding to the specified Unix time (number of milliseconds since the epoch)
+	 * using the user's local time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
+	 * 
+	 * @param unixMilliseconds  the Unix time (number of milliseconds since the epoch)
+	 */
+	public DateStamp(long unixMilliseconds)
+	{
+		convertFromUnixTime(unixMilliseconds);
+	}
+
+	/**
+	 * Constructs a <CODE>DateStamp</CODE> object corresponding to the specified Unix time (number of milliseconds since the epoch)
+	 * using a specified time zone.
+	 * The Unix time typically looks like, e.g., 1563319245000L.
+	 * 
+	 * @param unixMilliseconds  the Unix time (number of milliseconds since the epoch)
+	 * @param timeZoneID        the ID of the time zone
+	 */
+	public DateStamp(long unixMilliseconds, ZoneId timeZoneID)
+	{
+		convertFromUnixTime(unixMilliseconds,timeZoneID);
 	}
 
 	/**
@@ -123,9 +141,6 @@ public final class DateStamp implements Comparable<DateStamp>
 	 * This is the <B>copy constructor</B>.
 	 *
 	 * @param dateStamp  the <CODE>DateStamp</CODE> object to <B>deep copy</B>
-	 * @see              DateStamp#DateStamp()
-	 * @see              DateStamp#DateStamp(int,int,int)
-	 * @see              DateStamp#DateStamp(String)
 	 */
 	public DateStamp(DateStamp dateStamp)
 	{
