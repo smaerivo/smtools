@@ -143,7 +143,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that if the underlying operating system allows for minimisation to the system tray,
  * then this options becomes available in the menu.
  * <P>
- * As the application is ran, the global system {@link Registry} is read from the file <CODE>system-registry.ser</CODE>
+ * As the application is ran, the global system {@link Registry} is read from the file <CODE>registry.ser</CODE>
  * (and stored back to file at the end).
  * <P>
  * When the user wants to quit the application, a confirmation dialog is shown:
@@ -1056,7 +1056,8 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	}
 
 	/**
-	 * Sets up the path and prefix names to the application's locale databases.
+	 * Sets up the path and prefix names to the application's locale databases, for example:<BR>
+	 * <PRE>"application-resources/locales/locale-"</PRE>
 	 * <P>
 	 * If <CODE>null</CODE> is specified, then the system ignores loading the application's locale databases.
 	 *

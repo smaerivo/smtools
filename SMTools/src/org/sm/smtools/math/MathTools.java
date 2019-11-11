@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 04/09/2019
+// Last modified : 11/11/2019
 // Target        : Java VM (1.8)
 // -------------------------------
 
@@ -36,7 +36,7 @@ import java.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 04/09/2019
+ * @version 11/11/2019
  */
 public final class MathTools
 {
@@ -328,6 +328,22 @@ public final class MathTools
 		else {
 			return value;
 		}
+	}
+
+	/**
+	 * Maps a <CODE>double</CODE> from one range to another.
+	 * The value is not constrained within the range.
+	 *
+	 * @param value        the value to map from the current to the target range
+	 * @param fromMinimum  the lower bound of the value's current range
+	 * @param fromMaximum  the upper bound of the value's current range
+	 * @param toMinimum    the lower bound of the value's target range
+	 * @param toMaximum    the upper bound of the value's target range
+	 * @return             the value mapped from the current to the target range
+	 */
+	public static double map(double value, double fromMinimum, double fromMaximum, double toMinimum, double toMaximum)
+	{
+		return ((value - fromMinimum) * ((toMaximum - toMinimum) / (fromMaximum - fromMinimum))) + toMinimum;
 	}
 
 	/**
