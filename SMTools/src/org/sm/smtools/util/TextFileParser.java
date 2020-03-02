@@ -1,12 +1,12 @@
 // -----------------------------------
 // Filename      : TextFileParser.java
 // Author        : Sven Maerivoet
-// Last modified : 02/08/2019
+// Last modified : 02/03/2020
 // Target        : Java VM (1.8)
 // -----------------------------------
 
 /**
- * Copyright 2003-2016 Sven Maerivoet
+ * Copyright 2003-2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,10 +25,12 @@ package org.sm.smtools.util;
 
 import java.io.*;
 import java.util.*;
+import java.util.zip.*;
 import org.sm.smtools.exceptions.*;
 
 /**
  * The <CODE>TextFileParser</CODE> class allows easy parsing of text files.
+ * If the specified file ends with .zip, then it the first one in the archive is automatically unzipped.
  * <P>
  * In the text file to parse, each line may contain at most one value.
  * <P>
@@ -48,7 +50,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 02/08/2019
+ * @version 02/03/2020
  */
 public final class TextFileParser
 {
@@ -68,14 +70,7 @@ public final class TextFileParser
 	 */
 	public TextFileParser(String filename) throws FileNotFoundException
 	{
-		try {
-			// try to open the file
-			FileInputStream fileInputStream = new FileInputStream(filename);
-			initialise(fileInputStream,null);
-		}
-		catch (FileNotFoundException exc) {
-			throw (new FileNotFoundException(filename));
-		}
+		this(filename,null);
 	}
 
 	/**
@@ -87,12 +82,23 @@ public final class TextFileParser
 	 */
 	public TextFileParser(String filename, String encoding) throws FileNotFoundException
 	{
+		ZipFile zipFile = null;
 		try {
 			// try to open the file
-			FileInputStream fileInputStream = new FileInputStream(filename);
-			initialise(fileInputStream,encoding);
+			if (filename.toLowerCase().endsWith(".zip")) {
+				zipFile = new ZipFile(filename);
+				ZipEntry zipEntry = zipFile.entries().nextElement();
+				initialise(zipFile.getInputStream(zipEntry),encoding);
+			}
+			else {
+				FileInputStream fileInputStream = new FileInputStream(filename);
+				initialise(fileInputStream,encoding);
+			}
 		}
 		catch (FileNotFoundException exc) {
+			throw (new FileNotFoundException(filename));
+		}
+		catch (IOException exc) {
 			throw (new FileNotFoundException(filename));
 		}
 	}

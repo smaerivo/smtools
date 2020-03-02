@@ -1,12 +1,12 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 29/10/2019
+// Last modified : 01/03/2020
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
 /**
- * Copyright 2003-2019 Sven Maerivoet
+ * Copyright 2003-2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,6 +128,9 @@ import org.sm.smtools.swing.dialogs.*;
  *     <LI>{@link JStandardGUIApplication#isGUIClockEnabled()}</LI>
  *     <LI>{@link JStandardGUIApplication#hasGUIAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
  *     <LI>{@link JStandardGUIApplication#showGUIAboutBox()} [<I>see also {@link JAboutBox}</I>]</LI>
+ *     <LI>{@link JStandardGUIApplication#showGUIDefaultMouseCursor()}</LI>
+ *     <LI>{@link JStandardGUIApplication#showGUIWaitMouseCursor()}</LI>
+ *     <LI>{@link JStandardGUIApplication#hideGUIMouseCursor()}</LI>
  *   </UL>
  *   <LI><B><U>Reacting to user input</U></B></LI>
  *   <UL>
@@ -153,7 +156,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 29/10/2019
+ * @version 01/03/2020
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -495,7 +498,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		fGUISplashScreen = new JSplashScreen(getGUISplashScreenContent(),getGUISplashScreenSound());
 
 		// change the cursor to indicate that the user has to wait
-		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		showGUIWaitMouseCursor();
 
 		setTitle(kGUIDefaultTitle);
 
@@ -637,7 +640,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		setVisible(true);
 
 		// restore the cursor
-		setCursor(Cursor.getDefaultCursor());
+		showGUIDefaultMouseCursor();
 
 		// update the menu's radio buttons
 		setGUILookAndFeelMenuItems();
@@ -966,6 +969,22 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	public final void beep()
 	{
 		Toolkit.getDefaultToolkit().beep();
+	}
+
+	/**
+	 * Shows the default mouse cursor.
+	 */
+	protected final void showGUIDefaultMouseCursor()
+	{
+		setCursor(Cursor.getDefaultCursor());
+	}
+
+	/**
+	 * Shows the wait mouse cursor.
+	 */
+	protected final void showGUIWaitMouseCursor()
+	{
+		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	}
 
 	/**
