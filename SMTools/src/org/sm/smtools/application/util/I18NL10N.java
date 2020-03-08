@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : I18NL10N.java
 // Author        : Sven Maerivoet
-// Last modified : 26/06/2018
+// Last modified : 07/03/2020
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2018 Sven Maerivoet
+ * Copyright 2003-2018, 2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import org.sm.smtools.util.*;
  * The idea behind this class is that, whenever a <CODE>String</CODE> locale is
  * needed, it is replaced by a lookup in the database that gives a
  * translation to the currently selected locale. The database is based
- * on <I>keys</I> and <I>values</I>: the keys provide the lookup-mechanism,
+ * on <I>keys</I> and <I>values</I>: the keys provide the lookup-mechanism (which is <B>case-insensitive</B>),
  * whereas the values represent the translations.
  * <P>
  * When an application is starting, the database (a '<CODE>properties</CODE>' file) containing the selected locale
@@ -91,7 +91,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author Sven Maerivoet
- * @version 26/06/2018
+ * @version 07/03/2020
  */
 public enum I18NL10N
 {
@@ -317,12 +317,13 @@ public enum I18NL10N
 	public String translate(String languageKey, String ... parameters)
 	{
 		// retrieve value from database
-		String value = fTranslationTable.getProperty(languageKey);
+		String value = fTranslationTable.getProperty(languageKey.toUpperCase());
 
 		if (value == null) {
 			kLogger.warn("Language key (" + languageKey + ") not found in language definition file.");
 			return "";
 		}
+
 		String fParsed = "";
 
 		// parse the translation
@@ -345,17 +346,18 @@ public enum I18NL10N
 						// extract the parameter's number
 						try {
 							int parameterNr = Integer.parseInt(value.substring(strPos,strPos + 1)) - 1;
-
 							// lookup the parameter in the list
 							if ((parameters != null) && (parameterNr < parameters.length)) {
 								fToAdd = parameters[parameterNr];
 							}
 						}
 						catch (NumberFormatException exc) {
+							// ignore
 						}
 					}
 				}
-			} else {
+			}
+			else {
 				// no parameter was specified
 				fToAdd = String.valueOf(value.charAt(strPos));
 			}
@@ -469,7 +471,7 @@ public enum I18NL10N
 				}
 
 				// store (key,value) pair
-				fTranslationTable.setProperty(key,value);
+				fTranslationTable.setProperty(key.toUpperCase(),value);
 			}
 		}
 	}

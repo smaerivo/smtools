@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 17/08/2019
+// Last modified : 07/03/2020
 // Target        : Java VM (1.8)
 // --------------------------------
 
 /**
- * Copyright 2003-2016, 2019 Sven Maerivoet
+ * Copyright 2003-2016, 2019, 2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import org.sm.smtools.math.complex.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 17/08/2019
+ * @version 07/03/2020
  */
 public final class StringTools
 {
@@ -210,8 +210,7 @@ public final class StringTools
 	 * @see                   StringTools#alignRight(String,int,char)
 	 * @see                   StringTools#truncate(String,int)
 	 */
-	public static String aggressiveAlignRight(String stringToAlign, int nrOfCharacters,
-			char padCharacter)
+	public static String aggressiveAlignRight(String stringToAlign, int nrOfCharacters, char padCharacter)
 	{
 		return truncate(alignRight(stringToAlign,nrOfCharacters,padCharacter),nrOfCharacters);
 	}
@@ -231,6 +230,21 @@ public final class StringTools
 	public static String aggressiveAlignCenter(String stringToCenter, int nrOfCharacters, char padCharacter)
 	{
 		return truncate(alignCenter(stringToCenter,nrOfCharacters,padCharacter),nrOfCharacters);
+	}
+
+	/**
+	 * Calculates the largest length of all <CODE>String</CODE>s in an array.
+	 */
+	public static int getMaxLength(String[] strings)
+	{
+		int maxLength = 0;
+		for (String s : strings) {
+			int length = s.length();
+			if (length > maxLength) {
+				maxLength = length;
+			}
+		}
+		return maxLength;
 	}
 
 	/**
