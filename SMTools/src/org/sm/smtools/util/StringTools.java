@@ -1,7 +1,7 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 07/03/2020
+// Last modified : 08/03/2020
 // Target        : Java VM (1.8)
 // --------------------------------
 
@@ -44,7 +44,7 @@ import org.sm.smtools.math.complex.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 07/03/2020
+ * @version 08/03/2020
  */
 public final class StringTools
 {
@@ -234,6 +234,9 @@ public final class StringTools
 
 	/**
 	 * Calculates the largest length of all <CODE>String</CODE>s in an array.
+	 * 
+	 * @param strings  the array of <CODE>String</CODE>s to search the largest length of
+	 * @return the largest length of all <CODE>String</CODE>s in the specified array
 	 */
 	public static int getMaxLength(String[] strings)
 	{

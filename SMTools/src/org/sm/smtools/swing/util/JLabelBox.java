@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : JLabelBox.java
 // Author        : Sven Maerivoet
-// Last modified : 24/08/2019
+// Last modified : 08/03/2020
 // Target        : Java VM (1.8)
 // --------------------------------
 
 /**
- * Copyright 2003-2016, 2019 Sven Maerivoet
+ * Copyright 2003-2016, 2019, 2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,12 @@ package org.sm.smtools.swing.util;
 import java.awt.*;
 
 /**
- * The <CODE>JLabelBox</CODE> class provides static methodes for drawing labels in boxes and changing font sizes and styles.
+ * The <CODE>JLabelBox</CODE> class provides static methodes for drawing labels in boxes.
  * <P>
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 24/08/2019
+ * @version 08/03/2020
  */
 public final class JLabelBox
 {
@@ -71,14 +71,14 @@ public final class JLabelBox
 	 * @param textInset        the inside single-margin between the text and any of the surrounding box's sides
 	 * @param viewportBounds   the bounds of the viewport in which the label box should fit (it is ignored if the parameter is <CODE>null</CODE>)
 	 * @param text             the label text (specified as new String[] {"String 1","String 2"})
-	 * @return                 a <CODE>Point</CODE> containing optionally modified (x,y) coordinates to make the label box fit inside the viewport
+	 * @return                 a <CODE>Rectangle</CODE> containing optionally modified (x,y) coordinates to make the label box fit inside the viewport
 	 */
-	public static Point drawLabel(Graphics2D g2D, Color textColor, Color backgroundColor, Color borderColor, double transparency, int posX, int posY, int textInset, Rectangle viewportBounds, String[] text)
+	public static Rectangle drawLabel(Graphics2D g2D, Color textColor, Color backgroundColor, Color borderColor, double transparency, int posX, int posY, int textInset, Rectangle viewportBounds, String[] text)
 	{
 		PositionInformation positionInformation = new PositionInformation();
 		positionInformation = calculatePositionInformation(g2D,posX,posY,textInset,text,positionInformation,viewportBounds);
 		drawLabel(g2D,textColor,backgroundColor,borderColor,transparency,text,positionInformation);
-		return (new Point(positionInformation.fX1,positionInformation.fY1));
+		return (new Rectangle(positionInformation.fX1,positionInformation.fY1,positionInformation.fWidth,positionInformation.fHeight));
 	}
 
 	/**
@@ -94,9 +94,9 @@ public final class JLabelBox
 	 * @param textInset        the inside single-margin between the text and any of the surrounding box's sides
 	 * @param viewportBounds   the bounds of the viewport in which the label box should fit (it is ignored if the parameter is <CODE>null</CODE>)
 	 * @param text             the label text
-	 * @return                 a <CODE>Point</CODE> containing optionally modified (x,y) coordinates to make the label box fit inside the viewport
+	 * @return                 a <CODE>Rectangle</CODE> containing optionally modified (x,y) coordinates to make the label box fit inside the viewport
 	 */
-	public static Point drawLabel(Graphics2D g2D, Color textColor, Color backgroundColor, Color borderColor, double transparency, int posX, int posY, int textInset, Rectangle viewportBounds, String text)
+	public static Rectangle drawLabel(Graphics2D g2D, Color textColor, Color backgroundColor, Color borderColor, double transparency, int posX, int posY, int textInset, Rectangle viewportBounds, String text)
 	{
 		return drawLabel(g2D,textColor,backgroundColor,borderColor,transparency,posX,posY,textInset,viewportBounds,new String[] {text});
 	}
@@ -114,9 +114,9 @@ public final class JLabelBox
 	 * @param textInset        the inside single-margin between the text and any of the surrounding box's sides
 	 * @param viewportBounds   the bounds of the viewport in which the label box should fit (it is ignored if the parameter is <CODE>null</CODE>)
 	 * @param text             the label text
-	 * @return                 a <CODE>Point</CODE> containing optionally modified (x,y) coordinates to make the label box fit inside the viewport
+	 * @return                 a <CODE>Rectangle</CODE> containing optionally modified (x,y) coordinates to make the label box fit inside the viewport
 	 */
-	public static Point drawLabelCentered(Graphics2D g2D, Color textColor, Color backgroundColor, Color borderColor, double transparency, int posX, int posY, int textInset, Rectangle viewportBounds, String[] text)
+	public static Rectangle drawLabelCentered(Graphics2D g2D, Color textColor, Color backgroundColor, Color borderColor, double transparency, int posX, int posY, int textInset, Rectangle viewportBounds, String[] text)
 	{
 		PositionInformation positionInformation = new PositionInformation();
 		positionInformation = calculatePositionInformation(g2D,posX,posY,textInset,text,positionInformation,null);
@@ -130,7 +130,7 @@ public final class JLabelBox
 		positionInformation.fY2 -= halfHeight;
 
 		drawLabel(g2D,textColor,backgroundColor,borderColor,transparency,text,positionInformation);
-		return (new Point(positionInformation.fX1,positionInformation.fY1));
+		return (new Rectangle(positionInformation.fX1,positionInformation.fY1,positionInformation.fWidth,positionInformation.fHeight));
 	}
 
 	/**
@@ -146,9 +146,9 @@ public final class JLabelBox
 	 * @param textInset        the inside single-margin between the text and any of the surrounding box's sides
 	 * @param viewportBounds   the bounds of the viewport in which the label box should fit (it is ignored if the parameter is <CODE>null</CODE>)
 	 * @param text             the label text
-	 * @return                 a <CODE>Point</CODE> containing optionally modified (x,y) coordinates to make the label box fit inside the viewport
+	 * @return                 a <CODE>Rectangle</CODE> containing optionally modified (x,y) coordinates to make the label box fit inside the viewport
 	 */
-	public static Point drawLabelCentered(Graphics2D g2D, Color textColor, Color backgroundColor, Color borderColor, double transparency, int posX, int posY, int textInset, Rectangle viewportBounds, String text)
+	public static Rectangle drawLabelCentered(Graphics2D g2D, Color textColor, Color backgroundColor, Color borderColor, double transparency, int posX, int posY, int textInset, Rectangle viewportBounds, String text)
 	{
 		return drawLabelCentered(g2D,textColor,backgroundColor,borderColor,transparency,posX,posY,textInset,viewportBounds,new String[] {text});
 	}
