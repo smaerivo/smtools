@@ -1,12 +1,12 @@
 // ---------------------------------
 // Filename      : JARResources.java
 // Author        : Sven Maerivoet
-// Last modified : 29/10/2019
+// Last modified : 13/03/2020
 // Target        : Java VM (1.8)
 // ---------------------------------
 
 /**
- * Copyright 2003-2019 Sven Maerivoet
+ * Copyright 2003-2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 package org.sm.smtools.application.util;
 
 import java.awt.*;
+import java.awt.image.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -31,6 +32,7 @@ import java.util.zip.*;
 import javax.swing.*;
 import org.apache.log4j.*;
 import org.sm.smtools.exceptions.*;
+import org.sm.smtools.swing.util.*;
 
 /**
  * The <CODE>JARResources</CODE> class provides access to JAR and ZIP files.
@@ -40,7 +42,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 29/10/2019
+ * @version 13/03/2020
  */
 public final class JARResources
 {
@@ -196,5 +198,18 @@ public final class JARResources
 		ImageIcon imageIcon = new ImageIcon(getRawResource(name));
 
 		return imageIcon.getImage();
+	}
+
+	/**
+	 * Retrieves a resource as a <CODE>BufferedImage</CODE> from the archive.
+	 * 
+	 * @param  name                   the (file)name of the resource to retrieve from the archive
+	 * @return                        an <CODE>Image</CODE> representing the resource
+	 * @throws FileNotFoundException  if the resource was not found
+	 * @see                           JARResources#getRawResource(String name)
+	 */
+	public BufferedImage getBufferedImage(String name) throws FileNotFoundException
+	{
+		return JImageLoader.convertImageToBufferedImage(getImage(name));
 	}
 }

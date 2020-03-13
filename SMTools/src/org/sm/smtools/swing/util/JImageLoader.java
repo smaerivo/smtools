@@ -1,12 +1,12 @@
 // ---------------------------------
 // Filename      : JImageLoader.java
 // Author        : Sven Maerivoet
-// Last modified : 13/08/2019
+// Last modified : 13/03/2020
 // Target        : Java VM (1.8)
 // ---------------------------------
 
 /**
- * Copyright 2003-2019 Sven Maerivoet
+ * Copyright 2003-2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 13/08/2019
+ * @version 13/03/2020
  */
 public final class JImageLoader
 {
@@ -201,5 +201,29 @@ public final class JImageLoader
 	{
 		int height = (int) (image.getHeight() * heightFactor);
 		return rescaleImageH(image,height);
+	}
+
+
+	/**
+	 * Converts a given <CODE>Image</CODE> into a <CODE>BufferedImage</CODE>
+	 *
+	 * @param image  the image to be converted
+	 * @return the converted <CODE>BufferedImage</CODE>
+	 */
+	public static BufferedImage convertImageToBufferedImage(Image image)
+	{
+		if (image instanceof BufferedImage) {
+			return (BufferedImage) image;
+		}
+
+		// create a buffered image with transparency
+		BufferedImage bufferedImage = new BufferedImage(image.getWidth(null),image.getHeight(null),BufferedImage.TYPE_INT_ARGB);
+
+		// draw the image on to the buffered image
+		Graphics2D g2D = bufferedImage.createGraphics();
+		g2D.drawImage(image,0,0,null);
+		g2D.dispose();
+
+		return bufferedImage;
 	}
 }
