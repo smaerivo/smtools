@@ -144,10 +144,15 @@ public final class JARResources
 		}
 
 		byte[] rawResource = fJARContents.get(name);
-		if ((rawResource == null) || DevelopMode.kINSTANCE.isActivated()) {
+		if ((rawResource == null) || (DevelopMode.kINSTANCE.isActivated() && (this != JARResources.fSystemResources))) {
 			// try to load resource from local file system
 			try {
-				kLogger.warn("Resource (" + name + ") not found in archive or development override, trying to load from local file system...");
+				if (rawResource == null) {
+					kLogger.warn("Resource (" + name + ") not found in archive, trying to load from local file system...");
+				}
+				else {
+					kLogger.warn("Development override for resource (" + name + "), trying to load from local file system...");
+				}
 				rawResource = Files.readAllBytes(Paths.get(name).toRealPath());
 			}
 			catch (Exception exc) {
