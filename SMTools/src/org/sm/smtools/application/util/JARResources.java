@@ -1,7 +1,7 @@
 // ---------------------------------
 // Filename      : JARResources.java
 // Author        : Sven Maerivoet
-// Last modified : 13/03/2020
+// Last modified : 15/03/2020
 // Target        : Java VM (1.8)
 // ---------------------------------
 
@@ -42,7 +42,7 @@ import org.sm.smtools.swing.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 13/03/2020
+ * @version 15/03/2020
  */
 public final class JARResources
 {
@@ -144,10 +144,10 @@ public final class JARResources
 		}
 
 		byte[] rawResource = fJARContents.get(name);
-		if (rawResource == null) {
+		if ((rawResource == null) || DevelopMode.kINSTANCE.isActivated()) {
 			// try to load resource from local file system
 			try {
-				kLogger.warn("Resource (" + name + ") not found in archive, trying to load from local file system...");
+				kLogger.warn("Resource (" + name + ") not found in archive or development override, trying to load from local file system...");
 				rawResource = Files.readAllBytes(Paths.get(name).toRealPath());
 			}
 			catch (Exception exc) {
