@@ -421,6 +421,13 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 
 		fApplicationLocale = I18NL10N.kLocaleBritishEnglish;
 		fSystemSoundsEnabled = getGUISystemSoundsEnabledOnStartup();
+		if (fSystemSoundsEnabled) {
+			MP3Player.enableSystemSounds();
+		}
+		else {
+			MP3Player.disableSystemSounds();
+		}
+
 		parseApplicationCommandLine(argv);
 
 		// load the system's locale database
