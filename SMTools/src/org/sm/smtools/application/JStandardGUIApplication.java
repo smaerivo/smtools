@@ -1,7 +1,7 @@
 // --------------------------------------------
 // Filename      : JStandardGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 01/03/2020
+// Last modified : 20/03/2020
 // Target        : Java VM (1.8)
 // --------------------------------------------
 
@@ -156,7 +156,7 @@ import org.sm.smtools.swing.dialogs.*;
  * Note that this confirmation can be skipped if {@link DevelopMode#isActivated} is <CODE>true</CODE>.
  * 
  * @author  Sven Maerivoet
- * @version 01/03/2020
+ * @version 20/03/2020
  */
 public class JStandardGUIApplication extends JFrame implements ActionListener, ComponentListener, WindowListener
 {
@@ -420,7 +420,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 		}
 
 		fApplicationLocale = I18NL10N.kLocaleBritishEnglish;
-		fSystemSoundsEnabled = true;
+		fSystemSoundsEnabled = getGUISystemSoundsEnabledOnStartup();
 		parseApplicationCommandLine(argv);
 
 		// load the system's locale database
@@ -1285,6 +1285,18 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 	protected JGUISounds.EGUISoundSet getGUIInitialSoundSet()
 	{
 		return JGUISounds.EGUISoundSet.kLCARS;
+	}
+
+	/**
+	 * Specifies whether or not the GUI's system sounds should be enabled at startup.
+	 * <P>
+	 * This method returns <CODE>true</CODE> by default.
+	 * 
+	 * @return a <CODE>boolean</CODE> indicating whether or not the GUI's system sounds should be enabled at startup
+	 */
+	protected boolean getGUISystemSoundsEnabledOnStartup()
+	{
+		return true;
 	}
 
 	/**
