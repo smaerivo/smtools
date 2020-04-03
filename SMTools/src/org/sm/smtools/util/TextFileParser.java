@@ -1,7 +1,7 @@
 // -----------------------------------
 // Filename      : TextFileParser.java
 // Author        : Sven Maerivoet
-// Last modified : 02/03/2020
+// Last modified : 04/04/2020
 // Target        : Java VM (1.8)
 // -----------------------------------
 
@@ -50,7 +50,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 02/03/2020
+ * @version 04/04/2020
  */
 public final class TextFileParser
 {
@@ -316,7 +316,14 @@ public final class TextFileParser
 	public TimeStamp getNextTimeStamp() throws FileParseException
 	{
 		String stringRead = getNextNonEmptyString();
-		return (new TimeStamp(stringRead));
+		TimeStamp timeStamp = null;
+		try {
+			timeStamp = new TimeStamp(stringRead);
+		}
+		catch (DateTimeFormatException exc) {
+			// ignore
+		}
+		return timeStamp;
 	}
 
 	/**

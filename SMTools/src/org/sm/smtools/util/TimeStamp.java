@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : TimeStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 31/03/2020
+// Last modified : 03/04/2020
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -36,7 +36,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 31/03/2020
+ * @version 03/04/2020
  */
 public final class TimeStamp implements Comparable<TimeStamp>
 {
@@ -88,15 +88,12 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * The string has to have the following specific format: <B>HH:mm:ss</B>, e.g., 12:45:16
 	 *
 	 * @param timeString  the string representation of the time stamp (in the format HH:mm:ss)
+	 * @throws DateTimeFormatException  if an error occurred during conversion
+	 * @see                             java.text.SimpleDateFormat
 	 */
-	public TimeStamp(String timeString)
+	public TimeStamp(String timeString) throws DateTimeFormatException
 	{
-		try {
-			setToHMS(timeString);
-		}
-		catch (Exception exc) {
-			// ignore
-		}
+		setToHMS(timeString);
 	}
 
 	/**
@@ -186,56 +183,49 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	 * <P>
 	 * The string has to have the following specific format: <B>HH:mm</B>, e.g., 10:15
 	 *
-	 * @param                           timeString the string representation of the time stamp (in the format HH:mm)
+	 * @param                           timeString  the string representation of the time stamp (in the format HH:mm)
 	 * @throws DateTimeFormatException  if an error occurred during conversion
 	 * @see                             java.text.SimpleDateFormat
 	 */
 	public void setToHM(String timeString) throws DateTimeFormatException
 	{
-		try {
-			fTimeStamp = LocalTime.parse(timeString,DateTimeFormatter.ofPattern("HH:mm"));
-		}
-		catch (DateTimeParseException exc) {
-			throw (new DateTimeFormatException(timeString));
-		}
+		setTime(timeString,"H:m");
 	}
 
 	/**
 	 * Sets this <CODE>TimeStamp</CODE> object corresponding to the specified string representation.
 	 * <P>
-	 * The string has to have the following specific format: <B>HH:mm:ss</B>, e.g., 12:45:16
+	 * The string has to have the following specific format: <B>HH:mm:ss</B>, e.g., 12:45:16 or 8:32:48
 	 *
-	 * @param                           timeString the string representation of the time stamp (in the format HH:mm:ss)
+	 * @param                           timeString  the string representation of the time stamp (in the format HH:mm:ss)
 	 * @throws DateTimeFormatException  if an error occurred during conversion
 	 * @see                             java.text.SimpleDateFormat
 	 */
 	public void setToHMS(String timeString) throws DateTimeFormatException
 	{
-		try {
-			fTimeStamp = LocalTime.parse(timeString,DateTimeFormatter.ofPattern("HH:mm:ss"));
-		}
-		catch (DateTimeParseException exc) {
-			throw (new DateTimeFormatException(timeString));
-		}
+		setTime(timeString,"H:m:s");
 	}
 
 	/**
 	 * Sets this <CODE>TimeStamp</CODE> object corresponding to the specified string representation.
 	 * <P>
-	 * The string has to have the following specific format: <B>HH:mm:ss.mls</B>, e.g., 05:03:06.002
+	 * The string has to have the following specific format: <B>HH:mm:ss.mls</B>, e.g., 12:45:16.002
 	 *
-	 * @param                           timeString the string representation of the time stamp (in the format HH:mm:ss.SSS)
+	 * @param                           timeString  the string representation of the time stamp (in the format HH:mm:ss.SSS)
 	 * @throws DateTimeFormatException  if an error occurred during conversion
 	 * @see                             java.text.SimpleDateFormat
 	 */
 	public void setToHMSMs(String timeString) throws DateTimeFormatException
 	{
-		try {
-			fTimeStamp = LocalTime.parse(timeString,DateTimeFormatter.ofPattern("HH:mm:ss.SSS"));
+		String msDescr = timeString.substring(timeString.indexOf('.') + 1);
+		if (msDescr.length() == 1) {
+			msDescr += "00";
 		}
-		catch (DateTimeParseException exc) {
-			throw (new DateTimeFormatException(timeString));
+		else if (msDescr.length() == 2) {
+			msDescr += "0";
 		}
+		timeString = timeString.substring(0,timeString.indexOf('.') + 1) + msDescr;
+		setTime(timeString,"H:m:s.SSS");
 	}
 
 	/**
@@ -521,5 +511,25 @@ public final class TimeStamp implements Comparable<TimeStamp>
 	public int hashCode()
 	{
 		return getMillisecondOfDay();
+	}
+
+	/*******************
+	 * PRIVATE METHODS *
+	 *******************/
+
+	/**
+	 * @param timeString     -
+	 * @param format         -
+	 * @throws DateTimeFormatException  if an error occurred during conversion
+	 * @see                             java.text.SimpleDateFormat
+	 */
+	private void setTime(String timeString, String format) throws DateTimeFormatException
+	{
+		try {
+			fTimeStamp = LocalTime.parse(timeString,DateTimeFormatter.ofPattern(format));
+		}
+		catch (DateTimeParseException exc) {
+			throw (new DateTimeFormatException(timeString));
+		}
 	}
 }

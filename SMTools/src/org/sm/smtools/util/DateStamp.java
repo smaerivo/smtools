@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 27/03/2020
+// Last modified : 03/04/2020
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -39,7 +39,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 27/03/2020
+ * @version 03/04/2020
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
@@ -199,7 +199,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	public void setToDMY(String dateString) throws DateTimeFormatException
 	{
 		try {
-			fDateStamp = LocalDate.parse(dateString,DateTimeFormatter.ofPattern("dd/MM/uuuu"));
+			fDateStamp = LocalDate.parse(dateString,DateTimeFormatter.ofPattern("d/M/u"));
 		}
 		catch (DateTimeParseException exc) {
 			throw (new DateTimeFormatException(dateString));
@@ -220,7 +220,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	public void setToYMD(String dateString) throws DateTimeFormatException
 	{
 		try {
-			fDateStamp = LocalDate.parse(dateString,DateTimeFormatter.ofPattern("uuuu-MM-dd"));
+			fDateStamp = LocalDate.parse(dateString,DateTimeFormatter.ofPattern("u-M-d"));
 		}
 		catch (DateTimeParseException exc) {
 			throw (new DateTimeFormatException(dateString));
