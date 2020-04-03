@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : TimeStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 19/08/2019
+// Last modified : 31/03/2020
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2019 Sven Maerivoet
+ * Copyright 2003-2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 19/08/2019
+ * @version 31/03/2020
  */
 public final class TimeStamp implements Comparable<TimeStamp>
 {
@@ -512,5 +512,14 @@ public final class TimeStamp implements Comparable<TimeStamp>
 		}
 
 		return (compareTo((TimeStamp) object) == 0);
+	}
+
+	/**
+	 * @return the object's unique hashcode
+	 */
+	@Override
+	public int hashCode()
+	{
+		return getMillisecondOfDay();
 	}
 }

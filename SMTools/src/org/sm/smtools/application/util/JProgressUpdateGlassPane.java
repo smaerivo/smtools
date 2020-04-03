@@ -288,7 +288,7 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 		long elapsedTimeMs = 0;
 		long totalTimeMs = 0;
 		if (fPercentageCompleted > 0.0) {
-			elapsedTimeMs = fChrono.getElapsedTimeInMilliseconds();
+			elapsedTimeMs = fChrono.getElapsedTime();
 			totalTimeMs = (long) Math.round(((double) elapsedTimeMs / fPercentageCompleted) * 100.0);
 			timeLeftMs = totalTimeMs - elapsedTimeMs;
 		}

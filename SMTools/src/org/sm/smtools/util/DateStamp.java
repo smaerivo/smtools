@@ -1,12 +1,12 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 22/08/2019
+// Last modified : 27/03/2020
 // Target        : Java VM (1.8)
 // ------------------------------
 
 /**
- * Copyright 2003-2019 Sven Maerivoet
+ * Copyright 2003-2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 22/08/2019
+ * @version 27/03/2020
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
@@ -556,7 +556,16 @@ public final class DateStamp implements Comparable<DateStamp>
 		return (compareTo((DateStamp) object) == 0);
 	}
 
-	/******************
+	/**
+	 * @return the object's unique hashcode
+	 */
+	@Override
+	public int hashCode()
+	{
+		return ((getYear() * 1000) + getDayOfYear());
+	}
+
+  /******************
 	 * STATIC METHODS *
 	 ******************/
 

@@ -1,12 +1,12 @@
 // --------------------------------
 // Filename      : StringTools.java
 // Author        : Sven Maerivoet
-// Last modified : 08/03/2020
+// Last modified : 27/03/2020
 // Target        : Java VM (1.8)
 // --------------------------------
 
 /**
- * Copyright 2003-2016, 2019, 2020 Sven Maerivoet
+ * Copyright 2003-2016, 2019-2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import org.sm.smtools.math.complex.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 08/03/2020
+ * @version 27/03/2020
  */
 public final class StringTools
 {
@@ -669,5 +669,16 @@ public final class StringTools
 		}
 	
 		return result.toString();
+	}
+
+	/**
+	 * Prints the provided data via the output stream and terminates the program.
+	 * 
+	 * @param data  the data to print
+	 */
+	public static void printExit(String data)
+	{
+		System.out.println(data);
+		System.exit(0);
 	}
 }
