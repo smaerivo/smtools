@@ -1,12 +1,12 @@
 // -------------------------------
 // Filename      : MathTools.java
 // Author        : Sven Maerivoet
-// Last modified : 11/11/2019
+// Last modified : 06/09/2020
 // Target        : Java VM (1.8)
 // -------------------------------
 
 /**
- * Copyright 2003-2016, 2019 Sven Maerivoet
+ * Copyright 2003-2016, 2019-2020 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import java.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 11/11/2019
+ * @version 06/09/2020
  */
 public final class MathTools
 {
@@ -654,6 +654,50 @@ public final class MathTools
 	{
 		// see also http://stackoverflow.com/questions/2385909/what-would-be-the-fastest-method-to-test-for-primality-in-java
 		return ((new BigInteger(String.valueOf(x))).isProbablePrime(15));
+	}
+
+	/**
+	 * Returns the approximated circumference of an ellipse.
+	 * @see <a href="https://www.mathsisfun.com/geometry/ellipse-perimeter.html">infinite series approximation</a>
+	 *
+	 * @param a  the length of the major axis
+	 * @param b  the length of the minor axis
+	 * @return   the approximated circumference of an ellipse 
+	 */
+	public static double getEllipseCircumference(double a, double b)
+	{
+		if ((a + b) == 0.0) {
+			return 0.0;
+		}
+
+		double h = sqr(a - b) / sqr(a + b);
+		double h2 = h * h;
+		double h4 = h2 * h2;
+		return (Math.PI *
+			(a + b) *
+			(1.0 +
+				((1.0 / 4.0) * h) +
+				((1.0 / 64.0) * h2) +
+				((1.0 / 256.0) * h2 * h) +
+				((1.0 / 16384.0) * h4) +
+				((1.0 / 65536.0) * h4 * h) +
+				((1.0 / 1048576.0) * h2 * h4)));
+	}
+
+	/**
+	 * Returns the eccentricity of an ellipse.
+	 *
+	 * @param a  the length of the major axis
+	 * @param b  the length of the minor axis
+	 * @return   the eccentricity of an ellipse 
+	 */
+	public static double getEllipseEccentricity(double a, double b)
+	{
+		if (a == 0.0) {
+			return 0.0;
+		}
+
+		return Math.sqrt(1.0 - ((b * b) / (a * a)));
 	}
 
 	/**
