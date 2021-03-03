@@ -64,7 +64,26 @@ public class JProgressUpdateGlassPane extends JPanel implements MouseListener, M
 	/**
 	 * The different types of progress update visualisations.
 	 */
-	public static enum EVisualisationType {kBar, kCircles, kFixedSector, kRotatingSector};
+	public static enum EVisualisationType {
+		/**
+		 * An extending bar.
+		 */
+		kBar,
+
+		/**
+		 * Sequentially filled circles.
+		 */
+		kCircles,
+
+		/**
+		 * A filling sector.
+		 */
+		kFixedSector,
+
+		/**
+		 * A filling and rotating sector.
+		 */
+		kRotatingSector};
 
 	// the number of circles to draw
 	private static final int kTotalNrOfCircles = 16;

@@ -98,17 +98,49 @@ public class JDefaultDialog extends JDialog implements ActionListener, WindowLis
 	/**
 	 * Useful constants to specify a modal or modelss dialog box.
 	 */
-	public static enum EModality {kModal, kModeless};
+	public static enum EModality {
+		/**
+		 * A modal dialog.
+		 */
+		kModal,
+
+		/**
+		 * A modeless dialog.
+		 */
+		kModeless};
 
 	/**
 	 * Useful constants to specify a fixed or resizable dialog box.
 	 */
-	public static enum ESize {kResizable, kFixedSize};
+	public static enum ESize {
+		/**
+		 * A resizable dialog.
+		 */
+		kResizable,
+
+		/**
+		 * A fixed-size dialog.
+		 */
+		kFixedSize};
 
 	/**
 	 * Useful constants to specify an "Ok", "Ok/Cancel" or custm type dialog box.
 	 */
-	public static enum EType {kOk, kOkCancel, Custom};
+	public static enum EType {
+		/**
+		 * A dialog with an "Ok" button.
+		 */
+		kOk,
+
+		/**
+		 * A dialog with "Ok" and "Cancel" buttons.
+		 */
+		kOkCancel,
+
+		/**
+		 * A dialog with a(n) custom button(s).
+		 */
+		Custom};
 
 	// the offset used when the dialog is at the edge of the screen
 	private static final int kDialogOffset = 50;

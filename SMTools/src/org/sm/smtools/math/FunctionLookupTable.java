@@ -33,8 +33,14 @@ package org.sm.smtools.math;
  */
 public final class FunctionLookupTable
 {
-	// internal datastructures
+	/**
+	 * The x-values.
+	 */
 	public double[] fX;
+
+	/**
+	 * The y-values.
+	 */
 	public double[] fY;
 
 	/****************

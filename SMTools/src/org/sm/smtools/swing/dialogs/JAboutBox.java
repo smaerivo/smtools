@@ -81,7 +81,16 @@ public class JAboutBox extends JDefaultDialog
 	/**
 	 * Useful constants to specify the logo's position relative to its accompanying about text.
 	 */
-	public static enum ELogoPosition {kTop, kLeft};
+	public static enum ELogoPosition {
+		/**
+		 * Place the logo in a top position.
+		 */
+		kTop,
+
+		/**
+		 * Place the logo in a left position.
+		 */
+		kLeft};
 
 	/**
 	 * Provides access to an application's resources.

@@ -468,6 +468,9 @@ public final class JStatusBar extends JPanel
 	 */
 	public interface Kernel32 extends StdCallLibrary
 	{
+		/**
+		 * The singleton instance.
+		 */
 		public Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("Kernel32",Kernel32.class);
 
 		/**
@@ -476,11 +479,34 @@ public final class JStatusBar extends JPanel
 		public class SYSTEM_POWER_STATUS extends Structure
 		{
 			// internal datastructures
+			/**
+			 * The AC line status.
+			 */
 			public byte ACLineStatus;
+
+			/**
+			 * The battery flag.
+			 */
 			public byte BatteryFlag;
+
+			/**
+			 * The battery life percentage.
+			 */
 			public byte BatteryLifePercent;
+
+			/**
+			 * A reserved flag.
+			 */
 			public byte Reserved1;
+
+			/**
+			 * The battery life time.
+			 */
 			public int BatteryLifeTime;
+
+			/**
+			 * The battery full life time.
+			 */
 			public int BatteryFullLifeTime;
 
 			@Override

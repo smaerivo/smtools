@@ -44,7 +44,16 @@ public final class JEtchedLine extends JPanel
 	/**
 	 * Useful constant to specify a horizontally or vertically oriented etched line.
 	 */
-	public static enum EOrientation {kHorizontal, kVertical};
+	public static enum EOrientation {
+		/**
+		 * A horizontal etched line.
+		 */
+		kHorizontal,
+
+		/**
+		 * A vertical etched line.
+		 */
+		kVertical};
 
 	// the default color
 	private static final Color kDefaultColor = Color.gray;

@@ -36,7 +36,31 @@ public final class SystemInformation
 	/**
 	 * The different types of operating systems.
 	 */
-	public static enum EOperatingSystem {kWindows, kMac, kUnixLinux, kSolaris, kUnknown};
+	public static enum EOperatingSystem {
+		/**
+		 * Windows.
+		 */
+		kWindows,
+
+		/**
+		 * Mac.
+		 */
+		kMac,
+
+		/**
+		 * UNIX/Linux.
+		 */
+		kUnixLinux,
+
+		/**
+		 * Solaris.
+		 */
+		kSolaris,
+
+		/**
+		 * Unknown.
+		 */
+		kUnknown};
 
 	/****************
 	 * CONSTRUCTORS *

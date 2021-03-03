@@ -2184,7 +2184,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 						}
 						else {
 							try {
-								fGUIWidth = (new Integer(option)).intValue();
+								fGUIWidth = Integer.parseInt(option);
 							}
 							catch (NumberFormatException exc) {
 								showApplicationParameterWarning(paramNr,parameter,"incorrect width specified");
@@ -2203,7 +2203,7 @@ public class JStandardGUIApplication extends JFrame implements ActionListener, C
 						}
 						else {
 							try {
-								fGUIHeight = (new Integer(option)).intValue();
+								fGUIHeight = Integer.parseInt(option);
 							}
 							catch (NumberFormatException exc) {
 								showApplicationParameterWarning(paramNr,parameter,"incorrect height specified");

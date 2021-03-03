@@ -89,21 +89,17 @@ public final class TextFileWriter
 		}
 	}
 
-	/**************
-	 * DESTRUCTOR *
-	 **************/
-
-	/**
-	 * Class destructor.
-	 */
-	public final void finalize()
-	{
-		fFileWriter.close();
-	}
-
 	/******************
 	 * PUBLIC METHODS *
 	 ******************/
+
+	/**
+	 * Closes the file.
+	 */
+	public final void close()
+	{
+		fFileWriter.close();
+	}
 
 	/**
 	 * Writes an empty line to the file.

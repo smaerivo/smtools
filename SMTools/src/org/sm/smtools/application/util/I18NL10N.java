@@ -95,6 +95,9 @@ import org.sm.smtools.util.*;
  */
 public enum I18NL10N
 {
+	/**
+	 * The singleton instance.
+	 */
 	kINSTANCE;
 
 	// locale-related definitions

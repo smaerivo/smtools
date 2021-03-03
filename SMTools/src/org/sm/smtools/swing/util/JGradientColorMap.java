@@ -155,41 +155,60 @@ public final class JGradientColorMap extends JPanel
 	/**
 	 * The supported horizontal and vertical orientations for the gradient colour map.
 	 */
-	public static enum EOrientation {kHorizontalLeftToRight, kHorizontalRightToLeft, kVerticalBottomToTop, kVerticalTopToBottom};
+	public static enum EOrientation {
+		/**
+		 * A horizontal (left to right) colour map.
+		 */
+		kHorizontalLeftToRight,
+
+		/**
+		 * A horizontal (right to left) colour map.
+		 */
+		kHorizontalRightToLeft,
+
+		/**
+		 * A vertical (bottom to top) colour map.
+		 */
+		kVerticalBottomToTop,
+
+		/**
+		 * A vertical (top to bottom) colour map.
+		 */
+		kVerticalTopToBottom};
 
 	/**
 	 * The various supported colour maps.
 	 */
 	public static enum EColorMap
-		{kBone,
-		 kCopper,
-		 kDiscontinuousBlueWhiteGreen,
-		 kDiscontinuousDarkRedYellow,
-		 kBlackAndWhite,
-		 kGrayScale,
-		 kGrayScaleTrimmed,
-		 kGreenRedDiverging,
-		 kHot,
-		 kJet,
-		 kHueSaturationBrightness,
-		 kSeparatedRGB,
-		 kRed,
-		 kGreen,
-		 kBlue,
-		 kYellow,
-		 kCyan,
-		 kMagenta,
-		 kUltraLightPastel,
-		 kLightPastel,
-		 kDarkPastel,
-		 kGreens,
-		 kBlues,
-		 kYellowBrowns,
-		 kVioletPurples,
-		 kDeepSpace,
-		 kBlueWhite,
-		 kCustom,
-		 kRandom};
+		{/** Bone colour map. */ kBone,
+		 /** Copper colour map. */ kCopper,
+		 /** Discontinuous blue-white-green colour map. */ kDiscontinuousBlueWhiteGreen,
+		 /** Discontinuous dark-red-yellow colour map. */ kDiscontinuousDarkRedYellow,
+		 /** Black and white colour map. */ kBlackAndWhite,
+		 /** Gray scale colour map. */ kGrayScale,
+		 /** Trimmed gray scale colour map. */ kGrayScaleTrimmed,
+		 /** Green-red diverging colour map. */ kGreenRedDiverging,
+		 /** Hot colour map. */ kHot,
+		 /** Jet colour map. */ kJet,
+		 /** Hue-saturation-brightness (HSV) colour map. */ kHueSaturationBrightness,
+		 /** Separated red-green-blue (RGB) colour map. */ kSeparatedRGB,
+		 /** Red colour map. */ kRed,
+		 /** Green colour map. */ kGreen,
+		 /** Blue colour map. */ kBlue,
+		 /** Yellow colour map. */ kYellow,
+		 /** Cyan colour map. */ kCyan,
+		 /** Magenta colour map. */ kMagenta,
+		 /** Ultra-light pastel colour map. */ kUltraLightPastel,
+		 /** Light pastel colour map. */ kLightPastel,
+		 /** Dark pastel colour map. */ kDarkPastel,
+		 /** Greens colour map. */ kGreens,
+		 /** Blues colour map. */ kBlues,
+		 /** Yellow-browns colour map. */ kYellowBrowns,
+		 /** Violet-purples colour map. */ kVioletPurples,
+		 /** Deep space colour map. */ kDeepSpace,
+		 /** Blue-white colour map. */ kBlueWhite,
+		 /** Custom colour map. */ kCustom,
+		 /** Random colours colour map. */ kRandom};
 
 	// the field separator for loading and saving
 	private static final String kFieldSeparator = ",";

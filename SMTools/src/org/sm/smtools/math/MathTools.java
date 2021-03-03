@@ -43,7 +43,36 @@ public final class MathTools
 	/**
 	 * The different kernel types.
 	 */
-	public static enum EKernelType {kRectangular, kTriangular, kEpanechnikov, kQuartic, kGaussian, kLanczos};
+	public static enum EKernelType {
+		/**
+		 * Rectangular kernel.
+		 */
+		kRectangular,
+
+		/**
+		 * Triangular kernel.
+		 */
+		kTriangular,
+
+		/**
+		 * Epanechnikov kernel.
+		 */
+		kEpanechnikov,
+
+		/**
+		 * Quartic kernel.
+		 */
+		kQuartic,
+
+		/**
+		 * Gaussian kernel.
+		 */
+		kGaussian,
+
+		/**
+		 * Lanczos kernel.
+		 */
+		kLanczos};
 
 	/**
 	 * The number of decimals in a double, equal to log10(2^(#bits_mantissa)) with #bits_mantissa = #bits_total - #bits_exponent - #bits_sign.

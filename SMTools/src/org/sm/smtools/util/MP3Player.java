@@ -47,7 +47,16 @@ public final class MP3Player extends Thread
 	/**
 	 * Useful constants to specify whether or not the application's execution is blocked while playing a sound.
 	 */
-	public static enum EPlaying {kBlocked, kUnblocked};
+	public static enum EPlaying {
+		/**
+		 * A blocked player.
+		 */
+		kBlocked,
+
+		/**
+		 * An unblocked player.
+		 */
+		kUnblocked};
 
 	// access point to the Log4j logging facility
 	private static final Logger kLogger = Logger.getLogger(MP3Player.class.getName());
@@ -93,22 +102,18 @@ public final class MP3Player extends Thread
 		createPlayer(soundInputStream);
 	}
 
-	/**************
-	 * DESTRUCTOR *
-	 **************/
-
-	/**
-	 * Class destructor.
-	 */
-	public void finalize()
-	{
-		fPlayer.close();
-	}
-
 	/******************
 	 * PUBLIC METHODS *
 	 ******************/
 
+	/**
+	 * Closes the player.
+	 */
+	public void close()
+	{
+		fPlayer.close();
+	}
+	
 	/**
 	 * The <CODE>Thread</CODE>'s run() method.
 	 */

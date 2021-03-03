@@ -84,17 +84,49 @@ public final class JTimeChooser extends JDefaultDialog implements ChangeListener
 	/**
 	 * Useful constants to specify a time chooser for selecting only the hour and minute, and/or second and/or millisecond.
 	 */
-	public static enum EType {kHourMinute, kHourMinuteSecond, kHourMinuteSecondMillisecond};
+	public static enum EType {
+		/**
+		 * Choose the hour and minute.
+		 */
+		kHourMinute,
+
+		/**
+		 * Choose the hour, minute, and second.
+		 */
+		kHourMinuteSecond,
+
+		/**
+		 * Choose the hour, minute, second, and millisecond.
+		 */
+		kHourMinuteSecondMillisecond};
 
 	/**
 	 * Useful constants to specify a time chooser that shows a clock which is updated continuously or in second time steps.
 	 */
-	public static enum EUpdatingMethod {kContinuous, kDiscrete};
+	public static enum EUpdatingMethod {
+		/**
+		 * Update the clock continuously.
+		 */
+		kContinuous,
+
+		/**
+		 * Update the clock stepwise.
+		 */
+		kDiscrete};
 
 	/**
 	 * Useful constants to specify whether or not a digital indication of the current time should be shown.
 	 */
-	public static enum EDigitalClock {kShown, kNotShown};
+	public static enum EDigitalClock {
+		/**
+		 * Show a digital clock.
+		 */
+		kShown,
+
+		/**
+		 * Don't show a digital clock.
+		 */
+		kNotShown};
 
 	// switch to control whether or not setting the seconds can be done via the clock's main panel
 	private static final boolean kEnableMouseListeners = true;

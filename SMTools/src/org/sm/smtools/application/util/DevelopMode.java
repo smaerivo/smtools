@@ -56,6 +56,9 @@ package org.sm.smtools.application.util;
  */
 public enum DevelopMode
 {
+	/**
+	 * The singleton instance.
+	 */
 	kINSTANCE;
 
 	// internal datastructures

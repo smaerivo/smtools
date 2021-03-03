@@ -69,6 +69,7 @@
 			package="true"
 			author="true"
 			version="true"
+			additionalparam="-Xdoclint:all,-html,-missing"
 			overview="${srcDir}/org/sm/smtools/overview.html" >
 			<group title="Application GUI development" packages="smtools.application:smtools.application.concurrent:smtools.application.util" />
 			<group title="Exception handling" packages="smtools.exceptions" />

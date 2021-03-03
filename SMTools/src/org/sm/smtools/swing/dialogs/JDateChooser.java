@@ -83,7 +83,16 @@ public final class JDateChooser extends JDefaultDialog implements ChangeListener
 	 * Useful constants to allow the use of the <B>undo button</B>
 	 * <IMG src="doc-files/calendar-undo.png" alt="">.
 	 */
-	public static enum EUseDefaultDate {kEnabled, kDisabled};
+	public static enum EUseDefaultDate {
+		/**
+		 * Use the default data.
+		 */
+		kEnabled,
+
+		/**
+		 * Don't use the default data.
+		 */
+		kDisabled};
 
 	// the locations of the navigation icons
 	private static final String kUndoIconFilename = "smtools-resources/images/undo.gif";

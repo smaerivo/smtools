@@ -354,7 +354,7 @@ public final class EmpiricalDistribution
 		double xRange = fX[bounds.getUpperBound()] - fX[bounds.getLowerBound()];
 		double xDelta = x - fX[bounds.getLowerBound()];
 		double fraction = 0.0;
-		if ((new Double(xRange)).compareTo(0.0) != 0) {
+		if (xRange != 0.0) {
 			fraction = xDelta / xRange;
 		}
 

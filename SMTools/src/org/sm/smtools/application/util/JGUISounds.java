@@ -34,9 +34,29 @@ package org.sm.smtools.application.util;
  */
 public enum JGUISounds
 {
+	/**
+	 * The singleton instance.
+	 */
 	kINSTANCE;
 
-	public enum EGUISoundSet {kLCARS, kApple, kSpace};
+	/**
+	 * The different GUI sound sets.
+	 */
+	public enum EGUISoundSet {
+		/**
+		 * LCARS-themed sound set.
+		 */
+		kLCARS,
+
+		/**
+		 * Apple-themed sound set.
+		 */
+		kApple,
+
+		/**
+		 * Space-themed sound set.
+		 */
+		kSpace};
 
 	// internal datastructures
 	private String fButtonSoundFilename;

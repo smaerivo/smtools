@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : DateStamp.java
 // Author        : Sven Maerivoet
-// Last modified : 03/04/2020
+// Last modified : 03/03/2021
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -39,7 +39,7 @@ import org.sm.smtools.exceptions.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 03/04/2020
+ * @version 03/03/2021
  */
 public final class DateStamp implements Comparable<DateStamp>
 {
@@ -172,7 +172,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	public void setToWoYY(int weekOfYear, int year)
 	{
 		setToDMY(1,1,year);
-		fDateStamp = fDateStamp.with(ChronoField.ALIGNED_WEEK_OF_YEAR,weekOfYear);
+		fDateStamp = fDateStamp.with(IsoFields.WEEK_OF_WEEK_BASED_YEAR,weekOfYear);
 	}
 
 	/**
@@ -402,7 +402,7 @@ public final class DateStamp implements Comparable<DateStamp>
 	 */
 	public int getWeekOfYear()
 	{
-		return fDateStamp.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
+		return fDateStamp.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
 	}
 
 	/**

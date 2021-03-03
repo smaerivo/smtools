@@ -43,6 +43,9 @@ import org.sm.smtools.exceptions.*;
  */
 public enum Registry
 {
+	/**
+	 * The singleton instance.
+	 */
 	kINSTANCE;
 
 	// internal datastructures
