@@ -1,4 +1,4 @@
-This product includes the SMTools v1.5.5 software framework developed by Sven Maerivoet.
+This product includes the SMTools v1.5.7 software framework developed by Sven Maerivoet.
 The framework was designed for the Java 2 Platform Standard Edition 1.8.0 or higher.
 
 The JStandardGUIApplication class provides a standard Swing based GUI framework.
@@ -7,12 +7,12 @@ Consult the javadocs for a more extensive overview of the framework.
 
 When using this framework, please use the following reference:
 
-	SMTools API Documentation (2003-2019)
+	SMTools API Documentation (2003-2021)
 	Sven Maerivoet
 	URL: https://smtools.maerivoet.org/
 	E-mail: sven.maerivoet@gmail.com
 
-Copyright 2003-2019 Sven Maerivoet
+Copyright 2003-2021 Sven Maerivoet
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

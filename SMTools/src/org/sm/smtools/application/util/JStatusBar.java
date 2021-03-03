@@ -1,7 +1,7 @@
 // -------------------------------
 // Filename      : JStatusBar.java
 // Author        : Sven Maerivoet
-// Last modified : 26/06/2018
+// Last modified : 03/03/2021
 // Target        : Java VM (1.8)
 // -------------------------------
 
@@ -41,7 +41,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 26/06/2018
+ * @version 03/03/2021
  */
 public final class JStatusBar extends JPanel
 {
@@ -464,14 +464,14 @@ public final class JStatusBar extends JPanel
 
 	/**
 	 * @author  Sven Maerivoet
-	 * @version 04/03/2013
+	 * @version 03/03/2021
 	 */
 	public interface Kernel32 extends StdCallLibrary
 	{
 		/**
 		 * The singleton instance.
 		 */
-		public Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("Kernel32",Kernel32.class);
+		public Kernel32 INSTANCE = (Kernel32) Native.load("Kernel32",Kernel32.class);
 
 		/**
 		 * Refer to http://msdn2.microsoft.com/en-us/library/aa373232.aspx for more details.

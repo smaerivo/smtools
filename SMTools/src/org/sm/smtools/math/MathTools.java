@@ -686,6 +686,50 @@ public final class MathTools
 	}
 
 	/**
+	 * Returns the approximated circumference of an ellipse.
+	 * @see <a href="https://www.mathsisfun.com/geometry/ellipse-perimeter.html">infinite series approximation</a>
+	 *
+	 * @param a  the length of the major axis
+	 * @param b  the length of the minor axis
+	 * @return   the approximated circumference of an ellipse 
+	 */
+	public static double getEllipseCircumference(double a, double b)
+	{
+		if ((a + b) == 0.0) {
+			return 0.0;
+		}
+
+		double h = sqr(a - b) / sqr(a + b);
+		double h2 = h * h;
+		double h4 = h2 * h2;
+		return (Math.PI *
+			(a + b) *
+			(1.0 +
+				((1.0 / 4.0) * h) +
+				((1.0 / 64.0) * h2) +
+				((1.0 / 256.0) * h2 * h) +
+				((1.0 / 16384.0) * h4) +
+				((1.0 / 65536.0) * h4 * h) +
+				((1.0 / 1048576.0) * h2 * h4)));
+	}
+
+	/**
+	 * Returns the eccentricity of an ellipse.
+	 *
+	 * @param a  the length of the major axis
+	 * @param b  the length of the minor axis
+	 * @return   the eccentricity of an ellipse 
+	 */
+	public static double getEllipseEccentricity(double a, double b)
+	{
+		if (a == 0.0) {
+			return 0.0;
+		}
+
+		return Math.sqrt(1.0 - ((b * b) / (a * a)));
+	}
+
+	/**
 	 * Finds all local extreme values (and their indices) in an array.
 	 *
 	 * @param x  the sequence to find all local extreme values for

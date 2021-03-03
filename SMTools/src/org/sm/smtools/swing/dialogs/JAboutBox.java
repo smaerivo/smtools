@@ -1,7 +1,7 @@
 // ------------------------------
 // Filename      : JAboutBox.java
 // Author        : Sven Maerivoet
-// Last modified : 26/06/2018
+// Last modified : 03/03/2021
 // Target        : Java VM (1.8)
 // ------------------------------
 
@@ -74,7 +74,7 @@ import org.sm.smtools.util.*;
  * tab is <B>not</B> shown.
  * 
  * @author  Sven Maerivoet
- * @version 26/06/2018
+ * @version 03/03/2021
  */
 public class JAboutBox extends JDefaultDialog
 {
@@ -534,7 +534,7 @@ public class JAboutBox extends JDefaultDialog
 
 		// update the used libraries
 		aboutText += "<BR>";
-		aboutText += I18NL10N.kINSTANCE.translate("text.UsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8, Java Native Access 3.5.1, Quaqua 8, BigDecimalMath 2012-03";
+		aboutText += I18NL10N.kINSTANCE.translate("text.UsedLibraries") + ": JLayer 1.0.1, Log4j 1.3alpha-8, Java Native Access, Quaqua 8, BigDecimalMath 2012-03";
 		if (setupUsedLibrariesDescriptions() != null) {
 			aboutText += ", " + setupUsedLibrariesDescriptions();
 		}

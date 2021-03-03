@@ -1,12 +1,12 @@
 // -------------------------------------------
 // Filename      : JDerivedGUIApplication.java
 // Author        : Sven Maerivoet
-// Last modified : 29/10/2019
+// Last modified : 03/03/2021
 // Target        : Java VM (1.8)
 // -------------------------------------------
 
 /**
- * Copyright 2003-2019 Sven Maerivoet
+ * Copyright 2003-2021 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ import org.sm.smtools.util.*;
  * <B>Note that this class cannot be subclassed!</B>
  * 
  * @author  Sven Maerivoet
- * @version 29/10/2019
+ * @version 03/03/2021
  * @see     JStandardGUIApplication
  */
 public final class JDerivedGUIApplication extends JStandardGUIApplication implements ActionListener
@@ -548,7 +548,7 @@ public final class JDerivedGUIApplication extends JStandardGUIApplication implem
 		{
 			return
 			("<B>JDerivedGUIApplication v1.1</B><BR />" +
-				"Copyright 2003-2019 Sven Maerivoet");
+				"Copyright 2003-2021 Sven Maerivoet");
 		}
 
 		/**
