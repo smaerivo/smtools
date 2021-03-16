@@ -1,12 +1,12 @@
 // ------------------------------------------
 // Filename      : EmpiricalDistribution.java
 // Author        : Sven Maerivoet
-// Last modified : 26/06/2018
+// Last modified : 16/03/2021
 // Target        : Java VM (1.8)
 // ------------------------------------------
 
 /**
- * Copyright 2003-2018 Sven Maerivoet
+ * Copyright 2003-2018, 2021 Sven Maerivoet
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.sm.smtools.math.*;
  * <B>Note that this class cannot be subclassed!</B>
  *
  * @author  Sven Maerivoet
- * @version 26/06/2018
+ * @version 16/03/2021
  */
 public final class EmpiricalDistribution
 {
@@ -187,6 +187,31 @@ public final class EmpiricalDistribution
 	 * @param nrOfHistogramBins  the user-specified number of histogram bins
 	 */
 	public void setData(double[] x, int nrOfHistogramBins)
+	{
+		setData(x,false,nrOfHistogramBins,null);
+	}
+
+	/**
+	 * Sets the source data for the empirical distribution.
+	 * <P>
+	 * The Freedman-Diaconis rule is applied for finding the optimal histogram bin width, and consequently the optimal number of histogram bins:
+	 * <P>
+	 * bin width = 2 * IQR / n^1/3
+	 * 
+	 * @param x  the array of values to estimate the empirical distribution for
+	 */
+	public void setData(ArrayList<Double> x)
+	{
+		setData(x,true,0,null);
+	}
+
+	/**
+	 * Sets the source data for the empirical distribution, as well as a user-specified number of histogram bins.
+	 * 
+	 * @param x                  the array of values to estimate the empirical distribution for
+	 * @param nrOfHistogramBins  the user-specified number of histogram bins
+	 */
+	public void setData(ArrayList<Double> x, int nrOfHistogramBins)
 	{
 		setData(x,false,nrOfHistogramBins,null);
 	}
@@ -1240,7 +1265,7 @@ public final class EmpiricalDistribution
 	 * @param nrOfHistogramBins            -
 	 * @param histogramBinRightEdges       -
 	 */
-	private void setData(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins, double histogramBinRightEdges[])
+	private void setData(double[] x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins, double[] histogramBinRightEdges)
 	{
 		clear();
 
@@ -1261,6 +1286,19 @@ public final class EmpiricalDistribution
 		fHistogramBinRightEdges = histogramBinRightEdges;
 
 		analyse();
+	}
+
+	/**
+	 * @param x                            -
+	 * @param useOptimalNrOfHistogramBins  -
+	 * @param nrOfHistogramBins            -
+	 * @param histogramBinRightEdges       -
+	 */
+	private void setData(ArrayList<Double> x, boolean useOptimalNrOfHistogramBins, int nrOfHistogramBins, ArrayList<Double> histogramBinRightEdges)
+	{
+		double[] xArray= x.stream().mapToDouble(Double::doubleValue).toArray();
+		double[] histArray = histogramBinRightEdges.stream().mapToDouble(Double::doubleValue).toArray();
+		setData(xArray,useOptimalNrOfHistogramBins,nrOfHistogramBins,histArray);
 	}
 
 	/**
